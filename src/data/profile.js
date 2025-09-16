@@ -6,6 +6,7 @@ export const profile = {
   location: 'Barcelona, Spain',
   github: 'https://github.com/TonyRod116',
   linkedin: 'https://linkedin.com/in/tony-rodriguez',
+  instagram: 'https://instagram.com/totalhomes.es',
   website: 'https://tony-r.com',
   bio: {
     es: 'Soy un Full Stack Software Engineer con experiencia previa como emprendedor en el sector de la construcción y la digitalización. Mi camino hacia la programación comenzó en General Assembly, donde destaqué por ir siempre más allá de lo requerido en cada proyecto—añadiendo funcionalidades creativas, útiles y con visión de producto. Mi proyecto final, TradeLab, fue reconocido públicamente por mi profesor como uno de los mejores que había visto nunca en su experiencia docente en GA.',
@@ -26,22 +27,22 @@ export const profile = {
     {
       company: 'BuildAPP',
       position: 'Founder',
-      period: '2024 - Present',
-      description: 'Plataforma que conecta clientes con profesionales de la construcción. Features: presupuestos IA, verificación de profesionales, pagos escrow.',
-      stack: ['Next.js', 'TypeScript', 'PostgreSQL', 'Prisma', 'Tailwind CSS']
+      period: '2025 - Present',
+      description: 'Platform connecting clients with construction professionals. Features: AI estimates, professional verification, escrow payments.',
+      stack: ['Node.js', 'Express', 'MongoDB', 'EJS', 'CSS3', 'Cloudinary']
     },
     {
       company: 'TotalHomes',
       position: 'Founder & CEO',
       period: '2019 - 2025',
-      description: 'Empresa boutique de construcción y renovación. Lideré equipos cross-funcionales, presupuestos y cronogramas desde concepto hasta entrega.',
+      description: 'Boutique construction and renovation company. Led cross-functional teams, budgets and schedules from concept to delivery.',
       stack: ['Project Management', 'Team Leadership', 'Client Relations']
     },
     {
       company: 'General Assembly',
       position: 'Software Engineering Bootcamp',
       period: 'Jun 2025 - Sep 2025',
-      description: 'Programa intensivo de desarrollo full-stack. 4 proyectos completos, metodologías ágiles, y colaboración en equipo.',
+      description: 'Intensive full-stack development program. 4 complete projects, agile methodologies, and team collaboration.',
       stack: ['JavaScript', 'React', 'Node.js', 'Python', 'Django', 'MongoDB']
     }
   ]
