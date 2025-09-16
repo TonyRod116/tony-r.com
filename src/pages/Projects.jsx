@@ -27,7 +27,7 @@ export default function Projects() {
         counts[category.value] = projects.filter(p => p.category === category.value).length
       }
       return counts
-    }, {} as Record<string, number>)
+    }, {})
   }, [])
 
   return (
@@ -102,27 +102,25 @@ export default function Projects() {
                 className="group"
               >
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow h-full">
-                  <div className="relative h-48 bg-gradient-to-br from-primary-100 to-blue-100 dark:from-primary-900/20 dark:to-blue-900/20">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="w-16 h-16 bg-primary-600 rounded-lg flex items-center justify-center mx-auto mb-2">
-                          <span className="text-white font-bold text-lg">{project.title.charAt(0)}</span>
-                        </div>
-                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{project.title}</p>
-                      </div>
-                    </div>
+                  <div className="relative h-48 bg-gradient-to-br from-primary-100 to-blue-100 dark:from-primary-900/20 dark:to-blue-900/20 overflow-hidden">
+                    <img 
+                      src={project.image} 
+                      alt={project.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/20" />
                     {project.featured && (
                       <div className="absolute top-4 left-4">
                         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/20 dark:text-primary-300">
                           <Star className="h-3 w-3 mr-1" />
-                          Destacado
+                          Featured
                         </span>
                       </div>
                     )}
                     <div className="absolute top-4 right-4">
                       <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-300">
                         <Clock className="h-3 w-3 mr-1" />
-                        {new Date(project.date).toLocaleDateString('es-ES', { month: 'short', year: 'numeric' })}
+                        {new Date(project.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
                       </span>
                     </div>
                   </div>

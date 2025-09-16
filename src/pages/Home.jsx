@@ -142,17 +142,6 @@ export default function Home() {
               </div>
               
 
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 1 }}
-                className="absolute -bottom-4 -left-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-lg"
-              >
-                <div className="flex items-center space-x-2">
-                  <Zap className="h-4 w-4 text-yellow-500" />
-                  <span className="text-sm font-medium text-gray-900 dark:text-white">35+ Repositories</span>
-                </div>
-              </motion.div>
             </motion.div>
           </div>
         </div>
@@ -208,8 +197,8 @@ export default function Home() {
               className="grid grid-cols-2 gap-4"
             >
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">4</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Projects completed</div>
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">35+</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">Repositories</div>
               </div>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">100%</div>

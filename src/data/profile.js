@@ -13,13 +13,13 @@ export const profile = {
   },
   currentBio: "I am a Full Stack Software Engineer with an entrepreneurial background in the construction and digitalization sector. My journey into software engineering began at General Assembly, where I stood out for consistently going beyond project requirements—adding creative, functional, and product-oriented features that elevated each build. My final project, TradeLab, was publicly recognized by my instructor as one of the best projects he had ever seen in his years of teaching at GA.",
   skills: {
-    languages: ['JavaScript (ES6+)', 'TypeScript', 'Python', 'SQL'],
+    languages: ['JavaScript (ES6+)', 'Python', 'SQL'],
     frontend: ['React', 'React Router', 'Context API', 'Axios', 'Recharts', 'HTML5', 'CSS3', 'TailwindCSS'],
     backend: ['Node.js', 'Express.js', 'Python', 'Django', 'Django REST Framework'],
     databases: ['MongoDB', 'PostgreSQL'],
-    auth: ['JWT Authentication', 'RESTful APIs', 'External API integrations'],
+    auth: ['JWT Authentication', 'REST APIs', 'External API integrations'],
     deployment: ['Git', 'GitHub', 'Netlify', 'Heroku', 'Render', 'CI/CD workflows'],
-    data: ['Databento market data conversion to Parquet (fintech use case)'],
+    data: ['Pandas', 'Parquet', 'Databento market data processing', 'Financial data analysis'],
     soft: ['Product Thinking', 'Exceeding Expectations', 'Creative Problem Solving', 'Growth Mindset', 'Collaboration', 'Resilience']
   },
   experience: [
