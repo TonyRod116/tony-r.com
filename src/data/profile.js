@@ -17,10 +17,11 @@ export const profile = {
     languages: ['JavaScript', 'Python', 'SQL'],
     frameworks: ['React', 'Node.js', 'Express', 'Django', 'MongoDB', 'PostgreSQL'],
     tools: ['Git', 'GitHub', 'REST APIs', 'Netlify', 'Heroku', 'Neon.tech', 'Agile/Scrum'],
-    soft: ['Creativity', 'Problem-Solving', 'Project management', 'Leadership', 'Client Relations']
+    soft: ['creativity', 'problemSolving', 'projectManagement', 'leadership', 'clientRelations']
   },
   experience: [
     {
+      id: 'generalassembly',
       company: 'General Assembly (generalassemb.ly)',
       position: 'Software Engineering Bootcamp',
       period: 'Jun 2025 – Sep 2025',
@@ -29,6 +30,7 @@ export const profile = {
       url: 'https://generalassemb.ly/'
     },
     {
+      id: 'totalhomes',
       company: 'Total Homes (@totalhomes.es)',
       position: 'Founder & CEO',
       period: '2019-2025',
@@ -37,6 +39,7 @@ export const profile = {
       url: 'https://instagram.com/totalhomes.es'
     },
     {
+      id: 'casex',
       company: 'Casex O.I., Barcelona (casex.es)',
       position: 'Project Manager',
       period: '2003-2019',
@@ -47,24 +50,28 @@ export const profile = {
   ],
   education: [
     {
+      id: 'generalassembly',
       institution: 'General Assembly',
       degree: 'Software Engineering Bootcamp',
       period: '2025',
       description: 'Intensive full-stack development program with focus on modern web technologies and agile methodologies.'
     },
     {
+      id: 'passivhaus',
       institution: 'Energiehaus Arquitectos / Passivhaus Institut',
       degree: 'Certified Passive House Consultant & Tradesperson',
       period: '2019-2020',
       description: 'Professional certification in energy-efficient building design and construction.'
     },
     {
+      id: 'uic',
       institution: 'Universitat Internacional de Catalunya',
       degree: 'Architecture (coursework completed)',
       period: '2001-2003',
       description: 'Foundation studies in architecture and design principles.'
     },
     {
+      id: 'asb',
       institution: 'American School of Barcelona',
       degree: 'High School Studies (Bilingual English/Spanish) & Proficiency Certificate',
       period: '1983-1996',

@@ -2,9 +2,12 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Code, Users, Zap, Target, Lightbulb, Heart, Cpu, Brain, TrendingUp, Shield, BookOpen } from 'lucide-react'
 import { profile } from '../data/profile'
+import { useLanguage } from '../hooks/useLanguage.jsx'
 import profileImage from '../assets/pic2.jpeg'
 
 export default function About() {
+  const { t } = useLanguage()
+  
   return (
     <div className="pt-16">
       {/* Hero Section */}
@@ -18,18 +21,18 @@ export default function About() {
               transition={{ duration: 0.6 }}
               className="space-y-6"
             >
-              <h1 className="text-4xl font-bold text-gray-900 dark:text-white">About Me</h1>
+              <h1 className="text-4xl font-bold text-gray-900 dark:text-white">{t('about.hero.title')}</h1>
               <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                I'm a Full Stack Software Engineer with a strong foundation in JavaScript, React, Node.js, Python, Django, MongoDB, and PostgreSQL, and experience deploying applications on Netlify, Heroku, and Render. My journey into tech came after years of running client-centered businesses in real estate and construction, where I learned how to turn ideas into practical solutions that people actually use.
+                {t('about.hero.description1')}
               </p>
               <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                At General Assembly's immersive Software Engineering Bootcamp, I delivered four complete applications. In each project, I went beyond the requirements, adding creative and product-oriented features. My final project, TradeLab, a trading strategy backtesting platform, was recognized by my instructor as one of the best projects he had ever seen in his years of teaching.
+                {t('about.hero.description2')}
               </p>
               <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                What drives me most is solving problems with creativity and precision. I bring an entrepreneurial mindset, a product-driven perspective, and resilience built through real-world challenges. Whether working solo or in teams, I focus on creating scalable, user-friendly products that deliver real value.
+                {t('about.hero.description3')}
               </p>
               <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                I'm excited to keep growing as an engineer while contributing to projects that improve the way people live and work.
+                {t('about.hero.description4')}
               </p>
             </motion.div>
 
@@ -69,9 +72,9 @@ export default function About() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Technical Expertise</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{t('about.technical.title')}</h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              I bring expertise in modern technologies and frameworks, with experience deploying applications across multiple platforms.
+              {t('about.technical.subtitle')}
             </p>
           </motion.div>
 
@@ -83,7 +86,7 @@ export default function About() {
               viewport={{ once: true }}
             >
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Languages</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('about.technical.languages')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {profile.skills.languages.map((skill) => (
                     <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
@@ -101,7 +104,7 @@ export default function About() {
               viewport={{ once: true }}
             >
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Frameworks & Libraries</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('about.technical.frameworks')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {profile.skills.frameworks.map((skill) => (
                     <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
@@ -119,7 +122,7 @@ export default function About() {
               viewport={{ once: true }}
             >
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Tools</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('about.technical.tools')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {profile.skills.tools.map((skill) => (
                     <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
@@ -137,7 +140,7 @@ export default function About() {
               viewport={{ once: true }}
             >
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Soft Skills</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('about.technical.softSkills')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {profile.skills.soft.map((skill) => (
                     <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
@@ -161,9 +164,9 @@ export default function About() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">What I Bring</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{t('about.whatIBring.title')}</h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Beyond technical ability, I contribute with a growth mindset, creative problem-solving, and a product-driven perspective. Qualities shaped by my years as an entrepreneur.
+              {t('about.whatIBring.subtitle')}
             </p>
           </motion.div>
 
@@ -178,9 +181,9 @@ export default function About() {
               <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center mx-auto">
                 <Cpu className="h-8 w-8 text-primary-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Technical Stack</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{t('about.whatIBring.technicalStack.title')}</h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Experience with JavaScript, React, Node.js, Python, Django, MongoDB, PostgreSQL
+                {t('about.whatIBring.technicalStack.description')}
               </p>
             </motion.div>
 
@@ -194,9 +197,9 @@ export default function About() {
               <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center mx-auto">
                 <Brain className="h-8 w-8 text-primary-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Problem-Solving Mindset</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{t('about.whatIBring.problemSolving.title')}</h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Creative and analytical approach to overcoming technical challenges
+                {t('about.whatIBring.problemSolving.description')}
               </p>
             </motion.div>
 
@@ -210,9 +213,9 @@ export default function About() {
               <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center mx-auto">
                 <Target className="h-8 w-8 text-primary-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Product Thinking</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{t('about.whatIBring.productThinking.title')}</h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Ability to design features that go beyond requirements and create real value
+                {t('about.whatIBring.productThinking.description')}
               </p>
             </motion.div>
 
@@ -226,9 +229,9 @@ export default function About() {
               <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center mx-auto">
                 <Users className="h-8 w-8 text-primary-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Collaboration & Leadership</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{t('about.whatIBring.collaboration.title')}</h3>
               <p className="text-gray-600 dark:text-gray-300">
-                15+ years leading teams and working effectively in Agile/Scrum environments
+                {t('about.whatIBring.collaboration.description')}
               </p>
             </motion.div>
 
@@ -242,9 +245,9 @@ export default function About() {
               <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center mx-auto">
                 <Shield className="h-8 w-8 text-primary-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Resilience & Adaptability</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{t('about.whatIBring.resilience.title')}</h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Thrived in high-pressure situations, from entrepreneurship to fast-paced bootcamp projects
+                {t('about.whatIBring.resilience.description')}
               </p>
             </motion.div>
 
@@ -258,9 +261,9 @@ export default function About() {
               <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center mx-auto">
                 <BookOpen className="h-8 w-8 text-primary-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Continuous Learning</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{t('about.whatIBring.continuousLearning.title')}</h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Strong growth mindset, always exploring new tools and frameworks
+                {t('about.whatIBring.continuousLearning.description')}
               </p>
             </motion.div>
           </div>
@@ -277,13 +280,13 @@ export default function About() {
             viewport={{ once: true }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">What I'm Looking For</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">{t('about.lookingFor.title')}</h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-8">
-              I am excited to join teams where I can combine technical depth with strategic thinking, helping to build scalable products that make a real impact while continuing to grow as a developer.
+              {t('about.lookingFor.description')}
             </p>
             <div className="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-8">
               <p className="text-lg text-gray-700 dark:text-gray-300 italic">
-                "I bring expertise in JavaScript, React, Node.js, Python, Django, MongoDB, PostgreSQL, and REST APIs, with experience deploying applications on Netlify, Heroku, and Render."
+                "{t('about.lookingFor.quote')}"
               </p>
             </div>
           </motion.div>
@@ -300,17 +303,16 @@ export default function About() {
             viewport={{ once: true }}
             className="text-center space-y-8"
           >
-            <h2 className="text-3xl font-bold text-white">Ready to work together?</h2>
+            <h2 className="text-3xl font-bold text-white">{t('about.cta.title')}</h2>
             <p className="text-xl text-primary-100 max-w-2xl mx-auto">
-              If you have a project in mind or just want to chat about technology, 
-              I'd love to hear from you.
+              {t('about.cta.description')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/contact"
                 className="inline-flex items-center justify-center px-6 py-3 bg-white text-primary-600 rounded-lg font-medium hover:bg-gray-50 transition-colors"
               >
-                Send message
+                {t('about.cta.sendMessage')}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
               <a
@@ -319,7 +321,7 @@ export default function About() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-6 py-3 border border-white text-white rounded-lg font-medium hover:bg-white hover:text-primary-600 transition-colors"
               >
-                View GitHub
+                {t('about.cta.viewGitHub')}
               </a>
             </div>
           </motion.div>

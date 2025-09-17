@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom'
 import { Github, Linkedin, Mail, Instagram, Facebook, Heart } from 'lucide-react'
 import { profile } from '../data/profile'
+import { useLanguage } from '../hooks/useLanguage.jsx'
 
 export default function Footer() {
+  const { t } = useLanguage()
+  
   return (
     <footer className="border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -16,44 +19,44 @@ export default function Footer() {
               <span className="font-bold text-xl text-gray-900 dark:text-white">Tony Rodríguez</span>
             </div>
             <p className="text-gray-600 dark:text-gray-300 text-sm max-w-md">
-              I build products that are understood and used. Software engineer and founder with real construction experience.
+              {t('footer.description')}
             </p>
           </div>
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-gray-900 dark:text-white">Quick Links</h3>
+            <h3 className="font-semibold text-gray-900 dark:text-white">{t('footer.quickLinks')}</h3>
             <nav className="space-y-2">
               <Link
                 to="/about"
                 className="block text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 transition-colors"
               >
-                About
+                {t('nav.about')}
               </Link>
               <Link
                 to="/projects"
                 className="block text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 transition-colors"
               >
-                Projects
+                {t('nav.projects')}
               </Link>
               <Link
                 to="/resume"
                 className="block text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 transition-colors"
               >
-                Resume
+                {t('nav.resume')}
               </Link>
               <Link
                 to="/contact"
                 className="block text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 transition-colors"
               >
-                Contact
+                {t('nav.contact')}
               </Link>
             </nav>
           </div>
 
           {/* Social Links */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-gray-900 dark:text-white">Connect with me</h3>
+            <h3 className="font-semibold text-gray-900 dark:text-white">{t('footer.connect')}</h3>
             <div className="flex space-x-4">
               <a
                 href={profile.github}
@@ -108,7 +111,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-200 dark:border-gray-700 mt-8 pt-8 flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0">
           <p className="text-sm text-gray-600 dark:text-gray-300">
-            © 2025 Tony Rodríguez. All rights reserved.
+            {t('footer.copyright')}
           </p>
         </div>
       </div>

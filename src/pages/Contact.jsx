@@ -2,8 +2,11 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Github, Linkedin, Mail, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react'
 import { profile } from '../data/profile'
+import { useLanguage } from '../hooks/useLanguage.jsx'
 
 export default function Contact() {
+  const { t } = useLanguage()
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,18 +18,18 @@ export default function Contact() {
   const [submitStatus, setSubmitStatus] = useState('idle')
 
   const budgetOptions = [
-    { value: 'under5k', label: 'Under 5k€' },
-    { value: '5k10k', label: '5k€ - 10k€' },
-    { value: '10k25k', label: '10k€ - 25k€' },
-    { value: '25k50k', label: '25k€ - 50k€' },
-    { value: 'over50k', label: 'Over 50k€' },
+    { value: 'under5k', label: t('contact.budget.under5k') },
+    { value: '5k10k', label: t('contact.budget.5k10k') },
+    { value: '10k25k', label: t('contact.budget.10k25k') },
+    { value: '25k50k', label: t('contact.budget.25k50k') },
+    { value: 'over50k', label: t('contact.budget.over50k') },
   ]
 
   const availabilityOptions = [
-    { value: 'immediate', label: 'Immediate' },
-    { value: '1month', label: 'In 1 month' },
-    { value: '3months', label: 'In 3 months' },
-    { value: 'flexible', label: 'Flexible' },
+    { value: 'immediate', label: t('contact.availability.immediate') },
+    { value: '1month', label: t('contact.availability.1month') },
+    { value: '3months', label: t('contact.availability.3months') },
+    { value: 'flexible', label: t('contact.availability.flexible') },
   ]
 
   const handleSubmit = async (e) => {
@@ -76,9 +79,9 @@ export default function Contact() {
             transition={{ duration: 0.6 }}
             className="text-center max-w-3xl mx-auto mb-12"
           >
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Contact</h1>
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('contact.title')}</h1>
             <p className="text-lg text-gray-600 dark:text-gray-300">
-              Have a project in mind? I'd love to hear about it and how I can help you bring it to life.
+              {t('contact.subtitle')}
             </p>
           </motion.div>
 
@@ -93,7 +96,7 @@ export default function Contact() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label htmlFor="name" className="text-sm font-medium text-gray-900 dark:text-white">
-                      Name *
+                      {t('contact.form.name')} *
                     </label>
                     <input
                       type="text"
@@ -103,13 +106,13 @@ export default function Contact() {
                       onChange={handleChange}
                       required
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white"
-                      placeholder="Your name"
+                      placeholder={t('contact.form.namePlaceholder')}
                     />
                   </div>
 
                   <div className="space-y-2">
                     <label htmlFor="email" className="text-sm font-medium text-gray-900 dark:text-white">
-                      Email *
+                      {t('contact.form.email')} *
                     </label>
                     <input
                       type="email"
@@ -119,7 +122,7 @@ export default function Contact() {
                       onChange={handleChange}
                       required
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white"
-                      placeholder="tu@email.com"
+                      placeholder={t('contact.form.emailPlaceholder')}
                     />
                   </div>
                 </div>
@@ -127,7 +130,7 @@ export default function Contact() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label htmlFor="budget" className="text-sm font-medium text-gray-900 dark:text-white">
-                      Budget (Optional)
+                      {t('contact.form.budget')}
                     </label>
                     <select
                       id="budget"
@@ -136,7 +139,7 @@ export default function Contact() {
                       onChange={handleChange}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white"
                     >
-                      <option value="">Select a range</option>
+                      <option value="">{t('contact.form.selectRange')}</option>
                       {budgetOptions.map((option) => (
                         <option key={option.value} value={option.value}>
                           {option.label}
@@ -147,7 +150,7 @@ export default function Contact() {
 
                   <div className="space-y-2">
                     <label htmlFor="availability" className="text-sm font-medium text-gray-900 dark:text-white">
-                      Availability
+                      {t('contact.form.availability')}
                     </label>
                     <select
                       id="availability"
@@ -156,7 +159,7 @@ export default function Contact() {
                       onChange={handleChange}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white"
                     >
-                      <option value="">When do you need to start?</option>
+                      <option value="">{t('contact.form.whenStart')}</option>
                       {availabilityOptions.map((option) => (
                         <option key={option.value} value={option.value}>
                           {option.label}
@@ -168,7 +171,7 @@ export default function Contact() {
 
                 <div className="space-y-2">
                   <label htmlFor="message" className="text-sm font-medium text-gray-900 dark:text-white">
-                    Message *
+                    {t('contact.form.message')} *
                   </label>
                   <textarea
                     id="message"
@@ -178,7 +181,7 @@ export default function Contact() {
                     required
                     rows={6}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white"
-                    placeholder="Tell me about your project, goals, timeline..."
+                    placeholder={t('contact.form.messagePlaceholder')}
                   />
                 </div>
 
@@ -190,7 +193,7 @@ export default function Contact() {
                     className="flex items-center space-x-2 text-green-600 bg-green-50 dark:bg-green-900/20 p-4 rounded-lg"
                   >
                     <CheckCircle className="h-5 w-5" />
-                    <span>Message sent successfully! I'll get back to you soon.</span>
+                    <span>{t('contact.form.successMessage')}</span>
                   </motion.div>
                 )}
 
@@ -201,7 +204,7 @@ export default function Contact() {
                     className="flex items-center space-x-2 text-red-600 bg-red-50 dark:bg-red-900/20 p-4 rounded-lg"
                   >
                     <AlertCircle className="h-5 w-5" />
-                    <span>Error sending message. Please try again.</span>
+                    <span>{t('contact.form.errorMessage')}</span>
                   </motion.div>
                 )}
 
@@ -213,12 +216,12 @@ export default function Contact() {
                   {isSubmitting ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                      Sending message...
+                      {t('contact.form.sending')}
                     </>
                   ) : (
                     <>
                       <Send className="h-4 w-4 mr-2" />
-                      Send message
+                      {t('contact.form.sendMessage')}
                     </>
                   )}
                 </button>
@@ -233,12 +236,12 @@ export default function Contact() {
               className="space-y-6"
             >
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Contact Information</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('contact.info.title')}</h3>
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
                     <Mail className="h-5 w-5 text-primary-600" />
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">Email</p>
+                      <p className="font-medium text-gray-900 dark:text-white">{t('contact.info.email')}</p>
                       <a
                         href={`mailto:${profile.email}`}
                         className="text-gray-600 dark:text-gray-300 hover:text-primary-600 transition-colors"
@@ -250,7 +253,7 @@ export default function Contact() {
                   <div className="flex items-center space-x-3">
                     <MapPin className="h-5 w-5 text-primary-600" />
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">Location</p>
+                      <p className="font-medium text-gray-900 dark:text-white">{t('contact.info.location')}</p>
                       <p className="text-gray-600 dark:text-gray-300">{profile.location}</p>
                     </div>
                   </div>
@@ -258,7 +261,7 @@ export default function Contact() {
               </div>
 
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Redes sociales</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('contact.social.title')}</h3>
                 <div className="space-y-4">
                   <a
                     href={profile.github}
@@ -288,13 +291,13 @@ export default function Contact() {
               </div>
 
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Availability</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('contact.availability.title')}</h3>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">Available for new projects</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">{t('contact.availability.available')}</p>
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">
-                  Typical response time: 24 hours
+                  {t('contact.availability.responseTime')}
                 </p>
               </div>
             </motion.div>

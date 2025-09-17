@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion'
 import { Github, Clock, ExternalLink } from 'lucide-react'
 import { projects } from '../data/projects'
+import { useLanguage } from '../hooks/useLanguage.jsx'
 
 export default function Projects() {
+  const { t } = useLanguage()
 
   return (
     <div className="pt-16">
@@ -14,11 +16,9 @@ export default function Projects() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Projects</h1>
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('projects.title')}</h1>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              A selection of my most recent work, from value propositions 
-              to complete implementation. Each project represents a unique challenge 
-              and an opportunity to learn and grow.
+              {t('projects.subtitle')}
             </p>
           </motion.div>
 
@@ -57,50 +57,46 @@ export default function Projects() {
                     
                     {/* Short Description */}
                     <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 font-medium">
-                      {project.description}
+                      {t(`projects.projects.${project.id}.description`)}
                     </p>
 
                     {/* Detailed Description */}
                     <div className="mb-4">
-                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Project Overview</h4>
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{t('projects.overview')}</h4>
                       <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-3">
-                        {project.longDescription}
+                        {t(`projects.projects.${project.id}.longDescription`)}
                       </p>
                     </div>
 
                     {/* Key Features */}
-                    {project.highlights && (
-                      <div className="mb-4">
-                        <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Key Features</h4>
-                        <ul className="text-gray-600 dark:text-gray-300 text-sm space-y-1">
-                          {project.highlights.map((highlight, index) => (
-                            <li key={index} className="flex items-start">
-                              <span className="text-primary-600 mr-2">•</span>
-                              {highlight}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    <div className="mb-4">
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{t('projects.features')}</h4>
+                      <ul className="text-gray-600 dark:text-gray-300 text-sm space-y-1">
+                        {t(`projects.projects.${project.id}.highlights`, { returnObjects: true }).map((highlight, index) => (
+                          <li key={index} className="flex items-start">
+                            <span className="text-primary-600 mr-2">•</span>
+                            {highlight}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
 
                     {/* Challenges */}
-                    {project.challenges && (
-                      <div className="mb-4">
-                        <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Technical Challenges</h4>
-                        <ul className="text-gray-600 dark:text-gray-300 text-sm space-y-1">
-                          {project.challenges.map((challenge, index) => (
-                            <li key={index} className="flex items-start">
-                              <span className="text-orange-500 mr-2">•</span>
-                              {challenge}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    <div className="mb-4">
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{t('projects.challenges')}</h4>
+                      <ul className="text-gray-600 dark:text-gray-300 text-sm space-y-1">
+                        {t(`projects.projects.${project.id}.challenges`, { returnObjects: true }).map((challenge, index) => (
+                          <li key={index} className="flex items-start">
+                            <span className="text-orange-500 mr-2">•</span>
+                            {challenge}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
 
                     {/* Tech Stack */}
                     <div className="mb-4">
-                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Technologies Used</h4>
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{t('projects.techStack')}</h4>
                       <div className="flex flex-wrap gap-2">
                         {project.stack.map((tech) => (
                           <span key={tech} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
@@ -124,7 +120,7 @@ export default function Projects() {
                             className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
                           >
                             <Github className="h-4 w-4" />
-                            Backend
+                            {t('projects.backend')}
                           </a>
                           <a
                             href="https://github.com/TonyRod116/TradingLab"
@@ -133,7 +129,7 @@ export default function Projects() {
                             className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
                           >
                             <Github className="h-4 w-4" />
-                            Frontend
+                            {t('projects.frontend')}
                           </a>
                         </>
                       )}
@@ -146,7 +142,7 @@ export default function Projects() {
                             className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
                           >
                             <Github className="h-4 w-4" />
-                            Backend
+                            {t('projects.backend')}
                           </a>
                           <a
                             href="https://github.com/TonyRod116/Re-Lux-frontend"
@@ -155,7 +151,7 @@ export default function Projects() {
                             className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
                           >
                             <Github className="h-4 w-4" />
-                            Frontend
+                            {t('projects.frontend')}
                           </a>
                         </>
                       )}
@@ -166,8 +162,8 @@ export default function Projects() {
                           rel="noopener noreferrer"
                           className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
                         >
-                          <Github className="h-4 w-4" />
-                          GitHub
+                            <Github className="h-4 w-4" />
+                            {t('projects.github')}
                         </a>
                       )}
                       {project.liveUrl && (
@@ -177,7 +173,7 @@ export default function Projects() {
                           rel="noopener noreferrer"
                           className="flex-1 text-center px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 border border-primary-200 hover:border-primary-300 rounded-md transition-colors"
                         >
-                          Live
+                          {t('projects.live')}
                         </a>
                       )}
                     </div>

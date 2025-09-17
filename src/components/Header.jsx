@@ -3,6 +3,8 @@ import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { cn } from '../utils/cn'
+import { useLanguage } from '../hooks/useLanguage.jsx'
+import LanguageSelector from './LanguageSelector'
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -16,6 +18,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const location = useLocation()
+  const { t } = useLanguage()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +30,11 @@ export default function Header() {
   }, [])
 
   const toggleMenu = () => setIsOpen(!isOpen)
+
+  const translatedNavigation = navigation.map(item => ({
+    ...item,
+    name: t(`nav.${item.name.toLowerCase()}`)
+  }))
 
   return (
     <motion.header
@@ -48,7 +56,7 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => (
+            {translatedNavigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
@@ -66,11 +74,12 @@ export default function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
+            <LanguageSelector />
             <Link
               to="/contact"
               className="btn-primary"
             >
-              Hire Me
+              {t('nav.hireMe')}
             </Link>
           </div>
 
@@ -96,7 +105,7 @@ export default function Header() {
               className="md:hidden border-t border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md"
             >
               <nav className="py-4 space-y-2">
-                {navigation.map((item) => (
+                {translatedNavigation.map((item) => (
                   <Link
                     key={item.name}
                     to={item.href}
@@ -111,13 +120,14 @@ export default function Header() {
                     {item.name}
                   </Link>
                 ))}
-                <div className="px-4 pt-4">
+                <div className="px-4 pt-4 space-y-4">
+                  <LanguageSelector />
                   <Link
                     to="/contact"
                     onClick={() => setIsOpen(false)}
                     className="btn-primary w-full text-center block"
                   >
-                    Hire Me
+                    {t('nav.hireMe')}
                   </Link>
                 </div>
               </nav>

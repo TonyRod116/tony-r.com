@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, Github, Linkedin, Mail, Star, Zap, Users, Code, ChevronDown, ChevronUp } from 'lucide-react'
 import { profile } from '../data/profile'
 import { projects } from '../data/projects'
+import { useLanguage } from '../hooks/useLanguage.jsx'
 import profileImage from '../assets/pic1.jpg'
 
 export default function Home() {
+  const { t } = useLanguage()
   const featuredProjects = projects.filter(project => project.featured).slice(0, 3)
   const [expandedProjects, setExpandedProjects] = useState({})
 
@@ -37,9 +39,9 @@ export default function Home() {
                   transition={{ duration: 0.6, delay: 0.1 }}
                   className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 dark:text-white"
                 >
-                  Full Stack{' '}
-                  <span className="gradient-text">Software Engineer</span>{' '}
-                  with product vision.
+                  {t('home.hero.titlePart1')}{' '}
+                  <span className="gradient-text">{t('home.hero.titlePart2')}</span>{' '}
+                  {t('home.hero.titlePart3')}
                 </motion.h1>
                 <motion.p
                   initial={{ opacity: 0, y: 20 }}
@@ -47,7 +49,7 @@ export default function Home() {
                   transition={{ duration: 0.6, delay: 0.2 }}
                   className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl"
                 >
-                  From construction entrepreneur to creating innovative digital solutions. 
+                  {t('home.hero.subtitle')}
                 </motion.p>
               </div>
 
@@ -62,14 +64,14 @@ export default function Home() {
                   to="/projects"
                   className="btn-primary group inline-flex items-center justify-center"
                 >
-                  View Projects
+                  {t('home.hero.cta.viewProjects')}
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <a
                   href={`mailto:${profile.email}?subject=Hiring Inquiry - ${profile.name}`}
                   className="btn-secondary inline-flex items-center justify-center"
                 >
-                  Hire Me
+                  {t('nav.hireMe')}
                 </a>
               </motion.div>
 
@@ -148,13 +150,13 @@ export default function Home() {
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">From construction entrepreneur to Full Stack Software Engineer</h2>
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{t('home.about.title')}</h2>
               <p className="text-lg text-gray-600 dark:text-gray-300">
-                At General Assembly, I stood out for consistently going beyond project requirements, adding creative, functional, and product-oriented features that elevated each build. My final project, TradeLab, was publicly recognized by my instructor as one of the best projects he had ever seen in his years of teaching at GA.
+                {t('home.about.description')}
               </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <h3 className="font-semibold text-gray-900 dark:text-white">Languages</h3>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">{t('home.skills.languages')}</h3>
                   <div className="flex flex-wrap gap-2">
                     {profile.skills.languages.slice(0, 3).map((skill) => (
                       <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
@@ -164,7 +166,7 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <h3 className="font-semibold text-gray-900 dark:text-white">Frameworks</h3>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">{t('home.skills.frameworks')}</h3>
                   <div className="flex flex-wrap gap-2">
                     {profile.skills.frameworks.map((skill) => (
                       <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
@@ -175,7 +177,7 @@ export default function Home() {
                 </div>
               </div>
               <Link to="/about" className="btn-secondary inline-flex">
-                More about me
+                {t('home.about.moreAboutMe')}
               </Link>
             </motion.div>
 
@@ -188,19 +190,19 @@ export default function Home() {
             >
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">35+</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">GitHub Repositories</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.repositories')}</div>
               </div>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">Problem Solving</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Oriented by</div>
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">{t('home.stats.problemSolving')}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.orientedBy')}</div>
               </div>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">15+</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Years leading teams</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.yearsLeading')}</div>
               </div>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">Continuous Learning</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Driven by</div>
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">{t('home.stats.continuousLearning')}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.drivenBy')}</div>
               </div>
             </motion.div>
           </div>
@@ -217,10 +219,9 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Featured Projects</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{t('home.projects.title')}</h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              A selection of my most recent work, from value propositions 
-              to complete implementation.
+              {t('home.projects.subtitle')}
             </p>
           </motion.div>
 
@@ -265,12 +266,12 @@ export default function Home() {
                           {expandedProjects[project.id] ? (
                             <>
                               <ChevronUp className="h-3 w-3" />
-                              Read less
+                              {t('home.projects.readLess')}
                             </>
                           ) : (
                             <>
                               <ChevronDown className="h-3 w-3" />
-                              Read more
+                              {t('home.projects.readMore')}
                             </>
                           )}
                         </button>
@@ -293,7 +294,7 @@ export default function Home() {
                             className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
                           >
                             <Github className="h-4 w-4" />
-                            Backend
+                            {t('home.projects.backend')}
                           </a>
                           <a
                             href="https://github.com/TonyRod116/TradingLab"
@@ -302,7 +303,7 @@ export default function Home() {
                             className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
                           >
                             <Github className="h-4 w-4" />
-                            Frontend
+                            {t('home.projects.frontend')}
                           </a>
                         </>
                       )}
@@ -315,7 +316,7 @@ export default function Home() {
                             className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
                           >
                             <Github className="h-4 w-4" />
-                            Backend
+                            {t('home.projects.backend')}
                           </a>
                           <a
                             href="https://github.com/TonyRod116/Re-Lux-frontend"
@@ -324,7 +325,7 @@ export default function Home() {
                             className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
                           >
                             <Github className="h-4 w-4" />
-                            Frontend
+                            {t('home.projects.frontend')}
                           </a>
                         </>
                       )}
@@ -336,7 +337,7 @@ export default function Home() {
                           className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
                         >
                           <Github className="h-4 w-4" />
-                          GitHub
+                          {t('home.projects.github')}
                         </a>
                       )}
                       {project.liveUrl && (
@@ -346,7 +347,7 @@ export default function Home() {
                           rel="noopener noreferrer"
                           className="flex-1 text-center px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 border border-primary-200 hover:border-primary-300 rounded-md transition-colors"
                         >
-                          Live
+                          {t('home.projects.live')}
                         </a>
                       )}
                     </div>
@@ -364,7 +365,7 @@ export default function Home() {
             className="text-center mt-12"
           >
             <Link to="/projects" className="btn-primary inline-flex items-center">
-              View all projects
+              {t('home.projects.viewAll')}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </motion.div>
@@ -381,17 +382,16 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center space-y-8"
           >
-            <h2 className="text-3xl font-bold text-white">Ready to build something incredible?</h2>
+            <h2 className="text-3xl font-bold text-white">{t('home.cta.title')}</h2>
             <p className="text-xl text-primary-100 max-w-2xl mx-auto">
-              I have real experience building products that people use. 
-              From construction to software, I combine technical depth with strategic thinking.
+              {t('home.cta.description')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/resume" className="btn-secondary bg-white/10 border-white text-white hover:bg-white hover:text-primary-600">
-                View Resume
+                {t('home.cta.viewResume')}
               </Link>
               <Link to="/contact" className="btn-secondary bg-white text-primary-600 hover:bg-gray-50">
-                Start project
+                {t('home.cta.startProject')}
               </Link>
             </div>
           </motion.div>
