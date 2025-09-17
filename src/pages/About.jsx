@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Code, Users, Zap, Target, Lightbulb, Heart } from 'lucide-react'
+import { ArrowRight, Code, Users, Zap, Target, Lightbulb, Heart, Cpu, Brain, TrendingUp, Shield, BookOpen } from 'lucide-react'
 import { profile } from '../data/profile'
-import profileImage from '../assets/pic1.jpg'
+import profileImage from '../assets/pic2.jpeg'
 
 export default function About() {
   return (
@@ -20,10 +20,16 @@ export default function About() {
             >
               <h1 className="text-4xl font-bold text-gray-900 dark:text-white">About Me</h1>
               <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                I am a Full Stack Software Engineer with an entrepreneurial background in the construction and digitalization sector. After several years of building businesses, I decided to fully commit to my passion for technology, completing the Software Engineering Bootcamp at General Assembly.
+                I'm a Full Stack Software Engineer with a strong foundation in JavaScript, React, Node.js, Python, Django, MongoDB, and PostgreSQL, and experience deploying applications on Netlify, Heroku, and Render. My journey into tech came after years of running client-centered businesses in real estate and construction, where I learned how to turn ideas into practical solutions that people actually use.
               </p>
               <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                Throughout the program, I consistently went beyond requirements, delivering projects that not only met technical goals but also introduced creative, product-oriented features. My final project, TradeLab, was recognized by my instructor as one of the best projects he had ever seen in his years of teaching at GA.
+                At General Assembly's immersive Software Engineering Bootcamp, I delivered four complete applications. In each project, I went beyond the requirements, adding creative and product-oriented features. My final project, TradeLab, a trading strategy backtesting platform, was recognized by my instructor as one of the best projects he had ever seen in his years of teaching.
+              </p>
+              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                What drives me most is solving problems with creativity and precision. I bring an entrepreneurial mindset, a product-driven perspective, and resilience built through real-world challenges. Whether working solo or in teams, I focus on creating scalable, user-friendly products that deliver real value.
+              </p>
+              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                I'm excited to keep growing as an engineer while contributing to projects that improve the way people live and work.
               </p>
             </motion.div>
 
@@ -33,10 +39,10 @@ export default function About() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative"
             >
-              <div className="relative w-full h-96 rounded-2xl overflow-hidden bg-gradient-to-br from-primary-100 to-blue-100 dark:from-primary-900/20 dark:to-blue-900/20">
+              <div className="relative w-full h-[500px] rounded-2xl overflow-hidden bg-gradient-to-br from-primary-100 to-blue-100 dark:from-primary-900/20 dark:to-blue-900/20">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center space-y-4">
-                    <div className="w-40 h-40 rounded-full overflow-hidden mx-auto border-4 border-white shadow-lg">
+                    <div className="w-48 h-48 rounded-full overflow-hidden mx-auto border-4 border-white shadow-lg">
                       <img 
                         src={profileImage} 
                         alt="Tony Rodríguez" 
@@ -157,7 +163,7 @@ export default function About() {
           >
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">What I Bring</h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Beyond technical ability, I contribute with a growth mindset, creative problem-solving, and a product-driven perspective—qualities shaped by my years as an entrepreneur.
+              Beyond technical ability, I contribute with a growth mindset, creative problem-solving, and a product-driven perspective. Qualities shaped by my years as an entrepreneur.
             </p>
           </motion.div>
 
@@ -170,11 +176,11 @@ export default function About() {
               className="text-center space-y-4"
             >
               <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center mx-auto">
-                <Target className="h-8 w-8 text-primary-600" />
+                <Cpu className="h-8 w-8 text-primary-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Product Thinking</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Technical Stack</h3>
               <p className="text-gray-600 dark:text-gray-300">
-                I don't just code—I design solutions that are functional, scalable, and user-focused, always considering the bigger picture.
+                Experience with JavaScript, React, Node.js, Python, Django, MongoDB, PostgreSQL
               </p>
             </motion.div>
 
@@ -186,11 +192,11 @@ export default function About() {
               className="text-center space-y-4"
             >
               <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center mx-auto">
-                <Zap className="h-8 w-8 text-primary-600" />
+                <Brain className="h-8 w-8 text-primary-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Exceeding Expectations</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Problem-Solving Mindset</h3>
               <p className="text-gray-600 dark:text-gray-300">
-                I consistently go beyond requirements, adding creative, functional, and product-oriented features that elevate each build.
+                Creative and analytical approach to overcoming technical challenges
               </p>
             </motion.div>
 
@@ -202,11 +208,11 @@ export default function About() {
               className="text-center space-y-4"
             >
               <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center mx-auto">
-                <Lightbulb className="h-8 w-8 text-primary-600" />
+                <Target className="h-8 w-8 text-primary-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Creative Problem Solving</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Product Thinking</h3>
               <p className="text-gray-600 dark:text-gray-300">
-                I find innovative ways to overcome technical and product challenges, bringing fresh perspectives to complex problems.
+                Ability to design features that go beyond requirements and create real value
               </p>
             </motion.div>
 
@@ -218,11 +224,11 @@ export default function About() {
               className="text-center space-y-4"
             >
               <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center mx-auto">
-                <Code className="h-8 w-8 text-primary-600" />
+                <Users className="h-8 w-8 text-primary-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Growth Mindset</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Collaboration & Leadership</h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Passion for continuous learning and tackling new technologies, always eager to expand my technical horizons.
+                15+ years leading teams and working effectively in Agile/Scrum environments
               </p>
             </motion.div>
 
@@ -234,11 +240,11 @@ export default function About() {
               className="text-center space-y-4"
             >
               <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center mx-auto">
-                <Users className="h-8 w-8 text-primary-600" />
+                <Shield className="h-8 w-8 text-primary-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Collaboration</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Resilience & Adaptability</h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Strong communicator, effective in Agile/Scrum environments, and experienced in leading cross-functional teams.
+                Thrived in high-pressure situations, from entrepreneurship to fast-paced bootcamp projects
               </p>
             </motion.div>
 
@@ -250,11 +256,11 @@ export default function About() {
               className="text-center space-y-4"
             >
               <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center mx-auto">
-                <Heart className="h-8 w-8 text-primary-600" />
+                <BookOpen className="h-8 w-8 text-primary-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Resilience</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Continuous Learning</h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Ability to deliver under pressure without compromising quality, with experience managing complex projects and tight deadlines.
+                Strong growth mindset, always exploring new tools and frameworks
               </p>
             </motion.div>
           </div>
@@ -277,7 +283,7 @@ export default function About() {
             </p>
             <div className="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-8">
               <p className="text-lg text-gray-700 dark:text-gray-300 italic">
-                "I bring expertise in JavaScript, React, Node.js, Python, Django, MongoDB, PostgreSQL, Pandas, Parquet, and REST APIs, with experience deploying applications on Netlify, Heroku, and Render."
+                "I bring expertise in JavaScript, React, Node.js, Python, Django, MongoDB, PostgreSQL, and REST APIs, with experience deploying applications on Netlify, Heroku, and Render."
               </p>
             </div>
           </motion.div>
