@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Github, Linkedin, Mail, MapPin, Phone, Send, CheckCircle, AlertCircle } from 'lucide-react'
+import { Github, Linkedin, Mail, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react'
 import { profile } from '../data/profile'
 
 export default function Contact() {
@@ -12,7 +12,7 @@ export default function Contact() {
     availability: ''
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [submitStatus, setSubmitStatus] = useState('idle')
 
   const budgetOptions = [
     { value: 'under5k', label: 'Under 5k€' },
@@ -35,34 +35,22 @@ export default function Contact() {
     setSubmitStatus('idle')
 
     try {
-      // Create email content
-      const budgetText = formData.budget ? `\n\nBudget: ${formData.budget}` : ''
-      const availabilityText = formData.availability ? `\nAvailability: ${formData.availability}` : ''
-      
-      const emailSubject = `New contact from ${formData.name} - Portfolio Website`
-      const emailBody = `Hello Tony,
+      const response = await fetch('https://formspree.io/f/mvgbjbvw', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      })
 
-You have received a new message from your portfolio website:
-
-Name: ${formData.name}
-Email: ${formData.email}${budgetText}${availabilityText}
-
-Message:
-${formData.message}
-
----
-This message was sent from your portfolio contact form.`
-
-      // Create mailto link
-      const mailtoLink = `mailto:tony.rod.bcn@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`
-      
-      // Open email client
-      window.open(mailtoLink, '_blank')
-      
-      setSubmitStatus('success')
-      setFormData({ name: '', email: '', message: '', budget: '', availability: '' })
+      if (response.ok) {
+        setSubmitStatus('success')
+        setFormData({ name: '', email: '', message: '', budget: '', availability: '' })
+      } else {
+        setSubmitStatus('error')
+      }
     } catch (error) {
-      console.error('Error opening email client:', error)
+      console.error('Error sending message:', error)
       setSubmitStatus('error')
     } finally {
       setIsSubmitting(false)
@@ -168,7 +156,7 @@ This message was sent from your portfolio contact form.`
                       onChange={handleChange}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white"
                     >
-                      <option value="">¿Cuándo necesitas empezar?</option>
+                      <option value="">When do you need to start?</option>
                       {availabilityOptions.map((option) => (
                         <option key={option.value} value={option.value}>
                           {option.label}
@@ -190,7 +178,7 @@ This message was sent from your portfolio contact form.`
                     required
                     rows={6}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white"
-                    placeholder="Cuéntame sobre tu proyecto, objetivos, timeline..."
+                    placeholder="Tell me about your project, goals, timeline..."
                   />
                 </div>
 
@@ -202,7 +190,7 @@ This message was sent from your portfolio contact form.`
                     className="flex items-center space-x-2 text-green-600 bg-green-50 dark:bg-green-900/20 p-4 rounded-lg"
                   >
                     <CheckCircle className="h-5 w-5" />
-                    <span>Email client opened! Please send the email to complete your message.</span>
+                    <span>Message sent successfully! I'll get back to you soon.</span>
                   </motion.div>
                 )}
 
@@ -225,7 +213,7 @@ This message was sent from your portfolio contact form.`
                   {isSubmitting ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                      Opening email...
+                      Sending message...
                     </>
                   ) : (
                     <>
@@ -245,7 +233,7 @@ This message was sent from your portfolio contact form.`
               className="space-y-6"
             >
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Información de contacto</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Contact Information</h3>
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
                     <Mail className="h-5 w-5 text-primary-600" />
@@ -260,21 +248,9 @@ This message was sent from your portfolio contact form.`
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
-                    <Phone className="h-5 w-5 text-primary-600" />
-                    <div>
-                      <p className="font-medium text-gray-900 dark:text-white">Teléfono</p>
-                      <a
-                        href="tel:+34636373207"
-                        className="text-gray-600 dark:text-gray-300 hover:text-primary-600 transition-colors"
-                      >
-                        +34 636 373 207
-                      </a>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
                     <MapPin className="h-5 w-5 text-primary-600" />
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">Ubicación</p>
+                      <p className="font-medium text-gray-900 dark:text-white">Location</p>
                       <p className="text-gray-600 dark:text-gray-300">{profile.location}</p>
                     </div>
                   </div>
@@ -315,10 +291,10 @@ This message was sent from your portfolio contact form.`
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Availability</h3>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">Disponible para nuevos proyectos</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">Available for new projects</p>
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">
-                  Tiempo de respuesta típico: 24 horas
+                  Typical response time: 24 hours
                 </p>
               </div>
             </motion.div>

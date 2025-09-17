@@ -8,9 +8,8 @@ const navigation = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
   { name: 'Projects', href: '/projects' },
-  { name: 'Experience', href: '/experience' },
-  { name: 'Contact', href: '/contact' },
   { name: 'Resume', href: '/resume' },
+  { name: 'Contact', href: '/contact' },
 ]
 
 export default function Header() {

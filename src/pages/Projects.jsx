@@ -1,34 +1,8 @@
-import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
-import { ExternalLink, Github, Star, Clock } from 'lucide-react'
+import { Github, Star, Clock } from 'lucide-react'
 import { projects } from '../data/projects'
 
-const categories = [
-  { value: 'all', label: 'All' },
-  { value: 'frontend', label: 'Frontend' },
-  { value: 'backend', label: 'Backend' },
-  { value: 'fullstack', label: 'Full Stack' },
-]
-
 export default function Projects() {
-  const [activeFilter, setActiveFilter] = useState('all')
-
-  const filteredProjects = useMemo(() => {
-    if (activeFilter === 'all') return projects
-    return projects.filter(project => project.category === activeFilter)
-  }, [activeFilter])
-
-  const projectCounts = useMemo(() => {
-    return categories.reduce((counts, category) => {
-      if (category.value === 'all') {
-        counts[category.value] = projects.length
-      } else {
-        counts[category.value] = projects.filter(p => p.category === category.value).length
-      }
-      return counts
-    }, {})
-  }, [])
 
   return (
     <div className="pt-16">
@@ -48,44 +22,6 @@ export default function Projects() {
             </p>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="mb-12"
-          >
-            <div className="flex flex-wrap gap-2 justify-center">
-              {categories.map((category) => {
-                const count = projectCounts[category.value] || 0
-                const isActive = activeFilter === category.value
-
-                return (
-                  <motion.button
-                    key={category.value}
-                    onClick={() => setActiveFilter(category.value)}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                      isActive
-                        ? 'bg-primary-600 text-white shadow-md'
-                        : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                    }`}
-                  >
-                    {category.label}
-                    {count > 0 && (
-                      <span className={`ml-2 text-xs px-2 py-0.5 rounded-full ${
-                        isActive 
-                          ? 'bg-white/20 text-white' 
-                          : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
-                      }`}>
-                        {count}
-                      </span>
-                    )}
-                  </motion.button>
-                )
-              })}
-            </div>
-          </motion.div>
 
           <motion.div
             initial={{ opacity: 0 }}
@@ -93,7 +29,7 @@ export default function Projects() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {filteredProjects.map((project, index) => (
+            {projects.map((project, index) => (
               <motion.div
                 key={project.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -142,32 +78,69 @@ export default function Projects() {
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <Link
-                        to={`/projects#${project.id}`}
-                        className="flex-1 text-center px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 border border-primary-200 hover:border-primary-300 rounded-md transition-colors"
-                      >
-                        Ver detalles
-                      </Link>
+                      {project.id === 'tradelab' && (
+                        <>
+                          <a
+                            href="https://github.com/TonyRod116/TradingLab-Backend"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
+                          >
+                            <Github className="h-4 w-4" />
+                            Backend
+                          </a>
+                          <a
+                            href="https://github.com/TonyRod116/TradingLab"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
+                          >
+                            <Github className="h-4 w-4" />
+                            Frontend
+                          </a>
+                        </>
+                      )}
+                      {project.id === 're-lux' && (
+                        <>
+                          <a
+                            href="https://github.com/TonyRod116/Re-Lux-backend"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
+                          >
+                            <Github className="h-4 w-4" />
+                            Backend
+                          </a>
+                          <a
+                            href="https://github.com/TonyRod116/Re-Lux-frontend"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
+                          >
+                            <Github className="h-4 w-4" />
+                            Frontend
+                          </a>
+                        </>
+                      )}
+                      {project.id === 'buildapp' && (
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
+                        >
+                          <Github className="h-4 w-4" />
+                          GitHub
+                        </a>
+                      )}
                       {project.liveUrl && (
                         <a
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors"
-                          title="View live"
+                          className="flex-1 text-center px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 border border-primary-200 hover:border-primary-300 rounded-md transition-colors"
                         >
-                          <ExternalLink className="h-4 w-4" />
-                        </a>
-                      )}
-                      {project.githubUrl && (
-                        <a
-                          href={project.githubUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors"
-                          title="View code"
-                        >
-                          <Github className="h-4 w-4" />
+                          Live
                         </a>
                       )}
                     </div>
@@ -177,18 +150,6 @@ export default function Projects() {
             ))}
           </motion.div>
 
-          {filteredProjects.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              className="text-center py-12"
-            >
-              <p className="text-gray-600 dark:text-gray-300 text-lg">
-                No hay proyectos en esta categoría.
-              </p>
-            </motion.div>
-          )}
         </div>
       </section>
     </div>

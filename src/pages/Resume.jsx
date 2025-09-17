@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Download, Mail, Phone, MapPin, Github, Linkedin, ExternalLink } from 'lucide-react'
+import { Download, Mail, MapPin, Github, Linkedin, ExternalLink } from 'lucide-react'
 import { profile } from '../data/profile'
 import cvPdf from '../assets/CV Tony Rodriguez EN.pdf'
 import cvThumbnail from '../assets/CVthmb.png'
@@ -18,40 +18,19 @@ export default function Resume() {
   return (
     <div className="pt-16">
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
+      <section className="relative overflow-hidden py-8 sm:py-12 lg:py-16">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-transparent to-blue-50 dark:from-primary-900/20 dark:via-transparent dark:to-blue-900/20" />
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-8"
+            className="text-center mb-4"
           >
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Resume</h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
               A comprehensive overview of my experience, skills and professional achievements.
             </p>
-            
-            {/* CV Thumbnail and Download */}
-            <div className="flex flex-col items-center space-y-6">
-              <div className="relative group cursor-pointer" onClick={handleDownloadPDF}>
-                <div className="relative overflow-hidden rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-700 group-hover:border-primary-500 transition-all duration-300 group-hover:shadow-xl">
-                  <img 
-                    src={cvThumbnail} 
-                    alt="Tony Rodriguez CV Preview" 
-                    className="w-64 h-auto object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white dark:bg-gray-800 rounded-full p-3 shadow-lg">
-                      <Download className="h-6 w-6 text-primary-600" />
-                    </div>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 text-center">
-                  Click to download PDF
-                </p>
-              </div>
-            </div>
           </motion.div>
         </div>
       </section>
@@ -75,11 +54,12 @@ export default function Resume() {
                 <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 dark:text-gray-300">
                   <div className="flex items-center space-x-1">
                     <Mail className="h-4 w-4" />
-                    <span>{profile.email}</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <Phone className="h-4 w-4" />
-                    <span>{profile.phone}</span>
+                    <a 
+                      href={`mailto:${profile.email}`}
+                      className="hover:text-primary-600 transition-colors"
+                    >
+                      {profile.email}
+                    </a>
                   </div>
                   <div className="flex items-center space-x-1">
                     <MapPin className="h-4 w-4" />
@@ -87,11 +67,27 @@ export default function Resume() {
                   </div>
                   <div className="flex items-center space-x-1">
                     <Github className="h-4 w-4" />
-                    <span>github.com/TonyRod116</span>
+                    <a 
+                      href={profile.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-primary-600 transition-colors flex items-center gap-1"
+                    >
+                      github.com/TonyRod116
+                      <ExternalLink className="h-3 w-3" />
+                    </a>
                   </div>
                   <div className="flex items-center space-x-1">
                     <Linkedin className="h-4 w-4" />
-                    <span>linkedin.com/in/tony-rodriguez</span>
+                    <a 
+                      href={profile.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-primary-600 transition-colors flex items-center gap-1"
+                    >
+                      linkedin.com/in/tony-rodriguez
+                      <ExternalLink className="h-3 w-3" />
+                    </a>
                   </div>
                 </div>
               </div>
@@ -262,6 +258,30 @@ export default function Resume() {
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm">
                   {profile.interests}
                 </p>
+              </div>
+
+              {/* PDF Download Section */}
+              <div className="mb-8 mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-lg">Download Resume</h2>
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="relative group cursor-pointer" onClick={handleDownloadPDF}>
+                    <div className="relative overflow-hidden rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-700 group-hover:border-primary-500 transition-all duration-300 group-hover:shadow-xl">
+                      <img 
+                        src={cvThumbnail} 
+                        alt="Tony Rodriguez CV Preview" 
+                        className="w-48 h-auto object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white dark:bg-gray-800 rounded-full p-3 shadow-lg">
+                          <Download className="h-6 w-6 text-primary-600" />
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 text-center">
+                      Click to download PDF
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {/* Footer */}

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Github, Linkedin, Mail, Heart } from 'lucide-react'
+import { Github, Linkedin, Mail, Instagram, Facebook, Heart } from 'lucide-react'
 import { profile } from '../data/profile'
 
 export default function Footer() {
@@ -37,10 +37,10 @@ export default function Footer() {
                 Projects
               </Link>
               <Link
-                to="/experience"
+                to="/resume"
                 className="block text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 transition-colors"
               >
-                Experience
+                Resume
               </Link>
               <Link
                 to="/contact"
@@ -72,6 +72,24 @@ export default function Footer() {
                 aria-label="LinkedIn"
               >
                 <Linkedin className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+              </a>
+              <a
+                href={profile.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+              </a>
+              <a
+                href={profile.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                aria-label="Facebook"
+              >
+                <Facebook className="h-5 w-5 text-gray-600 dark:text-gray-300" />
               </a>
               <a
                 href={`mailto:${profile.email}`}

@@ -2,11 +2,11 @@ export const profile = {
   name: 'Tony Rodríguez',
   title: 'Full Stack Software Engineer',
   email: 'tony.rod.bcn@gmail.com',
-  phone: '+34 636 373 207',
   location: 'Barcelona, Spain',
   github: 'https://github.com/TonyRod116',
   linkedin: 'https://linkedin.com/in/tony-rodriguez',
-  instagram: 'https://instagram.com/totalhomes.es',
+  instagram: 'https://www.instagram.com/iamtonyrod/',
+  facebook: 'https://www.facebook.com/toni.rodriguez.torrents',
   website: 'https://tony-r.com',
   bio: {
     es: 'Soy un Full Stack Software Engineer con experiencia previa como emprendedor en el sector de la construcción y la digitalización. Mi camino hacia la programación comenzó en General Assembly, donde destaqué por ir siempre más allá de lo requerido en cada proyecto—añadiendo funcionalidades creativas, útiles y con visión de producto. Mi proyecto final, TradeLab, fue reconocido públicamente por mi profesor como uno de los mejores que había visto nunca en su experiencia docente en GA.',
@@ -39,7 +39,7 @@ export const profile = {
     {
       company: 'Casex O.I., Barcelona (casex.es)',
       position: 'Project Manager',
-      period: '2007-2019',
+      period: '2003-2019',
       description: 'Managed residential projects, budgets, and client relationships. Oversaw sales strategies, market studies, and new client acquisition.',
       stack: ['Project Management', 'Client Relations', 'Sales Strategy'],
       url: 'https://www.casex.es'

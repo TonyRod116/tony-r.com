@@ -42,25 +42,6 @@ export default function Home() {
                 </motion.p>
               </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="flex flex-wrap gap-3"
-              >
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/20 dark:text-primary-300">
-                  <Star className="h-3 w-3 mr-1" />
-                  GA Top Project
-                </span>
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/20 dark:text-primary-300">
-                  <Users className="h-3 w-3 mr-1" />
-                  Product Thinking
-                </span>
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/20 dark:text-primary-300">
-                  <Code className="h-3 w-3 mr-1" />
-                  React/Node.js
-                </span>
-              </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -75,12 +56,12 @@ export default function Home() {
                   View Projects
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link
-                  to="/contact"
+                <a
+                  href={`mailto:${profile.email}?subject=Hiring Inquiry - ${profile.name}`}
                   className="btn-secondary inline-flex items-center justify-center"
                 >
                   Hire Me
-                </Link>
+                </a>
               </motion.div>
 
               <motion.div
@@ -164,9 +145,9 @@ export default function Home() {
               </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <h3 className="font-semibold text-gray-900 dark:text-white">Frontend</h3>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">Languages</h3>
                   <div className="flex flex-wrap gap-2">
-                    {profile.skills.frontend.slice(0, 3).map((skill) => (
+                    {profile.skills.languages.slice(0, 3).map((skill) => (
                       <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
                         {skill}
                       </span>
@@ -174,9 +155,9 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <h3 className="font-semibold text-gray-900 dark:text-white">Backend</h3>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">Frameworks</h3>
                   <div className="flex flex-wrap gap-2">
-                    {profile.skills.backend.slice(0, 3).map((skill) => (
+                    {profile.skills.frameworks.map((skill) => (
                       <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
                         {skill}
                       </span>
@@ -201,16 +182,16 @@ export default function Home() {
                 <div className="text-sm text-gray-600 dark:text-gray-300">GitHub Repositories</div>
               </div>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">100%</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Problem Solving Oriented</div>
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">Problem Solving</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">Oriented by</div>
               </div>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">15+</div>
                 <div className="text-sm text-gray-600 dark:text-gray-300">Years leading teams</div>
               </div>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">100%</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Product Thinking</div>
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">Continuous Learning</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">Driven by</div>
               </div>
             </motion.div>
           </div>
@@ -272,18 +253,67 @@ export default function Home() {
                       ))}
                     </div>
                     <div className="flex gap-2">
-                      <Link
-                        to={`/projects#${project.id}`}
-                        className="flex-1 text-center px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 border border-primary-200 hover:border-primary-300 rounded-md transition-colors"
-                      >
-                        View details
-                      </Link>
+                      {project.id === 'tradelab' && (
+                        <>
+                          <a
+                            href="https://github.com/TonyRod116/TradingLab-Backend"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
+                          >
+                            <Github className="h-4 w-4" />
+                            Backend
+                          </a>
+                          <a
+                            href="https://github.com/TonyRod116/TradingLab"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
+                          >
+                            <Github className="h-4 w-4" />
+                            Frontend
+                          </a>
+                        </>
+                      )}
+                      {project.id === 're-lux' && (
+                        <>
+                          <a
+                            href="https://github.com/TonyRod116/Re-Lux-backend"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
+                          >
+                            <Github className="h-4 w-4" />
+                            Backend
+                          </a>
+                          <a
+                            href="https://github.com/TonyRod116/Re-Lux-frontend"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
+                          >
+                            <Github className="h-4 w-4" />
+                            Frontend
+                          </a>
+                        </>
+                      )}
+                      {project.id === 'buildapp' && (
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
+                        >
+                          <Github className="h-4 w-4" />
+                          GitHub
+                        </a>
+                      )}
                       {project.liveUrl && (
                         <a
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors"
+                          className="flex-1 text-center px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 border border-primary-200 hover:border-primary-300 rounded-md transition-colors"
                         >
                           Live
                         </a>
@@ -326,11 +356,11 @@ export default function Home() {
               From construction to software, I combine technical depth with strategic thinking.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/resume" className="btn-secondary bg-white/10 border-white text-white hover:bg-white hover:text-primary-600">
+                View Resume
+              </Link>
               <Link to="/contact" className="btn-secondary bg-white text-primary-600 hover:bg-gray-50">
                 Start project
-              </Link>
-              <Link to="/resume" className="btn-secondary border-white text-white hover:bg-white hover:text-primary-600">
-                View Resume
               </Link>
             </div>
           </motion.div>
