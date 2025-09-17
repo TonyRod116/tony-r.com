@@ -1,10 +1,12 @@
+import { projectImages } from '../assets/images.js'
+
 export const projects = [
   {
     id: 'buildapp',
     title: 'BuildAPP',
     description: 'Comprehensive platform connecting clients with construction professionals. Project management, portfolios and review system.',
     longDescription: 'BuildAPP is a comprehensive web platform connecting clients with construction professionals. Built with Node.js, Express.js and MongoDB, includes dual authentication, project management, professional portfolios and review system. Deployed on Netlify with serverless architecture and Cloudinary for images.',
-    image: '/src/assets/image_original (3).jpg',
+    image: projectImages.buildapp,
     stack: ['Node.js', 'Express', 'MongoDB', 'EJS', 'CSS3', 'Cloudinary'],
     category: 'fullstack',
     featured: true,
@@ -33,7 +35,7 @@ export const projects = [
     title: 'Re-Lux',
     description: 'Second-hand luxury e-commerce platform. Premium marketplace with authentication, favorites, reviews and shopping cart.',
     longDescription: 'Re-Lux is a second-hand luxury e-commerce platform built with React, Node.js and MongoDB. Includes JWT authentication, favorites system, product reviews, Cloudinary integration for images and complete shopping cart. I overcame challenges like frontend-backend refactoring and CSS optimization.',
-    image: '/src/assets/image_original (12).jpg',
+    image: projectImages['re-lux'],
     stack: ['React', 'Node.js', 'MongoDB', 'Express', 'JWT', 'Cloudinary'],
     category: 'fullstack',
     featured: true,
@@ -62,7 +64,7 @@ export const projects = [
     title: 'TradeLab',
     description: 'Professional trading strategy backtesting platform. Convert ideas into executable strategies and run complete backtests.',
     longDescription: 'TradeLab is a full-stack trading strategy backtesting platform built in 8 days using React, Django, PostgreSQL and REST APIs. I converted Databento market data to Parquet format using Pandas for efficient processing. Includes JWT authentication, strategy builder, real historical data integration and advanced metrics (Sharpe ratio, drawdown). Deployed on Netlify/Heroku, fully responsive.',
-    image: '/src/assets/image_original.jpg',
+    image: projectImages.tradelab,
     stack: ['React', 'Django', 'PostgreSQL', 'Python', 'JavaScript', 'Pandas', 'Parquet'],
     category: 'fullstack',
     featured: true,
