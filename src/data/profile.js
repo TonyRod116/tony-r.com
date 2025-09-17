@@ -16,7 +16,7 @@ export const profile = {
   skills: {
     languages: ['JavaScript', 'Python', 'SQL'],
     frameworks: ['React', 'Node.js', 'Express', 'Django', 'MongoDB', 'PostgreSQL'],
-    tools: ['Git', 'GitHub', 'REST APIs', 'Netlify', 'Heroku', 'Agile/Scrum'],
+    tools: ['Git', 'GitHub', 'REST APIs', 'Netlify', 'Heroku', 'Neon.tech', 'Agile/Scrum'],
     soft: ['Creativity', 'Problem-Solving', 'Project management', 'Leadership', 'Client Relations']
   },
   experience: [
