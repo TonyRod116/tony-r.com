@@ -89,9 +89,6 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-200 dark:border-gray-700 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-          <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center">
-            Made with <Heart className="h-4 w-4 text-red-500 mx-1" /> by Tony Rodríguez
-          </p>
           <p className="text-sm text-gray-600 dark:text-gray-300">
             © 2025 Tony Rodríguez. All rights reserved.
           </p>

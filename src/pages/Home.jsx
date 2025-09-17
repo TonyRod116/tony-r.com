@@ -160,7 +160,7 @@ export default function Home() {
             >
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white">From construction entrepreneur to Full Stack Software Engineer</h2>
               <p className="text-lg text-gray-600 dark:text-gray-300">
-                At General Assembly, I stood out for consistently going beyond project requirements—adding creative, functional, and product-oriented features that elevated each build. My final project, TradeLab, was publicly recognized by my instructor as one of the best projects he had ever seen in his years of teaching at GA.
+                At General Assembly, I stood out for consistently going beyond project requirements, adding creative, functional, and product-oriented features that elevated each build. My final project, TradeLab, was publicly recognized by my instructor as one of the best projects he had ever seen in his years of teaching at GA.
               </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -198,7 +198,7 @@ export default function Home() {
             >
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">35+</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Repositories</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">GitHub Repositories</div>
               </div>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">100%</div>

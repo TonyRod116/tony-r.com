@@ -35,23 +35,34 @@ export default function Contact() {
     setSubmitStatus('idle')
 
     try {
-      // TODO: Replace with actual API endpoint
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
+      // Create email content
+      const budgetText = formData.budget ? `\n\nBudget: ${formData.budget}` : ''
+      const availabilityText = formData.availability ? `\nAvailability: ${formData.availability}` : ''
+      
+      const emailSubject = `New contact from ${formData.name} - Portfolio Website`
+      const emailBody = `Hello Tony,
 
-      if (response.ok) {
-        setSubmitStatus('success')
-        setFormData({ name: '', email: '', message: '', budget: '', availability: '' })
-      } else {
-        setSubmitStatus('error')
-      }
+You have received a new message from your portfolio website:
+
+Name: ${formData.name}
+Email: ${formData.email}${budgetText}${availabilityText}
+
+Message:
+${formData.message}
+
+---
+This message was sent from your portfolio contact form.`
+
+      // Create mailto link
+      const mailtoLink = `mailto:tony.rod.bcn@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`
+      
+      // Open email client
+      window.open(mailtoLink, '_blank')
+      
+      setSubmitStatus('success')
+      setFormData({ name: '', email: '', message: '', budget: '', availability: '' })
     } catch (error) {
-      console.error('Error sending message:', error)
+      console.error('Error opening email client:', error)
       setSubmitStatus('error')
     } finally {
       setIsSubmitting(false)
@@ -191,7 +202,7 @@ export default function Contact() {
                     className="flex items-center space-x-2 text-green-600 bg-green-50 dark:bg-green-900/20 p-4 rounded-lg"
                   >
                     <CheckCircle className="h-5 w-5" />
-                    <span>Message sent! I'll get back to you soon.</span>
+                    <span>Email client opened! Please send the email to complete your message.</span>
                   </motion.div>
                 )}
 
@@ -214,7 +225,7 @@ export default function Contact() {
                   {isSubmitting ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                      Sending...
+                      Opening email...
                     </>
                   ) : (
                     <>

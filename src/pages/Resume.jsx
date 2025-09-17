@@ -1,11 +1,18 @@
 import { motion } from 'framer-motion'
-import { Download, Mail, Phone, MapPin, Github, Linkedin } from 'lucide-react'
+import { Download, Mail, Phone, MapPin, Github, Linkedin, ExternalLink } from 'lucide-react'
 import { profile } from '../data/profile'
+import cvPdf from '../assets/CV Tony Rodriguez EN.pdf'
+import cvThumbnail from '../assets/CVthmb.png'
 
 export default function Resume() {
   const handleDownloadPDF = () => {
-    // TODO: Implement PDF generation or link to actual PDF
-    window.open('/Tony-CV.pdf', '_blank')
+    // Create a temporary link to download the PDF
+    const link = document.createElement('a')
+    link.href = cvPdf
+    link.download = 'Tony_Rodriguez_CV.pdf'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   }
 
   return (
@@ -21,13 +28,30 @@ export default function Resume() {
             className="text-center mb-8"
           >
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Resume</h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              A printable version of my experience, skills and professional achievements.
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
+              A comprehensive overview of my experience, skills and professional achievements.
             </p>
-            <button onClick={handleDownloadPDF} className="btn-primary mt-6">
-              <Download className="h-4 w-4 mr-2" />
-              Download PDF
-            </button>
+            
+            {/* CV Thumbnail and Download */}
+            <div className="flex flex-col items-center space-y-6">
+              <div className="relative group cursor-pointer" onClick={handleDownloadPDF}>
+                <div className="relative overflow-hidden rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-700 group-hover:border-primary-500 transition-all duration-300 group-hover:shadow-xl">
+                  <img 
+                    src={cvThumbnail} 
+                    alt="Tony Rodriguez CV Preview" 
+                    className="w-64 h-auto object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white dark:bg-gray-800 rounded-full p-3 shadow-lg">
+                      <Download className="h-6 w-6 text-primary-600" />
+                    </div>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 text-center">
+                  Click to download PDF
+                </p>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -41,14 +65,14 @@ export default function Resume() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="max-w-4xl mx-auto"
           >
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-8 print:p-0">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-8">
               {/* Header */}
-              <div className="text-center mb-8 print:mb-6">
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white print:text-2xl mb-2">{profile.name}</h1>
-                <p className="text-xl text-gray-600 dark:text-gray-300 print:text-lg mb-4">{profile.title}</p>
+              <div className="text-center mb-8">
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{profile.name}</h1>
+                <p className="text-xl text-gray-600 dark:text-gray-300 mb-4">{profile.title}</p>
                 
                 {/* Contact Info */}
-                <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 dark:text-gray-300 print:gap-2">
+                <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 dark:text-gray-300">
                   <div className="flex items-center space-x-1">
                     <Mail className="h-4 w-4" />
                     <span>{profile.email}</span>
@@ -72,38 +96,48 @@ export default function Resume() {
                 </div>
               </div>
 
-              {/* Bio */}
-              <div className="mb-8 print:mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 print:text-lg">Perfil profesional</h2>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed print:text-sm">
-                  {profile.bio.es} Disfruto mirando más allá de lo obvio, entendiendo lo que la gente 
-                  realmente necesita, y convirtiendo eso en soluciones innovadoras y prácticas. 
-                  Traigo curiosidad, creatividad y un espíritu colaborativo a cada proyecto.
+              {/* About Me */}
+              <div className="mb-8">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">About Me</h2>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {profile.currentBio}
                 </p>
               </div>
 
               {/* Experience */}
-              <div className="mb-8 print:mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 print:text-lg">Experiencia profesional</h2>
-                <div className="space-y-6 print:space-y-4">
+              <div className="mb-8">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Professional Experience</h2>
+                <div className="space-y-6 space-y-4">
                   {profile.experience.map((exp, index) => (
-                    <div key={exp.company} className="border-l-2 border-primary-200 dark:border-primary-800 pl-4 print:pl-3">
+                    <div key={exp.company} className="border-l-2 border-primary-200 dark:border-primary-800 pl-4 pl-3">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
                         <div>
-                          <h3 className="font-semibold text-lg print:text-base text-gray-900 dark:text-white">{exp.position}</h3>
-                          <p className="text-primary-600 font-medium">{exp.company}</p>
+                          <h3 className="font-semibold text-lg text-base text-gray-900 dark:text-white">{exp.position}</h3>
+                          {exp.url ? (
+                            <a 
+                              href={exp.url} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-primary-600 font-medium hover:text-primary-700 transition-colors inline-flex items-center gap-1 group"
+                            >
+                              {exp.company}
+                              <ExternalLink className="h-3 w-3 opacity-70 group-hover:opacity-100 transition-opacity" />
+                            </a>
+                          ) : (
+                            <p className="text-primary-600 font-medium">{exp.company}</p>
+                          )}
                         </div>
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 w-fit mt-1 sm:mt-0 print:text-xs">
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 w-fit mt-1 sm:mt-0 text-xs">
                           {exp.period}
                         </span>
                       </div>
-                      <p className="text-gray-600 dark:text-gray-300 mb-3 print:text-sm">{exp.description}</p>
+                      <p className="text-gray-600 dark:text-gray-300 mb-3 text-sm">{exp.description}</p>
                       {exp.stack && exp.stack.length > 0 && (
                         <div>
-                          <h4 className="font-medium text-gray-900 dark:text-white mb-2 print:text-sm">Tecnologías utilizadas:</h4>
+                          <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">Key Skills:</h4>
                           <div className="flex flex-wrap gap-1">
                             {exp.stack.map((tech) => (
-                              <span key={tech} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 print:text-xs">
+                              <span key={tech} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 text-xs">
                                 {tech}
                               </span>
                             ))}
@@ -116,44 +150,44 @@ export default function Resume() {
               </div>
 
               {/* Skills */}
-              <div className="mb-8 print:mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 print:text-lg">Habilidades técnicas</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 print:grid-cols-2 print:gap-4">
+              <div className="mb-8 mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-lg">Technical Skills</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <h3 className="font-medium text-gray-900 dark:text-white mb-2 print:text-sm">Lenguajes de programación</h3>
+                    <h3 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">Languages</h3>
                     <div className="flex flex-wrap gap-1">
                       {profile.skills.languages.map((skill) => (
-                        <span key={skill} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 print:text-xs">
+                        <span key={skill} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 text-xs">
                           {skill}
                         </span>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-medium text-gray-900 dark:text-white mb-2 print:text-sm">Frontend</h3>
+                    <h3 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">Frameworks & Libraries</h3>
                     <div className="flex flex-wrap gap-1">
-                      {profile.skills.frontend.map((skill) => (
-                        <span key={skill} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 print:text-xs">
+                      {profile.skills.frameworks.map((skill) => (
+                        <span key={skill} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 text-xs">
                           {skill}
                         </span>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-medium text-gray-900 dark:text-white mb-2 print:text-sm">Backend</h3>
-                    <div className="flex flex-wrap gap-1">
-                      {profile.skills.backend.map((skill) => (
-                        <span key={skill} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 print:text-xs">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-gray-900 dark:text-white mb-2 print:text-sm">Herramientas</h3>
+                    <h3 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">Tools</h3>
                     <div className="flex flex-wrap gap-1">
                       {profile.skills.tools.map((skill) => (
-                        <span key={skill} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 print:text-xs">
+                        <span key={skill} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 text-xs">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">Soft Skills</h3>
+                    <div className="flex flex-wrap gap-1">
+                      {profile.skills.soft.map((skill) => (
+                        <span key={skill} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 text-xs">
                           {skill}
                         </span>
                       ))}
@@ -162,99 +196,77 @@ export default function Resume() {
                 </div>
               </div>
 
-              {/* Soft Skills */}
-              <div className="mb-8 print:mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 print:text-lg">Habilidades blandas</h2>
-                <div className="flex flex-wrap gap-2">
-                  {profile.skills.soft.map((skill) => (
-                    <span key={skill} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/20 dark:text-primary-300 print:text-xs">
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
 
               {/* Key Achievements */}
-              <div className="mb-8 print:mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 print:text-lg">Logros destacados</h2>
-                <ul className="space-y-2 print:text-sm">
+              <div className="mb-8 mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-lg">Key Achievements</h2>
+                <ul className="space-y-2 text-sm">
                   <li className="flex items-start">
                     <span className="text-primary-600 mr-2 mt-1">•</span>
-                    <span className="text-gray-600 dark:text-gray-300">Proyecto final TradeLab reconocido como uno de los mejores por el instructor de General Assembly</span>
+                    <span className="text-gray-600 dark:text-gray-300">Final project TradeLab recognized as one of the best by General Assembly instructor</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-primary-600 mr-2 mt-1">•</span>
-                    <span className="text-gray-600 dark:text-gray-300">3 de 4 proyectos destacados durante el bootcamp de Software Engineering</span>
+                    <span className="text-gray-600 dark:text-gray-300">3 out of 4 projects highlighted during Software Engineering bootcamp</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-primary-600 mr-2 mt-1">•</span>
-                    <span className="text-gray-600 dark:text-gray-300">6 años de experiencia liderando equipos y gestionando proyectos complejos en TotalHomes</span>
+                    <span className="text-gray-600 dark:text-gray-300">6 years of experience leading teams and managing complex projects at TotalHomes</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-primary-600 mr-2 mt-1">•</span>
-                    <span className="text-gray-600 dark:text-gray-300">Fundador exitoso con reputación excepcional en el sector de la construcción</span>
+                    <span className="text-gray-600 dark:text-gray-300">Successful founder with exceptional reputation in the construction sector</span>
                   </li>
                 </ul>
               </div>
 
               {/* Education */}
-              <div className="mb-8 print:mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 print:text-lg">Formación</h2>
-                <div className="space-y-4 print:space-y-2">
-                  <div className="border-l-2 border-primary-200 dark:border-primary-800 pl-4 print:pl-3">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                      <div>
-                        <h3 className="font-semibold print:text-sm text-gray-900 dark:text-white">Software Engineering Bootcamp</h3>
-                        <p className="text-primary-600 font-medium print:text-sm">General Assembly</p>
+              <div className="mb-8 mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-lg">Education</h2>
+                <div className="space-y-4 space-y-2">
+                  {profile.education.map((edu, index) => (
+                    <div key={edu.institution} className="border-l-2 border-primary-200 dark:border-primary-800 pl-4 pl-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                          <h3 className="font-semibold text-sm text-gray-900 dark:text-white">{edu.degree}</h3>
+                          <p className="text-primary-600 font-medium text-sm">{edu.institution}</p>
+                          <p className="text-gray-600 dark:text-gray-300 text-xs mt-1">{edu.description}</p>
+                        </div>
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 w-fit mt-1 sm:mt-0 text-xs">
+                          {edu.period}
+                        </span>
                       </div>
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 w-fit mt-1 sm:mt-0 print:text-xs">
-                        Jun 2025 - Sep 2025
-                      </span>
                     </div>
-                  </div>
-                  <div className="border-l-2 border-primary-200 dark:border-primary-800 pl-4 print:pl-3">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                      <div>
-                        <h3 className="font-semibold print:text-sm text-gray-900 dark:text-white">Certified Passive House Consultant</h3>
-                        <p className="text-primary-600 font-medium print:text-sm">Energiehaus Arquitectos / PassivHaus Institut</p>
-                      </div>
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 w-fit mt-1 sm:mt-0 print:text-xs">
-                        2019 - 2020
-                      </span>
-                    </div>
-                  </div>
-                  <div className="border-l-2 border-primary-200 dark:border-primary-800 pl-4 print:pl-3">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                      <div>
-                        <h3 className="font-semibold print:text-sm text-gray-900 dark:text-white">Arquitectura (cursado)</h3>
-                        <p className="text-primary-600 font-medium print:text-sm">Universitat Internacional de Catalunya</p>
-                      </div>
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 w-fit mt-1 sm:mt-0 print:text-xs">
-                        2001 - 2003
-                      </span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
 
               {/* Languages */}
-              <div className="mb-8 print:mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 print:text-lg">Idiomas</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 print:grid-cols-2 print:gap-2">
+              <div className="mb-8 mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-lg">Languages</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 grid-cols-2 gap-2">
                   <div>
-                    <p className="font-medium print:text-sm text-gray-900 dark:text-white">Español</p>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm print:text-xs">Nativo</p>
+                    <p className="font-medium text-sm text-gray-900 dark:text-white">Spanish</p>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm text-xs">Native</p>
                   </div>
                   <div>
-                    <p className="font-medium print:text-sm text-gray-900 dark:text-white">Inglés</p>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm print:text-xs">Avanzado</p>
+                    <p className="font-medium text-sm text-gray-900 dark:text-white">English</p>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm text-xs">Advanced</p>
                   </div>
                 </div>
               </div>
 
+              {/* Interests */}
+              <div className="mb-8 mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-lg">Interests</h2>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm">
+                  {profile.interests}
+                </p>
+              </div>
+
               {/* Footer */}
-              <div className="text-center text-sm text-gray-600 dark:text-gray-300 print:text-xs">
-                <p>© 2025 Tony Rodríguez - Todos los derechos reservados</p>
+              <div className="text-center text-sm text-gray-600 dark:text-gray-300 text-xs">
+                <p>© 2025 Tony Rodríguez - All rights reserved</p>
                 <p>tony-r.com | tony.rod.bcn@gmail.com</p>
               </div>
             </div>
