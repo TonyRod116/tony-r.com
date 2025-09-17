@@ -656,7 +656,7 @@ export const translations = {
       about: {
         title: 'D\'emprenedor de construcció a Full Stack Software Engineer',
         description: 'A General Assembly, em vaig destacar per anar consistentment més enllà dels requisits de cada projecte, afegint característiques creatives, funcionals i orientades al producte que van elevar cada construcció. El meu projecte final, TradeLab, va ser públicament reconegut pel meu instructor com un dels millors projectes que havia vist en els seus anys d\'ensenyament a GA.',
-        moreAboutMe: 'Més sobre mi'
+        moreAboutMe: 'Més sobre mí'
       },
       skills: {
         title: 'Habilitats Tècniques',

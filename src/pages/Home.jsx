@@ -284,68 +284,73 @@ export default function Home() {
                         </span>
                       ))}
                     </div>
-                    <div className="flex gap-2">
-                      {project.id === 'tradelab' && (
-                        <>
+                    <div className="flex flex-col gap-2">
+                      {/* Backend and Frontend buttons row */}
+                      <div className="flex gap-2">
+                        {project.id === 'tradelab' && (
+                          <>
+                            <a
+                              href="https://github.com/TonyRod116/TradingLab-Backend"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
+                            >
+                              <Github className="h-4 w-4" />
+                              {t('home.projects.backend')}
+                            </a>
+                            <a
+                              href="https://github.com/TonyRod116/TradingLab"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
+                            >
+                              <Github className="h-4 w-4" />
+                              {t('home.projects.frontend')}
+                            </a>
+                          </>
+                        )}
+                        {project.id === 're-lux' && (
+                          <>
+                            <a
+                              href="https://github.com/TonyRod116/Re-Lux-backend"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
+                            >
+                              <Github className="h-4 w-4" />
+                              {t('home.projects.backend')}
+                            </a>
+                            <a
+                              href="https://github.com/TonyRod116/Re-Lux-frontend"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
+                            >
+                              <Github className="h-4 w-4" />
+                              {t('home.projects.frontend')}
+                            </a>
+                          </>
+                        )}
+                        {project.id === 'buildapp' && (
                           <a
-                            href="https://github.com/TonyRod116/TradingLab-Backend"
+                            href={project.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
+                            className="flex-1 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
                           >
                             <Github className="h-4 w-4" />
-                            {t('home.projects.backend')}
+                            {t('home.projects.github')}
                           </a>
-                          <a
-                            href="https://github.com/TonyRod116/TradingLab"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
-                          >
-                            <Github className="h-4 w-4" />
-                            {t('home.projects.frontend')}
-                          </a>
-                        </>
-                      )}
-                      {project.id === 're-lux' && (
-                        <>
-                          <a
-                            href="https://github.com/TonyRod116/Re-Lux-backend"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
-                          >
-                            <Github className="h-4 w-4" />
-                            {t('home.projects.backend')}
-                          </a>
-                          <a
-                            href="https://github.com/TonyRod116/Re-Lux-frontend"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
-                          >
-                            <Github className="h-4 w-4" />
-                            {t('home.projects.frontend')}
-                          </a>
-                        </>
-                      )}
-                      {project.id === 'buildapp' && (
-                        <a
-                          href={project.githubUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center gap-1"
-                        >
-                          <Github className="h-4 w-4" />
-                          {t('home.projects.github')}
-                        </a>
-                      )}
+                        )}
+                      </div>
+                      
+                      {/* Live button row - full width below */}
                       {project.liveUrl && (
                         <a
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex-1 text-center px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 border border-primary-200 hover:border-primary-300 rounded-md transition-colors"
+                          className="block w-full text-center px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 border border-primary-200 hover:border-primary-300 rounded-md transition-colors"
                         >
                           {t('home.projects.live')}
                         </a>
