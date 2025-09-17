@@ -106,7 +106,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-200 dark:border-gray-700 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+        <div className="border-t border-gray-200 dark:border-gray-700 mt-8 pt-8 flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0">
           <p className="text-sm text-gray-600 dark:text-gray-300">
             © 2025 Tony Rodríguez. All rights reserved.
           </p>

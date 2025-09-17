@@ -127,7 +127,7 @@ export default function Contact() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label htmlFor="budget" className="text-sm font-medium text-gray-900 dark:text-white">
-                      Budget
+                      Budget (Optional)
                     </label>
                     <select
                       id="budget"
@@ -136,7 +136,7 @@ export default function Contact() {
                       onChange={handleChange}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white"
                     >
-                      <option value="">Selecciona un rango</option>
+                      <option value="">Select a range</option>
                       {budgetOptions.map((option) => (
                         <option key={option.value} value={option.value}>
                           {option.label}

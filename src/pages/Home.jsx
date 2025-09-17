@@ -1,12 +1,21 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Github, Linkedin, Mail, Star, Zap, Users, Code } from 'lucide-react'
+import { ArrowRight, Github, Linkedin, Mail, Star, Zap, Users, Code, ChevronDown, ChevronUp } from 'lucide-react'
 import { profile } from '../data/profile'
 import { projects } from '../data/projects'
 import profileImage from '../assets/pic1.jpg'
 
 export default function Home() {
   const featuredProjects = projects.filter(project => project.featured).slice(0, 3)
+  const [expandedProjects, setExpandedProjects] = useState({})
+
+  const toggleExpanded = (projectId) => {
+    setExpandedProjects(prev => ({
+      ...prev,
+      [projectId]: !prev[projectId]
+    }))
+  }
 
   return (
     <div className="flex flex-col">
@@ -244,7 +253,29 @@ export default function Home() {
                   </div>
                   <div className="p-6">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{project.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">{project.description}</p>
+                    <div className="mb-4">
+                      <p className={`text-gray-600 dark:text-gray-300 text-sm ${!expandedProjects[project.id] ? 'line-clamp-2' : ''}`}>
+                        {project.description}
+                      </p>
+                      {project.description.length > 100 && (
+                        <button
+                          onClick={() => toggleExpanded(project.id)}
+                          className="text-primary-600 hover:text-primary-700 text-sm font-medium mt-2 flex items-center gap-1"
+                        >
+                          {expandedProjects[project.id] ? (
+                            <>
+                              <ChevronUp className="h-3 w-3" />
+                              Read less
+                            </>
+                          ) : (
+                            <>
+                              <ChevronDown className="h-3 w-3" />
+                              Read more
+                            </>
+                          )}
+                        </button>
+                      )}
+                    </div>
                     <div className="flex flex-wrap gap-2 mb-4">
                       {project.stack.slice(0, 3).map((tech) => (
                         <span key={tech} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
