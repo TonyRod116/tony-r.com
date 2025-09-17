@@ -85,7 +85,7 @@ export default function Resume() {
                       rel="noopener noreferrer"
                       className="hover:text-primary-600 transition-colors flex items-center gap-1"
                     >
-                      linkedin.com/in/tony-rodriguez
+                      linkedin.com/in/tony-rod
                       <ExternalLink className="h-3 w-3" />
                     </a>
                   </div>

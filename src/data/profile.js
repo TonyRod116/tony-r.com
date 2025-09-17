@@ -4,7 +4,7 @@ export const profile = {
   email: 'tony.rod.bcn@gmail.com',
   location: 'Barcelona, Spain',
   github: 'https://github.com/TonyRod116',
-  linkedin: 'https://linkedin.com/in/tony-rodriguez',
+  linkedin: 'https://www.linkedin.com/in/tony-rod/',
   instagram: 'https://www.instagram.com/iamtonyrod/',
   facebook: 'https://www.facebook.com/toni.rodriguez.torrents',
   website: 'https://tony-r.com',
