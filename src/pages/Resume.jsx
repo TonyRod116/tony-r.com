@@ -2,17 +2,22 @@ import { motion } from 'framer-motion'
 import { Download, Mail, MapPin, Github, Linkedin, ExternalLink } from 'lucide-react'
 import { profile } from '../data/profile'
 import { useLanguage } from '../hooks/useLanguage.jsx'
-import cvPdf from '../assets/CV Tony Rodriguez EN.pdf'
+import cvPdfEn from '../assets/CV Tony Rodriguez EN.pdf'
+import cvPdfEs from '../assets/_CV Tony Rodriguez ES.pdf'
 import cvThumbnail from '../assets/CVthmb.png'
 
 export default function Resume() {
   const { t, language } = useLanguage()
   
   const handleDownloadPDF = () => {
+    // Select CV based on language
+    const cvPdf = (language === 'es' || language === 'ca') ? cvPdfEs : cvPdfEn
+    const fileName = (language === 'es' || language === 'ca') ? 'Tony_Rodriguez_CV_ES.pdf' : 'Tony_Rodriguez_CV_EN.pdf'
+    
     // Create a temporary link to download the PDF
     const link = document.createElement('a')
     link.href = cvPdf
-    link.download = 'Tony_Rodriguez_CV.pdf'
+    link.download = fileName
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
