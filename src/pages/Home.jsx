@@ -154,21 +154,31 @@ export default function Home() {
               <p className="text-lg text-gray-600 dark:text-gray-300">
                 {t('home.about.description')}
               </p>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <h3 className="font-semibold text-gray-900 dark:text-white">{t('home.skills.languages')}</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="space-y-3">
+                  <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{t('home.skills.languages')}</h3>
                   <div className="flex flex-wrap gap-2">
-                    {profile.skills.languages.slice(0, 3).map((skill) => (
+                    {profile.skills.languages.map((skill) => (
                       <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
                         {skill}
                       </span>
                     ))}
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <h3 className="font-semibold text-gray-900 dark:text-white">{t('home.skills.frameworks')}</h3>
+                <div className="space-y-3">
+                  <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{t('home.skills.frameworks')}</h3>
                   <div className="flex flex-wrap gap-2">
                     {profile.skills.frameworks.map((skill) => (
+                      <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="space-y-3 sm:col-span-2 lg:col-span-1">
+                  <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{t('about.technical.tools')}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {profile.skills.tools.map((skill) => (
                       <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
                         {skill}
                       </span>
