@@ -1,9 +1,37 @@
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Code, Users, Zap, Target, Lightbulb, Heart, Cpu, Brain, TrendingUp, Shield, BookOpen } from 'lucide-react'
 import { profile } from '../data/profile'
 import { useLanguage } from '../hooks/useLanguage.jsx'
 import profileImage from '../assets/pic3.jpg'
+
+// Typewriter component
+function Typewriter({ text, speed = 50, delay = 0, className = "" }) {
+  const [displayText, setDisplayText] = useState('')
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (currentIndex < text.length) {
+        setDisplayText(prev => prev + text[currentIndex])
+        setCurrentIndex(prev => prev + 1)
+      }
+    }, delay + (currentIndex * speed))
+
+    return () => clearTimeout(timer)
+  }, [currentIndex, text, speed, delay])
+
+  // Convert newlines to <br> tags
+  const formattedText = displayText.split('\n').map((line, index) => (
+    <span key={index}>
+      {line}
+      {index < displayText.split('\n').length - 1 && <br />}
+    </span>
+  ))
+
+  return <span className={className}>{formattedText}</span>
+}
 
 export default function About() {
   const { t } = useLanguage()
@@ -21,19 +49,16 @@ export default function About() {
               transition={{ duration: 0.6 }}
               className="space-y-6"
             >
-              <h1 className="text-4xl font-bold text-gray-900 dark:text-white">{t('about.hero.title')}</h1>
-              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                {t('about.hero.description1')}
-              </p>
-              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                {t('about.hero.description2')}
-              </p>
-              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                {t('about.hero.description3')}
-              </p>
-              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                {t('about.hero.description4')}
-              </p>
+              <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
+                <Typewriter text={t('about.hero.title')} speed={1} delay={10} />
+              </h1>
+              <div className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed space-y-4">
+                <Typewriter 
+                  text={`${t('about.hero.description1')}\n\n${t('about.hero.description2')}\n\n${t('about.hero.description3')}\n\n${t('about.hero.description4')}`} 
+                  speed={0.01} 
+                  delay={2} 
+                />
+              </div>
             </motion.div>
 
             <motion.div
