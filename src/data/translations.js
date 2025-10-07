@@ -21,7 +21,8 @@ export const translations = {
           viewProjects: 'View Projects',
           viewResume: 'View Resume',
           startProject: 'Start project'
-        }
+        },
+        scrollDown: 'Scroll down'
       },
       stats: {
         repositories: 'GitHub Repositories',
@@ -332,7 +333,8 @@ export const translations = {
           viewProjects: 'Ver Proyectos',
           viewResume: 'Ver CV',
           startProject: 'Iniciar proyecto'
-        }
+        },
+        scrollDown: 'Desplázate hacia abajo'
       },
       stats: {
         repositories: 'Repositorios GitHub',
@@ -643,7 +645,8 @@ export const translations = {
           viewProjects: 'Veure Projectes',
           viewResume: 'Veure CV',
           startProject: 'Iniciar projecte'
-        }
+        },
+        scrollDown: 'Desplaça\'t cap avall'
       },
       stats: {
         repositories: 'Repositoris GitHub',

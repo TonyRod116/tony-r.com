@@ -316,13 +316,13 @@ export default function Home() {
           id="background-photo"
         />
         
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[70vh]">
+        <div className="container mx-auto px-8 sm:px-6 lg:px-8 relative z-10">
+          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-12 items-center min-h-[70vh]">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="space-y-8 bg-white/85 dark:bg-gray-900/85 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-xl border border-white/20 dark:border-gray-700/20 mt-8 sm:mt-0"
+              className="space-y-8 bg-white/85 dark:bg-gray-900/85 backdrop-blur-md rounded-2xl px-8 py-6 sm:p-8 shadow-xl border border-white/20 dark:border-gray-700/20 mt-8 sm:mt-0 w-full"
             >
               <div className="space-y-4">
                 <motion.h1
@@ -398,6 +398,23 @@ export default function Home() {
                   <Mail className="h-4 w-4" />
                   <span>Email</span>
                 </a>
+              </motion.div>
+            </motion.div>
+
+            {/* Scroll down arrow - Mobile only */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="lg:hidden flex justify-center mt-8"
+            >
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="flex flex-col items-center space-y-2 text-gray-300 dark:text-gray-400"
+              >
+                <span className="text-sm font-medium">{t('home.hero.scrollDown')}</span>
+                <ChevronDown className="h-6 w-6" />
               </motion.div>
             </motion.div>
 
