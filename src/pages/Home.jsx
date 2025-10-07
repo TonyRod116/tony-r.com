@@ -7,7 +7,7 @@ import { projects } from '../data/projects'
 import { useLanguage } from '../hooks/useLanguage.jsx'
 import profileImage from '../assets/pic1.jpg'
 
-// Componente para números animados
+// Component for animated numbers
 function AnimatedNumber({ value, suffix = '', duration = 2000, delay = 0 }) {
   const [count, setCount] = useState(0)
   const ref = useRef(null)
@@ -24,7 +24,7 @@ function AnimatedNumber({ value, suffix = '', duration = 2000, delay = 0 }) {
           const elapsed = Date.now() - startTime
           const progress = Math.min(elapsed / duration, 1)
           
-          // Animación lineal para entrada más suave
+          // Linear animation for smoother entry
           const currentValue = Math.floor(startValue + (endValue - startValue) * progress)
           
           setCount(currentValue)
@@ -48,7 +48,7 @@ function AnimatedNumber({ value, suffix = '', duration = 2000, delay = 0 }) {
   )
 }
 
-// Componente para tarjetas con efecto de scroll y zoom (solo entrada)
+// Component for cards with scroll and zoom effect (entry only)
 function ScrollAnimatedCard({ children, delay = 0, className = "" }) {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -56,12 +56,12 @@ function ScrollAnimatedCard({ children, delay = 0, className = "" }) {
     offset: ["start end", "end start"]
   })
   
-  // Efecto de zoom desde el fondo (solo entrada) - optimizado para móvil
+  // Zoom effect from background (entry only) - optimized for mobile
   const scale = useTransform(scrollYProgress, [0, 0.3, 1], [0.5, 1, 1])
   const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
   const y = useTransform(scrollYProgress, [0, 0.3, 1], [50, 0, 0])
   
-  // Rotación sutil reducida para móvil
+  // Subtle rotation reduced for mobile
   const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [8, 0, 0])
 
   return (
@@ -83,7 +83,7 @@ function ScrollAnimatedCard({ children, delay = 0, className = "" }) {
   )
 }
 
-// Componente para sección que viene desde la izquierda (solo entrada)
+// Component for section coming from the left (entry only)
 function ScrollAnimatedSection({ children, delay = 0, className = "" }) {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -91,12 +91,12 @@ function ScrollAnimatedSection({ children, delay = 0, className = "" }) {
     offset: ["start end", "end start"]
   })
   
-  // Efecto desde la izquierda con zoom (solo entrada) - optimizado para móvil
+  // Effect from left with zoom (entry only) - optimized for mobile
   const x = useTransform(scrollYProgress, [0, 0.3, 1], [-100, 0, 0])
   const scale = useTransform(scrollYProgress, [0, 0.2, 1], [0.9, 1, 1])
   const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
   
-  // Rotación sutil reducida para móvil
+  // Subtle rotation reduced for mobile
   const rotateY = useTransform(scrollYProgress, [0, 0.5, 1], [-5, 0, 0])
 
   return (
@@ -118,7 +118,7 @@ function ScrollAnimatedSection({ children, delay = 0, className = "" }) {
   )
 }
 
-// Componente para proyecto del medio (desde el fondo)
+// Component for center project (from background)
 function ScrollAnimatedProjectCenter({ children, delay = 0, className = "" }) {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -126,12 +126,12 @@ function ScrollAnimatedProjectCenter({ children, delay = 0, className = "" }) {
     offset: ["start end", "end start"]
   })
   
-  // Efecto de zoom desde el fondo (solo entrada) - optimizado para móvil
+  // Zoom effect from background (entry only) - optimized for mobile
   const scale = useTransform(scrollYProgress, [0, 0.3, 1], [0.5, 1, 1])
   const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
   const y = useTransform(scrollYProgress, [0, 0.3, 1], [50, 0, 0])
   
-  // Rotación sutil reducida para móvil
+  // Subtle rotation reduced for mobile
   const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [8, 0, 0])
 
   return (
@@ -153,7 +153,7 @@ function ScrollAnimatedProjectCenter({ children, delay = 0, className = "" }) {
   )
 }
 
-// Componente para proyecto de la izquierda (desde la izquierda)
+// Component for left project (from left)
 function ScrollAnimatedProjectLeft({ children, delay = 0, className = "" }) {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -161,12 +161,12 @@ function ScrollAnimatedProjectLeft({ children, delay = 0, className = "" }) {
     offset: ["start end", "end start"]
   })
   
-  // Efecto desde la izquierda con zoom (solo entrada) - optimizado para móvil
+  // Effect from left with zoom (entry only) - optimized for mobile
   const x = useTransform(scrollYProgress, [0, 0.3, 1], [-150, 0, 0])
   const scale = useTransform(scrollYProgress, [0, 0.2, 1], [0.8, 1, 1])
   const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
   
-  // Rotación sutil reducida para móvil
+  // Subtle rotation reduced for mobile
   const rotateY = useTransform(scrollYProgress, [0, 0.5, 1], [-8, 0, 0])
 
   return (
@@ -188,7 +188,7 @@ function ScrollAnimatedProjectLeft({ children, delay = 0, className = "" }) {
   )
 }
 
-// Componente para proyecto de la derecha (desde la derecha)
+// Component for right project (from right)
 function ScrollAnimatedProjectRight({ children, delay = 0, className = "" }) {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -196,12 +196,12 @@ function ScrollAnimatedProjectRight({ children, delay = 0, className = "" }) {
     offset: ["start end", "end start"]
   })
   
-  // Efecto desde la derecha con zoom (solo entrada) - optimizado para móvil
+  // Effect from right with zoom (entry only) - optimized for mobile
   const x = useTransform(scrollYProgress, [0, 0.3, 1], [150, 0, 0])
   const scale = useTransform(scrollYProgress, [0, 0.2, 1], [0.8, 1, 1])
   const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
   
-  // Rotación sutil reducida para móvil
+  // Subtle rotation reduced for mobile
   const rotateY = useTransform(scrollYProgress, [0, 0.5, 1], [8, 0, 0])
 
   return (
@@ -236,7 +236,7 @@ export default function Home() {
     }))
   }
 
-  // Manejar posición responsive del background
+  // Handle responsive background position
   useEffect(() => {
     const updateBackgroundPosition = () => {
       if (window.innerWidth <= 768) {
@@ -252,29 +252,34 @@ export default function Home() {
     return () => window.removeEventListener('resize', updateBackgroundPosition)
   }, [])
 
-  // Efecto de scroll que "come" la foto sincronizado con el contenido
+  // Scroll effect that "eats" the photo synchronized with content
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.pageYOffset || document.documentElement.scrollTop
       const windowHeight = window.innerHeight
       
-      // Calcular progreso basado en la altura de la ventana
-      // Mantenemos la velocidad del texto pero ajustamos el fondo
+      // Calculate progress based on window height
+      // Make the background photo move much slower than scroll (parallax effect)
       const isMobile = window.innerWidth <= 768
-      const multiplier = 1
-      const scrollProgress = Math.min(scrollY / (windowHeight * multiplier), 1)
+      const parallaxMultiplier = 0.5 // Your photo moves at 30% of scroll speed
+      const clipMultiplier = 4 // Clip effect moves at normal speed
       
-      // Aplicar clip-path que "come" la foto desde abajo
+      const parallaxProgress = Math.min(scrollY / (windowHeight * clipMultiplier), 1)
+      const clipProgress = Math.min(scrollY / (windowHeight * clipMultiplier), 1)
+      
+      // Apply parallax effect and clip-path to photo
       const photoElement = document.getElementById('background-photo')
       if (photoElement) {
-        // Crear efecto de "mordida" desde abajo hacia arriba
-        // Ajustamos el clip-path para que el fondo aparezca más arriba
-        const clipBottom = 100 - (scrollProgress * 100)
-        const adjustedClipBottom = Math.max(clipBottom - 20, 0) // Subimos el fondo 20% más
-        photoElement.style.clipPath = `polygon(0 0, 100% 0, 100% ${adjustedClipBottom}%, 0 ${adjustedClipBottom}%)`
+        // Parallax effect: photo moves slower than scroll
+        const translateY = scrollY * parallaxMultiplier
+        photoElement.style.transform = `translateY(${translateY}px)`
         
-        // También reducir opacidad gradualmente
-        photoElement.style.opacity = Math.max(0.1, 1 - (scrollProgress * 0.9))
+        // Create "bite" effect from bottom to top
+        const clipBottom = 100 - (clipProgress * 100)
+        photoElement.style.clipPath = `polygon(0 0, 100% 0, 100% ${clipBottom}%, 0 ${clipBottom}%)`
+        
+        // Also reduce opacity gradually
+        photoElement.style.opacity = Math.max(0.1, 1 - (clipProgress * 0.9))
       }
     }
 
@@ -290,11 +295,16 @@ export default function Home() {
       {/* Main Content */}
       <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-24 min-h-screen">
+      <section className="relative overflow-hidden pt-20 min-h-screen">
         
-        {/* Foto de fondo que se "come" al hacer scroll */}
+        {/* Background photo that gets "eaten" on scroll */}
         <div 
-          className="fixed inset-0 z-0 bg-cover bg-right-bottom bg-no-repeat sm:bg-center w-full h-full"
+          className="
+            absolute inset-x-0 bottom-0 
+            top-[6rem] sm:top-[6rem] lg:top-[10vh]
+            z-0 bg-cover bg-right-bottom bg-no-repeat sm:bg-center w-full h-full
+            pointer-events-none
+          "
           style={{
             backgroundImage: `url(${profileImage})`,
             clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
@@ -312,7 +322,7 @@ export default function Home() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="space-y-8 bg-white/85 dark:bg-gray-900/85 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-xl border border-white/20 dark:border-gray-700/20"
+              className="space-y-8 bg-white/85 dark:bg-gray-900/85 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-xl border border-white/20 dark:border-gray-700/20 mt-8 sm:mt-0"
             >
               <div className="space-y-4">
                 <motion.h1
@@ -391,14 +401,14 @@ export default function Home() {
               </motion.div>
             </motion.div>
 
-            {/* Espacio para la foto (se llenará con el efecto de fondo) */}
+            {/* Space for photo (will be filled with background effect) */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative h-96 lg:h-[500px]"
             >
-              {/* Este espacio se llenará con la foto de fondo */}
+              {/* This space will be filled with the background photo */}
             </motion.div>
           </div>
         </div>
@@ -518,7 +528,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {featuredProjects.map((project, index) => {
-              // Determinar qué componente usar según la posición
+              // Determine which component to use based on position
               const ProjectComponent = index === 0 ? ScrollAnimatedProjectLeft : 
                                      index === 1 ? ScrollAnimatedProjectCenter : 
                                      ScrollAnimatedProjectRight
@@ -673,7 +683,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-primary-600 mt-24">
+      <section className="py-16 sm:py-20 lg:py-24 bg-primary-600 relative z-20 mt-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

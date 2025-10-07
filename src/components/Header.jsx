@@ -48,7 +48,7 @@ export default function Header() {
       )}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <span className="font-bold text-xl text-gray-900 dark:text-white drop-shadow-sm">Tony Rodríguez</span>
