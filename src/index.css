@@ -33,11 +33,148 @@
   body {
     @apply bg-background text-foreground font-sans;
   }
+  
+  /* Escalado gradual para pantallas grandes - empezamos pequeño */
+  @media (min-width: 1536px) {
+    html {
+      font-size: 16px;
+    }
+    
+    /* Todo el header más grande - selectores específicos */
+    header nav a.text-sm.font-medium {
+      font-size: 18px;
+    }
+    
+    /* Logo del header más grande */
+    header .font-bold.text-xl {
+      font-size: 22px;
+    }
+    
+    /* Botón Hire Me más grande */
+    header .btn-primary {
+      font-size: 18px;
+    }
+    
+    /* Selector de idioma más grande */
+    header .text-sm.font-medium {
+      font-size: 18px;
+    }
+  }
+  
+  @media (min-width: 1920px) {
+    html {
+      font-size: 17px;
+    }
+    
+    /* Todo el header más grande - selectores específicos */
+    header nav a.text-sm.font-medium {
+      font-size: 20px;
+    }
+    
+    /* Logo del header más grande */
+    header .font-bold.text-xl {
+      font-size: 24px;
+    }
+    
+    /* Botón Hire Me más grande */
+    header .btn-primary {
+      font-size: 20px;
+    }
+    
+    /* Selector de idioma más grande */
+    header .text-sm.font-medium {
+      font-size: 20px;
+    }
+  }
+  
+  @media (min-width: 2000px) {
+    /* Pantallas muy grandes - más ancho y escala */
+    html {
+      font-size: 20px;
+    }
+    
+    /* Todo el header más grande para pantallas muy grandes */
+    header nav a.text-sm.font-medium {
+      font-size: 26px;
+    }
+    
+    header .font-bold.text-xl {
+      font-size: 30px;
+    }
+    
+    header .btn-primary {
+      font-size: 26px;
+    }
+    
+    header .text-sm.font-medium {
+      font-size: 26px;
+    }
+  }
+  
+  @media (min-width: 2560px) {
+    html {
+      font-size: 18px;
+    }
+    
+    /* Todo el header más grande - selectores específicos */
+    header nav a.text-sm.font-medium {
+      font-size: 22px;
+    }
+    
+    /* Logo del header más grande */
+    header .font-bold.text-xl {
+      font-size: 26px;
+    }
+    
+    /* Botón Hire Me más grande */
+    header .btn-primary {
+      font-size: 22px;
+    }
+    
+    /* Selector de idioma más grande */
+    header .text-sm.font-medium {
+      font-size: 22px;
+    }
+  }
+  
+  @media (min-width: 3440px) {
+    html {
+      font-size: 19px;
+    }
+    
+    /* Todo el header más grande - selectores específicos */
+    header nav a.text-sm.font-medium {
+      font-size: 24px;
+    }
+    
+    /* Logo del header más grande */
+    header .font-bold.text-xl {
+      font-size: 28px;
+    }
+    
+    /* Botón Hire Me más grande */
+    header .btn-primary {
+      font-size: 24px;
+    }
+    
+    /* Selector de idioma más grande */
+    header .text-sm.font-medium {
+      font-size: 24px;
+    }
+  }
 }
 
 @layer components {
   .container {
     @apply mx-auto px-4 sm:px-6 lg:px-8;
+    max-width: 1800px;
+  }
+  
+  /* Ancho máximo más grande para pantallas muy grandes */
+  @media (min-width: 2000px) {
+    .container {
+      max-width: 2200px;
+    }
   }
   
   .section {
