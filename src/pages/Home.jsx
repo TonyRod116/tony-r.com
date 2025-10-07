@@ -56,13 +56,13 @@ function ScrollAnimatedCard({ children, delay = 0, className = "" }) {
     offset: ["start end", "end start"]
   })
   
-  // Efecto de zoom desde el fondo (solo entrada)
-  const scale = useTransform(scrollYProgress, [0, 0.3, 1], [0.3, 1, 1])
+  // Efecto de zoom desde el fondo (solo entrada) - optimizado para móvil
+  const scale = useTransform(scrollYProgress, [0, 0.3, 1], [0.5, 1, 1])
   const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
-  const y = useTransform(scrollYProgress, [0, 0.3, 1], [100, 0, 0])
+  const y = useTransform(scrollYProgress, [0, 0.3, 1], [50, 0, 0])
   
-  // Rotación sutil para efecto más dinámico
-  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [15, 0, 0])
+  // Rotación sutil reducida para móvil
+  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [8, 0, 0])
 
   return (
     <motion.div
@@ -91,13 +91,13 @@ function ScrollAnimatedSection({ children, delay = 0, className = "" }) {
     offset: ["start end", "end start"]
   })
   
-  // Efecto desde la izquierda con zoom (solo entrada)
-  const x = useTransform(scrollYProgress, [0, 0.3, 1], [-200, 0, 0])
-  const scale = useTransform(scrollYProgress, [0, 0.2, 1], [0.8, 1, 1])
+  // Efecto desde la izquierda con zoom (solo entrada) - optimizado para móvil
+  const x = useTransform(scrollYProgress, [0, 0.3, 1], [-100, 0, 0])
+  const scale = useTransform(scrollYProgress, [0, 0.2, 1], [0.9, 1, 1])
   const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
   
-  // Rotación sutil para efecto más dinámico
-  const rotateY = useTransform(scrollYProgress, [0, 0.5, 1], [-10, 0, 0])
+  // Rotación sutil reducida para móvil
+  const rotateY = useTransform(scrollYProgress, [0, 0.5, 1], [-5, 0, 0])
 
   return (
     <motion.div
@@ -118,10 +118,116 @@ function ScrollAnimatedSection({ children, delay = 0, className = "" }) {
   )
 }
 
+// Componente para proyecto del medio (desde el fondo)
+function ScrollAnimatedProjectCenter({ children, delay = 0, className = "" }) {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  })
+  
+  // Efecto de zoom desde el fondo (solo entrada) - optimizado para móvil
+  const scale = useTransform(scrollYProgress, [0, 0.3, 1], [0.5, 1, 1])
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
+  const y = useTransform(scrollYProgress, [0, 0.3, 1], [50, 0, 0])
+  
+  // Rotación sutil reducida para móvil
+  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [8, 0, 0])
+
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      style={{ 
+        scale, 
+        opacity, 
+        y,
+        rotateX,
+        transformOrigin: "center center",
+        transformStyle: "preserve-3d"
+      }}
+      transition={{ delay }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+// Componente para proyecto de la izquierda (desde la izquierda)
+function ScrollAnimatedProjectLeft({ children, delay = 0, className = "" }) {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  })
+  
+  // Efecto desde la izquierda con zoom (solo entrada) - optimizado para móvil
+  const x = useTransform(scrollYProgress, [0, 0.3, 1], [-150, 0, 0])
+  const scale = useTransform(scrollYProgress, [0, 0.2, 1], [0.8, 1, 1])
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
+  
+  // Rotación sutil reducida para móvil
+  const rotateY = useTransform(scrollYProgress, [0, 0.5, 1], [-8, 0, 0])
+
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      style={{ 
+        x, 
+        scale, 
+        opacity,
+        rotateY,
+        transformOrigin: "left center",
+        transformStyle: "preserve-3d"
+      }}
+      transition={{ delay }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+// Componente para proyecto de la derecha (desde la derecha)
+function ScrollAnimatedProjectRight({ children, delay = 0, className = "" }) {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  })
+  
+  // Efecto desde la derecha con zoom (solo entrada) - optimizado para móvil
+  const x = useTransform(scrollYProgress, [0, 0.3, 1], [150, 0, 0])
+  const scale = useTransform(scrollYProgress, [0, 0.2, 1], [0.8, 1, 1])
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
+  
+  // Rotación sutil reducida para móvil
+  const rotateY = useTransform(scrollYProgress, [0, 0.5, 1], [8, 0, 0])
+
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      style={{ 
+        x, 
+        scale, 
+        opacity,
+        rotateY,
+        transformOrigin: "right center",
+        transformStyle: "preserve-3d"
+      }}
+      transition={{ delay }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
 export default function Home() {
   const { t } = useLanguage()
   const featuredProjects = projects.filter(project => project.featured).slice(0, 3)
   const [expandedProjects, setExpandedProjects] = useState({})
+  const [backgroundPosition, setBackgroundPosition] = useState('center 30%')
 
   const toggleExpanded = (projectId) => {
     setExpandedProjects(prev => ({
@@ -130,22 +236,42 @@ export default function Home() {
     }))
   }
 
+  // Manejar posición responsive del background
+  useEffect(() => {
+    const updateBackgroundPosition = () => {
+      if (window.innerWidth <= 768) {
+        setBackgroundPosition('95% 50%')
+      } else {
+        setBackgroundPosition('center 30%')
+      }
+    }
+
+    updateBackgroundPosition()
+    window.addEventListener('resize', updateBackgroundPosition)
+    
+    return () => window.removeEventListener('resize', updateBackgroundPosition)
+  }, [])
+
   // Efecto de scroll que "come" la foto sincronizado con el contenido
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.pageYOffset || document.documentElement.scrollTop
       const windowHeight = window.innerHeight
       
-      // Calcular progreso basado en la altura de la ventana (más rápido)
-      // La foto se "come" completamente en aproximadamente 1 ventana de scroll
-      const scrollProgress = Math.min(scrollY / (windowHeight * 1), 1)
+      // Calcular progreso basado en la altura de la ventana
+      // Mantenemos la velocidad del texto pero ajustamos el fondo
+      const isMobile = window.innerWidth <= 768
+      const multiplier = 1
+      const scrollProgress = Math.min(scrollY / (windowHeight * multiplier), 1)
       
       // Aplicar clip-path que "come" la foto desde abajo
       const photoElement = document.getElementById('background-photo')
       if (photoElement) {
         // Crear efecto de "mordida" desde abajo hacia arriba
+        // Ajustamos el clip-path para que el fondo aparezca más arriba
         const clipBottom = 100 - (scrollProgress * 100)
-        photoElement.style.clipPath = `polygon(0 0, 100% 0, 100% ${clipBottom}%, 0 ${clipBottom}%)`
+        const adjustedClipBottom = Math.max(clipBottom - 20, 0) // Subimos el fondo 20% más
+        photoElement.style.clipPath = `polygon(0 0, 100% 0, 100% ${adjustedClipBottom}%, 0 ${adjustedClipBottom}%)`
         
         // También reducir opacidad gradualmente
         photoElement.style.opacity = Math.max(0.1, 1 - (scrollProgress * 0.9))
@@ -164,35 +290,37 @@ export default function Home() {
       {/* Main Content */}
       <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-16 min-h-screen">
+      <section className="relative overflow-hidden pt-24 min-h-screen">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-transparent to-blue-50 dark:from-primary-900/20 dark:via-transparent dark:to-blue-900/20" />
         
         {/* Foto de fondo que se "come" al hacer scroll */}
         <div 
-          className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
+          className="fixed inset-0 z-0 bg-cover bg-right-bottom bg-no-repeat sm:bg-center w-full h-full"
           style={{
             backgroundImage: `url(${profileImage})`,
             clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
             transform: 'translateZ(0)',
-            willChange: 'clip-path'
+            willChange: 'clip-path',
+            maxWidth: '100vw',
+            maxHeight: '100vh'
           }}
           id="background-photo"
         />
         
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+          <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[70vh]">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="space-y-8 bg-white/85 dark:bg-gray-900/85 backdrop-blur-md rounded-2xl p-8 shadow-xl border border-white/20 dark:border-gray-700/20"
+              className="space-y-8 bg-white/85 dark:bg-gray-900/85 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-xl border border-white/20 dark:border-gray-700/20"
             >
               <div className="space-y-4">
                 <motion.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.1 }}
-                  className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 dark:text-white drop-shadow-sm"
+                  className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-gray-900 dark:text-white drop-shadow-sm"
                 >
                   {t('home.hero.titlePart1')}{' '}
                   <span className="gradient-text">{t('home.hero.titlePart2')}</span>{' '}
@@ -289,7 +417,7 @@ export default function Home() {
               <p className="text-lg text-gray-600 dark:text-gray-300">
                 {t('home.about.description')}
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div className="space-y-3">
                   <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{t('home.skills.languages')}</h3>
                   <div className="flex flex-wrap gap-2">
@@ -331,7 +459,7 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="grid grid-cols-2 gap-4"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4"
             >
               <ScrollAnimatedCard 
                 className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300 hover:scale-105"
@@ -389,34 +517,37 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredProjects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="group"
-              >
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow">
-                  <div className="relative h-80 bg-gradient-to-br from-primary-100 to-blue-100 dark:from-primary-900/20 dark:to-blue-900/20 overflow-hidden">
-                    <img 
-                      src={project.image} 
-                      alt={project.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/20" />
-                    {project.featured && (
-                      <div className="absolute top-4 left-4">
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/20 dark:text-primary-300">
-                          <Star className="h-3 w-3 mr-1" />
-                          Featured
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {featuredProjects.map((project, index) => {
+              // Determinar qué componente usar según la posición
+              const ProjectComponent = index === 0 ? ScrollAnimatedProjectLeft : 
+                                     index === 1 ? ScrollAnimatedProjectCenter : 
+                                     ScrollAnimatedProjectRight
+              
+              return (
+                <ProjectComponent
+                  key={project.id}
+                  className="group"
+                  delay={index * 0.1}
+                >
+                  <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow">
+                    <div className="relative h-80 bg-gradient-to-br from-primary-100 to-blue-100 dark:from-primary-900/20 dark:to-blue-900/20 overflow-hidden">
+                      <img 
+                        src={project.image} 
+                        alt={project.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/20" />
+                      {project.featured && (
+                        <div className="absolute top-4 left-4">
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/20 dark:text-primary-300">
+                            <Star className="h-3 w-3 mr-1" />
+                            Featured
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-6">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{project.title}</h3>
                     <div className="mb-4">
                       <p className={`text-gray-600 dark:text-gray-300 text-sm ${!expandedProjects[project.id] ? 'line-clamp-2' : ''}`}>
@@ -520,10 +651,11 @@ export default function Home() {
                         </a>
                       )}
                     </div>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </ProjectComponent>
+              )
+            })}
           </div>
 
           <motion.div
