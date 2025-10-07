@@ -1,11 +1,122 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
+import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Github, Linkedin, Mail, Star, Zap, Users, Code, ChevronDown, ChevronUp } from 'lucide-react'
 import { profile } from '../data/profile'
 import { projects } from '../data/projects'
 import { useLanguage } from '../hooks/useLanguage.jsx'
 import profileImage from '../assets/pic1.jpg'
+
+// Componente para números animados
+function AnimatedNumber({ value, suffix = '', duration = 2000, delay = 0 }) {
+  const [count, setCount] = useState(0)
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true })
+
+  useEffect(() => {
+    if (isInView) {
+      const timer = setTimeout(() => {
+        const startTime = Date.now()
+        const startValue = 0
+        const endValue = parseInt(value)
+
+        const animate = () => {
+          const elapsed = Date.now() - startTime
+          const progress = Math.min(elapsed / duration, 1)
+          
+          // Animación lineal para entrada más suave
+          const currentValue = Math.floor(startValue + (endValue - startValue) * progress)
+          
+          setCount(currentValue)
+          
+          if (progress < 1) {
+            requestAnimationFrame(animate)
+          }
+        }
+        
+        animate()
+      }, delay)
+
+      return () => clearTimeout(timer)
+    }
+  }, [isInView, value, duration, delay])
+
+  return (
+    <span ref={ref} className="inline-block">
+      {count}{suffix}
+    </span>
+  )
+}
+
+// Componente para tarjetas con efecto de scroll y zoom (solo entrada)
+function ScrollAnimatedCard({ children, delay = 0, className = "" }) {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  })
+  
+  // Efecto de zoom desde el fondo (solo entrada)
+  const scale = useTransform(scrollYProgress, [0, 0.3, 1], [0.3, 1, 1])
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
+  const y = useTransform(scrollYProgress, [0, 0.3, 1], [100, 0, 0])
+  
+  // Rotación sutil para efecto más dinámico
+  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [15, 0, 0])
+
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      style={{ 
+        scale, 
+        opacity, 
+        y,
+        rotateX,
+        transformOrigin: "center center",
+        transformStyle: "preserve-3d"
+      }}
+      transition={{ delay }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+// Componente para sección que viene desde la izquierda (solo entrada)
+function ScrollAnimatedSection({ children, delay = 0, className = "" }) {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  })
+  
+  // Efecto desde la izquierda con zoom (solo entrada)
+  const x = useTransform(scrollYProgress, [0, 0.3, 1], [-200, 0, 0])
+  const scale = useTransform(scrollYProgress, [0, 0.2, 1], [0.8, 1, 1])
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
+  
+  // Rotación sutil para efecto más dinámico
+  const rotateY = useTransform(scrollYProgress, [0, 0.5, 1], [-10, 0, 0])
+
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      style={{ 
+        x, 
+        scale, 
+        opacity,
+        rotateY,
+        transformOrigin: "left center",
+        transformStyle: "preserve-3d"
+      }}
+      transition={{ delay }}
+    >
+      {children}
+    </motion.div>
+  )
+}
 
 export default function Home() {
   const { t } = useLanguage()
@@ -170,12 +281,9 @@ export default function Home() {
       <section className="py-16 sm:py-20 lg:py-24 bg-gray-50 dark:bg-gray-800/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
+            <ScrollAnimatedSection 
               className="space-y-6"
+              delay={0.1}
             >
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{t('home.about.title')}</h2>
               <p className="text-lg text-gray-600 dark:text-gray-300">
@@ -216,7 +324,7 @@ export default function Home() {
               <Link to="/about" className="btn-secondary inline-flex">
                 {t('home.about.moreAboutMe')}
               </Link>
-            </motion.div>
+            </ScrollAnimatedSection>
 
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -225,22 +333,41 @@ export default function Home() {
               viewport={{ once: true }}
               className="grid grid-cols-2 gap-4"
             >
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">35+</div>
+              <ScrollAnimatedCard 
+                className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300 hover:scale-105"
+                delay={0.1}
+              >
+                <div className="text-3xl font-bold text-gray-900 dark:text-white">
+                  <AnimatedNumber value="35" suffix="+" duration={1500} delay={200} />
+                </div>
                 <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.repositories')}</div>
-              </div>
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+              </ScrollAnimatedCard>
+              
+              <ScrollAnimatedCard 
+                className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300 hover:scale-105"
+                delay={0.2}
+              >
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">{t('home.stats.problemSolving')}</div>
                 <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.orientedBy')}</div>
-              </div>
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">15+</div>
+              </ScrollAnimatedCard>
+              
+              <ScrollAnimatedCard 
+                className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300 hover:scale-105"
+                delay={0.3}
+              >
+                <div className="text-3xl font-bold text-gray-900 dark:text-white">
+                  <AnimatedNumber value="15" suffix="+" duration={1500} delay={400} />
+                </div>
                 <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.yearsLeading')}</div>
-              </div>
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+              </ScrollAnimatedCard>
+              
+              <ScrollAnimatedCard 
+                className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300 hover:scale-105"
+                delay={0.4}
+              >
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">{t('home.stats.continuousLearning')}</div>
                 <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.drivenBy')}</div>
-              </div>
+              </ScrollAnimatedCard>
             </motion.div>
           </div>
         </div>
