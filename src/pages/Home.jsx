@@ -291,7 +291,6 @@ export default function Home() {
       <div className="flex flex-col">
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-24 min-h-screen">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-transparent to-blue-50 dark:from-primary-900/20 dark:via-transparent dark:to-blue-900/20" />
         
         {/* Foto de fondo que se "come" al hacer scroll */}
         <div 
