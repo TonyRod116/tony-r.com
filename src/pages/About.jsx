@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, Code, Users, Zap, Target, Lightbulb, Heart, Cpu, Brain, TrendingUp, Shield, BookOpen } from 'lucide-react'
 import { profile } from '../data/profile'
 import { useLanguage } from '../hooks/useLanguage.jsx'
-import profileImage from '../assets/pic2.jpeg'
+import profileImage from '../assets/pic3.jpg'
 
 export default function About() {
   const { t } = useLanguage()
