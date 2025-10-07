@@ -19,15 +19,15 @@ export default function Home() {
     }))
   }
 
-  // Efecto de scroll que "come" la foto
+  // Efecto de scroll que "come" la foto sincronizado con el contenido
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.pageYOffset || document.documentElement.scrollTop
       const windowHeight = window.innerHeight
-      const documentHeight = document.documentElement.scrollHeight
       
-      // Calcular progreso del scroll (0 a 1)
-      const scrollProgress = Math.min(scrollY / (documentHeight - windowHeight), 1)
+      // Calcular progreso basado en la altura de la ventana (más rápido)
+      // La foto se "come" completamente en aproximadamente 1 ventana de scroll
+      const scrollProgress = Math.min(scrollY / (windowHeight * 1), 1)
       
       // Aplicar clip-path que "come" la foto desde abajo
       const photoElement = document.getElementById('background-photo')
@@ -37,7 +37,7 @@ export default function Home() {
         photoElement.style.clipPath = `polygon(0 0, 100% 0, 100% ${clipBottom}%, 0 ${clipBottom}%)`
         
         // También reducir opacidad gradualmente
-        photoElement.style.opacity = Math.max(0.3, 1 - (scrollProgress * 0.7))
+        photoElement.style.opacity = Math.max(0.1, 1 - (scrollProgress * 0.9))
       }
     }
 
@@ -74,14 +74,14 @@ export default function Home() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="space-y-8"
+              className="space-y-8 bg-white/85 dark:bg-gray-900/85 backdrop-blur-md rounded-2xl p-8 shadow-xl border border-white/20 dark:border-gray-700/20"
             >
               <div className="space-y-4">
                 <motion.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.1 }}
-                  className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 dark:text-white"
+                  className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 dark:text-white drop-shadow-sm"
                 >
                   {t('home.hero.titlePart1')}{' '}
                   <span className="gradient-text">{t('home.hero.titlePart2')}</span>{' '}
@@ -91,7 +91,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
-                  className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl"
+                  className="text-xl text-gray-700 dark:text-gray-200 max-w-2xl drop-shadow-sm"
                 >
                   {t('home.hero.subtitle')}
                 </motion.p>
@@ -123,13 +123,13 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="flex items-center space-x-6 text-sm text-gray-600 dark:text-gray-300"
+                className="flex items-center space-x-6 text-sm text-gray-700 dark:text-gray-200"
               >
                 <a
                   href={profile.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center space-x-2 hover:text-primary-600 transition-colors"
+                  className="flex items-center space-x-2 hover:text-primary-600 transition-colors drop-shadow-sm"
                 >
                   <Github className="h-4 w-4" />
                   <span>GitHub</span>
@@ -138,14 +138,14 @@ export default function Home() {
                   href={profile.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center space-x-2 hover:text-primary-600 transition-colors"
+                  className="flex items-center space-x-2 hover:text-primary-600 transition-colors drop-shadow-sm"
                 >
                   <Linkedin className="h-4 w-4" />
                   <span>LinkedIn</span>
                 </a>
                 <a
                   href={`mailto:${profile.email}`}
-                  className="flex items-center space-x-2 hover:text-primary-600 transition-colors"
+                  className="flex items-center space-x-2 hover:text-primary-600 transition-colors drop-shadow-sm"
                 >
                   <Mail className="h-4 w-4" />
                   <span>Email</span>
