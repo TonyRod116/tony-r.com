@@ -25,7 +25,7 @@ function App() {
   return (
     <LanguageProvider>
       <Router>
-        <div className="min-h-screen bg-white dark:bg-gray-900 overflow-x-hidden">
+        <div className="min-h-screen bg-gray-900 overflow-x-hidden">
           <ScrollToTop />
           <Header />
           <main>

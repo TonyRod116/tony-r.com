@@ -415,7 +415,7 @@ export default function Home() {
       </section>
 
       {/* About Preview */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-gray-50 dark:bg-gray-800/50">
+      <section className="py-16 sm:py-20 lg:py-24 bg-gray-800/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <ScrollAnimatedSection 
@@ -540,7 +540,7 @@ export default function Home() {
                   delay={index * 0.1}
                 >
                   <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow">
-                    <div className="relative h-80 bg-gradient-to-br from-primary-100 to-blue-100 dark:from-primary-900/20 dark:to-blue-900/20 overflow-hidden">
+                    <div className="relative h-80 bg-gradient-to-br from-primary-900/20 to-blue-900/20 overflow-hidden">
                       <img 
                         src={project.image} 
                         alt={project.title}

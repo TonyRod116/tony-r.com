@@ -12,7 +12,7 @@ export default function About() {
     <div className="pt-16">
       {/* Hero Section */}
       <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-transparent to-blue-50 dark:from-primary-900/20 dark:via-transparent dark:to-blue-900/20" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-900/20 via-transparent to-blue-900/20" />
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -42,7 +42,7 @@ export default function About() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative"
             >
-              <div className="relative w-full h-[500px] rounded-2xl overflow-hidden bg-gradient-to-br from-primary-100 to-blue-100 dark:from-primary-900/20 dark:to-blue-900/20">
+              <div className="relative w-full h-[500px] rounded-2xl overflow-hidden bg-gradient-to-br from-primary-900/20 to-blue-900/20">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center space-y-4">
                     <div className="w-48 h-48 rounded-full overflow-hidden mx-auto border-4 border-white shadow-lg">
@@ -155,7 +155,7 @@ export default function About() {
       </section>
 
       {/* What I Bring */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-gray-50 dark:bg-gray-800/50">
+      <section className="py-16 sm:py-20 lg:py-24 bg-gray-800/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
