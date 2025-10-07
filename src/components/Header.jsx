@@ -43,15 +43,15 @@ export default function Header() {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
         isScrolled
-          ? 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700'
-          : 'bg-transparent'
+          ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700'
+          : 'bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm'
       )}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className="font-bold text-xl text-gray-900 dark:text-white">Tony Rodríguez</span>
+            <span className="font-bold text-xl text-gray-900 dark:text-white drop-shadow-sm">Tony Rodríguez</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -61,10 +61,10 @@ export default function Header() {
                 key={item.name}
                 to={item.href}
                 className={cn(
-                  'text-sm font-medium transition-colors hover:text-primary-600',
+                  'text-sm font-medium transition-colors hover:text-primary-600 drop-shadow-sm',
                   location.pathname === item.href
                     ? 'text-primary-600'
-                    : 'text-gray-600 dark:text-gray-300'
+                    : 'text-gray-700 dark:text-gray-200'
                 )}
               >
                 {item.name}

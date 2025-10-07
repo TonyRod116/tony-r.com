@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Github, Linkedin, Mail, Star, Zap, Users, Code, ChevronDown, ChevronUp } from 'lucide-react'
@@ -19,13 +19,57 @@ export default function Home() {
     }))
   }
 
+  // Efecto de scroll que "come" la foto
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop
+      const windowHeight = window.innerHeight
+      const documentHeight = document.documentElement.scrollHeight
+      
+      // Calcular progreso del scroll (0 a 1)
+      const scrollProgress = Math.min(scrollY / (documentHeight - windowHeight), 1)
+      
+      // Aplicar clip-path que "come" la foto desde abajo
+      const photoElement = document.getElementById('background-photo')
+      if (photoElement) {
+        // Crear efecto de "mordida" desde abajo hacia arriba
+        const clipBottom = 100 - (scrollProgress * 100)
+        photoElement.style.clipPath = `polygon(0 0, 100% 0, 100% ${clipBottom}%, 0 ${clipBottom}%)`
+        
+        // También reducir opacidad gradualmente
+        photoElement.style.opacity = Math.max(0.3, 1 - (scrollProgress * 0.7))
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   return (
     <div className="flex flex-col">
+      {/* Main Content */}
+      <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-16">
+      <section className="relative overflow-hidden pt-16 min-h-screen">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-transparent to-blue-50 dark:from-primary-900/20 dark:via-transparent dark:to-blue-900/20" />
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        
+        {/* Foto de fondo que se "come" al hacer scroll */}
+        <div 
+          className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url(${profileImage})`,
+            clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+            transform: 'translateZ(0)',
+            willChange: 'clip-path'
+          }}
+          id="background-photo"
+        />
+        
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -109,31 +153,14 @@ export default function Home() {
               </motion.div>
             </motion.div>
 
+            {/* Espacio para la foto (se llenará con el efecto de fondo) */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="relative"
+              className="relative h-96 lg:h-[500px]"
             >
-              <div className="relative w-full h-96 lg:h-[500px] rounded-2xl overflow-hidden bg-gradient-to-br from-primary-100 to-blue-100 dark:from-primary-900/20 dark:to-blue-900/20">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center space-y-4">
-                    <div className="w-40 h-40 rounded-full overflow-hidden mx-auto border-4 border-white shadow-lg">
-                      <img 
-                        src={profileImage} 
-                        alt="Tony Rodríguez" 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
-                      Full Stack Software Engineer
-                    </p>
-                  </div>
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-              </div>
-              
-
+              {/* Este espacio se llenará con la foto de fondo */}
             </motion.div>
           </div>
         </div>
@@ -412,6 +439,7 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+      </div>
     </div>
   )
 }
