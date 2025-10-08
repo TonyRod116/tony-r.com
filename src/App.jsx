@@ -11,10 +11,14 @@ import Contact from './pages/Contact'
 import Resume from './pages/Resume'
 
 function App() {
-  // Prevenir overflow horizontal globalmente
+  // Prevenir overflow horizontal globalmente y forzar modo oscuro
   useEffect(() => {
     document.body.style.overflowX = 'hidden'
     document.documentElement.style.overflowX = 'hidden'
+    
+    // Forzar modo oscuro siempre
+    document.documentElement.classList.add('dark')
+    document.documentElement.setAttribute('data-theme', 'dark')
     
     return () => {
       document.body.style.overflowX = ''
