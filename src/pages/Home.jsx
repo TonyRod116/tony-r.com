@@ -307,11 +307,16 @@ export default function Home() {
           "
           style={{
             backgroundImage: `url(${profileImage})`,
+            backgroundPosition: '85% center',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
             clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
             transform: 'translateZ(0)',
             willChange: 'clip-path',
             maxWidth: '100vw',
-            maxHeight: '100vh'
+            maxHeight: '100vh',
+            minHeight: '50%',
+            minWidth: '100%'
           }}
           id="background-photo"
         />
@@ -700,7 +705,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-primary-600 relative z-20 mt-32">
+      <section className="py-16 sm:py-20 lg:py-24 bg-primary-600 relative z-20 mt-0">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

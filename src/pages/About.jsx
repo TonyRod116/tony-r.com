@@ -11,6 +11,12 @@ function Typewriter({ text, speed = 20, delay = 0, className = "" }) {
   const [displayText, setDisplayText] = useState('')
   const [currentIndex, setCurrentIndex] = useState(0)
 
+  // Reset when text changes (language change)
+  useEffect(() => {
+    setDisplayText('')
+    setCurrentIndex(0)
+  }, [text])
+
   useEffect(() => {
     const timer = setTimeout(() => {
       if (currentIndex < text.length) {
@@ -35,6 +41,19 @@ function Typewriter({ text, speed = 20, delay = 0, className = "" }) {
 
 export default function About() {
   const { t } = useLanguage()
+  
+  // Ensure images are loaded before positioning
+  useEffect(() => {
+    const img = new Image()
+    img.src = profileImage
+    img.onload = () => {
+      // Force re-render after image loads
+      const parallaxElement = document.querySelector('[data-parallax="about-bg-parallax"]')
+      if (parallaxElement) {
+        parallaxElement.style.backgroundImage = `url(${profileImage})`
+      }
+    }
+  }, [])
   
   // Parallax effect for background images and skill cards animation
   useEffect(() => {
@@ -162,10 +181,14 @@ export default function About() {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: `url(${profileImage})`,
-            backgroundPosition: 'center top',
+            backgroundPosition: '75% center',
             backgroundSize: 'cover',
-            transform: 'translateY(calc(var(--parallax-offset, 0px) - 300px))',
-            transition: 'transform 0.1s ease-out'
+            backgroundRepeat: 'no-repeat',
+            transform: 'translateY(calc(var(--parallax-offset, 0px) - 400px))',
+            transition: 'transform 0.1s ease-out',
+            willChange: 'transform',
+            minHeight: '50%',
+            minWidth: '100%'
           }}
         />
         <div className="absolute inset-0 bg-black/40" />
