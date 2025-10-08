@@ -315,7 +315,7 @@ export default function Home() {
             willChange: 'clip-path',
             maxWidth: '100vw',
             maxHeight: '100vh',
-            minHeight: '50%',
+            minHeight: '85%',
             minWidth: '100%'
           }}
           id="background-photo"
@@ -676,7 +676,7 @@ export default function Home() {
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block w-full text-center px-4 py-2 text-sm font-medium text-primary-200 hover:text-primary-400 bg-gray-100 hover:bg-gray-500 border border-primary-200 hover:border-primary-300 rounded-md transition-colors"
+                          className="block w-full text-center px-4 py-2 text-sm font-medium text-blue-800 hover:text-blue-900 bg-gray-100 hover:bg-gray-500 border border-primary-200 hover:border-primary-300 rounded-md transition-colors"
                         >
                           {t('home.projects.live')}
                         </a>
