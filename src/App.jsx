@@ -11,14 +11,10 @@ import Contact from './pages/Contact'
 import Resume from './pages/Resume'
 
 function App() {
-  // Prevenir overflow horizontal globalmente y forzar modo oscuro
+  // Prevenir overflow horizontal globalmente
   useEffect(() => {
     document.body.style.overflowX = 'hidden'
     document.documentElement.style.overflowX = 'hidden'
-    
-    // Forzar modo oscuro siempre
-    document.documentElement.classList.add('dark')
-    document.documentElement.setAttribute('data-theme', 'dark')
     
     return () => {
       document.body.style.overflowX = ''
@@ -29,7 +25,7 @@ function App() {
   return (
     <LanguageProvider>
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <div className="min-h-screen bg-gray-900 overflow-x-hidden">
+        <div className="min-h-screen bg-white overflow-x-hidden">
           <ScrollToTop />
           <Header />
           <main>
