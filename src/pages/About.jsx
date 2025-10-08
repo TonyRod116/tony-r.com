@@ -36,7 +36,7 @@ function Typewriter({ text, speed = 20, delay = 0, className = "" }) {
 export default function About() {
   const { t } = useLanguage()
   
-  // Parallax effect for background images
+  // Parallax effect for background images and skill cards animation
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.pageYOffset || document.documentElement.scrollTop
@@ -48,6 +48,78 @@ export default function About() {
         const parallaxSpeed = isMobile ? 0.3 : 0.5 // Faster on mobile (0.8 vs 0.5)
         const offset = scrollY * parallaxSpeed
         bgParallaxElement.style.setProperty('--parallax-offset', `${offset}px`)
+      }
+
+      // Skill cards animation
+      const skillCards = document.querySelectorAll('[data-skill-card]')
+      const skillsSection = document.querySelector('[data-skills-section]')
+      
+      if (skillsSection && skillCards.length > 0) {
+        const sectionRect = skillsSection.getBoundingClientRect()
+        const sectionTop = sectionRect.top
+        const sectionBottom = sectionRect.bottom
+        const viewportHeight = window.innerHeight
+        const isMobile = window.innerWidth <= 768
+        
+        skillCards.forEach((card, index) => {
+          const rect = card.getBoundingClientRect()
+          const cardTop = rect.top
+          const cardBottom = rect.bottom
+          
+          if (isMobile) {
+            // Mobile: alternating entrance from sides, stay once entered
+            const isInViewport = cardTop < viewportHeight && cardBottom > 0
+            const isLeftCard = index % 2 === 0
+            const baseOffset = isLeftCard ? -100 : 100
+            
+            // Check if card has been animated before
+            const hasBeenAnimated = card.dataset.animated === 'true'
+            
+            if (isInViewport && !hasBeenAnimated) {
+              // Card is visible and hasn't been animated - animate in from side
+              const cardCenter = rect.top + rect.height / 2
+              const viewportCenter = viewportHeight / 2
+              const distanceFromCenter = Math.abs(cardCenter - viewportCenter)
+              const maxDistance = viewportHeight / 2
+              const scrollProgress = Math.max(0, 1 - (distanceFromCenter / maxDistance))
+              
+              const currentOffset = baseOffset * (1 - scrollProgress)
+              card.style.transform = `translateX(${currentOffset}px)`
+              card.style.opacity = '1'
+              
+              // Mark as animated
+              card.dataset.animated = 'true'
+            } else if (hasBeenAnimated) {
+              // Card has been animated - keep it in center
+              card.style.transform = 'translateX(0px)'
+              card.style.opacity = '1'
+            } else {
+              // Card not visible and not animated - reset to side
+              card.style.transform = `translateX(${baseOffset}px)`
+              card.style.opacity = '0.3'
+            }
+          } else {
+            // Desktop: scroll-anchored appearance
+            const isSectionVisible = sectionTop < viewportHeight && sectionBottom > 0
+            const isScrollingDown = scrollY > (window.lastScrollY || 0)
+            
+            if (isSectionVisible && isScrollingDown) {
+              // Scrolling down - show cards
+              const delay = index * 200
+              setTimeout(() => {
+                card.style.transform = 'translateY(0)'
+                card.style.opacity = '1'
+              }, delay)
+            } else if (!isScrollingDown && sectionTop > viewportHeight / 2) {
+              // Scrolling up and section is above viewport - hide cards
+              card.style.transform = 'translateY(20px)'
+              card.style.opacity = '0'
+            }
+          }
+        })
+        
+        // Store current scroll position for next comparison
+        window.lastScrollY = scrollY
       }
     }
 
@@ -71,7 +143,7 @@ export default function About() {
               <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
                 <Typewriter text={t('about.hero.title')} speed={1} delay={10} />
               </h1>
-              <div className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed space-y-4">
+              <div className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed space-y-4 text-justify">
                 <Typewriter 
                   text={`${t('about.hero.description1')}\n\n${t('about.hero.description2')}\n\n${t('about.hero.description3')}\n\n${t('about.hero.description4')}`} 
                   speed={0.01} 
@@ -100,7 +172,7 @@ export default function About() {
       </section>
 
       {/* Technical Expertise */}
-      <section className="py-16 sm:py-20 lg:py-24">
+      <section data-skills-section className="py-16 sm:py-20 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -122,7 +194,15 @@ export default function About() {
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
             >
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+              <div 
+                data-skill-card
+                className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
+                style={{
+                  transform: 'translateY(20px)',
+                  opacity: '0',
+                  transition: 'transform 0.6s ease-out, opacity 0.6s ease-out'
+                }}
+              >
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('about.technical.languages')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {profile.skills.languages.map((skill) => (
@@ -140,7 +220,15 @@ export default function About() {
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+              <div 
+                data-skill-card
+                className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
+                style={{
+                  transform: 'translateY(20px)',
+                  opacity: '0',
+                  transition: 'transform 0.6s ease-out, opacity 0.6s ease-out'
+                }}
+              >
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('about.technical.frameworks')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {profile.skills.frameworks.map((skill) => (
@@ -158,7 +246,15 @@ export default function About() {
               transition={{ duration: 0.6, delay: 0.3 }}
               viewport={{ once: true }}
             >
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+              <div 
+                data-skill-card
+                className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
+                style={{
+                  transform: 'translateY(20px)',
+                  opacity: '0',
+                  transition: 'transform 0.6s ease-out, opacity 0.6s ease-out'
+                }}
+              >
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('about.technical.tools')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {profile.skills.tools.map((skill) => (
@@ -176,7 +272,15 @@ export default function About() {
               transition={{ duration: 0.6, delay: 0.4 }}
               viewport={{ once: true }}
             >
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+              <div 
+                data-skill-card
+                className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
+                style={{
+                  transform: 'translateY(20px)',
+                  opacity: '0',
+                  transition: 'transform 0.6s ease-out, opacity 0.6s ease-out'
+                }}
+              >
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('about.technical.softSkills')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {profile.skills.soft.map((skill) => (
