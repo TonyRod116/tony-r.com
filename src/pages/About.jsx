@@ -7,7 +7,7 @@ import { useLanguage } from '../hooks/useLanguage.jsx'
 import profileImage from '../assets/pic3.jpg'
 
 // Typewriter component
-function Typewriter({ text, speed = 50, delay = 0, className = "" }) {
+function Typewriter({ text, speed = 20, delay = 0, className = "" }) {
   const [displayText, setDisplayText] = useState('')
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -36,16 +36,35 @@ function Typewriter({ text, speed = 50, delay = 0, className = "" }) {
 export default function About() {
   const { t } = useLanguage()
   
+  // Parallax effect for background images
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop
+      
+      // Background photo parallax (faster on mobile)
+      const bgParallaxElement = document.querySelector('[data-parallax="about-bg-parallax"]')
+      if (bgParallaxElement) {
+        const isMobile = window.innerWidth <= 768
+        const parallaxSpeed = isMobile ? 0.3 : 0.5 // Faster on mobile (0.8 vs 0.5)
+        const offset = scrollY * parallaxSpeed
+        bgParallaxElement.style.setProperty('--parallax-offset', `${offset}px`)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+  
   return (
     <div className="pt-16">
       {/* Hero Section */}
       <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-900/20 via-transparent to-blue-900/20" />
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="max-w-4xl mx-auto text-center">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               className="space-y-6"
             >
@@ -60,31 +79,24 @@ export default function About() {
                 />
               </div>
             </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="relative"
-            >
-              <div className="relative w-full h-[500px] rounded-2xl overflow-hidden bg-gradient-to-br from-primary-900/20 to-blue-900/20">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center space-y-4">
-                    <div className="w-48 h-48 rounded-full overflow-hidden mx-auto border-4 border-white shadow-lg">
-                      <img 
-                        src={profileImage} 
-                        alt="Tony Rodríguez" 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <p className="text-lg font-medium text-gray-700 dark:text-gray-300">Tony Rodríguez</p>
-                  </div>
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-              </div>
-            </motion.div>
           </div>
         </div>
+      </section>
+
+      {/* Background Photo Parallax */}
+      <section className="relative h-[50vh] sm:h-[70vh] lg:h-[90vh] overflow-hidden">
+        <div 
+          data-parallax="about-bg-parallax"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url(${profileImage})`,
+            backgroundPosition: 'center top',
+            backgroundSize: 'cover',
+            transform: 'translateY(calc(var(--parallax-offset, 0px) - 300px))',
+            transition: 'transform 0.1s ease-out'
+          }}
+        />
+        <div className="absolute inset-0 bg-black/40" />
       </section>
 
       {/* Technical Expertise */}
@@ -178,6 +190,7 @@ export default function About() {
           </div>
         </div>
       </section>
+
 
       {/* What I Bring */}
       <section className="py-16 sm:py-20 lg:py-24 bg-gray-800/50">
