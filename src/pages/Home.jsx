@@ -619,7 +619,7 @@ export default function Home() {
                               href="https://github.com/TonyRod116/TradingLab-Backend"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex-1 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
+                              className="flex-1 px-4 py-2 text-sm font-medium text-gray-200 hover:text-gray-400 border border-gray-200 hover:border-gray-200 rounded-md transition-colors flex items-center justify-center gap-1"
                             >
                               <Github className="h-4 w-4" />
                               {t('home.projects.backend')}
@@ -628,7 +628,7 @@ export default function Home() {
                               href="https://github.com/TonyRod116/TradingLab"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex-1 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
+                              className="flex-1 px-4 py-2 text-sm font-medium text-gray-200 hover:text-gray-400 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
                             >
                               <Github className="h-4 w-4" />
                               {t('home.projects.frontend')}
@@ -641,7 +641,7 @@ export default function Home() {
                               href="https://github.com/TonyRod116/Re-Lux-backend"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex-1 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
+                              className="flex-1 px-4 py-2 text-sm font-medium text-gray-200 hover:text-gray-400 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
                             >
                               <Github className="h-4 w-4" />
                               {t('home.projects.backend')}
@@ -650,7 +650,7 @@ export default function Home() {
                               href="https://github.com/TonyRod116/Re-Lux-frontend"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex-1 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
+                              className="flex-1 px-4 py-2 text-sm font-medium text-gray-200 hover:text-gray-400 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
                             >
                               <Github className="h-4 w-4" />
                               {t('home.projects.frontend')}
@@ -662,7 +662,7 @@ export default function Home() {
                             href={project.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex-1 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
+                            className="flex-1 px-4 py-2 text-sm font-medium text-gray-200 hover:text-gray-400 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
                           >
                             <Github className="h-4 w-4" />
                             {t('home.projects.github')}
@@ -676,7 +676,7 @@ export default function Home() {
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block w-full text-center px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 border border-primary-200 hover:border-primary-300 rounded-md transition-colors"
+                          className="block w-full text-center px-4 py-2 text-sm font-medium text-primary-200 hover:text-primary-400 bg-gray-100 hover:bg-gray-500 border border-primary-200 hover:border-primary-300 rounded-md transition-colors"
                         >
                           {t('home.projects.live')}
                         </a>
