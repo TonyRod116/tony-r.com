@@ -376,26 +376,28 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="flex items-center space-x-6 text-sm text-gray-700 dark:text-gray-200"
+                className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-6 text-sm text-gray-700 dark:text-gray-200"
               >
-                <a
-                  href={profile.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-2 hover:text-primary-600 transition-colors drop-shadow-sm"
-                >
-                  <Github className="h-4 w-4" />
-                  <span>GitHub</span>
-                </a>
-                <a
-                  href={profile.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-2 hover:text-primary-600 transition-colors drop-shadow-sm"
-                >
-                  <Linkedin className="h-4 w-4" />
-                  <span>LinkedIn</span>
-                </a>
+                <div className="flex items-center space-x-6">
+                  <a
+                    href={profile.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-2 hover:text-primary-600 transition-colors drop-shadow-sm"
+                  >
+                    <Github className="h-4 w-4" />
+                    <span>GitHub</span>
+                  </a>
+                  <a
+                    href={profile.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-2 hover:text-primary-600 transition-colors drop-shadow-sm"
+                  >
+                    <Linkedin className="h-4 w-4" />
+                    <span>LinkedIn</span>
+                  </a>
+                </div>
                 <a
                   href={`mailto:${profile.email}`}
                   className="flex items-center space-x-2 hover:text-primary-600 transition-colors drop-shadow-sm"
