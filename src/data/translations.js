@@ -185,6 +185,14 @@ export const translations = {
       copyright: '© 2025 Tony Rodríguez. All rights reserved.'
     },
 
+    // Cookies
+    cookies: {
+      title: 'Cookies & Privacy',
+      description: 'We use cookies to improve your experience and analyze website traffic. You can accept or decline cookies.',
+      accept: 'Accept',
+      decline: 'Decline'
+    },
+
     // Resume Page
     resume: {
       title: 'Resume',
@@ -495,6 +503,14 @@ export const translations = {
       quickLinks: 'Enlaces Rápidos',
       connect: 'Conéctate conmigo',
       copyright: '© 2025 Tony Rodríguez. Todos los derechos reservados.'
+    },
+
+    // Cookies
+    cookies: {
+      title: 'Cookies y Privacidad',
+      description: 'Utilizamos cookies para mejorar tu experiencia y analizar el tráfico del sitio web. Puedes aceptar o rechazar las cookies.',
+      accept: 'Aceptar',
+      decline: 'Rechazar'
     },
 
     // Resume Page
@@ -932,6 +948,14 @@ export const translations = {
       quickLinks: 'Enllaços Ràpids',
       connect: 'Connecta\'m amb mi',
       copyright: '© 2025 Tony Rodríguez. Tots els drets reservats.'
+    },
+
+    // Cookies
+    cookies: {
+      title: 'Cookies i Privacitat',
+      description: 'Utilitzem cookies per millorar la teva experiència i analitzar el trànsit del lloc web. Pots acceptar o rebutjar les cookies.',
+      accept: 'Acceptar',
+      decline: 'Rebutjar'
     }
   }
 }

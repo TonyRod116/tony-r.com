@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Github, Linkedin, Mail, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react'
 import { profile } from '../data/profile'
 import { useLanguage } from '../hooks/useLanguage.jsx'
+import { trackContactForm } from '../components/GoogleAnalytics'
 
 export default function Contact() {
   const { t } = useLanguage()
@@ -49,6 +50,7 @@ export default function Contact() {
       if (response.ok) {
         setSubmitStatus('success')
         setFormData({ name: '', email: '', message: '', budget: '', availability: '' })
+        trackContactForm() // Track successful form submission
       } else {
         setSubmitStatus('error')
       }
