@@ -435,6 +435,23 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
+        
+        {/* Scroll down indicator - All devices */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="flex justify-center mt-8"
+        >
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="flex flex-col items-center space-y-2 text-gray-500 dark:text-gray-400"
+          >
+            <span className="text-sm font-medium">{t('home.hero.scrollDown')}</span>
+            <ChevronDown className="h-5 w-5" />
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* About Preview */}
