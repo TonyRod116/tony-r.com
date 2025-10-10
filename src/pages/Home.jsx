@@ -301,7 +301,7 @@ export default function Home() {
         <div 
           className="
             absolute inset-x-0 bottom-0 
-            top-[6rem] sm:top-[6rem] lg:top-[10vh]
+            top-[5rem] sm:top-[6rem] lg:top-[6vh]
             z-0 bg-cover bg-right-bottom bg-no-repeat sm:bg-center w-full h-full
             pointer-events-none
           "
@@ -315,7 +315,7 @@ export default function Home() {
             willChange: 'clip-path',
             maxWidth: '100vw',
             maxHeight: '100vh',
-            minHeight: '85%',
+            minHeight: '80%',
             minWidth: '100%'
           }}
           id="background-photo"
