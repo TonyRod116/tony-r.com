@@ -337,8 +337,7 @@ export default function Home() {
                   className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-gray-900 dark:text-white drop-shadow-sm"
                 >
                   {t('home.hero.titlePart1')}{' '}
-                  <span className="gradient-text">{t('home.hero.titlePart2')}</span>{' '}
-                  {t('home.hero.titlePart3')}
+                  <span className="gradient-text">{t('home.hero.titlePart2')}</span>
                 </motion.h1>
                 <motion.p
                   initial={{ opacity: 0, y: 20 }}

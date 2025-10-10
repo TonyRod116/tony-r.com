@@ -1,6 +1,6 @@
 export const profile = {
   name: 'Tony Rodríguez',
-  title: 'Full Stack Software Engineer',
+  title: 'Software Engineer with product vision',
   email: 'tony.rod.bcn@gmail.com',
   location: 'Barcelona, Spain',
   github: 'https://github.com/TonyRod116',

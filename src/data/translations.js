@@ -13,9 +13,8 @@ export const translations = {
     // Home Page
     home: {
       hero: {
-        titlePart1: 'Full Stack',
-        titlePart2: 'Software Engineer',
-        titlePart3: 'with product vision.',
+        titlePart1: 'Software Engineer',
+        titlePart2: 'with product vision',
         subtitle: 'From construction entrepreneur to creating innovative digital solutions.',
         cta: {
           viewProjects: 'View Projects',
@@ -33,7 +32,7 @@ export const translations = {
         drivenBy: 'Driven by'
       },
       about: {
-        title: 'From construction entrepreneur to Full Stack Software Engineer',
+        title: 'From construction entrepreneur to Software Engineer',
         description: "At General Assembly, I stood out for consistently going beyond project requirements, adding creative, functional, and product-oriented features that elevated each build. My final project, TradeLab, was publicly recognized by my instructor as one of the best projects he had ever seen in his years of teaching at GA.",
         moreAboutMe: 'More about me'
       },
@@ -65,7 +64,7 @@ export const translations = {
     about: {
       hero: {
         title: 'About Me',
-        description1: "I'm a Full Stack Software Engineer with a strong foundation in JavaScript, React, Node.js, Python, Django, MongoDB, and PostgreSQL, and experience deploying applications on Netlify, Heroku, and Render. My journey into tech came after years of running client-centered businesses in real estate and construction, where I learned how to turn ideas into practical solutions that people actually use.",
+        description1: "I'm a Software Engineer with a strong foundation in JavaScript, React, Node.js, Python, Django, MongoDB, and PostgreSQL, and experience deploying applications on Netlify, Heroku, and Render. My journey into tech came after years of running client-centered businesses in real estate and construction, where I learned how to turn ideas into practical solutions that people actually use.",
         description2: "At General Assembly's immersive Software Engineering Bootcamp, I delivered four complete applications. In each project, I went beyond the requirements, adding creative and product-oriented features. My final project, TradeLab, a trading strategy backtesting platform, was recognized by my instructor as one of the best projects he had ever seen in his years of teaching.",
         description3: "What drives me most is solving problems with creativity and precision. I bring an entrepreneurial mindset, a product-driven perspective, and resilience built through real-world challenges. Whether working solo or in teams, I focus on creating scalable, user-friendly products that deliver real value.",
         description4: "I'm excited to keep growing as an engineer while contributing to projects that improve the way people live and work."
@@ -333,10 +332,8 @@ export const translations = {
     // Home Page
     home: {
       hero: {
-        titlePart1: 'Full Stack',
-        titlePart2: 'Software Engineer',
-        titlePart3: 'con visión de producto.',
-        subtitle: 'De emprendedor de construcción a crear soluciones digitales innovadoras.',
+        titlePart1: 'Software Engineer',
+        titlePart2: 'con visión de producto',
         cta: {
           viewProjects: 'Ver Proyectos',
           viewResume: 'Ver CV',
@@ -353,7 +350,7 @@ export const translations = {
         drivenBy: 'Impulsado por'
       },
       about: {
-        title: 'De emprendedor de construcción a Full Stack Software Engineer',
+        title: 'De emprendedor de construcción a Software Engineer',
         description: 'En General Assembly, me destacé por ir consistentemente más allá de los requisitos del proyecto, añadiendo características creativas, funcionales y orientadas al producto que elevaron cada construcción. Mi proyecto final, TradeLab, fue públicamente reconocido por mi instructor como uno de los mejores proyectos que había visto en sus años de enseñanza en GA.',
         moreAboutMe: 'Más sobre mí'
       },
@@ -385,7 +382,7 @@ export const translations = {
     about: {
       hero: {
         title: 'Sobre Mí',
-        description1: 'Soy un Full Stack Software Engineer con una sólida base en JavaScript, React, Node.js, Python, Django, MongoDB y PostgreSQL, y experiencia desplegando aplicaciones en Netlify, Heroku y Render. Mi camino hacia la tecnología comenzó después de años dirigiendo negocios centrados en el cliente en obra nueva y reformas, donde aprendí a convertir ideas en soluciones prácticas que la gente realmente usa.',
+        description1: 'Soy un Software Engineer con una sólida base en JavaScript, React, Node.js, Python, Django, MongoDB y PostgreSQL, y experiencia desplegando aplicaciones en Netlify, Heroku y Render. Mi camino hacia la tecnología comenzó después de años dirigiendo negocios centrados en el cliente en obra nueva y reformas, donde aprendí a convertir ideas en soluciones prácticas que la gente realmente usa.',
         description2: 'En el Bootcamp inmersivo de Software Engineering de General Assembly, entregué cuatro aplicaciones completas. En cada proyecto, fui más allá de los requisitos, añadiendo funcionalidades creativas y orientadas al producto. Mi proyecto final, TradeLab, una plataforma de backtesting de estrategias de trading, fue reconocido por mi instructor como uno de los mejores proyectos que había visto en sus años de enseñanza.',
         description3: 'Lo que más me motiva es resolver problemas con creatividad y precisión. Traigo una mentalidad emprendedora, una perspectiva orientada al producto y resiliencia construida a través de desafíos del mundo real. Ya sea trabajando solo o en equipos, me enfoco en crear productos escalables y fáciles de usar que aporten valor real.',
         description4: 'Estoy emocionado de seguir creciendo como ingeniero mientras contribuyo a proyectos que mejoran la forma en que las personas viven y trabajan.'
@@ -653,10 +650,8 @@ export const translations = {
     // Home Page
     home: {
       hero: {
-        titlePart1: 'Full Stack',
-        titlePart2: 'Software Engineer',
-        titlePart3: 'amb visió de producte.',
-        subtitle: 'D\'emprenedor de construcció a crear solucions digitals innovadores.',
+        titlePart1: 'Software Engineer',
+        titlePart2: 'amb visió de producte',
         cta: {
           viewProjects: 'Veure Projectes',
           viewResume: 'Veure CV',
@@ -673,7 +668,7 @@ export const translations = {
         drivenBy: 'Impulsat per'
       },
       about: {
-        title: 'D\'emprenedor de construcció a Full Stack Software Engineer',
+        title: 'D\'emprenedor de construcció a Software Engineer',
         description: 'A General Assembly, em vaig destacar per anar consistentment més enllà dels requisits de cada projecte, afegint característiques creatives, funcionals i orientades al producte que van elevar cada construcció. El meu projecte final, TradeLab, va ser públicament reconegut pel meu instructor com un dels millors projectes que havia vist en els seus anys d\'ensenyament a GA.',
         moreAboutMe: 'Més sobre mí'
       },
@@ -705,7 +700,7 @@ export const translations = {
     about: {
       hero: {
         title: 'Sobre Mi',
-        description1: 'Soc un Full Stack Software Engineer amb una base sòlida en JavaScript, React, Node.js, Python, Django, MongoDB i PostgreSQL, i experiència desplegant aplicacions a Netlify, Heroku i Render. El meu camí cap a la tecnologia va començar després d\'anys dirigint negocis centrats en el client en béns immobles i construcció, on vaig aprendre a convertir idees en solucions pràctiques que la gent realment usa.',
+        description1: 'Soc un Software Engineer amb una base sòlida en JavaScript, React, Node.js, Python, Django, MongoDB i PostgreSQL, i experiència desplegant aplicacions a Netlify, Heroku i Render. El meu camí cap a la tecnologia va començar després d\'anys dirigint negocis centrats en el client en béns immobles i construcció, on vaig aprendre a convertir idees en solucions pràctiques que la gent realment usa.',
         description2: 'Al Bootcamp immersiu de Software Engineering de General Assembly, vaig lliurar quatre aplicacions completes. En cada projecte, vaig anar més enllà dels requisits, afegint funcionalitats creatives i orientades al producte. El meu projecte final, TradeLab, una plataforma de backtesting d\'estratègies de trading, va ser reconegut pel meu instructor com un dels millors projectes que havia vist en els seus anys d\'ensenyament.',
         description3: 'El que més em motiva és resoldre problemes amb creativitat i precisió. Porto una mentalitat emprenedora, una perspectiva orientada al producte i resiliència construïda a través de desafiaments del món real. Ja sigui treballant sol o en equips, em centro en crear productes escalables i fàcils d\'usar que aportin valor real.',
         description4: 'Estic emocionat de seguir creixent com a enginyer mentre contribueixo a projectes que milloren la forma en què les persones viuen i treballen.'
