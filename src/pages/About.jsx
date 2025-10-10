@@ -219,7 +219,7 @@ export default function About() {
             >
               <div 
                 data-skill-card
-                className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
+                className="bg-gradient-to-br from-white to-blue-50/50 p-6 rounded-2xl shadow-lg border border-blue-100/60 hover:shadow-xl transition-all duration-300"
                 style={{
                   transform: 'translateY(20px)',
                   opacity: '0',
@@ -229,7 +229,7 @@ export default function About() {
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('about.technical.languages')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {profile.skills.languages.map((skill) => (
-                    <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                    <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 border border-emerald-200 shadow-sm">
                       {skill}
                     </span>
                   ))}
@@ -245,7 +245,7 @@ export default function About() {
             >
               <div 
                 data-skill-card
-                className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
+                className="bg-gradient-to-br from-white to-blue-50/50 p-6 rounded-2xl shadow-lg border border-blue-100/60 hover:shadow-xl transition-all duration-300"
                 style={{
                   transform: 'translateY(20px)',
                   opacity: '0',
@@ -255,7 +255,7 @@ export default function About() {
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('about.technical.frameworks')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {profile.skills.frameworks.map((skill) => (
-                    <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                    <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 border border-emerald-200 shadow-sm">
                       {skill}
                     </span>
                   ))}
@@ -271,7 +271,7 @@ export default function About() {
             >
               <div 
                 data-skill-card
-                className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
+                className="bg-gradient-to-br from-white to-blue-50/50 p-6 rounded-2xl shadow-lg border border-blue-100/60 hover:shadow-xl transition-all duration-300"
                 style={{
                   transform: 'translateY(20px)',
                   opacity: '0',
@@ -281,7 +281,7 @@ export default function About() {
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('about.technical.tools')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {profile.skills.tools.map((skill) => (
-                    <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                    <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 border border-emerald-200 shadow-sm">
                       {skill}
                     </span>
                   ))}
@@ -297,7 +297,7 @@ export default function About() {
             >
               <div 
                 data-skill-card
-                className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
+                className="bg-gradient-to-br from-white to-blue-50/50 p-6 rounded-2xl shadow-lg border border-blue-100/60 hover:shadow-xl transition-all duration-300"
                 style={{
                   transform: 'translateY(20px)',
                   opacity: '0',
@@ -307,7 +307,7 @@ export default function About() {
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('about.technical.softSkills')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {profile.skills.soft.map((skill) => (
-                    <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                    <span key={skill} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 border border-emerald-200 shadow-sm">
                       {skill}
                     </span>
                   ))}
@@ -320,7 +320,7 @@ export default function About() {
 
 
       {/* What I Bring */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-gray-800/50">
+      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -475,7 +475,7 @@ export default function About() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/contact"
-                className="inline-flex items-center justify-center px-6 py-3 bg-white text-primary-600 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-white to-blue-50 text-indigo-600 rounded-lg font-medium hover:from-blue-50 hover:to-indigo-50 hover:text-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 {t('about.cta.sendMessage')}
                 <ArrowRight className="ml-2 h-4 w-4" />

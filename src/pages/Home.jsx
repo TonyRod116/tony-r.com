@@ -327,14 +327,14 @@ export default function Home() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="space-y-8 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg rounded-2xl px-8 py-6 sm:p-8 shadow-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 sm:mt-0 w-full"
+              className="space-y-8 bg-gradient-to-br from-white via-blue-50/80 to-indigo-50/60 backdrop-blur-xl rounded-3xl px-8 py-8 sm:p-10 shadow-2xl border border-blue-100/50 mt-8 sm:mt-0 w-full"
             >
               <div className="space-y-4">
                 <motion.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.1 }}
-                  className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-gray-900 dark:text-white drop-shadow-sm"
+                  className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-slate-800 drop-shadow-sm"
                 >
                   {t('home.hero.titlePart1')}{' '}
                   <span className="gradient-text">{t('home.hero.titlePart2')}</span>{' '}
@@ -344,7 +344,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
-                  className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl drop-shadow-sm"
+                  className="text-xl text-slate-600 max-w-2xl drop-shadow-sm"
                 >
                   {t('home.hero.subtitle')}
                 </motion.p>
@@ -376,14 +376,14 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-6 text-sm text-gray-600 dark:text-gray-300"
+                className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-6 text-sm text-slate-600"
               >
                 <div className="flex items-center space-x-6">
                   <a
                     href={profile.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center space-x-2 hover:text-primary-700 dark:hover:text-primary-400 transition-colors drop-shadow-sm"
+                    className="flex items-center space-x-2 hover:text-indigo-600 transition-colors drop-shadow-sm"
                   >
                     <Github className="h-4 w-4" />
                     <span>GitHub</span>
@@ -392,7 +392,7 @@ export default function Home() {
                     href={profile.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center space-x-2 hover:text-primary-700 dark:hover:text-primary-400 transition-colors drop-shadow-sm"
+                    className="flex items-center space-x-2 hover:text-indigo-600 transition-colors drop-shadow-sm"
                   >
                     <Linkedin className="h-4 w-4" />
                     <span>LinkedIn</span>
@@ -439,7 +439,7 @@ export default function Home() {
       </section>
 
       {/* About Preview */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-blue-50/80 dark:bg-gray-800/50">
+      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <ScrollAnimatedSection 
@@ -495,7 +495,7 @@ export default function Home() {
               className="grid grid-cols-1 sm:grid-cols-2 gap-4"
             >
               <ScrollAnimatedCard 
-                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 hover:scale-105"
+                className="bg-gradient-to-br from-white to-blue-50/50 p-6 rounded-2xl shadow-lg border border-blue-100/60 hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:border-indigo-200"
                 delay={0.1}
               >
                 <div className="text-3xl font-bold text-primary-600 dark:text-primary-400">
@@ -505,7 +505,7 @@ export default function Home() {
               </ScrollAnimatedCard>
               
               <ScrollAnimatedCard 
-                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 hover:scale-105"
+                className="bg-gradient-to-br from-white to-blue-50/50 p-6 rounded-2xl shadow-lg border border-blue-100/60 hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:border-indigo-200"
                 delay={0.2}
               >
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">{t('home.stats.problemSolving')}</div>
@@ -513,7 +513,7 @@ export default function Home() {
               </ScrollAnimatedCard>
               
               <ScrollAnimatedCard 
-                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 hover:scale-105"
+                className="bg-gradient-to-br from-white to-blue-50/50 p-6 rounded-2xl shadow-lg border border-blue-100/60 hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:border-indigo-200"
                 delay={0.3}
               >
                 <div className="text-3xl font-bold text-primary-600 dark:text-primary-400">
@@ -523,7 +523,7 @@ export default function Home() {
               </ScrollAnimatedCard>
               
               <ScrollAnimatedCard 
-                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 hover:scale-105"
+                className="bg-gradient-to-br from-white to-blue-50/50 p-6 rounded-2xl shadow-lg border border-blue-100/60 hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:border-indigo-200"
                 delay={0.4}
               >
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">{t('home.stats.continuousLearning')}</div>
@@ -563,7 +563,7 @@ export default function Home() {
                   className="group"
                   delay={index * 0.1}
                 >
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105">
+                  <div className="bg-gradient-to-br from-white via-slate-50/50 to-blue-50/30 rounded-2xl shadow-lg border border-slate-200/60 overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:border-indigo-200">
                     <div className="relative h-80 bg-gradient-to-br from-primary-900/20 to-blue-900/20 overflow-hidden">
                       <img 
                         src={project.image} 
@@ -607,7 +607,7 @@ export default function Home() {
                     </div>
                     <div className="flex flex-wrap gap-2 mb-4">
                       {project.stack.slice(0, 3).map((tech) => (
-                        <span key={tech} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600">
+                        <span key={tech} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-violet-50 to-purple-50 text-violet-700 border border-violet-200 shadow-sm">
                           {tech}
                         </span>
                       ))}
@@ -678,7 +678,7 @@ export default function Home() {
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block w-full text-center px-4 py-2 text-sm font-medium text-blue-800 hover:text-blue-900 bg-gray-100 hover:bg-gray-500 border border-primary-200 hover:border-primary-300 rounded-md transition-colors"
+                          className="block w-full text-center px-4 py-2 text-sm font-medium text-blue-800 hover:text-blue-900 bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 border border-blue-200 hover:border-blue-300 rounded-md transition-all duration-300 shadow-sm hover:shadow-md"
                         >
                           {t('home.projects.live')}
                         </a>
@@ -724,7 +724,7 @@ export default function Home() {
               <Link to="/resume" className="btn-secondary bg-white/20 border-white/30 text-white hover:bg-white hover:text-primary-600 transition-all duration-300">
                 {t('home.cta.viewResume')}
               </Link>
-              <Link to="/contact" className="btn-secondary bg-white text-primary-600 hover:bg-gray-50 hover:text-primary-700 transition-all duration-300">
+              <Link to="/contact" className="btn-secondary bg-gradient-to-r from-white to-blue-50 text-indigo-600 hover:from-blue-50 hover:to-indigo-50 hover:text-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl">
                 {t('home.cta.startProject')}
               </Link>
             </div>

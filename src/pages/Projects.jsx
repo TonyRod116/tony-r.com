@@ -37,7 +37,7 @@ export default function Projects() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group"
               >
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
+                <div className="bg-gradient-to-br from-white via-slate-50/50 to-blue-50/30 rounded-2xl shadow-lg border border-slate-200/60 overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105 h-full flex flex-col">
                   <div className="relative h-80 bg-gradient-to-br from-primary-100 to-blue-100 dark:from-primary-900/20 dark:to-blue-900/20 overflow-hidden">
                     <img 
                       src={project.image} 
@@ -99,7 +99,7 @@ export default function Projects() {
                       <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{t('projects.techStack')}</h4>
                       <div className="flex flex-wrap gap-2">
                         {project.stack.map((tech) => (
-                          <span key={tech} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                          <span key={tech} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-violet-50 to-purple-50 text-violet-700 border border-violet-200 shadow-sm">
                             {tech}
                           </span>
                         ))}
@@ -176,7 +176,7 @@ export default function Projects() {
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block w-full text-center px-4 py-2 text-sm font-medium text-blue-800 hover:text-blue-900 bg-gray-100 hover:bg-gray-500 border border-primary-200 hover:border-primary-300 rounded-md transition-colors"
+                          className="block w-full text-center px-4 py-2 text-sm font-medium text-blue-800 hover:text-blue-900 bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 border border-blue-200 hover:border-blue-300 rounded-md transition-all duration-300 shadow-sm hover:shadow-md"
                         >
                           {t('projects.live')}
                         </a>
