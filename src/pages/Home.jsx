@@ -436,12 +436,12 @@ export default function Home() {
           </div>
         </div>
         
-        {/* Scroll down indicator - All devices */}
+         {/* Scroll down indicator - Desktop only */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="flex justify-center mt-8"
+          className="hidden lg:flex justify-center mt-8"
         >
           <motion.div
             animate={{ y: [0, 8, 0] }}
