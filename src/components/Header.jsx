@@ -122,7 +122,7 @@ export default function Header() {
                   </Link>
                 ))}
                 <div className="px-4 pt-4 space-y-4">
-                  <LanguageSelector />
+                  <LanguageSelector onLanguageChange={() => setIsOpen(false)} />
                   <Link
                     to="/contact"
                     onClick={() => setIsOpen(false)}

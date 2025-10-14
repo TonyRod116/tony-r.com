@@ -7,7 +7,7 @@ const languages = [
   { code: 'ca', name: 'CAT' }
 ]
 
-export default function LanguageSelector() {
+export default function LanguageSelector({ onLanguageChange }) {
   const { language, changeLanguage } = useLanguage()
 
   return (
@@ -24,7 +24,12 @@ export default function LanguageSelector() {
           {languages.map((lang) => (
             <button
               key={lang.code}
-              onClick={() => changeLanguage(lang.code)}
+              onClick={() => {
+                changeLanguage(lang.code)
+                if (onLanguageChange) {
+                  onLanguageChange()
+                }
+              }}
               className={`w-full flex items-center space-x-3 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
                 language === lang.code ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-900 dark:text-white'
               }`}

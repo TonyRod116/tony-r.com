@@ -7,41 +7,312 @@
     <style>
         body {
             margin: 0;
-            padding: 20px;
+            padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(to bottom right, #111827, #1e3a8a, #312e81);
+            min-height: 100vh;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+            z-index: 1000;
+            padding: 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+        
+        .logo {
+            font-weight: bold;
+            font-size: 1.25rem;
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .logo:hover {
+            color: #60a5fa;
+        }
+        
+        .nav-desktop {
+            display: none;
+        }
+        
+        .nav-mobile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .language-selector {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .language-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            background: transparent;
+            border: none;
+            color: #d1d5db;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .language-btn:hover {
+            background-color: rgba(96, 165, 250, 0.2);
+        }
+        
+        .language-dropdown {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 0.5rem;
+            width: 12rem;
+            background: rgba(17, 24, 39, 0.95);
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+            z-index: 50;
+        }
+        
+        .language-selector:hover .language-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .language-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            color: #d1d5db;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+        
+        .language-option:hover {
+            background-color: rgba(96, 165, 250, 0.2);
+        }
+        
+        .language-option.active {
+            background-color: rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+        }
+        
+        .language-option.active::after {
+            content: "✓";
+            margin-left: auto;
+            color: #60a5fa;
+        }
+        
+        .mobile-menu-btn {
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            background: transparent;
+            border: none;
+            color: #374151;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .mobile-menu-btn:hover {
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+        
+        .mobile-menu {
+            display: none;
+            border-top: 1px solid rgba(102, 126, 234, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+        }
+        
+        .mobile-menu.open {
+            display: block;
+        }
+        
+        .mobile-nav {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .mobile-nav-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-nav-link:hover {
+            color: #667eea;
+            background-color: rgba(102, 126, 234, 0.1);
+        }
+        
+        .mobile-nav-link.active {
+            color: #667eea;
+            background-color: rgba(102, 126, 234, 0.1);
+        }
+        
+        .nav-link {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #667eea;
+        }
+        
+        .nav-link.active {
+            color: #667eea;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        @media (min-width: 768px) {
+            .nav-desktop {
+                display: flex;
+                align-items: center;
+                gap: 2rem;
+            }
+            
+            .nav-mobile {
+                display: none;
+            }
+            
+            .header-container {
+                padding: 0 1.5rem;
+            }
+        }
+        
+        .back-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+        }
+        
+        .back-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .game-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .main-content {
+            padding-top: 100px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 100px 20px 20px;
         }
         
         .container {
-            background: white;
+            background: rgba(17, 24, 39, 0.95);
             border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             text-align: center;
             max-width: 600px;
             width: 100%;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            backdrop-filter: blur(20px);
         }
         
         h1 {
-            color: #333;
+            color: #ffffff;
             margin-bottom: 10px;
         }
         
         .subtitle {
-            color: #666;
+            color: #d1d5db;
             margin-bottom: 30px;
         }
         
         .game-container {
             margin: 30px 0;
             padding: 20px;
-            background: #f8f9fa;
+            background: rgba(31, 41, 55, 0.8);
             border-radius: 15px;
+            border: 1px solid rgba(59, 130, 246, 0.1);
         }
         
         .board {
@@ -55,8 +326,8 @@
         .cell {
             width: 80px;
             height: 80px;
-            background: white;
-            border: 2px solid #ddd;
+            background: rgba(44, 57, 77, 0.9);
+            border: 2px solid rgba(51, 123, 238, 0.3);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -65,25 +336,28 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
+            color: #ffffff;
         }
         
         .cell:hover {
-            background: #f0f0f0;
-            border-color: #667eea;
+            background: rgba(59, 130, 246, 0.2);
+            border-color: #60a5fa;
+            transform: scale(1.05);
         }
         
         .cell.x {
-            color: #e74c3c;
+            color: #f87171;
         }
         
         .cell.o {
-            color: #3498db;
+            color: #60a5fa;
         }
         
         .status {
             margin: 20px 0;
             font-size: 18px;
             font-weight: bold;
+            color: #8a99b6;
         }
         
         .controls {
@@ -91,28 +365,25 @@
         }
         
         button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
             color: white;
-            border: none;
+            border: 1px solid rgba(59, 130, 246, 0.3);
             padding: 12px 24px;
-            border-radius: 25px;
+            border-radius: 8px;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
             margin: 0 10px;
-            transition: transform 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
         
         button:hover {
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
         }
         
-        .back-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-        }
         
         .stats {
             display: grid;
@@ -122,30 +393,95 @@
         }
         
         .stat {
-            background: white;
+            background: rgba(31, 41, 55, 0.9);
             padding: 15px;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(59, 130, 246, 0.1);
         }
         
         .stat-value {
             font-size: 24px;
             font-weight: bold;
-            color: #667eea;
+            color: #60a5fa;
         }
         
         .stat-label {
             font-size: 14px;
-            color: #666;
+            color: #d1d5db;
             margin-top: 5px;
         }
     </style>
 </head>
 <body>
-    <a href="/ai" class="back-btn">← Back to AI Lab</a>
+    <header class="header">
+        <div class="header-container">
+            <div class="header-content">
+                <!-- Logo -->
+                <a href="/" class="logo">Tony Rodríguez</a>
+                
+                <!-- Desktop Navigation -->
+                <nav class="nav-desktop">
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <a href="/projects" class="nav-link">Projects</a>
+                    <a href="/resume" class="nav-link">Resume</a>
+                    <a href="/ai" class="nav-link active">AI Lab</a>
+                    <a href="/contact" class="nav-link">Contact</a>
+                </nav>
+                
+                <!-- Desktop Actions -->
+                <div class="nav-desktop">
+                    <div class="language-selector">
+                        <button class="language-btn">
+                            <span>🌐</span>
+                            <span id="current-lang">EN</span>
+                        </button>
+                        <div class="language-dropdown">
+                            <button class="language-option active" data-lang="en">EN</button>
+                            <button class="language-option" data-lang="es">ES</button>
+                            <button class="language-option" data-lang="ca">CAT</button>
+                        </div>
+                    </div>
+                    <a href="/contact" class="btn-primary">Hire Me</a>
+                </div>
+                
+                <!-- Mobile Menu -->
+                <div class="nav-mobile">
+                    <div class="language-selector">
+                        <button class="language-btn">
+                            <span>🌐</span>
+                            <span id="current-lang-mobile">EN</span>
+                        </button>
+                        <div class="language-dropdown">
+                            <button class="language-option active" data-lang="en">EN</button>
+                            <button class="language-option" data-lang="es">ES</button>
+                            <button class="language-option" data-lang="ca">CAT</button>
+                        </div>
+                    </div>
+                    <button class="mobile-menu-btn" id="mobile-menu-btn">
+                        <span id="menu-icon">☰</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <div class="mobile-menu" id="mobile-menu">
+                <nav class="mobile-nav">
+                    <a href="/" class="mobile-nav-link">Home</a>
+                    <a href="/about" class="mobile-nav-link">About</a>
+                    <a href="/projects" class="mobile-nav-link">Projects</a>
+                    <a href="/resume" class="mobile-nav-link">Resume</a>
+                    <a href="/ai" class="mobile-nav-link active">AI Lab</a>
+                    <a href="/contact" class="mobile-nav-link">Contact</a>
+                </nav>
+            </div>
+        </div>
+    </header>
     
-    <div class="container">
-        <h1>🎯 Tic-Tac-Toe AI</h1>
+    <div class="main-content">
+        <div class="container">
+            <h1>Tic-Tac-Toe AI</h1>
         <p class="subtitle">Challenge the unbeatable Minimax AI</p>
         
         <div class="game-container">
@@ -184,11 +520,12 @@
             </div>
         </div>
         
-        <p style="color: #666; font-size: 14px; margin-top: 30px;">
-            This AI uses Tony's original Minimax algorithm implementation converted from Python to JavaScript.
+        <p style="color: #9ca3af; font-size: 14px; margin-top: 30px;">
+            This AI uses my original Minimax algorithm implementation converted from Python to JavaScript. The algorithm evaluates all 255,168 possible game positions, making it impossible to beat (unless you use easy mode) - it will always force a draw or win against any opponent.
         </p>
+        </div>
     </div>
-
+    
     <script>
         // Tony's Tic Tac Toe AI Implementation (JavaScript version)
         
@@ -494,6 +831,189 @@
 
         // Initialize display
         updateDisplay();
+        
+        // Translations
+        const translations = {
+            en: {
+                title: 'Tic-Tac-Toe AI',
+                subtitle: 'Challenge the unbeatable Minimax AI',
+                description: 'This AI uses Tony\'s original Minimax algorithm implementation converted from Python to JavaScript. The algorithm evaluates all 255,168 possible game positions, making it impossible to beat (unless you use easy mode) - it will always force a draw or win against any opponent.',
+                stats: {
+                    wins: 'Wins',
+                    losses: 'Losses',
+                    draws: 'Draws'
+                },
+                game: {
+                    yourTurn: 'Your turn!',
+                    aiTurn: 'AI is thinking...',
+                    youWin: 'You win!',
+                    aiWins: 'AI wins!',
+                    draw: 'It\'s a draw!',
+                    newGame: 'New Game',
+                    resetStats: 'Reset Stats'
+                },
+                nav: {
+                    home: 'Home',
+                    about: 'About',
+                    projects: 'Projects',
+                    resume: 'Resume',
+                    aiLab: 'AI Lab',
+                    contact: 'Contact',
+                    hireMe: 'Hire Me'
+                }
+            },
+            es: {
+                title: 'Tic-Tac-Toe IA',
+                subtitle: 'Desafía a la IA imbatible con algoritmo Minimax',
+                description: 'Esta IA utiliza la implementación original del algoritmo Minimax de Tony convertida de Python a JavaScript. El algoritmo evalúa las 255,168 posiciones posibles del juego, haciéndola imposible de vencer (a menos que uses el modo fácil) - siempre forzará un empate o victoria contra cualquier oponente.',
+                stats: {
+                    wins: 'Victorias',
+                    losses: 'Derrotas',
+                    draws: 'Empates'
+                },
+                game: {
+                    yourTurn: '¡Tu turno!',
+                    aiTurn: 'La IA está pensando...',
+                    youWin: '¡Ganaste!',
+                    aiWins: '¡La IA gana!',
+                    draw: '¡Es un empate!',
+                    newGame: 'Nueva Partida',
+                    resetStats: 'Reiniciar Estadísticas'
+                },
+                nav: {
+                    home: 'Inicio',
+                    about: 'Acerca de',
+                    projects: 'Proyectos',
+                    resume: 'CV',
+                    aiLab: 'Laboratorio de IA',
+                    contact: 'Contacto',
+                    hireMe: 'Contrátame'
+                }
+            },
+            ca: {
+                title: 'Tic-Tac-Toe IA',
+                subtitle: 'Desafia la IA imbatible amb algoritme Minimax',
+                description: 'Aquesta IA utilitza la implementació original de l\'algoritme Minimax de Tony convertida de Python a JavaScript. L\'algoritme avalua les 255,168 posicions possibles del joc, fent-la impossible de vèncer (a menys que utilitzis el mode fàcil) - sempre forçarà un empat o victòria contra qualsevol oponent.',
+                stats: {
+                    wins: 'Victòries',
+                    losses: 'Derrotes',
+                    draws: 'Empats'
+                },
+                game: {
+                    yourTurn: 'El teu torn!',
+                    aiTurn: 'La IA està pensant...',
+                    youWin: 'Has guanyat!',
+                    aiWins: 'La IA guanya!',
+                    draw: 'És un empat!',
+                    newGame: 'Nova Partida',
+                    resetStats: 'Reiniciar Estadístiques'
+                },
+                nav: {
+                    home: 'Inici',
+                    about: 'Sobre mi',
+                    projects: 'Projectes',
+                    resume: 'CV',
+                    aiLab: 'Laboratori d\'IA',
+                    contact: 'Contacte',
+                    hireMe: 'Contracta\'m'
+                }
+            }
+        };
+        
+        // Language functions
+        function updateContent(language) {
+            const t = translations[language];
+            
+            // Update title and subtitle
+            document.querySelector('h1').textContent = t.title;
+            document.querySelector('.subtitle').textContent = t.subtitle;
+            
+            // Update description
+            document.querySelector('p[style*="color: #666"]').textContent = t.description;
+            
+            // Update navigation
+            document.querySelectorAll('.nav-link').forEach((link, index) => {
+                const navKeys = ['home', 'about', 'projects', 'resume', 'aiLab', 'contact'];
+                if (navKeys[index]) {
+                    link.textContent = t.nav[navKeys[index]];
+                }
+            });
+            
+            document.querySelectorAll('.mobile-nav-link').forEach((link, index) => {
+                const navKeys = ['home', 'about', 'projects', 'resume', 'aiLab', 'contact'];
+                if (navKeys[index]) {
+                    link.textContent = t.nav[navKeys[index]];
+                }
+            });
+            
+            // Update Hire Me button
+            document.querySelector('.btn-primary').textContent = t.nav.hireMe;
+            
+            // Update stats labels
+            document.querySelector('.stat:nth-child(1) .stat-label').textContent = t.stats.wins;
+            document.querySelector('.stat:nth-child(2) .stat-label').textContent = t.stats.losses;
+            document.querySelector('.stat:nth-child(3) .stat-label').textContent = t.stats.draws;
+            
+            // Update buttons
+            document.querySelector('.btn-secondary').textContent = t.game.newGame;
+            document.querySelector('.btn-outline').textContent = t.game.resetStats;
+        }
+        
+        // Header functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('open');
+                    menuIcon.textContent = mobileMenu.classList.contains('open') ? '✕' : '☰';
+                });
+            }
+            
+            // Language selector functionality
+            const languageOptions = document.querySelectorAll('.language-option');
+            const currentLangElements = document.querySelectorAll('#current-lang, #current-lang-mobile');
+            
+            // Get current language from localStorage or default to 'en'
+            let currentLanguage = localStorage.getItem('selected-language') || 'en';
+            
+            // Update language display
+            function updateLanguageDisplay() {
+                const langMap = { 'en': 'EN', 'es': 'ES', 'ca': 'CAT' };
+                currentLangElements.forEach(el => {
+                    el.textContent = langMap[currentLanguage] || 'EN';
+                });
+                
+                // Update active state
+                languageOptions.forEach(option => {
+                    option.classList.remove('active');
+                    if (option.dataset.lang === currentLanguage) {
+                        option.classList.add('active');
+                    }
+                });
+            }
+            
+            // Language change handler
+            languageOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    currentLanguage = this.dataset.lang;
+                    localStorage.setItem('selected-language', currentLanguage);
+                    updateLanguageDisplay();
+                    updateContent(currentLanguage);
+                    
+                    // Close mobile menu if open
+                    if (mobileMenu.classList.contains('open')) {
+                        mobileMenu.classList.remove('open');
+                        menuIcon.textContent = '☰';
+                    }
+                });
+            });
+            
+            // Initialize language display
+            updateLanguageDisplay();
+            
+            // Initialize content with current language
+            updateContent(currentLanguage);
+        });
     </script>
 </body>
 </html>
