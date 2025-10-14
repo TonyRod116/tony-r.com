@@ -53,6 +53,17 @@ export const translations = {
         github: 'GitHub',
         viewAll: 'View all projects'
       },
+      aiLab: {
+        title: 'AI Lab',
+        subtitle: 'Explore my AI experiments and algorithms',
+        description: 'Discover interactive demos showcasing my original AI implementations, from unbeatable Minimax algorithms to logical deduction systems.',
+        features: {
+          tictactoe: 'Unbeatable Tic-Tac-Toe AI',
+          minesweeper: 'Logical Minesweeper Solver',
+          algorithms: 'Original Algorithm Implementations'
+        },
+        cta: 'Explore AI Lab'
+      },
       cta: {
         title: 'Ready to build something incredible?',
         description: 'I have real experience building products that people use. From construction to software, I combine technical depth with strategic thinking.',
@@ -461,6 +472,17 @@ export const translations = {
         github: 'GitHub',
         viewAll: 'Ver todos los proyectos'
       },
+      aiLab: {
+        title: 'Lab de IA',
+        subtitle: 'Explora mis experimentos y algoritmos de IA',
+        description: 'Descubre demos interactivos que muestran mis implementaciones originales de IA, desde algoritmos Minimax imbatibles hasta sistemas de deducción lógica.',
+        features: {
+          tictactoe: 'IA Tres en Raya Imbatible',
+          minesweeper: 'Solucionador Lógico de Buscaminas',
+          algorithms: 'Implementaciones de Algoritmos Originales'
+        },
+        cta: 'Explorar Lab de IA'
+      },
       cta: {
         title: '¿Listo para construir algo increíble?',
         description: 'Tengo experiencia real construyendo productos que la gente usa. De la construcción al software, combino profundidad técnica con pensamiento estratégico.',
@@ -868,6 +890,17 @@ export const translations = {
         frontend: 'Frontend',
         github: 'GitHub',
         viewAll: 'Veure tots els projectes'
+      },
+      aiLab: {
+        title: 'Lab d\'IA',
+        subtitle: 'Explora els meus experiments i algoritmes d\'IA',
+        description: 'Descobreix demos interactius que mostren les meves implementacions originals d\'IA, des d\'algoritmes Minimax imbatibles fins a sistemes de deducció lògica.',
+        features: {
+          tictactoe: 'IA Tres en Ratlla Imbatible',
+          minesweeper: 'Solucionador Lògic de Buscamines',
+          algorithms: 'Implementacions d\'Algoritmes Originals'
+        },
+        cta: 'Explorar Lab d\'IA'
       },
       cta: {
         title: 'Llest per construir alguna cosa increïble?',

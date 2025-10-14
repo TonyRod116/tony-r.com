@@ -504,7 +504,7 @@ const Minesweeper = () => {
                     )}
 
                     <div className="flex justify-center mb-8">
-                        <div className="grid grid-cols-8 gap-1 bg-gray-800/50 p-4 rounded-xl max-w-fit">
+                        <div className="grid grid-cols-8 gap-0.5 sm:gap-1 bg-gray-800/50 p-2 sm:p-4 rounded-xl max-w-fit mx-auto">
                             {board.map((row, rowIndex) =>
                                 row.map((cell, colIndex) => (
                                     <button
@@ -514,7 +514,7 @@ const Minesweeper = () => {
                                             e.preventDefault();
                                             toggleFlag(rowIndex, colIndex);
                                         }}
-                                        className={`w-8 h-8 ${getCellColor(rowIndex, colIndex)} border border-gray-500 rounded flex items-center justify-center text-sm font-bold transition-all duration-200 hover:scale-105 ${getNumberColor(getNeighborMines(rowIndex, colIndex))}`}
+                                        className={`w-6 h-6 sm:w-8 sm:h-8 ${getCellColor(rowIndex, colIndex)} border border-gray-500 rounded flex items-center justify-center text-xs sm:text-sm font-bold transition-all duration-200 hover:scale-105 ${getNumberColor(getNeighborMines(rowIndex, colIndex))}`}
                                         disabled={gameOver || gameWon}
                                     >
                                         {getCellContent(rowIndex, colIndex)}
@@ -524,18 +524,18 @@ const Minesweeper = () => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-6 max-w-md mx-auto">
-                        <div className="bg-gray-800/50 p-4 rounded-xl text-center border border-blue-400/20">
-                            <div className="text-2xl font-bold text-blue-400">{stats.gamesPlayed}</div>
-                            <div className="text-sm text-gray-300">{t('aiLab.games.minesweeper.stats.games')}</div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-md mx-auto">
+                        <div className="bg-gray-800/50 p-3 sm:p-4 rounded-xl text-center border border-blue-400/20">
+                            <div className="text-xl sm:text-2xl font-bold text-blue-400">{stats.gamesPlayed}</div>
+                            <div className="text-xs sm:text-sm text-gray-300">{t('aiLab.games.minesweeper.stats.games')}</div>
                         </div>
-                        <div className="bg-gray-800/50 p-4 rounded-xl text-center border border-blue-400/20">
-                            <div className="text-2xl font-bold text-blue-400">{stats.aiMoves}</div>
-                            <div className="text-sm text-gray-300">{t('aiLab.games.minesweeper.stats.aiMoves')}</div>
+                        <div className="bg-gray-800/50 p-3 sm:p-4 rounded-xl text-center border border-blue-400/20">
+                            <div className="text-xl sm:text-2xl font-bold text-blue-400">{stats.aiMoves}</div>
+                            <div className="text-xs sm:text-sm text-gray-300">{t('aiLab.games.minesweeper.stats.aiMoves')}</div>
                         </div>
-                        <div className="bg-gray-800/50 p-4 rounded-xl text-center border border-blue-400/20">
-                            <div className="text-2xl font-bold text-blue-400">{stats.winRate}</div>
-                            <div className="text-sm text-gray-300">{t('aiLab.games.minesweeper.stats.winRate')}</div>
+                        <div className="bg-gray-800/50 p-3 sm:p-4 rounded-xl text-center border border-blue-400/20">
+                            <div className="text-xl sm:text-2xl font-bold text-blue-400">{stats.winRate}</div>
+                            <div className="text-xs sm:text-sm text-gray-300">{t('aiLab.games.minesweeper.stats.winRate')}</div>
                         </div>
                     </div>
                 </div>

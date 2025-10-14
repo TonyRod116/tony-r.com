@@ -311,13 +311,13 @@ const TicTacToe = () => {
                     </div>
 
                     <div className="flex justify-center mb-8">
-                        <div className="grid grid-cols-3 gap-2 bg-gray-800/50 p-4 rounded-xl">
+                        <div className="grid grid-cols-3 gap-1 sm:gap-2 bg-gray-800/50 p-2 sm:p-4 rounded-xl max-w-xs sm:max-w-none mx-auto">
                             {board.map((row, rowIndex) =>
                                 row.map((cell, colIndex) => (
                                     <button
                                         key={`${rowIndex}-${colIndex}`}
                                         onClick={() => makeMove(rowIndex, colIndex)}
-                                        className={`w-20 h-20 bg-gray-700/80 hover:bg-gray-600/80 border-2 border-blue-400/30 rounded-lg flex items-center justify-center text-3xl font-bold transition-all duration-200 hover:scale-105 ${getCellColor(cell)}`}
+                                        className={`w-16 h-16 sm:w-20 sm:h-20 bg-gray-700/80 hover:bg-gray-600/80 border-2 border-blue-400/30 rounded-lg flex items-center justify-center text-2xl sm:text-3xl font-bold transition-all duration-200 hover:scale-105 ${getCellColor(cell)}`}
                                         disabled={cell !== EMPTY || terminal(board)}
                                     >
                                         {cell}
@@ -327,22 +327,22 @@ const TicTacToe = () => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-4 gap-4 max-w-2xl mx-auto">
-                        <div className="bg-gray-800/50 p-4 rounded-xl text-center border border-blue-400/20">
-                            <div className="text-2xl font-bold text-blue-400">{stats.gamesPlayed}</div>
-                            <div className="text-sm text-gray-300">{t('aiLab.games.tictactoe.stats.games')}</div>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 max-w-2xl mx-auto">
+                        <div className="bg-gray-800/50 p-3 sm:p-4 rounded-xl text-center border border-blue-400/20">
+                            <div className="text-xl sm:text-2xl font-bold text-blue-400">{stats.gamesPlayed}</div>
+                            <div className="text-xs sm:text-sm text-gray-300">{t('aiLab.games.tictactoe.stats.games')}</div>
                         </div>
-                        <div className="bg-gray-800/50 p-4 rounded-xl text-center border border-blue-400/20">
-                            <div className="text-2xl font-bold text-blue-400">{stats.aiWins}</div>
-                            <div className="text-sm text-gray-300">{t('aiLab.games.tictactoe.stats.aiWins')}</div>
+                        <div className="bg-gray-800/50 p-3 sm:p-4 rounded-xl text-center border border-blue-400/20">
+                            <div className="text-xl sm:text-2xl font-bold text-blue-400">{stats.aiWins}</div>
+                            <div className="text-xs sm:text-sm text-gray-300">{t('aiLab.games.tictactoe.stats.aiWins')}</div>
                         </div>
-                        <div className="bg-gray-800/50 p-4 rounded-xl text-center border border-blue-400/20">
-                            <div className="text-2xl font-bold text-green-400">{stats.youWins}</div>
-                            <div className="text-sm text-gray-300">{t('aiLab.games.tictactoe.stats.youWins')}</div>
+                        <div className="bg-gray-800/50 p-3 sm:p-4 rounded-xl text-center border border-blue-400/20">
+                            <div className="text-xl sm:text-2xl font-bold text-green-400">{stats.youWins}</div>
+                            <div className="text-xs sm:text-sm text-gray-300">{t('aiLab.games.tictactoe.stats.youWins')}</div>
                         </div>
-                        <div className="bg-gray-800/50 p-4 rounded-xl text-center border border-blue-400/20">
-                            <div className="text-2xl font-bold text-blue-400">{stats.draws}</div>
-                            <div className="text-sm text-gray-300">{t('aiLab.games.tictactoe.stats.draws')}</div>
+                        <div className="bg-gray-800/50 p-3 sm:p-4 rounded-xl text-center border border-blue-400/20">
+                            <div className="text-xl sm:text-2xl font-bold text-blue-400">{stats.draws}</div>
+                            <div className="text-xs sm:text-sm text-gray-300">{t('aiLab.games.tictactoe.stats.draws')}</div>
                         </div>
                     </div>
                 </div>
