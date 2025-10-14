@@ -26,16 +26,17 @@ export default function AiLab() {
       status: 'completed',
       tech: ['JavaScript', 'Algorithm', 'Logic']
     },
-    {
-      id: 'six-degrees',
-      title: t('aiLab.projects.sixDegrees.title'),
-      description: t('aiLab.projects.sixDegrees.description'),
-      icon: Brain,
-      demoUrl: '/demos/six-degrees.html',
-      githubUrl: 'https://github.com/TonyRod116/AI-degrees-of-KB',
-      status: 'completed',
-      tech: ['JavaScript', 'Graph Theory', 'BFS']
-    }
+    // Temporarily hidden - Six Degrees of Kevin Bacon
+    // {
+    //   id: 'six-degrees',
+    //   title: t('aiLab.projects.sixDegrees.title'),
+    //   description: t('aiLab.projects.sixDegrees.description'),
+    //   icon: Brain,
+    //   demoUrl: '/demos/six-degrees.html',
+    //   githubUrl: 'https://github.com/TonyRod116/AI-degrees-of-KB',
+    //   status: 'completed',
+    //   tech: ['JavaScript', 'Graph Theory', 'BFS']
+    // }
   ]
 
   const containerVariants = {
@@ -79,7 +80,7 @@ export default function AiLab() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto"
         >
           {aiProjects.map((project, index) => {
             const IconComponent = project.icon
