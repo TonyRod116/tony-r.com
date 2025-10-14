@@ -1,0 +1,64 @@
+# CodeRabbit configuration for Tony's AI Games Portfolio
+language: javascript
+framework: react
+build_tool: vite
+
+# Files to include in review
+include:
+  - "src/**/*.{js,jsx}"
+  - "public/demos/**/*.{html,css,js}"
+  - "*.{json,md}"
+
+# Files to exclude from review
+exclude:
+  - "node_modules/**"
+  - "dist/**"
+  - "build/**"
+  - "*.log"
+  - ".git/**"
+
+# Custom rules for AI games
+custom_rules:
+  - name: "AI Algorithm Review"
+    pattern: "public/demos/**/*.html"
+    checks:
+      - "algorithm_efficiency"
+      - "game_logic_correctness"
+      - "user_experience"
+      - "performance_optimization"
+
+# React-specific rules
+react_rules:
+  - "component_structure"
+  - "hook_dependencies"
+  - "props_validation"
+  - "state_management"
+  - "accessibility"
+
+# JavaScript best practices
+javascript_rules:
+  - "code_quality"
+  - "security"
+  - "performance"
+  - "maintainability"
+
+# Game-specific configurations
+game_review:
+  tictactoe:
+    focus: ["minimax_algorithm", "game_state_management", "ui_responsiveness"]
+  minesweeper:
+    focus: ["logical_deduction", "ai_solving", "game_mechanics"]
+  six_degrees:
+    focus: ["bfs_algorithm", "data_structure_efficiency", "search_optimization"]
+
+# Review settings
+review_settings:
+  max_comments_per_file: 10
+  focus_on:
+    - "bug_prevention"
+    - "performance_improvements"
+    - "code_readability"
+    - "best_practices"
+  ignore_patterns:
+    - "typos"
+    - "minor_formatting"
