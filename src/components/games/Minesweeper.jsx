@@ -450,13 +450,13 @@ const Minesweeper = () => {
                 <div className="bg-white/10 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-8 border border-blue-200/20 dark:border-blue-400/20">
                     <div className="text-center mb-8">
                         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                            {currentT.title}
+                            {t('aiLab.games.minesweeper.title')}
                         </h1>
                         <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-                            {currentT.subtitle}
+                            {t('aiLab.games.minesweeper.subtitle')}
                         </p>
                         <p className="text-sm text-gray-500 dark:text-gray-400 max-w-3xl mx-auto">
-                            {currentT.description}
+                            {t('aiLab.games.minesweeper.description')}
                         </p>
                     </div>
 
@@ -465,7 +465,7 @@ const Minesweeper = () => {
                             onClick={newGame}
                             className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg"
                         >
-                            {currentT.newGame}
+                            {t('aiLab.games.minesweeper.newGame')}
                         </button>
                         <button
                             onClick={toggleAIMode}
@@ -475,7 +475,7 @@ const Minesweeper = () => {
                                     : 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white'
                             }`}
                         >
-                            {aiMode ? currentT.disableAI : currentT.enableAI}
+                            {aiMode ? t('aiLab.games.minesweeper.disableAI') : t('aiLab.games.minesweeper.enableAI')}
                         </button>
                         {aiMode && (
                             <>
@@ -483,13 +483,13 @@ const Minesweeper = () => {
                                     onClick={aiSolveStep}
                                     className="px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg"
                                 >
-                                    {currentT.aiSolveStep}
+                                    {t('aiLab.games.minesweeper.aiSolveStep')}
                                 </button>
                                 <button
                                     onClick={aiSolveAll}
                                     className="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg"
                                 >
-                                    {currentT.aiSolveAll}
+                                    {t('aiLab.games.minesweeper.aiSolveAll')}
                                 </button>
                             </>
                         )}
@@ -498,7 +498,7 @@ const Minesweeper = () => {
                     {(gameOver || gameWon) && (
                         <div className="text-center mb-6">
                             <div className={`text-2xl font-bold ${gameWon ? 'text-green-400' : 'text-red-400'}`}>
-                                {gameWon ? currentT.gameWon : currentT.gameOver}
+                                {gameWon ? t('aiLab.games.minesweeper.gameWon') : t('aiLab.games.minesweeper.gameOver')}
                             </div>
                         </div>
                     )}
@@ -527,15 +527,15 @@ const Minesweeper = () => {
                     <div className="grid grid-cols-3 gap-6 max-w-md mx-auto">
                         <div className="bg-gray-800/50 p-4 rounded-xl text-center border border-blue-400/20">
                             <div className="text-2xl font-bold text-blue-400">{stats.gamesPlayed}</div>
-                            <div className="text-sm text-gray-300">{currentT.stats.games}</div>
+                            <div className="text-sm text-gray-300">{t('aiLab.games.minesweeper.stats.games')}</div>
                         </div>
                         <div className="bg-gray-800/50 p-4 rounded-xl text-center border border-blue-400/20">
                             <div className="text-2xl font-bold text-blue-400">{stats.aiMoves}</div>
-                            <div className="text-sm text-gray-300">{currentT.stats.aiMoves}</div>
+                            <div className="text-sm text-gray-300">{t('aiLab.games.minesweeper.stats.aiMoves')}</div>
                         </div>
                         <div className="bg-gray-800/50 p-4 rounded-xl text-center border border-blue-400/20">
                             <div className="text-2xl font-bold text-blue-400">{stats.winRate}</div>
-                            <div className="text-sm text-gray-300">{currentT.stats.winRate}</div>
+                            <div className="text-sm text-gray-300">{t('aiLab.games.minesweeper.stats.winRate')}</div>
                         </div>
                     </div>
                 </div>

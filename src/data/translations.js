@@ -204,6 +204,64 @@ export const translations = {
         title: 'Interested in AI Collaboration?',
         description: 'Let\'s discuss how AI can enhance your projects or explore new possibilities together.',
         button: 'Let\'s Talk'
+      },
+      games: {
+        tictactoe: {
+          title: 'Tic-Tac-Toe AI',
+          subtitle: 'Challenge Tony\'s unbeatable Minimax algorithm',
+          description: 'This AI uses my original Minimax algorithm implementation converted from Python to JavaScript. The algorithm evaluates all 255,168 possible game positions, making it impossible to beat (unless you use easy mode) - it will always force a draw or win against any opponent.',
+          newGame: 'New Game',
+          easyMode: 'Easy Mode',
+          hardMode: 'Hard Mode',
+          yourTurn: 'Your turn!',
+          aiThinking: 'AI is thinking...',
+          youWin: 'You win!',
+          aiWins: 'AI wins!',
+          draw: 'It\'s a draw!',
+          stats: {
+            games: 'Games Played',
+            aiWins: 'AI Wins',
+            youWins: 'You Wins',
+            draws: 'Draws'
+          }
+        },
+        minesweeper: {
+          title: 'Minesweeper AI',
+          subtitle: 'Watch the AI solve Minesweeper puzzles using logical deduction',
+          description: 'This AI uses my original logical deduction implementation converted from Python to JavaScript. The algorithm analyzes patterns and probabilities to make safe moves and solve puzzles efficiently - it will solve whenever possible.',
+          newGame: 'New Game',
+          enableAI: 'Enable AI',
+          disableAI: 'Disable AI',
+          aiSolveStep: 'AI Solve Step',
+          aiSolveAll: 'AI Solve All',
+          gameOver: 'Game Over!',
+          gameWon: 'You Win!',
+          aiThinking: 'AI is thinking...',
+          stats: {
+            games: 'Games Played',
+            aiMoves: 'AI Moves',
+            winRate: 'Win Rate'
+          }
+        },
+        sixdegrees: {
+          title: 'Six Degrees of Kevin Bacon',
+          subtitle: 'Find connections between actors using breadth-first search',
+          description: 'This AI uses my original breadth-first search implementation converted from Python to JavaScript. The algorithm finds the shortest path between any two actors through their shared movies.',
+          firstPerson: 'First person\'s name:',
+          secondPerson: 'Second person\'s name:',
+          findPath: 'Find Path',
+          loading: 'Loading data...',
+          searching: 'Searching connection...',
+          noConnection: 'No connection found between these people.',
+          degrees: 'degrees of separation.',
+          found: 'Found!',
+          starring: 'starred in',
+          stats: {
+            people: 'People in Database',
+            movies: 'Movies in Database',
+            connections: 'Connections Found'
+          }
+        }
       }
     },
 
@@ -554,6 +612,64 @@ export const translations = {
         title: '¿Interesado en Colaboración de IA?',
         description: 'Hablemos sobre cómo la IA puede mejorar tus proyectos o exploremos nuevas posibilidades juntos.',
         button: 'Hablemos'
+      },
+      games: {
+        tictactoe: {
+          title: 'IA Tres en Raya',
+          subtitle: 'Desafía el algoritmo Minimax imbatible de Tony',
+          description: 'Esta IA usa mi implementación original del algoritmo Minimax convertida de Python a JavaScript. El algoritmo evalúa todas las 255,168 posiciones posibles del juego, haciéndolo imposible de vencer (a menos que uses el modo fácil) - siempre forzará un empate o victoria contra cualquier oponente.',
+          newGame: 'Nuevo Juego',
+          easyMode: 'Modo Fácil',
+          hardMode: 'Modo Difícil',
+          yourTurn: '¡Tu turno!',
+          aiThinking: 'La IA está pensando...',
+          youWin: '¡Ganaste!',
+          aiWins: '¡La IA gana!',
+          draw: '¡Es un empate!',
+          stats: {
+            games: 'Juegos Jugados',
+            aiWins: 'Victorias IA',
+            youWins: 'Tus Victorias',
+            draws: 'Empates'
+          }
+        },
+        minesweeper: {
+          title: 'IA Buscaminas',
+          subtitle: 'Observa cómo la IA resuelve puzzles de Buscaminas usando deducción lógica',
+          description: 'Esta IA usa mi implementación original de deducción lógica convertida de Python a JavaScript. El algoritmo analiza patrones y probabilidades para hacer movimientos seguros y resolver puzzles eficientemente - resolverá siempre que pueda.',
+          newGame: 'Nuevo Juego',
+          enableAI: 'Activar IA',
+          disableAI: 'Desactivar IA',
+          aiSolveStep: 'IA Resolver Paso',
+          aiSolveAll: 'IA Resolver Todo',
+          gameOver: '¡Juego Terminado!',
+          gameWon: '¡Ganaste!',
+          aiThinking: 'La IA está pensando...',
+          stats: {
+            games: 'Juegos Jugados',
+            aiMoves: 'Movimientos IA',
+            winRate: 'Tasa de Éxito'
+          }
+        },
+        sixdegrees: {
+          title: 'Seis Grados de Kevin Bacon',
+          subtitle: 'Encuentra conexiones entre actores usando búsqueda en amplitud',
+          description: 'Esta IA usa mi implementación original de búsqueda en amplitud convertida de Python a JavaScript. El algoritmo encuentra el camino más corto entre dos actores a través de sus películas compartidas.',
+          firstPerson: 'Nombre de la primera persona:',
+          secondPerson: 'Nombre de la segunda persona:',
+          findPath: 'Encontrar Camino',
+          loading: 'Cargando datos...',
+          searching: 'Buscando conexión...',
+          noConnection: 'No se encontró conexión entre estas personas.',
+          degrees: 'grados de separación.',
+          found: '¡Encontrado!',
+          starring: 'protagonizó',
+          stats: {
+            people: 'Personas en Base de Datos',
+            movies: 'Películas en Base de Datos',
+            connections: 'Conexiones Encontradas'
+          }
+        }
       }
     },
 
@@ -904,6 +1020,64 @@ export const translations = {
         title: '¿Interessat en Col·laboració d\'IA?',
         description: 'Parlem sobre com la IA pot millorar els teus projectes o explorem noves possibilitats junts.',
         button: 'Parlem'
+      },
+      games: {
+        tictactoe: {
+          title: 'IA Tres en Ratlla',
+          subtitle: 'Desafia l\'algoritme Minimax imbatible de Tony',
+          description: 'Aquesta IA usa la meva implementació original de l\'algoritme Minimax convertida de Python a JavaScript. L\'algoritme avalua totes les 255,168 posicions possibles del joc, fent-lo impossible de vèncer (a menys que usis el mode fàcil) - sempre forçarà un empat o victòria contra qualsevol oponent.',
+          newGame: 'Nou Joc',
+          easyMode: 'Mode Fàcil',
+          hardMode: 'Mode Difícil',
+          yourTurn: 'El teu torn!',
+          aiThinking: 'L\'IA està pensant...',
+          youWin: 'Has guanyat!',
+          aiWins: 'L\'IA guanya!',
+          draw: 'És un empat!',
+          stats: {
+            games: 'Jocs Jugats',
+            aiWins: 'Victòries IA',
+            youWins: 'Les Teves Victòries',
+            draws: 'Empats'
+          }
+        },
+        minesweeper: {
+          title: 'IA Buscamines',
+          subtitle: 'Observa com l\'IA resol trencaclosques de Buscamines usant deducció lògica',
+          description: 'Aquesta IA usa la meva implementació original de deducció lògica convertida de Python a JavaScript. L\'algoritme analitza patrons i probabilitats per fer moviments segurs i resoldre trencaclosques eficientment - resoldrà sempre que pugui.',
+          newGame: 'Nou Joc',
+          enableAI: 'Activar IA',
+          disableAI: 'Desactivar IA',
+          aiSolveStep: 'IA Resoldre Pas',
+          aiSolveAll: 'IA Resoldre Tot',
+          gameOver: 'Joc Acabat!',
+          gameWon: 'Has guanyat!',
+          aiThinking: 'L\'IA està pensant...',
+          stats: {
+            games: 'Jocs Jugats',
+            aiMoves: 'Moviments IA',
+            winRate: 'Taxa d\'Èxit'
+          }
+        },
+        sixdegrees: {
+          title: 'Sis Graus de Kevin Bacon',
+          subtitle: 'Troba connexions entre actors usant cerca en amplada',
+          description: 'Aquesta IA usa la meva implementació original de cerca en amplada convertida de Python a JavaScript. L\'algoritme troba el camí més curt entre dos actors a través de les seves pel·lícules compartides.',
+          firstPerson: 'Nom de la primera persona:',
+          secondPerson: 'Nom de la segona persona:',
+          findPath: 'Trobar Camí',
+          loading: 'Carregant dades...',
+          searching: 'Cercant connexió...',
+          noConnection: 'No s\'ha trobat connexió entre aquestes persones.',
+          degrees: 'graus de separació.',
+          found: 'Trobat!',
+          starring: 'va protagonitzar',
+          stats: {
+            people: 'Persones a Base de Dades',
+            movies: 'Pel·lícules a Base de Dades',
+            connections: 'Connexions Trobades'
+          }
+        }
       }
     },
 

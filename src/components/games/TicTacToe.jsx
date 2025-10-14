@@ -128,6 +128,7 @@ const TicTacToe = () => {
     const [stats, setStats] = useState({
         gamesPlayed: parseInt(localStorage.getItem('ttt_games') || '0'),
         aiWins: parseInt(localStorage.getItem('ttt_ai_wins') || '0'),
+        youWins: parseInt(localStorage.getItem('ttt_you_wins') || '0'),
         draws: parseInt(localStorage.getItem('ttt_draws') || '0')
     });
 
@@ -199,24 +200,27 @@ const TicTacToe = () => {
         const gameWinner = winner(board);
         if (gameWinner) {
             if (gameWinner === X) {
-                setGameStatus(currentT.youWin);
-                // Player wins - no need to update AI stats
+                setGameStatus(t('aiLab.games.tictactoe.youWin'));
+                // Player wins - update stats
+                const newStats = { ...stats, youWins: stats.youWins + 1 };
+                setStats(newStats);
+                localStorage.setItem('ttt_you_wins', newStats.youWins.toString());
             } else {
-                setGameStatus(currentT.aiWins);
+                setGameStatus(t('aiLab.games.tictactoe.aiWins'));
                 // AI wins - update stats
                 const newStats = { ...stats, aiWins: stats.aiWins + 1 };
                 setStats(newStats);
                 localStorage.setItem('ttt_ai_wins', newStats.aiWins.toString());
             }
         } else if (terminal(board)) {
-            setGameStatus(currentT.draw);
+            setGameStatus(t('aiLab.games.tictactoe.draw'));
             // Draw - update stats
             const newStats = { ...stats, draws: stats.draws + 1 };
             setStats(newStats);
             localStorage.setItem('ttt_draws', newStats.draws.toString());
         } else {
             const currentPlayer = player(board);
-            setGameStatus(currentPlayer === X ? currentT.yourTurn : currentT.aiThinking);
+            setGameStatus(currentPlayer === X ? t('aiLab.games.tictactoe.yourTurn') : t('aiLab.games.tictactoe.aiThinking'));
         }
     };
 
@@ -246,7 +250,7 @@ const TicTacToe = () => {
 
     const newGame = () => {
         setBoard(initial_state());
-        setGameStatus(currentT.yourTurn);
+        setGameStatus(t('aiLab.games.tictactoe.yourTurn'));
         
         // Update games played counter
         const newStats = { ...stats, gamesPlayed: stats.gamesPlayed + 1 };
@@ -271,13 +275,13 @@ const TicTacToe = () => {
                 <div className="bg-white/10 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-8 border border-blue-200/20 dark:border-blue-400/20">
                     <div className="text-center mb-8">
                         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                            {currentT.title}
+                            {t('aiLab.games.tictactoe.title')}
                         </h1>
                         <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-                            {currentT.subtitle}
+                            {t('aiLab.games.tictactoe.subtitle')}
                         </p>
                         <p className="text-sm text-gray-500 dark:text-gray-400 max-w-3xl mx-auto">
-                            {currentT.description}
+                            {t('aiLab.games.tictactoe.description')}
                         </p>
                     </div>
 
@@ -286,7 +290,7 @@ const TicTacToe = () => {
                             onClick={newGame}
                             className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg"
                         >
-                            {currentT.newGame}
+                            {t('aiLab.games.tictactoe.newGame')}
                         </button>
                         <button
                             onClick={toggleMode}
@@ -296,7 +300,7 @@ const TicTacToe = () => {
                                     : 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white'
                             }`}
                         >
-                            {isHardMode ? currentT.easyMode : currentT.hardMode}
+                            {isHardMode ? t('aiLab.games.tictactoe.easyMode') : t('aiLab.games.tictactoe.hardMode')}
                         </button>
                     </div>
 
@@ -323,18 +327,22 @@ const TicTacToe = () => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-6 max-w-md mx-auto">
+                    <div className="grid grid-cols-4 gap-4 max-w-2xl mx-auto">
                         <div className="bg-gray-800/50 p-4 rounded-xl text-center border border-blue-400/20">
                             <div className="text-2xl font-bold text-blue-400">{stats.gamesPlayed}</div>
-                            <div className="text-sm text-gray-300">{currentT.stats.games}</div>
+                            <div className="text-sm text-gray-300">{t('aiLab.games.tictactoe.stats.games')}</div>
                         </div>
                         <div className="bg-gray-800/50 p-4 rounded-xl text-center border border-blue-400/20">
                             <div className="text-2xl font-bold text-blue-400">{stats.aiWins}</div>
-                            <div className="text-sm text-gray-300">{currentT.stats.aiWins}</div>
+                            <div className="text-sm text-gray-300">{t('aiLab.games.tictactoe.stats.aiWins')}</div>
+                        </div>
+                        <div className="bg-gray-800/50 p-4 rounded-xl text-center border border-blue-400/20">
+                            <div className="text-2xl font-bold text-green-400">{stats.youWins}</div>
+                            <div className="text-sm text-gray-300">{t('aiLab.games.tictactoe.stats.youWins')}</div>
                         </div>
                         <div className="bg-gray-800/50 p-4 rounded-xl text-center border border-blue-400/20">
                             <div className="text-2xl font-bold text-blue-400">{stats.draws}</div>
-                            <div className="text-sm text-gray-300">{currentT.stats.draws}</div>
+                            <div className="text-sm text-gray-300">{t('aiLab.games.tictactoe.stats.draws')}</div>
                         </div>
                     </div>
                 </div>
