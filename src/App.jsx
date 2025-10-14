@@ -11,6 +11,7 @@ import About from './pages/About'
 import Projects from './pages/Projects'
 import Contact from './pages/Contact'
 import Resume from './pages/Resume'
+import AiLab from './pages/AiLab'
 
 function App() {
   // Prevenir overflow horizontal globalmente y forzar modo oscuro
@@ -42,6 +43,7 @@ function App() {
               <Route path="/projects" element={<Projects />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/resume" element={<Resume />} />
+              <Route path="/ai" element={<AiLab />} />
             </Routes>
           </main>
           <Footer />

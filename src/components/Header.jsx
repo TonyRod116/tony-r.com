@@ -7,11 +7,12 @@ import { useLanguage } from '../hooks/useLanguage.jsx'
 import LanguageSelector from './LanguageSelector'
 
 const navigation = [
-  { name: 'Home', href: '/' },
-  { name: 'About', href: '/about' },
-  { name: 'Projects', href: '/projects' },
-  { name: 'Resume', href: '/resume' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'home', href: '/' },
+  { name: 'about', href: '/about' },
+  { name: 'projects', href: '/projects' },
+  { name: 'resume', href: '/resume' },
+  { name: 'aiLab', href: '/ai' },
+  { name: 'contact', href: '/contact' },
 ]
 
 export default function Header() {
@@ -33,7 +34,7 @@ export default function Header() {
 
   const translatedNavigation = navigation.map(item => ({
     ...item,
-    name: t(`nav.${item.name.toLowerCase()}`)
+    name: t(`nav.${item.name}`)
   }))
 
   return (

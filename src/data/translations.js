@@ -7,7 +7,8 @@ export const translations = {
       projects: 'Projects',
       resume: 'Resume',
       contact: 'Contact',
-      hireMe: 'Hire Me'
+      hireMe: 'Hire Me',
+      aiLab: 'AI Lab'
     },
     
     // Home Page
@@ -176,6 +177,36 @@ export const translations = {
       }
     },
 
+    // AI Lab Page
+    aiLab: {
+      title: 'AI Lab',
+      subtitle: 'Exploring artificial intelligence through interactive projects and experiments.',
+      playDemo: 'Play Demo',
+      projects: {
+        ttt: {
+          title: 'Tic-Tac-Toe AI',
+          description: 'Unbeatable AI opponent using minimax algorithm. Challenge yourself against perfect play!'
+        },
+        minesweeper: {
+          title: 'Minesweeper Solver',
+          description: 'AI that solves Minesweeper puzzles using logical deduction and probability analysis.'
+        },
+        sixDegrees: {
+          title: 'Six Degrees of Separation',
+          description: 'Find the shortest path between any two people using graph theory and API integration.'
+        }
+      },
+      comingSoon: {
+        title: 'More AI Projects Coming Soon',
+        description: 'I\'m constantly working on new AI experiments. Stay tuned for computer vision, NLP, and more!'
+      },
+      cta: {
+        title: 'Interested in AI Collaboration?',
+        description: 'Let\'s discuss how AI can enhance your projects or explore new possibilities together.',
+        button: 'Let\'s Talk'
+      }
+    },
+
     // Footer
     footer: {
       description: 'I build products that are understood and used. Software engineer and founder with real construction experience.',
@@ -326,7 +357,8 @@ export const translations = {
       projects: 'Proyectos',
       resume: 'CV',
       contact: 'Contacto',
-      hireMe: 'Contrátame'
+      hireMe: 'Contrátame',
+      aiLab: 'Laboratorio de IA'
     },
     
     // Home Page
@@ -495,6 +527,36 @@ export const translations = {
       }
     },
 
+    // AI Lab Page
+    aiLab: {
+      title: 'Laboratorio de IA',
+      subtitle: 'Explorando inteligencia artificial a través de proyectos interactivos y experimentos.',
+      playDemo: 'Jugar Demo',
+      projects: {
+        ttt: {
+          title: 'IA de Tres en Raya',
+          description: 'Oponente de IA imbatible usando algoritmo minimax. ¡Desafíate contra el juego perfecto!'
+        },
+        minesweeper: {
+          title: 'Resolvedor de Buscaminas',
+          description: 'IA que resuelve puzzles de Buscaminas usando deducción lógica y análisis de probabilidades.'
+        },
+        sixDegrees: {
+          title: 'Seis Grados de Separación',
+          description: 'Encuentra el camino más corto entre dos personas usando teoría de grafos e integración de API.'
+        }
+      },
+      comingSoon: {
+        title: 'Más Proyectos de IA Próximamente',
+        description: 'Estoy trabajando constantemente en nuevos experimentos de IA. ¡Mantente atento para visión por computadora, NLP y más!'
+      },
+      cta: {
+        title: '¿Interesado en Colaboración de IA?',
+        description: 'Hablemos sobre cómo la IA puede mejorar tus proyectos o exploremos nuevas posibilidades juntos.',
+        button: 'Hablemos'
+      }
+    },
+
     // Footer
     footer: {
       description: 'Construyo productos que se entienden y se usan. Ingeniero de software y fundador con experiencia real en construcción.',
@@ -645,7 +707,8 @@ export const translations = {
       projects: 'Projectes',
       resume: 'CV',
       contact: 'Contacte',
-      hireMe: 'Contracta\'m'
+      hireMe: 'Contracta\'m',
+      aiLab: 'Laboratori d\'IA'
     },
     
     // Home Page
@@ -811,6 +874,36 @@ export const translations = {
             'Optimització de rendiment per a backtests llargs'
           ]
         }
+      }
+    },
+
+    // AI Lab Page
+    aiLab: {
+      title: 'Laboratori d\'IA',
+      subtitle: 'Explorant intel·ligència artificial a través de projectes interactius i experiments.',
+      playDemo: 'Jugar Demo',
+      projects: {
+        ttt: {
+          title: 'IA de Tres en Ratlla',
+          description: 'Oponent d\'IA imbatible usant algorisme minimax. ¡Desafia\'t contra el joc perfecte!'
+        },
+        minesweeper: {
+          title: 'Resolvedor de Buscamines',
+          description: 'IA que resol puzzles de Buscamines usant deducció lògica i anàlisi de probabilitats.'
+        },
+        sixDegrees: {
+          title: 'Sis Graus de Separació',
+          description: 'Troba el camí més curt entre dues persones usant teoria de grafs i integració d\'API.'
+        }
+      },
+      comingSoon: {
+        title: 'Més Projectes d\'IA Properament',
+        description: 'Estic treballant constantment en nous experiments d\'IA. ¡Mantingues-te atent per a visió per computadora, NLP i més!'
+      },
+      cta: {
+        title: '¿Interessat en Col·laboració d\'IA?',
+        description: 'Parlem sobre com la IA pot millorar els teus projectes o explorem noves possibilitats junts.',
+        button: 'Parlem'
       }
     },
 
