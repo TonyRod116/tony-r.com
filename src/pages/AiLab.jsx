@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { ExternalLink, Github, Play, Brain, Zap, Target } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { useLanguage } from '../hooks/useLanguage.jsx'
 
 export default function AiLab() {
@@ -11,7 +12,7 @@ export default function AiLab() {
       title: t('aiLab.projects.ttt.title'),
       description: t('aiLab.projects.ttt.description'),
       icon: Target,
-      demoUrl: '/demos/tictactoe.html',
+      demoUrl: '/ai/tictactoe',
       githubUrl: 'https://github.com/TonyRod116/Ai-Tic-Tac-Toe',
       status: 'completed',
       tech: ['JavaScript', 'Minimax', 'AI']
@@ -21,18 +22,18 @@ export default function AiLab() {
       title: t('aiLab.projects.minesweeper.title'),
       description: t('aiLab.projects.minesweeper.description'),
       icon: Zap,
-      demoUrl: '/demos/minesweeper.html',
+      demoUrl: '/ai/minesweeper',
       githubUrl: 'https://github.com/TonyRod116/Ai-Minesweeper',
       status: 'completed',
       tech: ['JavaScript', 'Algorithm', 'Logic']
-    },
+    }
     // Temporarily hidden - Six Degrees of Kevin Bacon
     // {
     //   id: 'six-degrees',
     //   title: t('aiLab.projects.sixDegrees.title'),
     //   description: t('aiLab.projects.sixDegrees.description'),
     //   icon: Brain,
-    //   demoUrl: '/demos/six-degrees.html',
+    //   demoUrl: '/ai/sixdegrees',
     //   githubUrl: 'https://github.com/TonyRod116/AI-degrees-of-KB',
     //   status: 'completed',
     //   tech: ['JavaScript', 'Graph Theory', 'BFS']
@@ -120,15 +121,17 @@ export default function AiLab() {
 
                 {/* Actions */}
                 <div className="flex gap-3">
-                  <a
-                    href={project.demoUrl}
+                  <Link
+                    to={project.demoUrl}
                     className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-2"
                   >
                     <Play className="h-4 w-4" />
                     {t('aiLab.playDemo')}
-                  </a>
+                  </Link>
                   <a
                     href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-all duration-200 flex items-center justify-center"
                   >
                     <Github className="h-4 w-4" />

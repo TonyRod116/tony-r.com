@@ -358,7 +358,7 @@ export const translations = {
       resume: 'CV',
       contact: 'Contacto',
       hireMe: 'Contrátame',
-      aiLab: 'Laboratorio de IA'
+      aiLab: 'Lab de IA'
     },
     
     // Home Page
@@ -708,7 +708,7 @@ export const translations = {
       resume: 'CV',
       contact: 'Contacte',
       hireMe: 'Contracta\'m',
-      aiLab: 'Laboratori d\'IA'
+      aiLab: 'Lab d\'IA'
     },
     
     // Home Page

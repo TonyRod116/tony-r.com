@@ -12,6 +12,9 @@ import Projects from './pages/Projects'
 import Contact from './pages/Contact'
 import Resume from './pages/Resume'
 import AiLab from './pages/AiLab'
+import TicTacToe from './components/games/TicTacToe'
+import Minesweeper from './components/games/Minesweeper'
+import SixDegrees from './components/games/SixDegrees'
 
 function App() {
   // Prevenir overflow horizontal globalmente y forzar modo oscuro
@@ -44,6 +47,9 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/resume" element={<Resume />} />
               <Route path="/ai" element={<AiLab />} />
+              <Route path="/ai/tictactoe" element={<TicTacToe />} />
+              <Route path="/ai/minesweeper" element={<Minesweeper />} />
+              <Route path="/ai/sixdegrees" element={<SixDegrees />} />
             </Routes>
           </main>
           <Footer />
