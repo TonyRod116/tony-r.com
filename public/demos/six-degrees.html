@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Six Degrees of Kevin Bacon - Tony Rodríguez</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .game-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        
+        .form-group {
+            margin: 20px 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .result {
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        
+        .path {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .actor {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .movie {
+            background: #f39c12;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .arrow {
+            color: #666;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .stat {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+        }
+        
+        .info {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #3498db;
+        }
+        
+        .info {
+            background: #e7f3ff;
+            color: #0066cc;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #0066cc;
+        }
+        
+        .suggestions {
+            background: #f0f8ff;
+            color: #2c5aa0;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #2c5aa0;
+        }
+        
+        .suggestion-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .suggestion-btn {
+            background: #2c5aa0;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        .suggestion-btn:hover {
+            background: #1e3d6f;
+        }
+    </style>
+</head>
+<body>
+    <a href="/ai" class="back-btn">← Back to AI Lab</a>
+    
+    <div class="container">
+        <h1>🎬 Six Degrees of Kevin Bacon</h1>
+        <p class="subtitle">Find the shortest path between any two actors using graph theory</p>
+        
+        <div class="game-container">
+            <div class="form-group">
+                <label for="actor1">Starting Actor:</label>
+                <input type="text" id="actor1" placeholder="e.g., Tom Hanks" value="Tom Hanks">
+            </div>
+            
+            <div class="form-group">
+                <label for="actor2">Target Actor:</label>
+                <input type="text" id="actor2" placeholder="e.g., Kevin Bacon" value="Kevin Bacon">
+            </div>
+            
+            <button onclick="findPath()" id="findBtn">Find Path</button>
+            <button onclick="randomActors()">Random Actors</button>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Analyzing connections...</p>
+            </div>
+            
+            <div class="result" id="result" style="display: none;">
+                <h3>Connection Found!</h3>
+                <div class="path" id="path"></div>
+                <p id="pathInfo"></p>
+            </div>
+            
+            <div class="info">
+                <strong>How it works:</strong> This AI uses Tony's original BFS implementation converted from Python to JavaScript. 
+                It uses the same data structures (names, people, movies) and algorithms as the original CSV-based version.
+            </div>
+            
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value" id="searches">0</div>
+                    <div class="stat-label">Searches</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="avgPath">0</div>
+                    <div class="stat-label">Avg Path Length</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="shortestPath">∞</div>
+                    <div class="stat-label">Shortest Path</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tony's Six Degrees of Kevin Bacon Implementation (JavaScript version)
+        
+        // Maps names to a set of corresponding person_ids
+        const names = {};
+        
+        // Maps person_ids to a dictionary of: name, birth, movies (a set of movie_ids)
+        const people = {};
+        
+        // Maps movie_ids to a dictionary of: title, year, stars (a set of person_ids)
+        const movies = {};
+        
+        let stats = { searches: 0, totalPathLength: 0, shortestPath: Infinity };
+        
+        // Node class for BFS
+        class Node {
+            constructor(state, parent, action) {
+                this.state = state;
+                this.parent = parent;
+                this.action = action;
+            }
+        }
+        
+        // Queue Frontier for BFS
+        class QueueFrontier {
+            constructor() {
+                this.frontier = [];
+            }
+            
+            add(node) {
+                this.frontier.push(node);
+            }
+            
+            remove() {
+                if (this.empty()) {
+                    throw new Error("Empty frontier");
+                }
+                return this.frontier.shift();
+            }
+            
+            empty() {
+                return this.frontier.length === 0;
+            }
+        }
+        
+        // Load sample data (simplified version of your CSV data)
+        async function loadData() {
+            // Show loading indicator
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('findBtn').disabled = true;
+            
+            try {
+                console.log('Loading people data...');
+                const peopleResponse = await fetch('/demos/data/people.json');
+                const peopleData = await peopleResponse.json();
+                
+                console.log(`Loaded ${peopleData.length} people`);
+                
+                // Process people data
+                for (const person of peopleData) {
+                    const id = person.id;
+                    const name = person.name;
+                    const birth = person.birth || '';
+                    
+                    people[id] = {
+                        name: name,
+                        birth: birth,
+                        movies: new Set()
+                    };
+                    
+                    if (!names[name.toLowerCase()]) {
+                        names[name.toLowerCase()] = new Set();
+                    }
+                    names[name.toLowerCase()].add(id);
+                }
+                
+                console.log('Loading movies data...');
+                const moviesResponse = await fetch('/demos/data/movies.json');
+                const moviesData = await moviesResponse.json();
+                
+                console.log(`Loaded ${moviesData.length} movies`);
+                
+                // Process movies data
+                for (const movie of moviesData) {
+                    const id = movie.id;
+                    const title = movie.title;
+                    const year = movie.year || '';
+                    
+                    movies[id] = {
+                        title: title,
+                        year: year,
+                        stars: new Set()
+                    };
+                }
+                
+                console.log('Loading stars data...');
+                const starsResponse = await fetch('/demos/data/stars.json');
+                const starsData = await starsResponse.json();
+                
+                console.log(`Loaded ${starsData.length} star connections`);
+                
+                // Process stars data
+                for (const star of starsData) {
+                    const personId = star.person_id;
+                    const movieId = star.movie_id;
+                    
+                    if (people[personId] && movies[movieId]) {
+                        people[personId].movies.add(movieId);
+                        movies[movieId].stars.add(personId);
+                    }
+                }
+                
+                console.log('Data loaded successfully!');
+                console.log(`Final: ${Object.keys(people).length} people and ${Object.keys(movies).length} movies`);
+                
+                // Hide loading indicator and enable button
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('findBtn').disabled = false;
+                
+                // Show success message
+                const resultElement = document.getElementById('result');
+                resultElement.innerHTML = `<div class="success">Database loaded: ${Object.keys(people).length} people, ${Object.keys(movies).length} movies</div>`;
+                resultElement.style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('findBtn').disabled = false;
+                alert('Error loading database. Please refresh the page.');
+            }
+        } people`);
+                
+                // Process people data
+                for (const person of peopleData) {
+                    const id = person.id;
+                    const name = person.name;
+                    const birth = person.birth || '';
+                    
+                    people[id] = {
+                        name: name,
+                        birth: birth,
+                        movies: new Set()
+                    };
+                    
+                    if (!names[name.toLowerCase()]) {
+                        names[name.toLowerCase()] = new Set();
+                    }
+                    names[name.toLowerCase()].add(id);
+                }
+                
+                console.log('Loading movies data...');
+                const moviesResponse = await fetch('/demos/data/movies.json');
+                const moviesData = await moviesResponse.json();
+                
+                console.log(`Loaded ${moviesData.length} movies`);
+                
+                // Process movies data
+                for (const movie of moviesData) {
+                    const id = movie.id;
+                    const title = movie.title;
+                    const year = movie.year || '';
+                    
+                    movies[id] = {
+                        title: title,
+                        year: year,
+                        stars: new Set()
+                    };
+                }
+                
+                console.log('Loading stars data...');
+                const starsResponse = await fetch('/demos/data/stars.json');
+                const starsData = await starsResponse.json();
+                
+                console.log(`Loaded ${starsData.length} star connections`);
+                
+                // Process stars data
+                for (const star of starsData) {
+                    const personId = star.person_id;
+                    const movieId = star.movie_id;
+                    
+                    if (people[personId] && movies[movieId]) {
+                        people[personId].movies.add(movieId);
+                        movies[movieId].stars.add(personId);
+                    }
+                }
+                
+                console.log('Data loaded successfully!');
+                console.log(`Final: ${Object.keys(people).length} people and ${Object.keys(movies).length} movies`);
+                
+                // Hide loading indicator and enable button
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('findBtn').disabled = false;
+                
+                // Show success message
+                const resultElement = document.getElementById('result');
+                resultElement.innerHTML = `<div class="success">Database loaded: ${Object.keys(people).length} people, ${Object.keys(movies).length} movies</div>`;
+                resultElement.style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('findBtn').disabled = false;
+                alert('Error loading database. Please refresh the page.');
+            }
+        }
+        
+        // Tony's shortest_path function converted to JavaScript
+        function shortestPath(source, target) {
+            console.log('Starting shortestPath with source:', source, 'target:', target);
+            
+            // Handle edge case: source and target are the same person
+            if (source === target) {
+                console.log('Source and target are the same');
+                return [];
+            }
+            
+            // Initialize frontier with source node
+            const frontier = new QueueFrontier();
+            const startNode = new Node(source, null, null);
+            frontier.add(startNode);
+            
+            // Keep track of explored states
+            const explored = new Set();
+            
+            // Keep track of states in frontier to avoid duplicates
+            const frontierStates = new Set([source]);
+            
+            let iterations = 0;
+            while (true) {
+                iterations++;
+                if (iterations > 1000) {
+                    console.log('Too many iterations, stopping');
+                    return null;
+                }
+                
+                // If frontier is empty, no solution exists
+                if (frontier.empty()) {
+                    console.log('Frontier is empty, no solution');
+                    return null;
+                }
+                
+                // Remove node from frontier
+                const node = frontier.remove();
+                explored.add(node.state);
+                
+                console.log(`Iteration ${iterations}: exploring node`, node.state);
+                
+                // Get neighbors (movie_id, person_id) pairs
+                const neighbors = neighborsForPerson(node.state);
+                
+                for (const [movieId, personId] of neighbors) {
+                    // Skip if already explored or in frontier
+                    if (explored.has(personId) || frontierStates.has(personId)) {
+                        continue;
+                    }
+                    
+                    // Create child node
+                    const childNode = new Node(personId, node, [movieId, personId]);
+                    
+                    // Check if this is the target (goal checking when adding to frontier)
+                    if (personId === target) {
+                        console.log('Target found!');
+                        // Reconstruct path
+                        const path = [];
+                        let currentNode = childNode;
+                        while (currentNode.parent !== null) {
+                            path.push(currentNode.action);
+                            currentNode = currentNode.parent;
+                        }
+                        path.reverse();
+                        console.log('Path reconstructed:', path);
+                        return path;
+                    }
+                    
+                    // Add to frontier
+                    frontier.add(childNode);
+                    frontierStates.add(personId);
+                }
+            }
+        }
+        
+        // Tony's person_id_for_name function converted to JavaScript
+        function personIdForName(name) {
+            const personIds = Array.from(names[name.toLowerCase()] || new Set());
+            if (personIds.length === 0) {
+                // Try to find similar names
+                const allNames = Object.keys(names);
+                const suggestions = getCloseMatches(name, allNames, 1, 0.6); // Get only the best match
+                
+                if (suggestions.length > 0) {
+                    // Automatically use the best match
+                    const bestMatch = suggestions[0];
+                    const bestMatchIds = Array.from(names[bestMatch] || new Set());
+                    if (bestMatchIds.length > 0) {
+                        console.log(`Auto-corrected "${name}" to "${bestMatch}"`);
+                        return bestMatchIds[0];
+                    }
+                }
+                return null;
+            } else if (personIds.length > 1) {
+                // Handle multiple people with same name
+                return personIds[0]; // For simplicity, return first match
+            } else {
+                return personIds[0];
+            }
+        }
+        
+        // Tony's neighbors_for_person function converted to JavaScript
+        function neighborsForPerson(personId) {
+            console.log('Getting neighbors for person:', personId, people[personId]);
+            const movieIds = people[personId].movies;
+            console.log('Movie IDs for person:', Array.from(movieIds));
+            const neighbors = new Set();
+            for (const movieId of movieIds) {
+                console.log('Processing movie:', movieId, movies[movieId]);
+                for (const starId of movies[movieId].stars) {
+                    neighbors.add([movieId, starId]);
+                }
+            }
+            console.log('Neighbors found:', Array.from(neighbors));
+            return neighbors;
+        }
+        
+        // Find closest match for name suggestions
+        function getCloseMatches(name, allNames, n = 5, cutoff = 0.6) {
+            const matches = [];
+            const lowerName = name.toLowerCase();
+            
+            for (const candidate of allNames) {
+                const similarity = calculateSimilarity(lowerName, candidate.toLowerCase());
+                if (similarity >= cutoff) {
+                    matches.push({ name: candidate, similarity });
+                }
+            }
+            
+            return matches
+                .sort((a, b) => b.similarity - a.similarity)
+                .slice(0, n)
+                .map(match => match.name);
+        }
+        
+        function calculateSimilarity(str1, str2) {
+            const longer = str1.length > str2.length ? str1 : str2;
+            const shorter = str1.length > str2.length ? str2 : str1;
+            
+            if (longer.length === 0) return 1.0;
+            
+            const editDistance = levenshteinDistance(longer, shorter);
+            return (longer.length - editDistance) / longer.length;
+        }
+        
+        function levenshteinDistance(str1, str2) {
+            const matrix = [];
+            
+            for (let i = 0; i <= str2.length; i++) {
+                matrix[i] = [i];
+            }
+            
+            for (let j = 0; j <= str1.length; j++) {
+                matrix[0][j] = j;
+            }
+            
+            for (let i = 1; i <= str2.length; i++) {
+                for (let j = 1; j <= str1.length; j++) {
+                    if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+                        matrix[i][j] = matrix[i - 1][j - 1];
+                    } else {
+                        matrix[i][j] = Math.min(
+                            matrix[i - 1][j - 1] + 1,
+                            matrix[i][j - 1] + 1,
+                            matrix[i - 1][j] + 1
+                        );
+                    }
+                }
+            }
+            
+            return matrix[str2.length][str1.length];
+        }
+        
+        // Main game functions
+        function findPath() {
+            const actor1 = document.getElementById('actor1').value.trim();
+            const actor2 = document.getElementById('actor2').value.trim();
+            
+            if (!actor1 || !actor2) {
+                showError('Please enter both actor names');
+                return;
+            }
+            
+            if (actor1.toLowerCase() === actor2.toLowerCase()) {
+                showError('Please enter different actors');
+                return;
+            }
+            
+            showLoading(true);
+            
+            setTimeout(() => {
+                console.log('Starting path search...');
+                const source = personIdForName(actor1);
+                const target = personIdForName(actor2);
+                
+                console.log('Source ID:', source, 'Target ID:', target);
+                
+                showLoading(false);
+                
+                if (!source) {
+                    console.log('Source not found');
+                    showError(`Actor "${actor1}" not found in database`);
+                    return;
+                }
+                
+                if (!target) {
+                    console.log('Target not found');
+                    showError(`Actor "${actor2}" not found in database`);
+                    return;
+                }
+                
+                // Check if names were auto-corrected and show info
+                const actualName1 = people[source].name;
+                const actualName2 = people[target].name;
+                let correctionInfo = '';
+                
+                if (actor1.toLowerCase() !== actualName1.toLowerCase()) {
+                    correctionInfo += `"${actor1}" → "${actualName1}"`;
+                }
+                if (actor2.toLowerCase() !== actualName2.toLowerCase()) {
+                    if (correctionInfo) correctionInfo += ', ';
+                    correctionInfo += `"${actor2}" → "${actualName2}"`;
+                }
+                
+                if (correctionInfo) {
+                    const resultElement = document.getElementById('result');
+                    resultElement.innerHTML = `<div class="info">Auto-corrected: ${correctionInfo}</div>`;
+                    resultElement.style.display = 'block';
+                }
+                
+                console.log('Searching path between:', actualName1, 'and', actualName2);
+                const path = shortestPath(source, target);
+                console.log('Path result:', path);
+                
+                if (path === null) {
+                    console.log('No path found');
+                    showError(`No connection found between ${actualName1} and ${actualName2}`);
+                } else {
+                    console.log('Path found, displaying...');
+                    displayPath(path, source, target);
+                    updateStats(path.length);
+                }
+            }, 1500);
+        }
+        
+        function displayPath(path, source, target) {
+            const pathElement = document.getElementById('path');
+            const pathInfoElement = document.getElementById('pathInfo');
+            const resultElement = document.getElementById('result');
+            
+            pathElement.innerHTML = '';
+            
+            // Add source actor
+            const sourceDiv = document.createElement('div');
+            sourceDiv.className = 'actor';
+            sourceDiv.textContent = people[source].name;
+            pathElement.appendChild(sourceDiv);
+            
+            // Add path
+            for (let i = 0; i < path.length; i++) {
+                const [movieId, personId] = path[i];
+                
+                // Add movie
+                const movieDiv = document.createElement('div');
+                movieDiv.className = 'movie';
+                movieDiv.textContent = movies[movieId].title;
+                pathElement.appendChild(movieDiv);
+                
+                // Add arrow
+                const arrowDiv = document.createElement('div');
+                arrowDiv.className = 'arrow';
+                arrowDiv.textContent = '→';
+                pathElement.appendChild(arrowDiv);
+                
+                // Add actor
+                const actorDiv = document.createElement('div');
+                actorDiv.className = 'actor';
+                actorDiv.textContent = people[personId].name;
+                pathElement.appendChild(arrowDiv.cloneNode(true));
+                pathElement.appendChild(actorDiv);
+            }
+            
+            const degrees = path.length;
+            pathInfoElement.textContent = `Path length: ${degrees} degrees of separation`;
+            
+            resultElement.style.display = 'block';
+        }
+        
+        function showError(message) {
+            const resultElement = document.getElementById('result');
+            resultElement.innerHTML = `<div class="error">${message}</div>`;
+            resultElement.style.display = 'block';
+        }
+        
+        function showSuggestions(originalName, suggestions) {
+            const resultElement = document.getElementById('result');
+            const suggestionsHtml = suggestions.map(name => 
+                `<button class="suggestion-btn" onclick="selectSuggestion('${name}')">${name}</button>`
+            ).join('');
+            
+            resultElement.innerHTML = `
+                <div class="suggestions">
+                    <p><strong>"${originalName}"</strong> not found. Did you mean:</p>
+                    <div class="suggestion-buttons">
+                        ${suggestionsHtml}
+                    </div>
+                </div>
+            `;
+            resultElement.style.display = 'block';
+        }
+        
+        function selectSuggestion(name) {
+            // Find which input field was being used
+            const actor1Field = document.getElementById('actor1');
+            const actor2Field = document.getElementById('actor2');
+            
+            // Determine which field to update based on focus or last used
+            if (document.activeElement === actor1Field || actor1Field.value.trim() !== '') {
+                actor1Field.value = name;
+            } else {
+                actor2Field.value = name;
+            }
+            
+            // Hide suggestions
+            document.getElementById('result').style.display = 'none';
+        }
+        
+        function showLoading(show) {
+            const loadingElement = document.getElementById('loading');
+            const findBtn = document.getElementById('findBtn');
+            
+            loadingElement.style.display = show ? 'block' : 'none';
+            findBtn.disabled = show;
+            
+            if (!show) {
+                document.getElementById('result').style.display = 'none';
+            }
+        }
+        
+        function randomActors() {
+            const actors = Object.keys(people);
+            const randomActor1 = actors[Math.floor(Math.random() * actors.length)];
+            let randomActor2 = actors[Math.floor(Math.random() * actors.length)];
+            
+            // Make sure they're different
+            while (randomActor2 === randomActor1) {
+                randomActor2 = actors[Math.floor(Math.random() * actors.length)];
+            }
+            
+            document.getElementById('actor1').value = people[randomActor1].name;
+            document.getElementById('actor2').value = people[randomActor2].name;
+        }
+        
+        function updateStats(pathLength) {
+            stats.searches++;
+            stats.totalPathLength += pathLength;
+            stats.shortestPath = Math.min(stats.shortestPath, pathLength);
+            
+            document.getElementById('searches').textContent = stats.searches;
+            document.getElementById('avgPath').textContent = (stats.totalPathLength / stats.searches).toFixed(1);
+            document.getElementById('shortestPath').textContent = stats.shortestPath === Infinity ? '∞' : stats.shortestPath;
+        }
+        
+        // Load stats from localStorage
+        const savedStats = localStorage.getItem('six-degrees-stats');
+        if (savedStats) {
+            stats = JSON.parse(savedStats);
+            document.getElementById('searches').textContent = stats.searches;
+            document.getElementById('avgPath').textContent = stats.searches > 0 ? (stats.totalPathLength / stats.searches).toFixed(1) : '0';
+            document.getElementById('shortestPath').textContent = stats.shortestPath === Infinity ? '∞' : stats.shortestPath;
+        }
+        
+        // Save stats to localStorage
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem('six-degrees-stats', JSON.stringify(stats));
+        });
+        
+        // Allow Enter key to search
+        document.getElementById('actor1').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') findPath();
+        });
+        
+        document.getElementById('actor2').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') findPath();
+        });
+        
+        // Initialize data
+        loadData();
+    </script>
+</body>
+</html>

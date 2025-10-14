@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe AI - Tony Rodríguez</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .game-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        
+        .cell {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .cell:hover {
+            background: #f0f0f0;
+            border-color: #667eea;
+        }
+        
+        .cell.x {
+            color: #e74c3c;
+        }
+        
+        .cell.o {
+            color: #3498db;
+        }
+        
+        .status {
+            margin: 20px 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .controls {
+            margin: 20px 0;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .stat {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <a href="/ai" class="back-btn">← Back to AI Lab</a>
+    
+    <div class="container">
+        <h1>🎯 Tic-Tac-Toe AI</h1>
+        <p class="subtitle">Challenge the unbeatable Minimax AI</p>
+        
+        <div class="game-container">
+            <div class="board" id="board">
+                <div class="cell" data-index="0"></div>
+                <div class="cell" data-index="1"></div>
+                <div class="cell" data-index="2"></div>
+                <div class="cell" data-index="3"></div>
+                <div class="cell" data-index="4"></div>
+                <div class="cell" data-index="5"></div>
+                <div class="cell" data-index="6"></div>
+                <div class="cell" data-index="7"></div>
+                <div class="cell" data-index="8"></div>
+            </div>
+            
+            <div class="status" id="status">Your turn! Click a cell to start.</div>
+            
+            <div class="controls">
+                <button onclick="resetGame()">New Game</button>
+                <button onclick="toggleDifficulty()" id="difficultyBtn">Easy Mode</button>
+            </div>
+            
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value" id="wins">0</div>
+                    <div class="stat-label">Wins</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="losses">0</div>
+                    <div class="stat-label">Losses</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="draws">0</div>
+                    <div class="stat-label">Draws</div>
+                </div>
+            </div>
+        </div>
+        
+        <p style="color: #666; font-size: 14px; margin-top: 30px;">
+            This AI uses Tony's original Minimax algorithm implementation converted from Python to JavaScript.
+        </p>
+    </div>
+
+    <script>
+        // Tony's Tic Tac Toe AI Implementation (JavaScript version)
+        
+        const X = "X";
+        const O = "O";
+        const EMPTY = null;
+
+        let board = initial_state();
+        let gameActive = true;
+        let isHardMode = true;
+        let stats = { wins: 0, losses: 0, draws: 0 };
+
+        const cells = document.querySelectorAll('.cell');
+        const status = document.getElementById('status');
+        const difficultyBtn = document.getElementById('difficultyBtn');
+
+        // Add click listeners
+        cells.forEach(cell => {
+            cell.addEventListener('click', handleCellClick);
+        });
+
+        // Tony's Python functions converted to JavaScript
+        function initial_state() {
+            return [
+                [EMPTY, EMPTY, EMPTY],
+                [EMPTY, EMPTY, EMPTY],
+                [EMPTY, EMPTY, EMPTY]
+            ];
+        }
+
+        function player(board) {
+            let x_count = 0;
+            let o_count = 0;
+            
+            for (let row of board) {
+                for (let cell of row) {
+                    if (cell === X) x_count++;
+                    if (cell === O) o_count++;
+                }
+            }
+            
+            if (x_count === o_count) {
+                return X;
+            } else {
+                return O;
+            }
+        }
+
+        function actions(board) {
+            if (terminal(board)) {
+                return new Set();
+            }
+            
+            let possible_actions = new Set();
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    if (board[i][j] === EMPTY) {
+                        possible_actions.add([i, j]);
+                    }
+                }
+            }
+            return possible_actions;
+        }
+
+        function result(board, action) {
+            let new_board = JSON.parse(JSON.stringify(board)); // Deep copy
+            let [i, j] = action;
+            
+            if (new_board[i][j] !== EMPTY) {
+                throw new Error("Invalid action");
+            }
+            
+            let current_player = player(board);
+            new_board[i][j] = current_player;
+            
+            return new_board;
+        }
+
+        function winner(board) {
+            // Check rows
+            for (let row of board) {
+                if (row[0] === row[1] && row[1] === row[2] && row[0] !== EMPTY) {
+                    return row[0];
+                }
+            }
+            
+            // Check columns
+            for (let j = 0; j < 3; j++) {
+                if (board[0][j] === board[1][j] && board[1][j] === board[2][j] && board[0][j] !== EMPTY) {
+                    return board[0][j];
+                }
+            }
+            
+            // Check diagonals
+            if (board[0][0] === board[1][1] && board[1][1] === board[2][2] && board[0][0] !== EMPTY) {
+                return board[0][0];
+            }
+            
+            if (board[0][2] === board[1][1] && board[1][1] === board[2][0] && board[0][2] !== EMPTY) {
+                return board[0][2];
+            }
+            
+            return null;
+        }
+
+        function terminal(board) {
+            if (winner(board) !== null) {
+                return true;
+            }
+            
+            for (let row of board) {
+                for (let cell of row) {
+                    if (cell === EMPTY) {
+                        return false;
+                    }
+                }
+            }
+            
+            return true;
+        }
+
+        function utility(board) {
+            let game_winner = winner(board);
+            if (game_winner === X) {
+                return 1;
+            } else if (game_winner === O) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+
+        function minimax(board) {
+            if (terminal(board)) {
+                return null;
+            }
+            
+            let current_player = player(board);
+            
+            if (current_player === X) {
+                let [value, action] = max_value(board);
+                return action;
+            } else {
+                let [value, action] = min_value(board);
+                return action;
+            }
+        }
+
+        function max_value(board) {
+            if (terminal(board)) {
+                return [utility(board), null];
+            }
+            
+            let v = -Infinity;
+            let best_action = null;
+            
+            for (let action of actions(board)) {
+                let new_board = result(board, action);
+                let [min_val, _] = min_value(new_board);
+                if (min_val > v) {
+                    v = min_val;
+                    best_action = action;
+                }
+            }
+            
+            return [v, best_action];
+        }
+
+        function min_value(board) {
+            if (terminal(board)) {
+                return [utility(board), null];
+            }
+            
+            let v = Infinity;
+            let best_action = null;
+            
+            for (let action of actions(board)) {
+                let new_board = result(board, action);
+                let [max_val, _] = max_value(new_board);
+                if (max_val < v) {
+                    v = max_val;
+                    best_action = action;
+                }
+            }
+            
+            return [v, best_action];
+        }
+
+        // Game interface functions
+        function handleCellClick(e) {
+            const index = parseInt(e.target.dataset.index);
+            const row = Math.floor(index / 3);
+            const col = index % 3;
+            
+            if (board[row][col] !== EMPTY || !gameActive) return;
+            
+            makeMove([row, col], 'X');
+            
+            if (gameActive && !terminal(board)) {
+                setTimeout(() => {
+                    makeAIMove();
+                }, 500);
+            }
+        }
+
+        function makeMove(action, player) {
+            if (player === 'X') {
+                board = result(board, action);
+            } else {
+                board = result(board, action);
+            }
+            
+            updateDisplay();
+            
+            if (terminal(board)) {
+                gameActive = false;
+                const gameWinner = winner(board);
+                if (gameWinner === X) {
+                    status.textContent = '🎉 You won!';
+                    stats.wins++;
+                } else if (gameWinner === O) {
+                    status.textContent = '🤖 AI won!';
+                    stats.losses++;
+                } else {
+                    status.textContent = '🤝 It\'s a draw!';
+                    stats.draws++;
+                }
+                updateStats();
+            } else if (player === 'X') {
+                status.textContent = '🤖 AI is thinking...';
+            }
+        }
+
+        function makeAIMove() {
+            if (!gameActive || terminal(board)) return;
+            
+            let bestMove;
+            if (isHardMode) {
+                bestMove = minimax(board);
+            } else {
+                // Easy mode: random move
+                const availableMoves = Array.from(actions(board));
+                bestMove = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+            }
+            
+            if (bestMove) {
+                makeMove(bestMove, 'O');
+                if (gameActive && !terminal(board)) {
+                    status.textContent = 'Your turn!';
+                }
+            }
+        }
+
+        function updateDisplay() {
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    const index = i * 3 + j;
+                    const cell = cells[index];
+                    const value = board[i][j];
+                    
+                    cell.textContent = value || '';
+                    cell.classList.remove('x', 'o');
+                    
+                    if (value === X) {
+                        cell.classList.add('x');
+                    } else if (value === O) {
+                        cell.classList.add('o');
+                    }
+                }
+            }
+        }
+
+        function resetGame() {
+            board = initial_state();
+            gameActive = true;
+            updateDisplay();
+            status.textContent = 'Your turn! Click a cell to start.';
+        }
+
+        function toggleDifficulty() {
+            isHardMode = !isHardMode;
+            difficultyBtn.textContent = isHardMode ? 'Hard Mode' : 'Easy Mode';
+            resetGame();
+        }
+
+        function updateStats() {
+            document.getElementById('wins').textContent = stats.wins;
+            document.getElementById('losses').textContent = stats.losses;
+            document.getElementById('draws').textContent = stats.draws;
+        }
+
+        // Load stats from localStorage
+        const savedStats = localStorage.getItem('ttt-stats');
+        if (savedStats) {
+            stats = JSON.parse(savedStats);
+            updateStats();
+        }
+
+        // Save stats to localStorage
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem('ttt-stats', JSON.stringify(stats));
+        });
+
+        // Initialize display
+        updateDisplay();
+    </script>
+</body>
+</html>

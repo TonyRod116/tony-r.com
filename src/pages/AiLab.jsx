@@ -11,30 +11,30 @@ export default function AiLab() {
       title: t('aiLab.projects.ttt.title'),
       description: t('aiLab.projects.ttt.description'),
       icon: Target,
-      demoUrl: 'https://github.com/TonyRod116/Ai-Tic-Tac-Toe',
+      demoUrl: '/demos/tictactoe.html',
       githubUrl: 'https://github.com/TonyRod116/Ai-Tic-Tac-Toe',
       status: 'completed',
-      tech: ['Python', 'Minimax', 'AI']
+      tech: ['JavaScript', 'Minimax', 'AI']
     },
     {
       id: 'minesweeper',
       title: t('aiLab.projects.minesweeper.title'),
       description: t('aiLab.projects.minesweeper.description'),
       icon: Zap,
-      demoUrl: 'https://github.com/TonyRod116/Ai-Minesweeper',
+      demoUrl: '/demos/minesweeper.html',
       githubUrl: 'https://github.com/TonyRod116/Ai-Minesweeper',
       status: 'completed',
-      tech: ['Python', 'Algorithm', 'Logic']
+      tech: ['JavaScript', 'Algorithm', 'Logic']
     },
     {
       id: 'six-degrees',
       title: t('aiLab.projects.sixDegrees.title'),
       description: t('aiLab.projects.sixDegrees.description'),
       icon: Brain,
-      demoUrl: 'https://github.com/TonyRod116/AI-degrees-of-KB',
+      demoUrl: '/demos/six-degrees.html',
       githubUrl: 'https://github.com/TonyRod116/AI-degrees-of-KB',
       status: 'completed',
-      tech: ['Python', 'Graph Theory', 'API']
+      tech: ['JavaScript', 'Graph Theory', 'BFS']
     }
   ]
 

@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minesweeper AI - Tony Rodríguez</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .game-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        
+        .controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .board {
+            display: grid;
+            gap: 2px;
+            margin: 20px auto;
+            background: #333;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: fit-content;
+        }
+        
+        .cell {
+            width: 30px;
+            height: 30px;
+            background: #ddd;
+            border: 1px solid #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+        
+        .cell:hover {
+            background: #bbb;
+        }
+        
+        .cell.revealed {
+            background: #fff;
+            cursor: default;
+        }
+        
+        .cell.mine {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .cell.flagged {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .cell.number-1 { color: #3498db; }
+        .cell.number-2 { color: #27ae60; }
+        .cell.number-3 { color: #e74c3c; }
+        .cell.number-4 { color: #8e44ad; }
+        .cell.number-5 { color: #f39c12; }
+        .cell.number-6 { color: #1abc9c; }
+        .cell.number-7 { color: #2c3e50; }
+        .cell.number-8 { color: #34495e; }
+        
+        .status {
+            margin: 20px 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .stat {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+        }
+        
+        .ai-info {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #3498db;
+        }
+    </style>
+</head>
+<body>
+    <a href="/ai" class="back-btn">← Back to AI Lab</a>
+    
+    <div class="container">
+        <h1>💣 Minesweeper AI</h1>
+        <p class="subtitle">Watch the AI solve Minesweeper puzzles using logical deduction</p>
+        
+        <div class="game-container">
+            <div class="controls">
+                <button onclick="newGame()">New Game</button>
+                <button onclick="toggleAIMode()" id="aiBtn">Enable AI</button>
+                <button onclick="aiSolveStep()" id="solveBtn" disabled>AI Solve Step</button>
+                <button onclick="aiSolveAll()" id="solveAllBtn" disabled>AI Solve All</button>
+            </div>
+            
+            <div class="status" id="status">Click a cell to start!</div>
+            
+            <div class="board" id="board"></div>
+            
+            <div class="ai-info">
+                <strong>AI Features:</strong> This AI uses Tony's original logical deduction implementation converted from Python to JavaScript. 
+                It uses Sentence objects and knowledge base inference to solve Minesweeper puzzles intelligently.
+            </div>
+            
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value" id="games">0</div>
+                    <div class="stat-label">Games Played</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="wins">0</div>
+                    <div class="stat-label">Wins</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="aiMoves">0</div>
+                    <div class="stat-label">AI Moves</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tony's Minesweeper AI Implementation (JavaScript version)
+        
+        // Minesweeper game representation
+        class Minesweeper {
+            constructor(height = 8, width = 8, mines = 8) {
+                this.height = height;
+                this.width = width;
+                this.mines = new Set();
+                
+                // Initialize an empty field with no mines
+                this.board = [];
+                for (let i = 0; i < this.height; i++) {
+                    let row = [];
+                    for (let j = 0; j < this.width; j++) {
+                        row.push(false);
+                    }
+                    this.board.push(row);
+                }
+                
+                // Add mines randomly
+                while (this.mines.size !== mines) {
+                    let i = Math.floor(Math.random() * height);
+                    let j = Math.floor(Math.random() * width);
+                    if (!this.board[i][j]) {
+                        this.mines.add([i, j]);
+                        this.board[i][j] = true;
+                    }
+                }
+                
+                // At first, player has found no mines
+                this.mines_found = new Set();
+            }
+            
+            isMine(cell) {
+                let [i, j] = cell;
+                return this.board[i][j];
+            }
+            
+            nearbyMines(cell) {
+                // Keep count of nearby mines
+                let count = 0;
+                
+                // Loop over all cells within one row and column
+                for (let i = cell[0] - 1; i < cell[0] + 2; i++) {
+                    for (let j = cell[1] - 1; j < cell[1] + 2; j++) {
+                        // Ignore the cell itself
+                        if (i === cell[0] && j === cell[1]) {
+                            continue;
+                        }
+                        
+                        // Update count if cell in bounds and is mine
+                        if (i >= 0 && i < this.height && j >= 0 && j < this.width) {
+                            if (this.board[i][j]) {
+                                count++;
+                            }
+                        }
+                    }
+                }
+                
+                return count;
+            }
+            
+            won() {
+                // Checks if all mines have been flagged
+                return this.mines_found.size === this.mines.size && 
+                       [...this.mines_found].every(mine => 
+                           [...this.mines].some(m => m[0] === mine[0] && m[1] === mine[1])
+                       );
+            }
+        }
+        
+        // Logical statement about a Minesweeper game
+        class Sentence {
+            constructor(cells, count) {
+                this.cells = new Set(cells);
+                this.count = count;
+            }
+            
+            equals(other) {
+                return this.cells.size === other.cells.size && 
+                       [...this.cells].every(cell => other.cells.has(cell)) &&
+                       this.count === other.count;
+            }
+            
+            knownMines() {
+                // If count equals the number of cells, all cells are mines
+                if (this.count === this.cells.size) {
+                    return new Set(this.cells);
+                }
+                return new Set();
+            }
+            
+            knownSafes() {
+                // If count is 0, all cells are safe
+                if (this.count === 0) {
+                    return new Set(this.cells);
+                }
+                return new Set();
+            }
+            
+            markMine(cell) {
+                // Updates internal knowledge representation given the fact that
+                // a cell is known to be a mine.
+                if (this.cells.has(cell)) {
+                    this.cells.delete(cell);
+                    this.count--;
+                }
+            }
+            
+            markSafe(cell) {
+                // Updates internal knowledge representation given the fact that
+                // a cell is known to be safe.
+                if (this.cells.has(cell)) {
+                    this.cells.delete(cell);
+                }
+            }
+        }
+        
+        // Minesweeper game player
+        class MinesweeperAI {
+            constructor(height = 8, width = 8) {
+                // Set initial height and width
+                this.height = height;
+                this.width = width;
+                
+                // Keep track of which cells have been clicked on
+                this.movesMade = new Set();
+                
+                // Keep track of cells known to be safe or mines
+                this.mines = new Set();
+                this.safes = new Set();
+                
+                // List of sentences about the game known to be true
+                this.knowledge = [];
+            }
+            
+            markMine(cell) {
+                // Marks a cell as a mine, and updates all knowledge
+                // to mark that cell as a mine as well.
+                this.mines.add(cell);
+                for (let sentence of this.knowledge) {
+                    sentence.markMine(cell);
+                }
+            }
+            
+            markSafe(cell) {
+                // Marks a cell as safe, and updates all knowledge
+                // to mark that cell as safe as well.
+                this.safes.add(cell);
+                for (let sentence of this.knowledge) {
+                    sentence.markSafe(cell);
+                }
+            }
+            
+            addKnowledge(cell, count) {
+                // Called when the Minesweeper board tells us, for a given
+                // safe cell, how many neighboring cells have mines in them.
+                
+                // 1) Mark the cell as a move that has been made
+                this.movesMade.add(cell);
+                
+                // 2) Mark the cell as safe
+                this.markSafe(cell);
+                
+                // 3) Add a new sentence to the AI's knowledge base
+                // Get all neighboring cells
+                let neighbors = new Set();
+                for (let i = cell[0] - 1; i < cell[0] + 2; i++) {
+                    for (let j = cell[1] - 1; j < cell[1] + 2; j++) {
+                        // Ignore the cell itself
+                        if (i === cell[0] && j === cell[1]) {
+                            continue;
+                        }
+                        // Only include cells that are in bounds and not already known
+                        if (i >= 0 && i < this.height && j >= 0 && j < this.width) {
+                            neighbors.add([i, j]);
+                        }
+                    }
+                }
+                
+                // Only include cells whose state is still undetermined
+                let undeterminedNeighbors = new Set();
+                for (let neighbor of neighbors) {
+                    let isKnown = false;
+                    for (let mine of this.mines) {
+                        if (mine[0] === neighbor[0] && mine[1] === neighbor[1]) {
+                            isKnown = true;
+                            break;
+                        }
+                    }
+                    if (!isKnown) {
+                        for (let safe of this.safes) {
+                            if (safe[0] === neighbor[0] && safe[1] === neighbor[1]) {
+                                isKnown = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!isKnown) {
+                        undeterminedNeighbors.add(neighbor);
+                    }
+                }
+                
+                // Add the new sentence to knowledge
+                if (undeterminedNeighbors.size > 0) {
+                    let newSentence = new Sentence(undeterminedNeighbors, count);
+                    this.knowledge.push(newSentence);
+                }
+                
+                // 4) Mark any additional cells as safe or as mines
+                // Keep updating until no more changes can be made
+                let changed = true;
+                while (changed) {
+                    changed = false;
+                    
+                    // Check each sentence for known mines and safes
+                    for (let sentence of this.knowledge) {
+                        let knownMines = sentence.knownMines();
+                        let knownSafes = sentence.knownSafes();
+                        
+                        // Mark known mines
+                        for (let mine of knownMines) {
+                            let isAlreadyKnown = false;
+                            for (let knownMine of this.mines) {
+                                if (knownMine[0] === mine[0] && knownMine[1] === mine[1]) {
+                                    isAlreadyKnown = true;
+                                    break;
+                                }
+                            }
+                            if (!isAlreadyKnown) {
+                                this.markMine(mine);
+                                changed = true;
+                            }
+                        }
+                        
+                        // Mark known safes
+                        for (let safe of knownSafes) {
+                            let isAlreadyKnown = false;
+                            for (let knownSafe of this.safes) {
+                                if (knownSafe[0] === safe[0] && knownSafe[1] === safe[1]) {
+                                    isAlreadyKnown = true;
+                                    break;
+                                }
+                            }
+                            if (!isAlreadyKnown) {
+                                this.markSafe(safe);
+                                changed = true;
+                            }
+                        }
+                    }
+                    
+                    // 5) Add any new sentences that can be inferred
+                    // Check for subset relationships
+                    for (let sentence1 of this.knowledge) {
+                        for (let sentence2 of this.knowledge) {
+                            if (!sentence1.equals(sentence2)) {
+                                // If sentence1 is a subset of sentence2
+                                let isSubset = true;
+                                for (let cell of sentence1.cells) {
+                                    let found = false;
+                                    for (let cell2 of sentence2.cells) {
+                                        if (cell[0] === cell2[0] && cell[1] === cell2[1]) {
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!found) {
+                                        isSubset = false;
+                                        break;
+                                    }
+                                }
+                                
+                                if (isSubset) {
+                                    // Create new sentence: sentence2 - sentence1 = count2 - count1
+                                    let newCells = new Set();
+                                    for (let cell of sentence2.cells) {
+                                        let found = false;
+                                        for (let cell1 of sentence1.cells) {
+                                            if (cell[0] === cell1[0] && cell[1] === cell1[1]) {
+                                                found = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!found) {
+                                            newCells.add(cell);
+                                        }
+                                    }
+                                    
+                                    let newCount = sentence2.count - sentence1.count;
+                                    
+                                    if (newCells.size > 0 && newCount >= 0) {
+                                        let newSentence = new Sentence(newCells, newCount);
+                                        // Only add if it's not already in knowledge
+                                        let alreadyExists = false;
+                                        for (let existing of this.knowledge) {
+                                            if (existing.equals(newSentence)) {
+                                                alreadyExists = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!alreadyExists) {
+                                            this.knowledge.push(newSentence);
+                                            changed = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            makeSafeMove() {
+                // Returns a safe cell to choose on the Minesweeper board.
+                // The move must be known to be safe, and not already a move
+                // that has been made.
+                
+                // Find safe cells that haven't been moved on yet
+                let safeMoves = new Set();
+                for (let safe of this.safes) {
+                    let alreadyMoved = false;
+                    for (let move of this.movesMade) {
+                        if (move[0] === safe[0] && move[1] === safe[1]) {
+                            alreadyMoved = true;
+                            break;
+                        }
+                    }
+                    if (!alreadyMoved) {
+                        safeMoves.add(safe);
+                    }
+                }
+                
+                if (safeMoves.size > 0) {
+                    return [...safeMoves][0]; // Return any safe move
+                }
+                return null;
+            }
+            
+            makeRandomMove() {
+                // Returns a move to make on the Minesweeper board.
+                // Should choose randomly among cells that:
+                // 1) have not already been chosen, and
+                // 2) are not known to be mines
+                
+                // Get all possible cells
+                let allCells = new Set();
+                for (let i = 0; i < this.height; i++) {
+                    for (let j = 0; j < this.width; j++) {
+                        allCells.add([i, j]);
+                    }
+                }
+                
+                // Remove cells that have been moved on or are known mines
+                let possibleMoves = new Set();
+                for (let cell of allCells) {
+                    let alreadyMoved = false;
+                    for (let move of this.movesMade) {
+                        if (move[0] === cell[0] && move[1] === cell[1]) {
+                            alreadyMoved = true;
+                            break;
+                        }
+                    }
+                    
+                    let isKnownMine = false;
+                    for (let mine of this.mines) {
+                        if (mine[0] === cell[0] && mine[1] === cell[1]) {
+                            isKnownMine = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!alreadyMoved && !isKnownMine) {
+                        possibleMoves.add(cell);
+                    }
+                }
+                
+                if (possibleMoves.size > 0) {
+                    let moves = [...possibleMoves];
+                    return moves[Math.floor(Math.random() * moves.length)];
+                }
+                return null;
+            }
+        }
+        
+        // Game state
+        let game = null;
+        let ai = null;
+        let gameActive = true;
+        let aiMode = false;
+        let stats = { games: 0, wins: 0, aiMoves: 0 };
+        
+        const BOARD_SIZE = 9;
+        const MINE_COUNT = 10;
+        
+        const boardElement = document.getElementById('board');
+        const statusElement = document.getElementById('status');
+        const aiBtn = document.getElementById('aiBtn');
+        const solveBtn = document.getElementById('solveBtn');
+        const solveAllBtn = document.getElementById('solveAllBtn');
+        
+        function initBoard() {
+            game = new Minesweeper(BOARD_SIZE, BOARD_SIZE, MINE_COUNT);
+            ai = new MinesweeperAI(BOARD_SIZE, BOARD_SIZE);
+            
+            boardElement.innerHTML = '';
+            boardElement.style.gridTemplateColumns = `repeat(${BOARD_SIZE}, 1fr)`;
+            
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                for (let j = 0; j < BOARD_SIZE; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    cell.addEventListener('click', () => handleCellClick(i, j));
+                    cell.addEventListener('contextmenu', (e) => {
+                        e.preventDefault();
+                        handleRightClick(i, j);
+                    });
+                    boardElement.appendChild(cell);
+                }
+            }
+        }
+        
+        function handleCellClick(row, col) {
+            if (!gameActive) return;
+            
+            const cell = [row, col];
+            
+            if (game.isMine(cell)) {
+                gameOver(false);
+                return;
+            }
+            
+            revealCell(row, col);
+            
+            if (game.won()) {
+                gameOver(true);
+            }
+        }
+        
+        function handleRightClick(row, col) {
+            if (!gameActive) return;
+            
+            const cell = [row, col];
+            const cellElement = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+            
+            if (cellElement.classList.contains('flagged')) {
+                cellElement.classList.remove('flagged');
+                cellElement.textContent = '';
+                game.mines_found.delete(cell);
+            } else {
+                cellElement.classList.add('flagged');
+                cellElement.textContent = '🚩';
+                game.mines_found.add(cell);
+            }
+        }
+        
+        function revealCell(row, col) {
+            const cell = [row, col];
+            const cellElement = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+            
+            if (cellElement.classList.contains('revealed')) return;
+            
+            cellElement.classList.add('revealed');
+            
+            const count = game.nearbyMines(cell);
+            if (count > 0) {
+                cellElement.textContent = count;
+                cellElement.classList.add(`number-${count}`);
+            } else {
+                cellElement.textContent = '';
+                // Reveal neighbors recursively
+                for (let i = row - 1; i <= row + 1; i++) {
+                    for (let j = col - 1; j <= col + 1; j++) {
+                        if (i >= 0 && i < BOARD_SIZE && j >= 0 && j < BOARD_SIZE) {
+                            revealCell(i, j);
+                        }
+                    }
+                }
+            }
+            
+            // Update AI knowledge
+            if (aiMode) {
+                ai.addKnowledge(cell, count);
+            }
+        }
+        
+        function gameOver(won) {
+            gameActive = false;
+            
+            // Reveal all mines
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                for (let j = 0; j < BOARD_SIZE; j++) {
+                    if (game.board[i][j]) {
+                        const cellElement = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
+                        cellElement.classList.add('mine');
+                        cellElement.textContent = '💣';
+                    }
+                }
+            }
+            
+            if (won) {
+                statusElement.textContent = '🎉 You won!';
+                stats.wins++;
+            } else {
+                statusElement.textContent = '💥 Game Over!';
+            }
+            
+            stats.games++;
+            updateStats();
+        }
+        
+        function newGame() {
+            gameActive = true;
+            initBoard();
+            statusElement.textContent = 'Click a cell to start!';
+        }
+        
+        function toggleAIMode() {
+            aiMode = !aiMode;
+            solveBtn.disabled = !aiMode;
+            solveAllBtn.disabled = !aiMode;
+            aiBtn.textContent = aiMode ? 'Disable AI' : 'Enable AI';
+            statusElement.textContent = aiMode ? 'AI Mode Enabled' : 'AI Mode Disabled';
+            
+            if (aiMode) {
+                ai = new MinesweeperAI(BOARD_SIZE, BOARD_SIZE);
+            }
+        }
+        
+        function aiSolveStep() {
+            if (!aiMode || !gameActive) return;
+            
+            // Try to make a safe move first
+            let safeMove = ai.makeSafeMove();
+            if (safeMove) {
+                revealCell(safeMove[0], safeMove[1]);
+                stats.aiMoves++;
+                updateStats();
+                return;
+            }
+            
+            // If no safe move, make a random move
+            let randomMove = ai.makeRandomMove();
+            if (randomMove) {
+                revealCell(randomMove[0], randomMove[1]);
+                stats.aiMoves++;
+                updateStats();
+            } else {
+                statusElement.textContent = 'No more moves available for AI';
+            }
+        }
+        
+        function aiSolveAll() {
+            if (!aiMode || !gameActive) return;
+            
+            let movesMade = true;
+            while (movesMade && gameActive) {
+                movesMade = false;
+                
+                // Try to make a safe move first
+                let safeMove = ai.makeSafeMove();
+                if (safeMove) {
+                    revealCell(safeMove[0], safeMove[1]);
+                    stats.aiMoves++;
+                    movesMade = true;
+                    continue;
+                }
+                
+                // If no safe move, make a random move
+                let randomMove = ai.makeRandomMove();
+                if (randomMove) {
+                    revealCell(randomMove[0], randomMove[1]);
+                    stats.aiMoves++;
+                    movesMade = true;
+                }
+            }
+            
+            updateStats();
+        }
+        
+        function updateStats() {
+            document.getElementById('games').textContent = stats.games;
+            document.getElementById('wins').textContent = stats.wins;
+            document.getElementById('aiMoves').textContent = stats.aiMoves;
+        }
+        
+        // Load stats from localStorage
+        const savedStats = localStorage.getItem('minesweeper-stats');
+        if (savedStats) {
+            stats = JSON.parse(savedStats);
+            updateStats();
+        }
+        
+        // Save stats to localStorage
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem('minesweeper-stats', JSON.stringify(stats));
+        });
+        
+        // Initialize game
+        initBoard();
+    </script>
+</body>
+</html>
