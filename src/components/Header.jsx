@@ -10,8 +10,8 @@ const navigation = [
   { name: 'home', href: '/' },
   { name: 'about', href: '/about' },
   { name: 'projects', href: '/projects' },
-  { name: 'resume', href: '/resume' },
   { name: 'aiLab', href: '/ai' },
+  { name: 'resume', href: '/resume' },
   { name: 'contact', href: '/contact' },
 ]
 

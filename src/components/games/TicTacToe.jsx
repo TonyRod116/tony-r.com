@@ -235,7 +235,7 @@ const TicTacToe = () => {
         // AI move after player move
         setTimeout(() => {
             if (!terminal(newBoard)) {
-                const aiMove = isHardMode ? minimax(newBoard) : getRandomMove(newBoard);
+                const aiMove = isHardMode ? minimax(newBoard) : getEasyModeMove(newBoard);
                 if (aiMove) {
                     const finalBoard = result(newBoard, aiMove);
                     setBoard(finalBoard);
@@ -248,6 +248,69 @@ const TicTacToe = () => {
         const possibleMoves = actions(board);
         if (possibleMoves.length === 0) return null;
         return possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+    };
+
+    // Función para detectar si el jugador puede hacer tres en raya
+    const canPlayerWin = (board, player) => {
+        // Check rows
+        for (let i = 0; i < 3; i++) {
+            let count = 0;
+            let emptyPos = null;
+            for (let j = 0; j < 3; j++) {
+                if (board[i][j] === player) count++;
+                else if (board[i][j] === EMPTY) emptyPos = [i, j];
+            }
+            if (count === 2 && emptyPos !== null) return emptyPos;
+        }
+        
+        // Check columns
+        for (let j = 0; j < 3; j++) {
+            let count = 0;
+            let emptyPos = null;
+            for (let i = 0; i < 3; i++) {
+                if (board[i][j] === player) count++;
+                else if (board[i][j] === EMPTY) emptyPos = [i, j];
+            }
+            if (count === 2 && emptyPos !== null) return emptyPos;
+        }
+        
+        // Check diagonal 1 (top-left to bottom-right)
+        let count = 0;
+        let emptyPos = null;
+        for (let i = 0; i < 3; i++) {
+            if (board[i][i] === player) count++;
+            else if (board[i][i] === EMPTY) emptyPos = [i, i];
+        }
+        if (count === 2 && emptyPos !== null) return emptyPos;
+        
+        // Check diagonal 2 (top-right to bottom-left)
+        count = 0;
+        emptyPos = null;
+        for (let i = 0; i < 3; i++) {
+            if (board[i][2-i] === player) count++;
+            else if (board[i][2-i] === EMPTY) emptyPos = [i, 2-i];
+        }
+        if (count === 2 && emptyPos !== null) return emptyPos;
+        
+        return null;
+    };
+
+    // Función para el modo fácil: 50% random, 50% inteligente
+    const getEasyModeMove = (board) => {
+        // 50% de probabilidad de hacer movimiento aleatorio
+        if (Math.random() < 0.5) {
+            return getRandomMove(board);
+        }
+        
+        // 50% de probabilidad de hacer movimiento inteligente
+        // Primero verificar si el jugador puede ganar y bloquearlo
+        const blockingMove = canPlayerWin(board, X); // X es el jugador
+        if (blockingMove) {
+            return blockingMove;
+        }
+        
+        // Si no hay nada que bloquear, hacer movimiento aleatorio
+        return getRandomMove(board);
     };
 
     const newGame = () => {
