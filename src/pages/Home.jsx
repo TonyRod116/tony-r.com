@@ -514,7 +514,7 @@ export default function Home() {
                 className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 hover:scale-105"
                 delay={0.1}
               >
-                <div className="text-3xl font-bold text-primary-600 dark:text-primary-400">
+                <div className="text-3xl font-bold text-white">
                   <AnimatedNumber value="35" suffix="+" duration={1500} delay={200} />
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.repositories')}</div>
@@ -532,7 +532,7 @@ export default function Home() {
                 className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 hover:scale-105"
                 delay={0.3}
               >
-                <div className="text-3xl font-bold text-primary-600 dark:text-primary-400">
+                <div className="text-3xl font-bold text-white">
                   <AnimatedNumber value="15" suffix="+" duration={1500} delay={400} />
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.yearsLeading')}</div>
