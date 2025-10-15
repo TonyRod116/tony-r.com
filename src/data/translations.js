@@ -240,7 +240,7 @@ export const translations = {
         minesweeper: {
           title: 'Minesweeper AI',
           subtitle: 'Watch the AI solve Minesweeper puzzles using logical deduction',
-          description: 'This AI uses my original logical deduction implementation converted from Python to JavaScript. The algorithm analyzes patterns and probabilities to make safe moves and solve puzzles efficiently. When using "AI Solve Step", it will attempt to make the next logical move when possible, otherwise it will make a random move. "AI Solve All" will solve the entire puzzle using logical deduction and random moves when needed.',
+          description: 'This AI uses my original logical deduction implementation converted from Python to JavaScript. The algorithm analyzes patterns and probabilities to make safe moves and solve puzzles efficiently. The "AI Solve Step" and "AI Solve All" buttons will only be active when the AI can make logical deductions - they will be disabled when no safe moves are available.',
           newGame: 'New Game',
           enableAI: 'Enable AI',
           disableAI: 'Disable AI',
@@ -662,7 +662,7 @@ export const translations = {
         minesweeper: {
           title: 'IA Buscaminas',
           subtitle: 'Observa cómo la IA resuelve puzzles de Buscaminas usando deducción lógica',
-          description: 'Esta IA usa mi implementación original de deducción lógica convertida de Python a JavaScript. El algoritmo analiza patrones y probabilidades para hacer movimientos seguros y resolver puzzles eficientemente. Al usar "IA Resolver Paso", intentará hacer el siguiente movimiento lógico cuando sea posible, de lo contrario hará un movimiento aleatorio. "IA Resolver Todo" resolverá todo el puzzle usando deducción lógica y movimientos aleatorios cuando sea necesario.',
+          description: 'Esta IA usa mi implementación original de deducción lógica convertida de Python a JavaScript. El algoritmo analiza patrones y probabilidades para hacer movimientos seguros y resolver puzzles eficientemente. Los botones "IA Resolver Paso" e "IA Resolver Todo" solo se activarán cuando la IA pueda hacer deducciones lógicas - estarán deshabilitados cuando no haya movimientos seguros disponibles.',
           newGame: 'Nuevo Juego',
           enableAI: 'Activar IA',
           disableAI: 'Desactivar IA',
@@ -1084,7 +1084,7 @@ export const translations = {
         minesweeper: {
           title: 'IA Buscamines',
           subtitle: 'Observa com l\'IA resol trencaclosques de Buscamines usant deducció lògica',
-          description: 'Aquesta IA usa la meva implementació original de deducció lògica convertida de Python a JavaScript. L\'algoritme analitza patrons i probabilitats per fer moviments segurs i resoldre trencaclosques eficientment. En usar "IA Resoldre Pas", intentarà fer el següent moviment lògic quan sigui possible, altrament farà un moviment aleatori. "IA Resoldre Tot" resoldrà tot el trencaclosques usant deducció lògica i moviments aleatoris quan sigui necessari.',
+          description: 'Aquesta IA usa la meva implementació original de deducció lògica convertida de Python a JavaScript. L\'algoritme analitza patrons i probabilitats per fer moviments segurs i resoldre trencaclosques eficientment. Els botons "IA Resoldre Pas" i "IA Resoldre Tot" només s\'activaran quan l\'IA pugui fer deduccions lògiques - estaran deshabilitats quan no hi hagi moviments segurs disponibles.',
           newGame: 'Nou Joc',
           enableAI: 'Activar IA',
           disableAI: 'Desactivar IA',

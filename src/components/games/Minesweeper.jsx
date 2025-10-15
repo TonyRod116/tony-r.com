@@ -2,176 +2,192 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../hooks/useLanguage';
 import { useNavigate } from 'react-router-dom';
 
-// Minesweeper AI Implementation
+// ==== helpers clave/coords ====
+const key = (r, c) => `${r},${c}`;
+const fromKey = (k) => k.split(',').map(Number);
+
+// ==== Sentence con claves string ====
 class Sentence {
-    constructor(cells, count) {
-        this.cells = new Set(cells);
-        this.count = count;
-    }
+  constructor(cells, count) {
+    // cells: Iterable de strings "r,c"
+    this.cells = new Set(cells);
+    this.count = count;
+  }
 
-    equals(other) {
-        return this.cells.size === other.cells.size && 
-               [...this.cells].every(cell => other.cells.has(cell)) &&
-               this.count === other.count;
-    }
+  equals(other) {
+    if (this.count !== other.count) return false;
+    if (this.cells.size !== other.cells.size) return false;
+    for (const c of this.cells) if (!other.cells.has(c)) return false;
+    return true;
+  }
 
-    knownMines() {
-        if (this.count === this.cells.size) {
-            return new Set(this.cells);
-        }
-        return new Set();
-    }
+  knownMines() {
+    return this.count === this.cells.size && this.cells.size > 0
+      ? new Set(this.cells)
+      : new Set();
+  }
 
-    knownSafes() {
-        if (this.count === 0) {
-            return new Set(this.cells);
-        }
-        return new Set();
-    }
+  knownSafes() {
+    return this.count === 0 && this.cells.size > 0
+      ? new Set(this.cells)
+      : new Set();
+  }
 
-    markMine(cell) {
-        if (this.cells.has(cell)) {
-            this.cells.delete(cell);
-            this.count--;
-        }
+  markMine(cellKey) {
+    if (this.cells.has(cellKey)) {
+      this.cells.delete(cellKey);
+      this.count -= 1;
     }
+  }
 
-    markSafe(cell) {
-        if (this.cells.has(cell)) {
-            this.cells.delete(cell);
-        }
+  markSafe(cellKey) {
+    if (this.cells.has(cellKey)) {
+      this.cells.delete(cellKey);
     }
+  }
 }
 
+// ==== AI con claves string ====
 class MinesweeperAI {
-    constructor(height = 8, width = 8) {
-        this.height = height;
-        this.width = width;
-        this.movesMade = new Set();
-        this.mines = new Set();
-        this.safes = new Set();
-        this.knowledge = [];
-    }
+  constructor(height = 8, width = 8) {
+    this.height = height;
+    this.width = width;
+    this.movesMade = new Set(); // "r,c"
+    this.mines = new Set();     // "r,c"
+    this.safes = new Set();     // "r,c"
+    this.knowledge = [];        // Sentence[]
+  }
 
-    markMine(cell) {
-        this.mines.add(cell);
-        for (let sentence of this.knowledge) {
-            sentence.markMine(cell);
+  markMine(cellKey) {
+    if (this.mines.has(cellKey)) return;
+    this.mines.add(cellKey);
+    for (const s of this.knowledge) s.markMine(cellKey);
+  }
+
+  markSafe(cellKey) {
+    if (this.safes.has(cellKey)) return;
+    this.safes.add(cellKey);
+    for (const s of this.knowledge) s.markSafe(cellKey);
+  }
+
+  // cell = [r,c], count = # minas vecinas (0-8)
+  addKnowledge(cell, count) {
+    const [r, c] = cell;
+    const cellK = key(r, c);
+
+    this.movesMade.add(cellK);
+    this.markSafe(cellK);
+
+    // 1) vecinos dentro de tablero -> claves string
+    const neighbors = [];
+    for (let i = r - 1; i <= r + 1; i++) {
+      for (let j = c - 1; j <= c + 1; j++) {
+        if (i === r && j === c) continue;
+        if (i >= 0 && i < this.height && j >= 0 && j < this.width) {
+          neighbors.push(key(i, j));
         }
+      }
     }
 
-    markSafe(cell) {
-        this.safes.add(cell);
-        for (let sentence of this.knowledge) {
-            sentence.markSafe(cell);
+    // 2) separa conocidos (mines/safes) y resta minas al conteo
+    let remaining = count;
+    const unknown = [];
+    for (const k of neighbors) {
+      if (this.mines.has(k)) remaining -= 1;
+      else if (!this.safes.has(k)) unknown.push(k);
+      // si es safe conocido, no entra en la oración
+    }
+
+    if (unknown.length > 0) {
+      this.knowledge.push(new Sentence(unknown, remaining));
+    }
+
+    // 3) ciclo de inferencia
+    let changed = true;
+    while (changed) {
+      changed = false;
+
+      // 3a) deduce minas/seguros directos
+      for (const s of this.knowledge) {
+        for (const m of s.knownMines()) {
+          if (!this.mines.has(m)) {
+            this.markMine(m);
+            changed = true;
+          }
         }
-    }
+        for (const sf of s.knownSafes()) {
+          if (!this.safes.has(sf)) {
+            this.markSafe(sf);
+            changed = true;
+          }
+        }
+      }
 
-    addKnowledge(cell, count) {
-        this.movesMade.add(cell);
-        this.markSafe(cell);
+      // 3b) eliminación y normalización de oraciones vacías/duplicadas
+      const compact = [];
+      for (const s of this.knowledge) {
+        if (s.cells.size === 0) continue;
+        if (!compact.some((x) => x.equals(s))) compact.push(s);
+      }
+      if (compact.length !== this.knowledge.length) {
+        this.knowledge = compact;
+        changed = true;
+      }
 
-        const neighbors = new Set();
-        for (let i = cell[0] - 1; i <= cell[0] + 1; i++) {
-            for (let j = cell[1] - 1; j <= cell[1] + 1; j++) {
-                if (i === cell[0] && j === cell[1]) continue;
-                if (i >= 0 && i < this.height && j >= 0 && j < this.width) {
-                    neighbors.add([i, j]);
-                }
+      // 3c) inferencia por **subconjunto**: S2 \ S1 con count ajustado
+      for (let i = 0; i < this.knowledge.length; i++) {
+        for (let j = 0; j < this.knowledge.length; j++) {
+          if (i === j) continue;
+          const S1 = this.knowledge[i];
+          const S2 = this.knowledge[j];
+          // ¿S1 ⊆ S2?
+          let isSubset = true;
+          for (const k of S1.cells) if (!S2.cells.has(k)) { isSubset = false; break; }
+          if (!isSubset) continue;
+
+          // crea Snew = S2 - S1 ; cnew = c2 - c1
+          const newCells = [];
+          for (const k of S2.cells) if (!S1.cells.has(k)) newCells.push(k);
+          const newCount = S2.count - S1.count;
+
+          if (newCells.length > 0 && newCount >= 0) {
+            const Snew = new Sentence(newCells, newCount);
+            if (!this.knowledge.some((x) => x.equals(Snew))) {
+              this.knowledge.push(Snew);
+              changed = true;
             }
+          }
         }
-
-        const undeterminedNeighbors = [...neighbors].filter(neighbor => 
-            !this.mines.has(neighbor.toString()) && !this.safes.has(neighbor.toString())
-        );
-
-        if (undeterminedNeighbors.length > 0) {
-            const newSentence = new Sentence(undeterminedNeighbors, count);
-            this.knowledge.push(newSentence);
-        }
-
-        let changed = true;
-        while (changed) {
-            changed = false;
-
-            for (let sentence of this.knowledge) {
-                const knownMines = sentence.knownMines();
-                const knownSafes = sentence.knownSafes();
-
-                for (let mine of knownMines) {
-                    if (!this.mines.has(mine.toString())) {
-                        this.markMine(mine);
-                        changed = true;
-                    }
-                }
-
-                for (let safe of knownSafes) {
-                    if (!this.safes.has(safe.toString())) {
-                        this.markSafe(safe);
-                        changed = true;
-                    }
-                }
-            }
-
-            for (let i = 0; i < this.knowledge.length; i++) {
-                for (let j = 0; j < this.knowledge.length; j++) {
-                    if (i === j) continue;
-
-                    const sentence1 = this.knowledge[i];
-                    const sentence2 = this.knowledge[j];
-
-                    if (sentence1.cells.size > 0 && sentence2.cells.size > 0) {
-                        const intersection = [...sentence1.cells].filter(cell => sentence2.cells.has(cell));
-                        
-                        if (intersection.length > 0 && sentence1.cells.size <= sentence2.cells.size) {
-                            const newCells = [...sentence2.cells].filter(cell => !sentence1.cells.has(cell));
-                            const newCount = sentence2.count - sentence1.count;
-                            
-                            if (newCells.length > 0 && newCount >= 0) {
-                                const newSentence = new Sentence(newCells, newCount);
-                                const exists = this.knowledge.some(s => s.equals(newSentence));
-                                if (!exists) {
-                                    this.knowledge.push(newSentence);
-                                    changed = true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+      }
     }
+  }
 
-    makeSafeMove() {
-        const safeMoves = [...this.safes].filter(safe => 
-            !this.movesMade.has(safe.toString())
-        );
-        
-        if (safeMoves.length > 0) {
-            const move = safeMoves[0];
-            return move.split(',').map(Number);
-        }
-        return null;
+  makeSafeMove() {
+    for (const s of this.safes) {
+      if (!this.movesMade.has(s)) return fromKey(s);
     }
+    return null;
+  }
 
-    makeRandomMove() {
-        const allCells = [];
-        for (let i = 0; i < this.height; i++) {
-            for (let j = 0; j < this.width; j++) {
-                allCells.push([i, j]);
-            }
-        }
-
-        const possibleMoves = allCells.filter(cell => 
-            !this.movesMade.has(cell.toString()) && 
-            !this.mines.has(cell.toString())
-        );
-
-        if (possibleMoves.length > 0) {
-            return possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
-        }
-        return null;
+  hasSafeMove() {
+    for (const s of this.safes) {
+      if (!this.movesMade.has(s)) return true;
     }
+    return false;
+  }
+
+  makeRandomMove(revealedCells = new Set()) {
+    for (let i = 0; i < this.height; i++) {
+      for (let j = 0; j < this.width; j++) {
+        const k = key(i, j);
+        // Verificar que no esté en movesMade (ya jugada), ni en mines (mina conocida), ni ya revelada
+        if (!this.movesMade.has(k) && !this.mines.has(k) && !revealedCells.has(k)) {
+          return [i, j];
+        }
+      }
+    }
+    return null;
+  }
 }
 
 const Minesweeper = () => {
@@ -185,6 +201,7 @@ const Minesweeper = () => {
     const [gameWon, setGameWon] = useState(false);
     const [aiMode, setAiMode] = useState(false);
     const [ai, setAi] = useState(new MinesweeperAI());
+    const [canSolve, setCanSolve] = useState(false);
     const [stats, setStats] = useState({
         gamesPlayed: parseInt(localStorage.getItem('ms_games') || '0'),
         aiMoves: parseInt(localStorage.getItem('ms_ai_moves') || '0'),
@@ -251,6 +268,11 @@ const Minesweeper = () => {
     const currentLang = localStorage.getItem('language') || 'en';
     const currentT = translations[currentLang];
 
+    const recomputeCanSolve = () => {
+        // La IA necesita estar activada y conocer el tablero
+        setCanSolve(aiMode && ai.hasSafeMove());
+    };
+
     const initializeGame = () => {
         const newBoard = Array(8).fill().map(() => Array(8).fill(false));
         const newMines = new Set();
@@ -269,6 +291,7 @@ const Minesweeper = () => {
         setGameOver(false);
         setGameWon(false);
         setAi(new MinesweeperAI());
+        recomputeCanSolve();
     };
 
     useEffect(() => {
@@ -279,6 +302,7 @@ const Minesweeper = () => {
         let count = 0;
         for (let i = row - 1; i <= row + 1; i++) {
             for (let j = col - 1; j <= col + 1; j++) {
+                if (i === row && j === col) continue; // <--- evita contar la propia celda
                 if (i >= 0 && i < 8 && j >= 0 && j < 8 && mines.has(`${i},${j}`)) {
                     count++;
                 }
@@ -321,6 +345,14 @@ const Minesweeper = () => {
         
         revealRecursive(row, col);
         
+        // Alimentar a la IA con todas las celdas seguras reveladas en este paso
+        for (const cell of cellsToReveal) {
+            if (!mines.has(cell)) {
+                const [rr, cc] = fromKey(cell);
+                ai.addKnowledge([rr, cc], getNeighborMines(rr, cc));
+            }
+        }
+        
         // Check if any mine was hit
         for (let cell of cellsToReveal) {
             if (mines.has(cell)) {
@@ -330,6 +362,7 @@ const Minesweeper = () => {
         }
         
         setRevealed(newRevealed);
+        recomputeCanSolve();
 
         // Check win condition
         if (newRevealed.size === 64 - mines.size) {
@@ -353,28 +386,15 @@ const Minesweeper = () => {
 
     const aiSolveStep = () => {
         if (gameOver || gameWon || !aiMode) return;
-
-        const safeMove = ai.makeSafeMove();
-        if (safeMove) {
-            const [row, col] = safeMove;
-            revealCell(row, col);
-            ai.addKnowledge([row, col], getNeighborMines(row, col));
-            
-            const newStats = { ...stats, aiMoves: stats.aiMoves + 1 };
-            setStats(newStats);
-            localStorage.setItem('ms_ai_moves', newStats.aiMoves.toString());
-        } else {
-            const randomMove = ai.makeRandomMove();
-            if (randomMove) {
-                const [row, col] = randomMove;
-                revealCell(row, col);
-                ai.addKnowledge([row, col], getNeighborMines(row, col));
-                
-                const newStats = { ...stats, aiMoves: stats.aiMoves + 1 };
-                setStats(newStats);
-                localStorage.setItem('ms_ai_moves', newStats.aiMoves.toString());
-            }
-        }
+        const safe = ai.makeSafeMove();
+        if (!safe) return; // no hay nada que deducir
+        const [row, col] = safe;
+        revealCell(row, col);
+        ai.addKnowledge([row, col], getNeighborMines(row, col));
+        const newStats = { ...stats, aiMoves: stats.aiMoves + 1 };
+        setStats(newStats);
+        localStorage.setItem('ms_ai_moves', newStats.aiMoves.toString());
+        recomputeCanSolve();
     };
 
     const aiSolveAll = () => {
@@ -395,8 +415,9 @@ const Minesweeper = () => {
                 const newStats = { ...stats, aiMoves: stats.aiMoves + 1 };
                 setStats(newStats);
                 localStorage.setItem('ms_ai_moves', newStats.aiMoves.toString());
+                recomputeCanSolve();
             } else {
-                const randomMove = ai.makeRandomMove();
+                const randomMove = ai.makeRandomMove(revealed);
                 if (randomMove) {
                     const [row, col] = randomMove;
                     revealCell(row, col);
@@ -405,6 +426,7 @@ const Minesweeper = () => {
                     const newStats = { ...stats, aiMoves: stats.aiMoves + 1 };
                     setStats(newStats);
                     localStorage.setItem('ms_ai_moves', newStats.aiMoves.toString());
+                    recomputeCanSolve();
                 } else {
                     clearInterval(solveInterval);
                 }
@@ -416,6 +438,7 @@ const Minesweeper = () => {
         setAiMode(!aiMode);
         if (!aiMode) {
             setAi(new MinesweeperAI());
+            recomputeCanSolve();
         }
     };
 
@@ -507,13 +530,25 @@ const Minesweeper = () => {
                             <>
                                 <button
                                     onClick={aiSolveStep}
-                                    className="px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg"
+                                    disabled={!canSolve}
+                                    aria-disabled={!canSolve}
+                                    className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg
+                                        ${canSolve
+                                            ? 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white transform hover:scale-105'
+                                            : 'bg-gray-500 text-white opacity-60 cursor-not-allowed'}
+                                    `}
                                 >
                                     {t('aiLab.games.minesweeper.aiSolveStep')}
                                 </button>
                                 <button
                                     onClick={aiSolveAll}
-                                    className="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg"
+                                    disabled={!canSolve}
+                                    aria-disabled={!canSolve}
+                                    className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg
+                                        ${canSolve
+                                            ? 'bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white transform hover:scale-105'
+                                            : 'bg-gray-500 text-white opacity-60 cursor-not-allowed'}
+                                    `}
                                 >
                                     {t('aiLab.games.minesweeper.aiSolveAll')}
                                 </button>
