@@ -199,7 +199,6 @@ const Minesweeper = () => {
     const [flagged, setFlagged] = useState(new Set());
     const [gameOver, setGameOver] = useState(false);
     const [gameWon, setGameWon] = useState(false);
-    const [aiMode, setAiMode] = useState(false);
     const [ai, setAi] = useState(new MinesweeperAI());
     const [canSolve, setCanSolve] = useState(false);
     const [stats, setStats] = useState({
@@ -269,8 +268,8 @@ const Minesweeper = () => {
     const currentT = translations[currentLang];
 
     const recomputeCanSolve = () => {
-        // La IA necesita estar activada y conocer el tablero
-        setCanSolve(aiMode && ai.hasSafeMove());
+        // La IA siempre está activa, solo verifica el estado del juego y si hay movimientos seguros
+        setCanSolve(!gameOver && !gameWon && ai.hasSafeMove());
     };
 
     const initializeGame = () => {
@@ -385,7 +384,7 @@ const Minesweeper = () => {
     };
 
     const aiSolveStep = () => {
-        if (gameOver || gameWon || !aiMode) return;
+        if (gameOver || gameWon || !ai.hasSafeMove()) return;
         const safe = ai.makeSafeMove();
         if (!safe) return; // no hay nada que deducir
         const [row, col] = safe;
@@ -395,51 +394,6 @@ const Minesweeper = () => {
         setStats(newStats);
         localStorage.setItem('ms_ai_moves', newStats.aiMoves.toString());
         recomputeCanSolve();
-    };
-
-    const aiSolveAll = () => {
-        if (gameOver || gameWon || !aiMode) return;
-
-        const solveInterval = setInterval(() => {
-            if (gameOver || gameWon) {
-                clearInterval(solveInterval);
-                return;
-            }
-
-            const safeMove = ai.makeSafeMove();
-            if (safeMove) {
-                const [row, col] = safeMove;
-                revealCell(row, col);
-                ai.addKnowledge([row, col], getNeighborMines(row, col));
-                
-                const newStats = { ...stats, aiMoves: stats.aiMoves + 1 };
-                setStats(newStats);
-                localStorage.setItem('ms_ai_moves', newStats.aiMoves.toString());
-                recomputeCanSolve();
-            } else {
-                const randomMove = ai.makeRandomMove(revealed);
-                if (randomMove) {
-                    const [row, col] = randomMove;
-                    revealCell(row, col);
-                    ai.addKnowledge([row, col], getNeighborMines(row, col));
-                    
-                    const newStats = { ...stats, aiMoves: stats.aiMoves + 1 };
-                    setStats(newStats);
-                    localStorage.setItem('ms_ai_moves', newStats.aiMoves.toString());
-                    recomputeCanSolve();
-                } else {
-                    clearInterval(solveInterval);
-                }
-            }
-        }, 500);
-    };
-
-    const toggleAIMode = () => {
-        setAiMode(!aiMode);
-        if (!aiMode) {
-            setAi(new MinesweeperAI());
-            recomputeCanSolve();
-        }
     };
 
     const newGame = () => {
@@ -517,43 +471,17 @@ const Minesweeper = () => {
                             {t('aiLab.games.minesweeper.newGame')}
                         </button>
                         <button
-                            onClick={toggleAIMode}
-                            className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg ${
-                                aiMode
-                                    ? 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white'
-                                    : 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white'
-                            }`}
+                            onClick={aiSolveStep}
+                            disabled={!canSolve}
+                            aria-disabled={!canSolve}
+                            className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg
+                                ${canSolve
+                                    ? 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white transform hover:scale-105'
+                                    : 'bg-gray-500 text-white opacity-60 cursor-not-allowed'}
+                            `}
                         >
-                            {aiMode ? t('aiLab.games.minesweeper.disableAI') : t('aiLab.games.minesweeper.enableAI')}
+                            {t('aiLab.games.minesweeper.aiSolveStep')}
                         </button>
-                        {aiMode && (
-                            <>
-                                <button
-                                    onClick={aiSolveStep}
-                                    disabled={!canSolve}
-                                    aria-disabled={!canSolve}
-                                    className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg
-                                        ${canSolve
-                                            ? 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white transform hover:scale-105'
-                                            : 'bg-gray-500 text-white opacity-60 cursor-not-allowed'}
-                                    `}
-                                >
-                                    {t('aiLab.games.minesweeper.aiSolveStep')}
-                                </button>
-                                <button
-                                    onClick={aiSolveAll}
-                                    disabled={!canSolve}
-                                    aria-disabled={!canSolve}
-                                    className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg
-                                        ${canSolve
-                                            ? 'bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white transform hover:scale-105'
-                                            : 'bg-gray-500 text-white opacity-60 cursor-not-allowed'}
-                                    `}
-                                >
-                                    {t('aiLab.games.minesweeper.aiSolveAll')}
-                                </button>
-                            </>
-                        )}
                     </div>
 
                     {(gameOver || gameWon) && (
