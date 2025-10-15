@@ -35,15 +35,15 @@ A collection of AI-powered games implemented in JavaScript, converted from origi
 - npm or yarn
 
 ### Installation
-```bash
-npm install
-npm run dev
-```
+   ```bash
+   npm install
+   npm run dev
+   ```
 
 ### Building for Production
-```bash
-npm run build
-```
+   ```bash
+   npm run build
+   ```
 
 ## 🧠 AI Algorithms
 

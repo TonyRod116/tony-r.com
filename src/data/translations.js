@@ -252,7 +252,7 @@ export const translations = {
           stats: {
             games: 'Games Played',
             aiMoves: 'AI Moves',
-            winRate: 'Win Rate'
+            gamesWon: 'Games Won'
           },
           backToAI: 'Back to AI Lab'
         },
@@ -674,7 +674,7 @@ export const translations = {
           stats: {
             games: 'Juegos Jugados',
             aiMoves: 'Movimientos IA',
-            winRate: 'Tasa de Éxito'
+            gamesWon: 'Juegos Ganados'
           },
           backToAI: 'Volver al Lab de IA'
         },
@@ -1096,7 +1096,7 @@ export const translations = {
           stats: {
             games: 'Jocs Jugats',
             aiMoves: 'Moviments IA',
-            winRate: 'Taxa d\'Èxit'
+            gamesWon: 'Jocs Guanyats'
           },
           backToAI: 'Tornar al Lab d\'IA'
         },

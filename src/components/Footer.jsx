@@ -51,6 +51,12 @@ export default function Footer() {
               >
                 {t('nav.contact')}
               </Link>
+              <Link
+                to="/ai"
+                className="block text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 transition-colors"
+              >
+                {t('nav.aiLab')}
+              </Link>
             </nav>
           </div>
 

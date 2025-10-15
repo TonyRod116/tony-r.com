@@ -204,7 +204,7 @@ const Minesweeper = () => {
     const [stats, setStats] = useState({
         gamesPlayed: parseInt(localStorage.getItem('ms_games') || '0'),
         aiMoves: parseInt(localStorage.getItem('ms_ai_moves') || '0'),
-        winRate: '0%'
+        gamesWon: parseInt(localStorage.getItem('ms_games_won') || '0')
     });
 
     const translations = {
@@ -366,6 +366,10 @@ const Minesweeper = () => {
         // Check win condition
         if (newRevealed.size === 64 - mines.size) {
             setGameWon(true);
+            // Increment games won counter
+            const newStats = { ...stats, gamesWon: stats.gamesWon + 1 };
+            setStats(newStats);
+            localStorage.setItem('ms_games_won', newStats.gamesWon.toString());
         }
     };
 
@@ -523,8 +527,8 @@ const Minesweeper = () => {
                             <div className="text-xs sm:text-sm text-gray-300">{t('aiLab.games.minesweeper.stats.aiMoves')}</div>
                         </div>
                         <div className="bg-gray-800/50 p-3 sm:p-4 rounded-xl text-center border border-blue-400/20">
-                            <div className="text-xl sm:text-2xl font-bold text-blue-400">{stats.winRate}</div>
-                            <div className="text-xs sm:text-sm text-gray-300">{t('aiLab.games.minesweeper.stats.winRate')}</div>
+                            <div className="text-xl sm:text-2xl font-bold text-green-400">{stats.gamesWon}</div>
+                            <div className="text-xs sm:text-sm text-gray-300">{t('aiLab.games.minesweeper.stats.gamesWon')}</div>
                         </div>
                     </div>
                 </div>
