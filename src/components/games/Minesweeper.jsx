@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../hooks/useLanguage';
+import { useNavigate } from 'react-router-dom';
 
 // Minesweeper AI Implementation
 class Sentence {
@@ -175,6 +176,7 @@ class MinesweeperAI {
 
 const Minesweeper = () => {
     const { t } = useLanguage();
+    const navigate = useNavigate();
     const [board, setBoard] = useState([]);
     const [mines, setMines] = useState(new Set());
     const [revealed, setRevealed] = useState(new Set());
@@ -291,25 +293,43 @@ const Minesweeper = () => {
         }
 
         const newRevealed = new Set(revealed);
-        newRevealed.add(`${row},${col}`);
-
-        if (mines.has(`${row},${col}`)) {
-            setGameOver(true);
-            return;
-        }
-
-        setRevealed(newRevealed);
-
-        // If no neighboring mines, reveal neighbors
-        if (getNeighborMines(row, col) === 0) {
-            for (let i = row - 1; i <= row + 1; i++) {
-                for (let j = col - 1; j <= col + 1; j++) {
-                    if (i >= 0 && i < 8 && j >= 0 && j < 8 && !newRevealed.has(`${i},${j}`)) {
-                        revealCell(i, j);
+        const cellsToReveal = new Set();
+        
+        const revealRecursive = (r, c) => {
+            if (gameOver || gameWon || newRevealed.has(`${r},${c}`) || flagged.has(`${r},${c}`)) {
+                return;
+            }
+            
+            newRevealed.add(`${r},${c}`);
+            cellsToReveal.add(`${r},${c}`);
+            
+            if (mines.has(`${r},${c}`)) {
+                return;
+            }
+            
+            // If no neighboring mines, add neighbors to reveal
+            if (getNeighborMines(r, c) === 0) {
+                for (let i = r - 1; i <= r + 1; i++) {
+                    for (let j = c - 1; j <= c + 1; j++) {
+                        if (i >= 0 && i < 8 && j >= 0 && j < 8 && !newRevealed.has(`${i},${j}`) && !flagged.has(`${i},${j}`)) {
+                            revealRecursive(i, j);
+                        }
                     }
                 }
             }
+        };
+        
+        revealRecursive(row, col);
+        
+        // Check if any mine was hit
+        for (let cell of cellsToReveal) {
+            if (mines.has(cell)) {
+                setGameOver(true);
+                return;
+            }
         }
+        
+        setRevealed(newRevealed);
 
         // Check win condition
         if (newRevealed.size === 64 - mines.size) {
@@ -461,6 +481,12 @@ const Minesweeper = () => {
                     </div>
 
                     <div className="flex justify-center gap-4 mb-8 flex-wrap">
+                        <button
+                            onClick={() => navigate('/ai')}
+                            className="px-4 py-2 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg text-sm"
+                        >
+                            {t('aiLab.games.minesweeper.backToAI')}
+                        </button>
                         <button
                             onClick={newGame}
                             className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg"

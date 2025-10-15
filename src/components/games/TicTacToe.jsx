@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../hooks/useLanguage';
+import { useNavigate } from 'react-router-dom';
 
 const X = "X";
 const O = "O";
@@ -122,6 +123,7 @@ const min_value = (board) => {
 
 const TicTacToe = () => {
     const { t } = useLanguage();
+    const navigate = useNavigate();
     const [board, setBoard] = useState(initial_state());
     const [isHardMode, setIsHardMode] = useState(true);
     const [gameStatus, setGameStatus] = useState('');
@@ -135,8 +137,8 @@ const TicTacToe = () => {
     const translations = {
         en: {
             title: "Tic-Tac-Toe AI",
-            subtitle: "Challenge Tony's unbeatable Minimax algorithm",
-            description: "This AI uses my original Minimax algorithm implementation converted from Python to JavaScript. The algorithm evaluates all 255,168 possible game positions, making it impossible to beat (unless you use easy mode) - it will always force a draw or win against any opponent.",
+            subtitle: "Challenge tha AI's unbeatable Minimax algorithm",
+            description: "This AI uses my original Minimax Python algorithm converted to JavaScript. The algorithm evaluates all 255,168 possible game positions, making it impossible to beat (unless you use easy mode) - it will always force a draw or win against any opponent.",
             newGame: "New Game",
             easyMode: "Easy Mode",
             hardMode: "Hard Mode",
@@ -153,8 +155,8 @@ const TicTacToe = () => {
         },
         es: {
             title: "IA Tres en Raya",
-            subtitle: "Desafía el algoritmo Minimax imbatible de Tony",
-            description: "Esta IA usa mi implementación original del algoritmo Minimax convertida de Python a JavaScript. El algoritmo evalúa todas las 255,168 posiciones posibles del juego, haciéndolo imposible de vencer (a menos que uses el modo fácil) - siempre forzará un empate o victoria contra cualquier oponente.",
+            subtitle: "Desafía el algoritmo Minimax imbatible de la IA",
+            description: "Esta IA usa mi implementación original del algoritmo Minimax en Python convertida a JavaScript. El algoritmo evalúa todas las 255,168 posiciones posibles del juego, haciéndolo imposible de vencer (a menos que uses el modo fácil) - siempre forzará un empate o victoria contra cualquier oponente.",
             newGame: "Nuevo Juego",
             easyMode: "Modo Fácil",
             hardMode: "Modo Difícil",
@@ -171,8 +173,8 @@ const TicTacToe = () => {
         },
         ca: {
             title: "IA Tres en Ratlla",
-            subtitle: "Desafia l'algoritme Minimax imbatible de Tony",
-            description: "Aquesta IA usa la meva implementació original de l'algoritme Minimax convertida de Python a JavaScript. L'algoritme avalua totes les 255,168 posicions possibles del joc, fent-lo impossible de vèncer (a menys que usis el mode fàcil) - sempre forçarà un empat o victòria contra qualsevol oponent.",
+            subtitle: "Desafia l'algoritme Minimax imbatible de la IA",
+            description: "Aquesta IA usa la meva implementació original de l'algoritme Minimax de Python convertida a JavaScript. L'algoritme avalua totes les 255,168 posicions possibles del joc, fent-lo impossible de vèncer (a menys que usis el mode fàcil) - sempre forçarà un empat o victòria contra qualsevol oponent.",
             newGame: "Nou Joc",
             easyMode: "Mode Fàcil",
             hardMode: "Mode Difícil",
@@ -286,6 +288,12 @@ const TicTacToe = () => {
                     </div>
 
                     <div className="flex justify-center gap-4 mb-8">
+                        <button
+                            onClick={() => navigate('/ai')}
+                            className="px-4 py-2 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg text-sm"
+                        >
+                            {t('aiLab.games.tictactoe.backToAI')}
+                        </button>
                         <button
                             onClick={newGame}
                             className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg"

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../hooks/useLanguage';
+import { useNavigate } from 'react-router-dom';
 
 // Six Degrees of Kevin Bacon Implementation
 class Node {
@@ -33,6 +34,7 @@ class QueueFrontier {
 
 const SixDegrees = () => {
     const { t } = useLanguage();
+    const navigate = useNavigate();
     const [people, setPeople] = useState({});
     const [movies, setMovies] = useState({});
     const [names, setNames] = useState({});
@@ -436,6 +438,15 @@ const SixDegrees = () => {
                                     placeholder="e.g., Tom Hanks"
                                 />
                             </div>
+                        </div>
+
+                        <div className="flex gap-4 mb-4">
+                            <button
+                                onClick={() => navigate('/ai')}
+                                className="px-4 py-2 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg text-sm"
+                            >
+                                {currentT.backToAI}
+                            </button>
                         </div>
 
                         <button

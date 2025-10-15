@@ -219,8 +219,8 @@ export const translations = {
       games: {
         tictactoe: {
           title: 'Tic-Tac-Toe AI',
-          subtitle: 'Challenge Tony\'s unbeatable Minimax algorithm',
-          description: 'This AI uses my original Minimax algorithm implementation converted from Python to JavaScript. The algorithm evaluates all 255,168 possible game positions, making it impossible to beat (unless you use easy mode) - it will always force a draw or win against any opponent.',
+          subtitle: 'Challenge the AI\'s unbeatable Minimax algorithm',
+          description: 'This AI uses my original Minimax Python algorithm converted to JavaScript. The algorithm evaluates all 255,168 possible game positions, making it impossible to beat (unless you use easy mode) - it will always force a draw or win against any opponent.',
           newGame: 'New Game',
           easyMode: 'Easy Mode',
           hardMode: 'Hard Mode',
@@ -234,12 +234,13 @@ export const translations = {
             aiWins: 'AI Wins',
             youWins: 'You Wins',
             draws: 'Draws'
-          }
+          },
+          backToAI: 'Back to AI Lab'
         },
         minesweeper: {
           title: 'Minesweeper AI',
           subtitle: 'Watch the AI solve Minesweeper puzzles using logical deduction',
-          description: 'This AI uses my original logical deduction implementation converted from Python to JavaScript. The algorithm analyzes patterns and probabilities to make safe moves and solve puzzles efficiently - it will solve whenever possible.',
+          description: 'This AI uses my original logical deduction implementation converted from Python to JavaScript. The algorithm analyzes patterns and probabilities to make safe moves and solve puzzles efficiently. When using "AI Solve Step", it will only make moves when logical deductions are possible, otherwise it will not move. "AI Solve All" will only solve when it can actually solve the entire puzzle.',
           newGame: 'New Game',
           enableAI: 'Enable AI',
           disableAI: 'Disable AI',
@@ -252,7 +253,8 @@ export const translations = {
             games: 'Games Played',
             aiMoves: 'AI Moves',
             winRate: 'Win Rate'
-          }
+          },
+          backToAI: 'Back to AI Lab'
         },
         sixdegrees: {
           title: 'Six Degrees of Kevin Bacon',
@@ -271,7 +273,8 @@ export const translations = {
             people: 'People in Database',
             movies: 'Movies in Database',
             connections: 'Connections Found'
-          }
+          },
+          backToAI: 'Back to AI Lab'
         }
       }
     },
@@ -638,8 +641,8 @@ export const translations = {
       games: {
         tictactoe: {
           title: 'IA Tres en Raya',
-          subtitle: 'Desafía el algoritmo Minimax imbatible de Tony',
-          description: 'Esta IA usa mi implementación original del algoritmo Minimax convertida de Python a JavaScript. El algoritmo evalúa todas las 255,168 posiciones posibles del juego, haciéndolo imposible de vencer (a menos que uses el modo fácil) - siempre forzará un empate o victoria contra cualquier oponente.',
+          subtitle: 'Desafía el algoritmo Minimax imbatible de la IA',
+          description: 'Esta IA usa mi implementación original del algoritmo Minimax de Python convertida a JavaScript. El algoritmo evalúa todas las 255,168 posiciones posibles del juego, haciéndolo imposible de vencer (a menos que uses el modo fácil) - siempre forzará un empate o victoria contra cualquier oponente.',
           newGame: 'Nuevo Juego',
           easyMode: 'Modo Fácil',
           hardMode: 'Modo Difícil',
@@ -653,12 +656,13 @@ export const translations = {
             aiWins: 'Victorias IA',
             youWins: 'Tus Victorias',
             draws: 'Empates'
-          }
+          },
+          backToAI: 'Volver al Lab de IA'
         },
         minesweeper: {
           title: 'IA Buscaminas',
           subtitle: 'Observa cómo la IA resuelve puzzles de Buscaminas usando deducción lógica',
-          description: 'Esta IA usa mi implementación original de deducción lógica convertida de Python a JavaScript. El algoritmo analiza patrones y probabilidades para hacer movimientos seguros y resolver puzzles eficientemente - resolverá siempre que pueda.',
+          description: 'Esta IA usa mi implementación original de deducción lógica convertida de Python a JavaScript. El algoritmo analiza patrones y probabilidades para hacer movimientos seguros y resolver puzzles eficientemente. Al usar "IA Resolver Paso", solo hará movimientos cuando las deducciones lógicas sean posibles, de lo contrario no se moverá. "IA Resolver Todo" solo resolverá cuando realmente pueda resolver todo el puzzle.',
           newGame: 'Nuevo Juego',
           enableAI: 'Activar IA',
           disableAI: 'Desactivar IA',
@@ -671,7 +675,8 @@ export const translations = {
             games: 'Juegos Jugados',
             aiMoves: 'Movimientos IA',
             winRate: 'Tasa de Éxito'
-          }
+          },
+          backToAI: 'Volver al Lab de IA'
         },
         sixdegrees: {
           title: 'Seis Grados de Kevin Bacon',
@@ -690,7 +695,8 @@ export const translations = {
             people: 'Personas en Base de Datos',
             movies: 'Películas en Base de Datos',
             connections: 'Conexiones Encontradas'
-          }
+          },
+          backToAI: 'Volver al Lab de IA'
         }
       }
     },
@@ -1072,12 +1078,13 @@ export const translations = {
             aiWins: 'Victòries IA',
             youWins: 'Les Teves Victòries',
             draws: 'Empats'
-          }
+          },
+          backToAI: 'Tornar al Lab d\'IA'
         },
         minesweeper: {
           title: 'IA Buscamines',
           subtitle: 'Observa com l\'IA resol trencaclosques de Buscamines usant deducció lògica',
-          description: 'Aquesta IA usa la meva implementació original de deducció lògica convertida de Python a JavaScript. L\'algoritme analitza patrons i probabilitats per fer moviments segurs i resoldre trencaclosques eficientment - resoldrà sempre que pugui.',
+          description: 'Aquesta IA usa la meva implementació original de deducció lògica convertida de Python a JavaScript. L\'algoritme analitza patrons i probabilitats per fer moviments segurs i resoldre trencaclosques eficientment. En usar "IA Resoldre Pas", només farà moviments quan les deduccions lògiques siguin possibles, altrament no es mourà. "IA Resoldre Tot" només resoldrà quan realment pugui resoldre tot el trencaclosques.',
           newGame: 'Nou Joc',
           enableAI: 'Activar IA',
           disableAI: 'Desactivar IA',
@@ -1090,7 +1097,8 @@ export const translations = {
             games: 'Jocs Jugats',
             aiMoves: 'Moviments IA',
             winRate: 'Taxa d\'Èxit'
-          }
+          },
+          backToAI: 'Tornar al Lab d\'IA'
         },
         sixdegrees: {
           title: 'Sis Graus de Kevin Bacon',
@@ -1109,7 +1117,8 @@ export const translations = {
             people: 'Persones a Base de Dades',
             movies: 'Pel·lícules a Base de Dades',
             connections: 'Connexions Trobades'
-          }
+          },
+          backToAI: 'Tornar al Lab d\'IA'
         }
       }
     },
