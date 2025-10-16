@@ -914,23 +914,18 @@ export default function Tetris() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-6">
+          <div className="flex flex-col items-center justify-center gap-4 mb-6">
+            <img 
+              src="/assets/ttris/T-Tris2.PNG" 
+              alt="T-Tris Logo" 
+              className="h-16 sm:h-20 md:h-24 w-auto"
+            />
             <button
               onClick={() => navigate('/ai')}
               className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm sm:text-base"
             >
               {t('aiLab.games.tetris.backToAI')}
             </button>
-            <img 
-              src="/assets/ttris/T-Tris2.PNG" 
-              alt="T-Tris Logo" 
-              className="h-16 sm:h-20 md:h-24 w-auto"
-            />
-            {magicTEnabled && (
-              <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-sm font-medium rounded-full">
-                {t('aiLab.games.tetris.magicT')}
-              </span>
-            )}
           </div>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             {t('aiLab.games.tetris.longDescription')}
@@ -942,43 +937,38 @@ export default function Tetris() {
           {/* Game Board */}
           <div className="lg:col-span-2">
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 shadow-lg">
-                <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-2">
-                  <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
-                    {t('aiLab.games.tetris.gameBoard')}
-                  </h2>
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      onClick={() => setAiEnabled(!aiEnabled)}
-                      className={`px-3 py-2 rounded-lg font-medium transition-colors text-sm ${
-                        aiEnabled
-                          ? 'bg-green-600 hover:bg-green-700 text-white'
-                          : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300'
-                      }`}
-                    >
-                      {aiEnabled ? t('aiLab.games.tetris.aiOn') : t('aiLab.games.tetris.aiOff')}
-                    </button>
-                    <button
-                      onClick={toggleMagicT}
-                      className={`px-3 py-2 rounded-lg font-medium transition-colors text-sm ${
-                        magicTEnabled
-                          ? 'bg-purple-600 hover:bg-purple-700 text-white'
-                          : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300'
-                      }`}
-                    >
-                      {magicTEnabled ? t('aiLab.games.tetris.magicTOn') : t('aiLab.games.tetris.magicTOff')}
-                    </button>
-                    <button
-                      onClick={toggleMute}
-                      className={`px-3 py-2 rounded-lg font-medium transition-colors text-sm ${
-                        isMuted
-                          ? 'bg-red-600 hover:bg-red-700 text-white'
-                          : 'bg-blue-600 hover:bg-blue-700 text-white'
-                      }`}
-                    >
-                      {isMuted ? '🔇 Mute' : '🔊 Music'}
-                    </button>
-                  </div>
-                </div>
+                 <div className="flex flex-wrap justify-center gap-2 mb-4">
+                   <button
+                     onClick={() => setAiEnabled(!aiEnabled)}
+                     className={`px-3 py-2 rounded-lg font-medium transition-colors text-sm ${
+                       aiEnabled
+                         ? 'bg-green-600 hover:bg-green-700 text-white'
+                         : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300'
+                     }`}
+                   >
+                     {aiEnabled ? t('aiLab.games.tetris.aiOn') : t('aiLab.games.tetris.aiOff')}
+                   </button>
+                   <button
+                     onClick={toggleMagicT}
+                     className={`px-3 py-2 rounded-lg font-medium transition-colors text-sm ${
+                       magicTEnabled
+                         ? 'bg-purple-600 hover:bg-purple-700 text-white'
+                         : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300'
+                     }`}
+                   >
+                     {magicTEnabled ? t('aiLab.games.tetris.magicTOn') : t('aiLab.games.tetris.magicTOff')}
+                   </button>
+                   <button
+                     onClick={toggleMute}
+                     className={`px-3 py-2 rounded-lg font-medium transition-colors text-sm ${
+                       isMuted
+                         ? 'bg-red-600 hover:bg-red-700 text-white'
+                         : 'bg-blue-600 hover:bg-blue-700 text-white'
+                     }`}
+                   >
+                     {isMuted ? '🔇 Mute' : '🔊 Music'}
+                   </button>
+                 </div>
 
                 {/* Tetris Board */}
                 <div className="rounded-lg p-3 bg-gray-900 overflow-hidden">
