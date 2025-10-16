@@ -445,6 +445,27 @@ export default function Tetris() {
     return false;
   }, []);
 
+  // Rotation-specific placement check: allow r<0 but still enforce lateral bounds
+  const canRotateAt = useCallback((matrix, name, rot, pos) => {
+    if (!name) return false;
+    const offs = PIECES[name].rotations[rot];
+
+    for (const off of offs) {
+      // Compute absolute cell index, then row/col via floor and diff (robust for negatives)
+      const idx = pos + off;
+      const r = Math.floor(idx / BOARD_WIDTH);
+      const c = idx - r * BOARD_WIDTH;
+
+      // Horizontal bounds must always hold
+      if (c < 0 || c >= BOARD_WIDTH) return false;
+      // Below board invalid
+      if (r >= BOARD_HEIGHT) return false;
+      // Collisions only once inside the board
+      if (r >= 0 && matrix[r][c] !== null) return false;
+    }
+    return true;
+  }, []);
+
   // Initialize game
   const initializeGame = useCallback(() => {
     const newBoard = Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(null));
@@ -738,35 +759,23 @@ export default function Tetris() {
       }
       case 'rotate': {
         const nextRotation = (currentRotation + 1) % PIECES[currentPiece].rotations.length;
-        
-        // Try rotation at current position first
-        if (!wouldCollide(board, currentPiece, nextRotation, currentPosition, 0, 0)) {
+
+        // Try rotate in place with strict check
+        if (canRotateAt(board, currentPiece, nextRotation, currentPosition)) {
           newRotation = nextRotation;
           break;
         }
-        
-        // Wall kick attempts: try moving left or right slightly
-        const kicks = [
-          -1,  // Try one left
-          1,   // Try one right
-          -2,  // Try two left
-          2,   // Try two right
-        ];
-        
-        const basePosR = Math.floor(currentPosition / BOARD_WIDTH);
-        const basePosC = currentPosition - basePosR * BOARD_WIDTH;
-        
-        for (const kickDx of kicks) {
-          const newCol = basePosC + kickDx;
-          
-          // Skip if new column would be out of bounds
+
+        // Try kicks (right/left up to 2 cells)
+        const baseRow = Math.floor(currentPosition / BOARD_WIDTH);
+        const baseCol = currentPosition - baseRow * BOARD_WIDTH;
+        for (const dx of [1, -1, 2, -2]) {
+          const newCol = baseCol + dx;
           if (newCol < 0 || newCol >= BOARD_WIDTH) continue;
-          
-          const kickPos = basePosR * BOARD_WIDTH + newCol;
-          
-          if (!wouldCollide(board, currentPiece, nextRotation, kickPos, 0, 0)) {
+          const testPos = baseRow * BOARD_WIDTH + newCol;
+          if (canRotateAt(board, currentPiece, nextRotation, testPos)) {
             newRotation = nextRotation;
-            newPosition = kickPos;
+            newPosition = testPos;
             break;
           }
         }
@@ -778,7 +787,7 @@ export default function Tetris() {
       setCurrentPosition(newPosition);
       setCurrentRotation(newRotation);
     }
-  }, [currentPiece, currentPosition, currentRotation, gameOver, gameStarted, board, dropPiece, wouldCollide]);
+  }, [currentPiece, currentPosition, currentRotation, gameOver, gameStarted, board, dropPiece, wouldCollide, canRotateAt]);
 
   // AI move
   const makeAIMove = useCallback(() => {
@@ -1291,7 +1300,7 @@ export default function Tetris() {
               {!gameStarted && (
                 <div className="text-center">
                   <button
-                    onClick={startGame}
+                    onClick={initializeGame}
                     className="w-full px-4 py-3 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white rounded-lg font-medium transition-all duration-200 text-sm sm:text-base"
                   >
                     {t('aiLab.games.tetris.startGame') || 'Start Game'}
