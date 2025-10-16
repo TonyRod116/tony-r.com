@@ -283,7 +283,7 @@ export const translations = {
         nim: {
           title: 'Nim AI',
           subtitle: 'Challenge the Q-Learning AI in the classic Nim game',
-          description: 'This AI uses Q-Learning, a reinforcement learning algorithm, to learn optimal strategies by playing thousands of games against itself. The AI starts with random moves but gradually learns to make better decisions through trial and error.',
+          description: 'This Nim AI was built from my own Q-learning implementation (originally in Python during Harvard\'s CS50 AI, later ported to JavaScript).\nThe agent learns from scratch via self-play: it explores with epsilon-greedy, updates a Q-table for each (state, action), and converges by temporal-difference learning toward a winning policy. You can train the agent (watch its win-rate grow) and then play against it to see policy improvement in action.\n\n"This isn\'t just a game — it\'s proof that I understand reinforcement learning, value functions, and exploration–exploitation, not just how to call an API."',
           howToPlay: 'How to Play: Take turns removing objects from piles. You can take any number of objects from a single pile. The player who takes the last object wins!',
           newGame: 'New Game',
           training: 'Training Expert AI...',
@@ -659,6 +659,10 @@ export const translations = {
           title: 'Seis Grados de Separación',
           description: 'Encuentra el camino más corto entre dos personas usando teoría de grafos e integración de API.'
         },
+        nim: {
+          title: 'IA Nim',
+          description: 'IA de Q-Learning que aprende estrategias óptimas jugando miles de partidas contra sí misma.'
+        }
       },
       comingSoon: {
         title: 'Más Proyectos de IA Próximamente',
@@ -712,7 +716,7 @@ export const translations = {
         nim: {
           title: 'IA Nim',
           subtitle: 'Desafía a la IA de Q-Learning en el clásico juego de Nim',
-          description: 'Esta IA usa Q-Learning, un algoritmo de aprendizaje por refuerzo, para aprender estrategias óptimas jugando miles de partidas contra sí misma. La IA comienza con movimientos aleatorios pero gradualmente aprende a tomar mejores decisiones mediante prueba y error.',
+          description: 'Esta IA de Nim parte de mi implementación propia de Q-learning (inicialmente en Python dentro del CS50 de IA de Harvard y después portada a JavaScript).\nEl agente aprende desde cero jugando contra sí mismo: explora con epsilon-greedy, actualiza una Q-table por cada (estado, acción) y converge mediante aprendizaje por diferencias temporales hacia una política ganadora. Puedes entrenarlo (ver crecer su tasa de victorias) y luego jugar contra él para observar la mejora de la política en tiempo real.\n\n«Esto no es solo un juego — es la prueba de que entiendo reinforcement learning, funciones de valor y el dilema exploración–explotación, no solo cómo usar una API.»',
           howToPlay: 'Cómo Jugar: Tomen turnos removiendo objetos de las pilas. Puedes tomar cualquier cantidad de objetos de una sola pila. ¡El jugador que tome el último objeto gana!',
           newGame: 'Nuevo Juego',
           training: 'Entrenando IA Experta...',
@@ -759,7 +763,7 @@ export const translations = {
         nim: {
           title: 'IA Nim',
           subtitle: 'Desafía a la IA de Q-Learning en el clásico juego de Nim',
-          description: 'Esta IA usa Q-Learning, un algoritmo de aprendizaje por refuerzo, para aprender estrategias óptimas jugando miles de partidas contra sí misma. La IA comienza con movimientos aleatorios pero gradualmente aprende a tomar mejores decisiones mediante prueba y error.',
+          description: 'Esta IA de Nim parte de mi implementación propia de Q-learning (inicialmente en Python dentro del CS50 de IA de Harvard y después portada a JavaScript).\nEl agente aprende desde cero jugando contra sí mismo: explora con epsilon-greedy, actualiza una Q-table por cada (estado, acción) y converge mediante aprendizaje por diferencias temporales hacia una política ganadora. Puedes entrenarlo (ver crecer su tasa de victorias) y luego jugar contra él para observar la mejora de la política en tiempo real.\n\n«Esto no es solo un juego — es la prueba de que entiendo reinforcement learning, funciones de valor y el dilema exploración–explotación, no solo cómo usar una API.»',
           howToPlay: 'Cómo Jugar: Tomen turnos removiendo objetos de las pilas. Puedes tomar cualquier cantidad de objetos de una sola pila. ¡El jugador que tome el último objeto gana!',
           newGame: 'Nuevo Juego',
           training: 'Entrenando IA Experta...',
@@ -1135,6 +1139,10 @@ export const translations = {
           title: 'Sis Graus de Separació',
           description: 'Troba el camí més curt entre dues persones usant teoria de grafs i integració d\'API.'
         },
+        nim: {
+          title: 'IA Nim',
+          description: 'IA de Q-Learning que aprèn estratègies òptimes jugant milers de partides contra si mateixa.'
+        }
       },
       comingSoon: {
         title: 'Més Projectes d\'IA Properament',
@@ -1208,7 +1216,7 @@ export const translations = {
         nim: {
           title: 'IA Nim',
           subtitle: 'Desafia a la IA de Q-Learning en el clàssic joc de Nim',
-          description: 'Aquesta IA usa Q-Learning, un algoritme d\'aprenentatge per reforç, per aprendre estratègies òptimes jugant milers de partides contra si mateixa. La IA comença amb moviments aleatoris però gradualment aprèn a prendre millors decisions mitjançant prova i error.',
+          description: 'Aquesta IA de Nim neix de la meva implementació de Q-learning (primer en Python al CS50 d\'IA de Harvard i després portada a JavaScript).\nL\'agent aprèn des de zero amb auto-joc: explora amb epsilon-greedy, actualitza una taula Q per a cada (estat, acció) i convergeix mitjançant aprenentatge per diferències temporals cap a una política guanyadora. Pots entrenar-lo (veure com creix el win-rate) i jugar-hi per comprovar la millora de la política.\n\n«Això no és només un joc — és la prova que entenc reinforcement learning, funcions de valor i exploració–explotació, no només com fer servir una API.»',
           howToPlay: 'Com Jugar: Prenen torns removent objectes de les piles. Pots agafar qualsevol quantitat d\'objectes d\'una sola pila. ¡El jugador que agafi l\'últim objecte guanya!',
           newGame: 'Nou Joc',
           training: 'Entrenant IA Expert...',

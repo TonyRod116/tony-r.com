@@ -323,6 +323,7 @@ const Nim = () => {
                                 onClick={() => {
                                     setAiType('expert');
                                     trainAI();
+                                    newGame();
                                 }}
                                 disabled={isTraining}
                                 className={`px-6 py-3 rounded-lg font-medium transition-colors ${
@@ -392,24 +393,29 @@ const Nim = () => {
                             {gameStatus}
                         </div>
 
-                        {game.winner === null && game.player === 0 && (
+                        {game.winner === null && (
                             <div className="space-y-4">
                                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                                    {t('aiLab.games.nim.yourTurn')}
+                                    {game.player === 0 ? t('aiLab.games.nim.yourTurn') : t('aiLab.games.nim.aiTurn')}
                                 </p>
                                 <div className="flex flex-wrap justify-center gap-2">
                                     {game.piles.map((count, pileIndex) => (
                                         count > 0 && (
                                             <div key={pileIndex} className="flex flex-col gap-1">
                                                 <span className="text-xs text-gray-500 dark:text-gray-400">
-                                                    {currentT.selectPile} {pileIndex}
+                                                    {t('aiLab.games.nim.selectPile')} {pileIndex}
                                                 </span>
                                                 <div className="flex gap-1">
                                                     {Array.from({ length: count }, (_, i) => i + 1).map(num => (
                                                         <button
                                                             key={num}
                                                             onClick={() => makeMove(pileIndex, num)}
-                                                            className="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white text-sm rounded transition-colors"
+                                                            disabled={game.player !== 0}
+                                                            className={`px-3 py-1 text-sm rounded transition-colors ${
+                                                                game.player === 0 
+                                                                    ? 'bg-blue-500 hover:bg-blue-600 text-white' 
+                                                                    : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                                                            }`}
                                                         >
                                                             {num}
                                                         </button>

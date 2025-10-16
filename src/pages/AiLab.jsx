@@ -91,7 +91,7 @@ export default function AiLab() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
         >
           {aiProjects.map((project, index) => {
             const IconComponent = project.icon
