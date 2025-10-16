@@ -170,7 +170,11 @@ class TetrisAI {
     for (let i = 0; i < coords.length; i++) {
       const cellIdx = pos + coords[i];
       const row = Math.floor(cellIdx / BOARD_WIDTH);
-      const col = cellIdx - row * BOARD_WIDTH;
+      
+      // Calcular columna con offset relativo (no usar módulo)
+      const offsetR = Math.floor(coords[i] / BOARD_WIDTH);
+      const offsetC = coords[i] - offsetR * BOARD_WIDTH;
+      const col = (startCol % BOARD_WIDTH) + offsetC;
       
       // Verificar límites laterales (ignorar si está por encima del tablero)
       if (row >= 0 && (col < 0 || col >= BOARD_WIDTH)) {
@@ -203,8 +207,12 @@ class TetrisAI {
         // Si todavía está por encima del tablero, ignora colisiones
         if (r < 0) continue;
         
-        // Calcular columna correctamente (evitando problemas con módulo negativo)
-        const c = cellBelowIdx - r * BOARD_WIDTH;
+        // Calcular columna con offset relativo
+        const offsetR = Math.floor(coords[i] / BOARD_WIDTH);
+        const offsetC = coords[i] - offsetR * BOARD_WIDTH;
+        const posRow = Math.floor(pos / BOARD_WIDTH);
+        const posCol = pos - posRow * BOARD_WIDTH;
+        const c = posCol + offsetC;
         
         // Verificar que la columna esté en rango
         if (c < 0 || c >= BOARD_WIDTH) {
@@ -233,36 +241,44 @@ class TetrisAI {
       for (let i = 0; i < coords.length; i++) {
         const cellIdx = pos + coords[i];
         let r = Math.floor(cellIdx / BOARD_WIDTH);
-        let c = cellIdx - r * BOARD_WIDTH;
+        
+        // Calcular columna con offset relativo
+        const offsetR = Math.floor(coords[i] / BOARD_WIDTH);
+        const offsetC = coords[i] - offsetR * BOARD_WIDTH;
+        const posRow = Math.floor(pos / BOARD_WIDTH);
+        const posCol = pos - posRow * BOARD_WIDTH;
+        let c = posCol + offsetC;
 
         if (r >= 0 && r < BOARD_HEIGHT && c >= 0 && c < BOARD_WIDTH) {
           next[r][c] = shapeName;
         }
 
         // "disolución" hacia abajo con guards
-        let dropPos = cellIdx;
-        while (dropPos + BOARD_WIDTH < CELL_COUNT) {
-          const rr = Math.floor((dropPos + BOARD_WIDTH) / BOARD_WIDTH);
-          const cc = (dropPos + BOARD_WIDTH) - rr * BOARD_WIDTH;
-          if (rr < 0 || rr >= BOARD_HEIGHT || cc < 0 || cc >= BOARD_WIDTH) break;
-          if (next[rr][cc] !== null) break;
-          dropPos += BOARD_WIDTH;
-          const r2 = Math.floor(dropPos / BOARD_WIDTH);
-          const c2 = dropPos - r2 * BOARD_WIDTH;
-          if (r2 >= 0 && r2 < BOARD_HEIGHT && c2 >= 0 && c2 < BOARD_WIDTH) {
-            next[r2][c2] = shapeName;
+        let dropRow = r;
+        while (dropRow + 1 < BOARD_HEIGHT) {
+          if (c < 0 || c >= BOARD_WIDTH) break;
+          if (next[dropRow + 1][c] !== null) break;
+          dropRow++;
+          if (dropRow >= 0 && dropRow < BOARD_HEIGHT && c >= 0 && c < BOARD_WIDTH) {
+            next[dropRow][c] = shapeName;
           }
         }
 
-        const finalRow = Math.floor(dropPos / BOARD_WIDTH);
-        if (finalRow < highestRow) highestRow = finalRow;
+        if (dropRow < highestRow) highestRow = dropRow;
       }
     } else {
       const coords = PIECES[shapeName].rotations[rotationIndex];
       for (let i = 0; i < coords.length; i++) {
         const cellIdx = pos + coords[i];
         const r = Math.floor(cellIdx / BOARD_WIDTH);
-        const c = cellIdx - r * BOARD_WIDTH;
+        
+        // Calcular columna con offset relativo
+        const offsetR = Math.floor(coords[i] / BOARD_WIDTH);
+        const offsetC = coords[i] - offsetR * BOARD_WIDTH;
+        const posRow = Math.floor(pos / BOARD_WIDTH);
+        const posCol = pos - posRow * BOARD_WIDTH;
+        const c = posCol + offsetC;
+        
         if (r >= 0 && r < BOARD_HEIGHT && c >= 0 && c < BOARD_WIDTH) {
           next[r][c] = shapeName;
         }
@@ -426,9 +442,16 @@ export default function Tetris() {
     const offs = PIECES[name].rotations[rot];
 
     for (const off of offs) {
-      const idx = pos + off + dx + dy * BOARD_WIDTH;
-      const r = Math.floor(idx / BOARD_WIDTH);
-      const c = idx % BOARD_WIDTH; // NO normalizar con +BOARD_WIDTH
+      // Calcular columna con offset relativo
+      const offsetR = Math.floor(off / BOARD_WIDTH);
+      const offsetC = off - offsetR * BOARD_WIDTH;
+      
+      const baseIdx = pos + dx + dy * BOARD_WIDTH;
+      const baseR = Math.floor(baseIdx / BOARD_WIDTH);
+      const baseC = baseIdx - baseR * BOARD_WIDTH;
+      
+      const r = baseR + offsetR;
+      const c = baseC + offsetC;
 
       // fuera por abajo
       if (r >= BOARD_HEIGHT) return true;
@@ -711,15 +734,21 @@ export default function Tetris() {
         break;
       }
       case 'drop': {
-        // Baja hasta colisionar
-        let nextPos = currentPosition;
-        while (!wouldCollide(board, currentPiece, currentRotation, nextPos, 0, 1)) {
-          nextPos += BOARD_WIDTH;
+        // Hard drop: baja hasta que no pueda bajar más y fija inmediatamente
+        let finalPos = currentPosition;
+        while (!wouldCollide(board, currentPiece, currentRotation, finalPos, 0, 1)) {
+          finalPos += BOARD_WIDTH;
         }
-        setCurrentPosition(nextPos);
-        // y suelta la pieza
-        dropPiece();
-        break;
+        // Actualizar posición temporalmente para el drop
+        setCurrentPosition(finalPos);
+        setCurrentRotation(currentRotation);
+        // Esperar a que el estado se actualice y luego fijar
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            dropPiece();
+          });
+        });
+        return; // No ejecutar el código de abajo
       }
       case 'rotate':
         const nextRotation = (currentRotation + 1) % PIECES[currentPiece].rotations.length;
@@ -759,9 +788,14 @@ export default function Tetris() {
       
       // Aplicar la pieza al tablero temporal
       for (let i = 0; i < coords.length; i++) {
-        const cellIdx = pos + coords[i];
-        const row = Math.floor(cellIdx / BOARD_WIDTH);
-        const col = cellIdx - row * BOARD_WIDTH;
+        // Calcular columna con offset relativo
+        const offsetR = Math.floor(coords[i] / BOARD_WIDTH);
+        const offsetC = coords[i] - offsetR * BOARD_WIDTH;
+        const posRow = Math.floor(pos / BOARD_WIDTH);
+        const posCol = pos - posRow * BOARD_WIDTH;
+        const row = posRow + offsetR;
+        const col = posCol + offsetC;
+        
         if (row >= 0 && row < BOARD_HEIGHT && col >= 0 && col < BOARD_WIDTH) {
           tempBoard[row][col] = currentPiece;
         }
@@ -1135,29 +1169,20 @@ export default function Tetris() {
                   >
                     ↓
                   </button>
-                  <button
-                    onClick={() => movePiece('drop')}
-                    className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-bold transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95"
-                  >
-                    DROP
-                  </button>
+                  {aiEnabled && aiSuggestion && (
+                    <button
+                      onClick={makeAIMove}
+                      className="px-4 py-3 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white rounded-lg font-bold transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95 border-2 border-yellow-400"
+                    >
+                      🤖 AI
+                    </button>
+                  )}
                 </div>
 
                 {/* Mobile Controls Info */}
                 <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400 sm:hidden">
-                  Use arrow keys (↓ to drop) or buttons above
+                  Use arrow keys (↓ soft drop, SPACE hard drop) or buttons above
                 </div>
-
-                {aiEnabled && aiSuggestion && (
-                  <div className="mt-4 text-center">
-                    <button
-                      onClick={makeAIMove}
-                      className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors text-sm sm:text-base"
-                    >
-                      {t('aiLab.games.tetris.aiMove')}
-                    </button>
-                  </div>
-                )}
               </div>
             </div>
 
