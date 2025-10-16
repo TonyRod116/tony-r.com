@@ -112,8 +112,24 @@ function getPreviewCells(name) {
   const minC = Math.min(...cells.map(x => x.c));
   const norm = cells.map(({ r, c }) => ({ r: r - minR, c: c - minC }));
 
-  // Asegura que encaje en 4x4
-  return norm.filter(({ r, c }) => r >= 0 && r < 4 && c >= 0 && c < 4);
+  // Calcular dimensiones de la pieza
+  const maxR = Math.max(...norm.map(x => x.r));
+  const maxC = Math.max(...norm.map(x => x.c));
+  const pieceHeight = maxR + 1;
+  const pieceWidth = maxC + 1;
+
+  // Centrar en grid 5x5
+  const offsetR = Math.floor((5 - pieceHeight) / 2);
+  const offsetC = Math.floor((5 - pieceWidth) / 2);
+
+  // Aplicar offset de centrado
+  const centered = norm.map(({ r, c }) => ({ 
+    r: r + offsetR, 
+    c: c + offsetC 
+  }));
+
+  // Filtrar para asegurar que esté dentro del grid 5x5
+  return centered.filter(({ r, c }) => r >= 0 && r < 5 && c >= 0 && c < 5);
 }
 
 // AI Implementation
@@ -378,6 +394,8 @@ export default function Tetris() {
   const [score, setScore] = useState(0);
   const [lines, setLines] = useState(0);
   const [level, setLevel] = useState(1);
+  const [blinkingLines, setBlinkingLines] = useState([]);
+  const [isBlinking, setIsBlinking] = useState(false);
   const [aiEnabled, setAiEnabled] = useState(false);
   const [aiSuggestion, setAiSuggestion] = useState(null);
   const [magicTEnabled, setMagicTEnabled] = useState(true);
@@ -562,15 +580,26 @@ export default function Tetris() {
       }
       
       if (rowsToDelete.length > 0) {
-        setScore(prev => prev + rowsToDelete.length * 100);
-        setLines(prev => prev + rowsToDelete.length);
-        setLevel(prev => Math.floor((lines + rowsToDelete.length) / 10) + 1);
+        // Start blinking animation for completed lines
+        setBlinkingLines(rowsToDelete);
+        setIsBlinking(true);
         
-        // Remove completed rows
-        rowsToDelete.forEach(rowIdx => {
-          newBoard.splice(rowIdx, 1);
-          newBoard.unshift(Array(BOARD_WIDTH).fill(null));
-        });
+        // After blinking, remove lines and update score
+        setTimeout(() => {
+          setScore(prev => prev + rowsToDelete.length * 100);
+          setLines(prev => prev + rowsToDelete.length);
+          setLevel(prev => Math.floor((lines + rowsToDelete.length) / 10) + 1);
+          
+          // Remove completed rows
+          rowsToDelete.forEach(rowIdx => {
+            newBoard.splice(rowIdx, 1);
+            newBoard.unshift(Array(BOARD_WIDTH).fill(null));
+          });
+          
+          setBoard(newBoard);
+          setBlinkingLines([]);
+          setIsBlinking(false);
+        }, 1000); // Blink for 1 second
       }
       
       setBoard(newBoard);
@@ -782,6 +811,17 @@ export default function Tetris() {
     initializeGame();
   }, [initializeGame]);
 
+  // Blinking effect for completed lines
+  useEffect(() => {
+    if (blinkingLines.length > 0) {
+      const interval = setInterval(() => {
+        setIsBlinking(prev => !prev);
+      }, 150); // Blink every 150ms
+      
+      return () => clearInterval(interval);
+    }
+  }, [blinkingLines]);
+
   // Render board with current piece
   const renderBoard = () => {
     const displayBoard = board.map(row => [...row]);
@@ -836,7 +876,7 @@ export default function Tetris() {
         </div>
 
         {/* Game Board */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-2xl mx-auto">
           {/* Game Board */}
           <div className="lg:col-span-2">
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 shadow-lg">
@@ -887,16 +927,28 @@ export default function Tetris() {
                       display:'grid',
                       gridTemplateColumns:`repeat(${BOARD_WIDTH}, var(--cell))`,
                       gridTemplateRows:`repeat(${BOARD_HEIGHT}, var(--cell))`,
-                      width:`calc(var(--cell) * ${BOARD_WIDTH} + 2px)`,
-                      height:`calc(var(--cell) * ${BOARD_HEIGHT} + 2px)`,
+                      width:`calc(var(--cell) * ${BOARD_WIDTH} + ${BOARD_WIDTH - 1}px + 2px)`,
+                      height:`calc(var(--cell) * ${BOARD_HEIGHT} + ${BOARD_HEIGHT - 1}px + 2px)`,
                     }}
                   >
                     {renderBoard().flatMap((row, r) =>
-                      row.map((cell, c) => (
-                        <div key={`${r}-${c}`}
-                            className="rounded-sm"
-                            style={{backgroundColor: cell ? PIECES[cell].color : 'rgba(17,24,39,0.9)'}}/>
-                      ))
+                      row.map((cell, c) => {
+                        const isBlinkingRow = blinkingLines.includes(r);
+                        const shouldShow = !isBlinkingRow || (isBlinkingRow && isBlinking);
+                        
+                        return (
+                          <div key={`${r}-${c}`}
+                              className="rounded-sm"
+                              style={{
+                                backgroundColor: shouldShow && cell ? (cell === 'T' ? 'transparent' : PIECES[cell].color) : 'rgba(17,24,39,0.9)',
+                                backgroundImage: shouldShow && cell === 'T' ? 'url(/src/assets/ttris/PRGif.gif)' : 'none',
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                opacity: isBlinkingRow ? (isBlinking ? 1 : 0.3) : 1,
+                                transition: 'opacity 0.1s ease-in-out'
+                              }}/>
+                        );
+                      })
                     )}
                   </div>
                 </div>
@@ -979,7 +1031,7 @@ export default function Tetris() {
               {/* Next Piece */}
               {nextPiece && (
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 shadow-lg">
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 text-center">
                     Next Piece
                   </h3>
                   <div className="flex justify-center">
@@ -987,14 +1039,14 @@ export default function Tetris() {
                       className="bg-gray-900 rounded-lg p-3 border-2 border-gray-700"
                       style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(4, 20px)',
-                        gridTemplateRows: 'repeat(4, 20px)',
+                        gridTemplateColumns: 'repeat(5, 20px)',
+                        gridTemplateRows: 'repeat(5, 20px)',
                         gap: '1px'
                       }}
                     >
-                      {Array.from({ length: 16 }, (_, i) => {
-                        const r = Math.floor(i / 4);
-                        const c = i % 4;
+                      {Array.from({ length: 25 }, (_, i) => {
+                        const r = Math.floor(i / 5);
+                        const c = i % 5;
                         const filled = previewCells.some(p => p.r === r && p.c === c);
                         return (
                           <div
@@ -1002,7 +1054,10 @@ export default function Tetris() {
                             style={{
                               width: 20,
                               height: 20,
-                              background: filled ? PIECES[nextPiece].color : 'transparent',
+                              backgroundColor: filled ? (nextPiece === 'T' ? 'transparent' : PIECES[nextPiece].color) : 'transparent',
+                              backgroundImage: filled && nextPiece === 'T' ? 'url(/src/assets/ttris/PRGif.gif)' : 'none',
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center',
                               border: filled ? `1px solid ${PIECES[nextPiece].color}80` : '1px solid transparent',
                               borderRadius: 2
                             }}
