@@ -26,6 +26,16 @@ export default function AiLab() {
       githubUrl: 'https://github.com/TonyRod116/Ai-Minesweeper',
       status: 'completed',
       tech: ['JavaScript', 'Algorithm', 'Logic']
+    },
+    {
+      id: 'nim',
+      title: t('aiLab.projects.nim.title'),
+      description: t('aiLab.projects.nim.description'),
+      icon: Brain,
+      demoUrl: '/ai/nim',
+      githubUrl: 'https://github.com/TonyRod116/AI-Nim',
+      status: 'completed',
+      tech: ['JavaScript', 'Q-Learning', 'Reinforcement Learning']
     }
     // Temporarily hidden - Six Degrees of Kevin Bacon
     // {

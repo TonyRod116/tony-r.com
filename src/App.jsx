@@ -15,6 +15,7 @@ import AiLab from './pages/AiLab'
 import TicTacToe from './components/games/TicTacToe'
 import Minesweeper from './components/games/Minesweeper'
 import SixDegrees from './components/games/SixDegrees'
+import Nim from './components/games/Nim'
 
 function App() {
   // Prevenir overflow horizontal globalmente y forzar modo oscuro
@@ -50,6 +51,7 @@ function App() {
               <Route path="/ai/tictactoe" element={<TicTacToe />} />
               <Route path="/ai/minesweeper" element={<Minesweeper />} />
               <Route path="/ai/sixdegrees" element={<SixDegrees />} />
+              <Route path="/ai/nim" element={<Nim />} />
             </Routes>
           </main>
           <Footer />

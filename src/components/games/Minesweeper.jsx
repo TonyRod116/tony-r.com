@@ -204,7 +204,7 @@ const Minesweeper = () => {
     const [stats, setStats] = useState({
         gamesPlayed: parseInt(localStorage.getItem('ms_games') || '0'),
         aiMoves: parseInt(localStorage.getItem('ms_ai_moves') || '0'),
-        gamesWon: parseInt(localStorage.getItem('ms_games_won') || '0')
+        gamesWon: parseInt(localStorage.getItem('ms_gamesWon') || '0')
     });
 
     const translations = {
@@ -369,7 +369,7 @@ const Minesweeper = () => {
             // Increment games won counter
             const newStats = { ...stats, gamesWon: stats.gamesWon + 1 };
             setStats(newStats);
-            localStorage.setItem('ms_games_won', newStats.gamesWon.toString());
+            localStorage.setItem('ms_gamesWon', newStats.gamesWon.toString());
         }
     };
 

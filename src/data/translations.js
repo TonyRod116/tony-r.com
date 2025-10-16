@@ -205,6 +205,10 @@ export const translations = {
         sixDegrees: {
           title: 'Six Degrees of Separation',
           description: 'Find the shortest path between any two people using graph theory and API integration.'
+        },
+        nim: {
+          title: 'Nim AI',
+          description: 'Q-Learning AI that learns optimal strategies by playing thousands of games against itself.'
         }
       },
       comingSoon: {
@@ -220,7 +224,7 @@ export const translations = {
         tictactoe: {
           title: 'Tic-Tac-Toe AI',
           subtitle: 'Challenge the AI\'s unbeatable Minimax algorithm',
-          description: 'This AI uses my original Minimax Python algorithm converted to JavaScript. The algorithm evaluates all 255,168 possible game positions, making it impossible to beat (unless you use easy mode) - it will always force a draw or win against any opponent.',
+          description: 'This Tic-Tac-Toe AI was built from my Minimax implementation (originally in Python, then ported to JavaScript) as part of Harvard\'s CS50 Introduction to Artificial Intelligence.\nIt performs adversarial search over the full game tree (up to 9 plies) with exact Minimax evaluation, guaranteeing optimal play: the agent will never lose and will force a draw against any optimal opponent.\n(Note: ~255,168 is the number of possible game sequences, not distinct board positions.)\n\n"This isn\'t just a game — it\'s proof that I understand adversarial search and optimal decision-making, not just how to wire up an API."',
           newGame: 'New Game',
           easyMode: 'Easy Mode',
           hardMode: 'Hard Mode',
@@ -240,7 +244,7 @@ export const translations = {
         minesweeper: {
           title: 'Minesweeper AI',
           subtitle: 'Watch the AI solve Minesweeper puzzles using logical deduction',
-          description: 'This AI uses my original logical deduction implementation converted from Python to JavaScript. The algorithm analyzes patterns and probabilities to make safe moves and solve puzzles efficiently. The "AI Solve Step" button will only be active when the AI can make logical deductions - it will be disabled when no safe moves are available.',
+          description: 'This interactive Minesweeper AI was built as part of Harvard\'s CS50 Introduction to Artificial Intelligence with Python, which I later ported fully to JavaScript.\nUnlike neural networks or probability-based solvers, this AI uses pure symbolic reasoning: it constructs knowledge sentences about the board and repeatedly applies rules like subset inference, constraint propagation, and safe-cell deduction.\nThe "AI Solve Step" button only activates when the agent can guarantee a mathematically safe move. If it\'s disabled, it means no logical inference is possible — just like when a human reaches a dead end.\n\n"This isn\'t just a game — it\'s proof that I understand how machines reason, not just how to call an API."',
           newGame: 'New Game',
           enableAI: 'Enable AI',
           disableAI: 'Disable AI',
@@ -273,6 +277,33 @@ export const translations = {
             people: 'People in Database',
             movies: 'Movies in Database',
             connections: 'Connections Found'
+          },
+          backToAI: 'Back to AI Lab'
+        },
+        nim: {
+          title: 'Nim AI',
+          subtitle: 'Challenge the Q-Learning AI in the classic Nim game',
+          description: 'This AI uses Q-Learning, a reinforcement learning algorithm, to learn optimal strategies by playing thousands of games against itself. The AI starts with random moves but gradually learns to make better decisions through trial and error.',
+          howToPlay: 'How to Play: Take turns removing objects from piles. You can take any number of objects from a single pile. The player who takes the last object wins!',
+          newGame: 'New Game',
+          training: 'Training Expert AI...',
+          selectAI: 'Select AI Difficulty',
+          noviceAI: 'Novice AI (100 games)',
+          expertAI: 'Expert AI (10,000 games)',
+          noviceDescription: 'This AI has only played 100 games - easier to beat!',
+          expertDescription: 'This AI has played 10,000 games - very challenging!',
+          yourTurn: 'Your turn! Choose a pile and how many to take.',
+          aiTurn: 'AI is thinking...',
+          youWin: 'You win!',
+          aiWins: 'AI wins!',
+          selectPile: 'Select Pile',
+          selectCount: 'Select Count',
+          take: 'Take',
+          piles: 'Piles',
+          stats: {
+            games: 'Games Played',
+            aiWins: 'AI Wins',
+            humanWins: 'Human Wins'
           },
           backToAI: 'Back to AI Lab'
         }
@@ -627,7 +658,7 @@ export const translations = {
         sixDegrees: {
           title: 'Seis Grados de Separación',
           description: 'Encuentra el camino más corto entre dos personas usando teoría de grafos e integración de API.'
-        }
+        },
       },
       comingSoon: {
         title: 'Más Proyectos de IA Próximamente',
@@ -642,7 +673,7 @@ export const translations = {
         tictactoe: {
           title: 'IA Tres en Raya',
           subtitle: 'Desafía el algoritmo Minimax imbatible de la IA',
-          description: 'Esta IA usa mi implementación original del algoritmo Minimax de Python convertida a JavaScript. El algoritmo evalúa todas las 255,168 posiciones posibles del juego, haciéndolo imposible de vencer (a menos que uses el modo fácil) - siempre forzará un empate o victoria contra cualquier oponente.',
+          description: 'Esta IA de Tres en Raya parte de mi implementación de Minimax (primero en Python, luego portada a JavaScript) dentro del curso CS50 de IA de Harvard.\nRealiza búsqueda adversaria en el árbol completo del juego (hasta 9 niveles) con evaluación Minimax exacta, lo que garantiza juego óptimo: la IA no pierde nunca y forzará el empate frente a un rival óptimo.\n(Nota: ~255,168 es el número de secuencias de partida posibles, no de "posiciones" distintas.)\n\n«Esto no es solo un juego — es la prueba de que entiendo la búsqueda adversaria y la decisión óptima, no solo cómo usar una API.»',
           newGame: 'Nuevo Juego',
           easyMode: 'Modo Fácil',
           hardMode: 'Modo Difícil',
@@ -662,7 +693,7 @@ export const translations = {
         minesweeper: {
           title: 'IA Buscaminas',
           subtitle: 'Observa cómo la IA resuelve puzzles de Buscaminas usando deducción lógica',
-          description: 'Esta IA usa mi implementación original de deducción lógica convertida de Python a JavaScript. El algoritmo analiza patrones y probabilidades para hacer movimientos seguros y resolver puzzles eficientemente. El botón "IA Resolver Paso" solo se activará cuando la IA pueda hacer deducciones lógicas - estará deshabilitado cuando no haya movimientos seguros disponibles.',
+          description: 'Esta IA de Buscaminas forma parte del curso de Inteligencia Artificial de Harvard (CS50 AI en Python), y posteriormente la reescribí completamente en JavaScript.\nA diferencia de las redes neuronales o los enfoques probabilísticos, esta IA usa razonamiento simbólico puro: genera oraciones de conocimiento sobre el tablero y aplica reglas como inferencia por subconjuntos, propagación de restricciones y detección de casillas seguras.\nEl botón "Resolver con IA (Paso)" solo se activa cuando el agente puede garantizar un movimiento matemáticamente seguro. Si está apagado, significa que no hay deducciones lógicas posibles, igual que le ocurre a un humano.\n\n«Esto no es solo un juego — es la prueba de que entiendo cómo razonan las máquinas, no solo cómo usar una API.»',
           newGame: 'Nuevo Juego',
           enableAI: 'Activar IA',
           disableAI: 'Desactivar IA',
@@ -675,6 +706,33 @@ export const translations = {
             games: 'Juegos Jugados',
             aiMoves: 'Movimientos IA',
             gamesWon: 'Juegos Ganados'
+          },
+          backToAI: 'Volver al Lab de IA'
+        },
+        nim: {
+          title: 'IA Nim',
+          subtitle: 'Desafía a la IA de Q-Learning en el clásico juego de Nim',
+          description: 'Esta IA usa Q-Learning, un algoritmo de aprendizaje por refuerzo, para aprender estrategias óptimas jugando miles de partidas contra sí misma. La IA comienza con movimientos aleatorios pero gradualmente aprende a tomar mejores decisiones mediante prueba y error.',
+          howToPlay: 'Cómo Jugar: Tomen turnos removiendo objetos de las pilas. Puedes tomar cualquier cantidad de objetos de una sola pila. ¡El jugador que tome el último objeto gana!',
+          newGame: 'Nuevo Juego',
+          training: 'Entrenando IA Experta...',
+          selectAI: 'Seleccionar Dificultad de IA',
+          noviceAI: 'IA Novata (100 juegos)',
+          expertAI: 'IA Experta (10,000 juegos)',
+          noviceDescription: 'Esta IA solo ha jugado 100 juegos - ¡más fácil de vencer!',
+          expertDescription: 'Esta IA ha jugado 10,000 juegos - ¡muy desafiante!',
+          yourTurn: '¡Tu turno! Elige una pila y cuántas tomar.',
+          aiTurn: 'La IA está pensando...',
+          youWin: '¡Ganaste!',
+          aiWins: '¡La IA ganó!',
+          selectPile: 'Seleccionar Pila',
+          selectCount: 'Seleccionar Cantidad',
+          take: 'Tomar',
+          piles: 'Pilas',
+          stats: {
+            games: 'Juegos Jugados',
+            aiWins: 'Victorias IA',
+            humanWins: 'Victorias Humanas'
           },
           backToAI: 'Volver al Lab de IA'
         },
@@ -695,6 +753,33 @@ export const translations = {
             people: 'Personas en Base de Datos',
             movies: 'Películas en Base de Datos',
             connections: 'Conexiones Encontradas'
+          },
+          backToAI: 'Volver al Lab de IA'
+        },
+        nim: {
+          title: 'IA Nim',
+          subtitle: 'Desafía a la IA de Q-Learning en el clásico juego de Nim',
+          description: 'Esta IA usa Q-Learning, un algoritmo de aprendizaje por refuerzo, para aprender estrategias óptimas jugando miles de partidas contra sí misma. La IA comienza con movimientos aleatorios pero gradualmente aprende a tomar mejores decisiones mediante prueba y error.',
+          howToPlay: 'Cómo Jugar: Tomen turnos removiendo objetos de las pilas. Puedes tomar cualquier cantidad de objetos de una sola pila. ¡El jugador que tome el último objeto gana!',
+          newGame: 'Nuevo Juego',
+          training: 'Entrenando IA Experta...',
+          selectAI: 'Seleccionar Dificultad de IA',
+          noviceAI: 'IA Novata (100 juegos)',
+          expertAI: 'IA Experta (10,000 juegos)',
+          noviceDescription: 'Esta IA solo ha jugado 100 juegos - ¡más fácil de vencer!',
+          expertDescription: 'Esta IA ha jugado 10,000 juegos - ¡muy desafiante!',
+          yourTurn: '¡Tu turno! Elige una pila y cuántas tomar.',
+          aiTurn: 'La IA está pensando...',
+          youWin: '¡Ganaste!',
+          aiWins: '¡La IA ganó!',
+          selectPile: 'Seleccionar Pila',
+          selectCount: 'Seleccionar Cantidad',
+          take: 'Tomar',
+          piles: 'Pilas',
+          stats: {
+            games: 'Juegos Jugados',
+            aiWins: 'Victorias IA',
+            humanWins: 'Victorias Humanas'
           },
           backToAI: 'Volver al Lab de IA'
         }
@@ -1049,7 +1134,7 @@ export const translations = {
         sixDegrees: {
           title: 'Sis Graus de Separació',
           description: 'Troba el camí més curt entre dues persones usant teoria de grafs i integració d\'API.'
-        }
+        },
       },
       comingSoon: {
         title: 'Més Projectes d\'IA Properament',
@@ -1064,7 +1149,7 @@ export const translations = {
         tictactoe: {
           title: 'IA Tres en Ratlla',
           subtitle: 'Desafia l\'algoritme Minimax imbatible de Tony',
-          description: 'Aquesta IA usa la meva implementació original de l\'algoritme Minimax convertida de Python a JavaScript. L\'algoritme avalua totes les 255,168 posicions possibles del joc, fent-lo impossible de vèncer (a menys que usis el mode fàcil) - sempre forçarà un empat o victòria contra qualsevol oponent.',
+          description: 'Aquesta IA de Tres en Ratlla sorgeix de la meva implementació de Minimax (primer en Python i després portada a JavaScript) dins del curs CS50 d\'IA de Harvard.\nFa cerca adversària sobre l\'arbre complet (fins a 9 jugades) amb Minimax exacte i assegura joc òptim: la IA no perd i força l\'empat contra qualsevol oponent òptim.\n(Nota: ~255.168 és el nombre de seqüències de partida possibles, no de "posicions" úniques.)\n\n«Això no és només un joc — és la prova que entenc la cerca adversària i la decisió òptima, no només com fer servir una API.»',
           newGame: 'Nou Joc',
           easyMode: 'Mode Fàcil',
           hardMode: 'Mode Difícil',
@@ -1084,7 +1169,7 @@ export const translations = {
         minesweeper: {
           title: 'IA Buscamines',
           subtitle: 'Observa com l\'IA resol trencaclosques de Buscamines usant deducció lògica',
-          description: 'Aquesta IA usa la meva implementació original de deducció lògica convertida de Python a JavaScript. L\'algoritme analitza patrons i probabilitats per fer moviments segurs i resoldre trencaclosques eficientment. El botó "IA Resoldre Pas" només s\'activarà quan l\'IA pugui fer deduccions lògiques - estarà deshabilitat quan no hi hagi moviments segurs disponibles.',
+          description: 'Aquesta IA de Buscamines prové del curs d\'Intel·ligència Artificial de Harvard (CS50 AI en Python), i després la vaig portar completament a JavaScript.\nA diferència dels sistemes neuronals o probabilístics, aquesta IA es basa en raonament simbòlic pur: construeix frases de coneixement i aplica regles com inferència per subconjunts, propagació de restriccions i determinació de moviments segurs.\nEl botó "IA Resoldre Pas" només s\'activa quan l\'algorisme pot garantir un moviment 100% segur. Si està desactivat, significa que no hi ha cap deducció lògica possible, tal com passa a una persona.\n\n«Això no és només un joc — és la prova que entenc com raonen les màquines, no només com fer servir una API.»',
           newGame: 'Nou Joc',
           enableAI: 'Activar IA',
           disableAI: 'Desactivar IA',
@@ -1117,6 +1202,33 @@ export const translations = {
             people: 'Persones a Base de Dades',
             movies: 'Pel·lícules a Base de Dades',
             connections: 'Connexions Trobades'
+          },
+          backToAI: 'Tornar al Lab d\'IA'
+        },
+        nim: {
+          title: 'IA Nim',
+          subtitle: 'Desafia a la IA de Q-Learning en el clàssic joc de Nim',
+          description: 'Aquesta IA usa Q-Learning, un algoritme d\'aprenentatge per reforç, per aprendre estratègies òptimes jugant milers de partides contra si mateixa. La IA comença amb moviments aleatoris però gradualment aprèn a prendre millors decisions mitjançant prova i error.',
+          howToPlay: 'Com Jugar: Prenen torns removent objectes de les piles. Pots agafar qualsevol quantitat d\'objectes d\'una sola pila. ¡El jugador que agafi l\'últim objecte guanya!',
+          newGame: 'Nou Joc',
+          training: 'Entrenant IA Expert...',
+          selectAI: 'Seleccionar Dificultat de IA',
+          noviceAI: 'IA Novell (100 jocs)',
+          expertAI: 'IA Expert (10,000 jocs)',
+          noviceDescription: 'Aquesta IA només ha jugat 100 jocs - més fàcil de vèncer!',
+          expertDescription: 'Aquesta IA ha jugat 10,000 jocs - molt desafiador!',
+          yourTurn: 'El teu torn! Tria una pila i quantes agafar.',
+          aiTurn: 'L\'IA està pensant...',
+          youWin: 'Has guanyat!',
+          aiWins: 'L\'IA ha guanyat!',
+          selectPile: 'Seleccionar Pila',
+          selectCount: 'Seleccionar Quantitat',
+          take: 'Agafar',
+          piles: 'Piles',
+          stats: {
+            games: 'Jocs Jugats',
+            aiWins: 'Victòries IA',
+            humanWins: 'Victòries Humanes'
           },
           backToAI: 'Tornar al Lab d\'IA'
         }
