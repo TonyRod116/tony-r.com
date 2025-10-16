@@ -168,13 +168,9 @@ class TetrisAI {
     // Verificar que todas las celdas estén dentro de los límites laterales
     let validPosition = true;
     for (let i = 0; i < coords.length; i++) {
-      const cellIdx = pos + coords[i];
-      const row = Math.floor(cellIdx / BOARD_WIDTH);
-      
-      // Calcular columna con offset relativo (no usar módulo)
-      const offsetR = Math.floor(coords[i] / BOARD_WIDTH);
-      const offsetC = coords[i] - offsetR * BOARD_WIDTH;
-      const col = (startCol % BOARD_WIDTH) + offsetC;
+      const targetIdx = pos + coords[i];
+      const row = Math.floor(targetIdx / BOARD_WIDTH);
+      const col = targetIdx - row * BOARD_WIDTH;
       
       // Verificar límites laterales (ignorar si está por encima del tablero)
       if (row >= 0 && (col < 0 || col >= BOARD_WIDTH)) {
@@ -207,12 +203,8 @@ class TetrisAI {
         // Si todavía está por encima del tablero, ignora colisiones
         if (r < 0) continue;
         
-        // Calcular columna con offset relativo
-        const offsetR = Math.floor(coords[i] / BOARD_WIDTH);
-        const offsetC = coords[i] - offsetR * BOARD_WIDTH;
-        const posRow = Math.floor(pos / BOARD_WIDTH);
-        const posCol = pos - posRow * BOARD_WIDTH;
-        const c = posCol + offsetC;
+        // Calcular columna correctamente
+        const c = cellBelowIdx - r * BOARD_WIDTH;
         
         // Verificar que la columna esté en rango
         if (c < 0 || c >= BOARD_WIDTH) {
@@ -241,13 +233,7 @@ class TetrisAI {
       for (let i = 0; i < coords.length; i++) {
         const cellIdx = pos + coords[i];
         let r = Math.floor(cellIdx / BOARD_WIDTH);
-        
-        // Calcular columna con offset relativo
-        const offsetR = Math.floor(coords[i] / BOARD_WIDTH);
-        const offsetC = coords[i] - offsetR * BOARD_WIDTH;
-        const posRow = Math.floor(pos / BOARD_WIDTH);
-        const posCol = pos - posRow * BOARD_WIDTH;
-        let c = posCol + offsetC;
+        let c = cellIdx - r * BOARD_WIDTH;
 
         if (r >= 0 && r < BOARD_HEIGHT && c >= 0 && c < BOARD_WIDTH) {
           next[r][c] = shapeName;
@@ -271,13 +257,7 @@ class TetrisAI {
       for (let i = 0; i < coords.length; i++) {
         const cellIdx = pos + coords[i];
         const r = Math.floor(cellIdx / BOARD_WIDTH);
-        
-        // Calcular columna con offset relativo
-        const offsetR = Math.floor(coords[i] / BOARD_WIDTH);
-        const offsetC = coords[i] - offsetR * BOARD_WIDTH;
-        const posRow = Math.floor(pos / BOARD_WIDTH);
-        const posCol = pos - posRow * BOARD_WIDTH;
-        const c = posCol + offsetC;
+        const c = cellIdx - r * BOARD_WIDTH;
         
         if (r >= 0 && r < BOARD_HEIGHT && c >= 0 && c < BOARD_WIDTH) {
           next[r][c] = shapeName;
@@ -447,13 +427,10 @@ export default function Tetris() {
     const basePosC = newPos - basePosR * BOARD_WIDTH;
 
     for (const off of offs) {
-      // Calcular offset de la celda relativa a la pieza
-      const offR = Math.floor(off / BOARD_WIDTH);
-      const offC = off - offR * BOARD_WIDTH;
-      
-      // Posición absoluta de esta celda
-      const r = basePosR + offR;
-      const c = basePosC + offC;
+      // Calcular la posición absoluta sumando el offset directamente
+      const targetIdx = newPos + off;
+      const r = Math.floor(targetIdx / BOARD_WIDTH);
+      const c = targetIdx - r * BOARD_WIDTH;
 
       // Verificar límites verticales
       if (r >= BOARD_HEIGHT) return true;
@@ -514,7 +491,7 @@ export default function Tetris() {
         for (let i = 0; i < coords.length; i++) {
           const cellIdx = currentPosition + coords[i];
           const row = Math.floor(cellIdx / BOARD_WIDTH);
-          const col = cellIdx % BOARD_WIDTH;
+          const col = cellIdx - row * BOARD_WIDTH;
           
           // Bounds check before accessing board
           if (row >= 0 && row < BOARD_HEIGHT && col >= 0 && col < BOARD_WIDTH) {
@@ -523,9 +500,14 @@ export default function Tetris() {
           
             // Fall vertically filling until hitting occupied or ground
             let dropPos = cellIdx;
-            while (dropPos + BOARD_WIDTH < CELL_COUNT && newBoard[Math.floor((dropPos + BOARD_WIDTH) / BOARD_WIDTH)][(dropPos + BOARD_WIDTH) % BOARD_WIDTH] === null) {
+            while (dropPos + BOARD_WIDTH < CELL_COUNT) {
+              const nextRow = Math.floor((dropPos + BOARD_WIDTH) / BOARD_WIDTH);
+              const nextCol = (dropPos + BOARD_WIDTH) - nextRow * BOARD_WIDTH;
+              if (newBoard[nextRow][nextCol] !== null) break;
               dropPos += BOARD_WIDTH;
-              newBoard[Math.floor(dropPos / BOARD_WIDTH)][dropPos % BOARD_WIDTH] = currentPiece;
+              const dropRow = Math.floor(dropPos / BOARD_WIDTH);
+              const dropCol = dropPos - dropRow * BOARD_WIDTH;
+              newBoard[dropRow][dropCol] = currentPiece;
             }
             
             const finalRow = Math.floor(dropPos / BOARD_WIDTH);
@@ -564,7 +546,7 @@ export default function Tetris() {
         for (let i = 0; i < coords.length; i++) {
           const cellIdx = currentPosition + coords[i];
           const row = Math.floor(cellIdx / BOARD_WIDTH);
-          const col = cellIdx % BOARD_WIDTH;
+          const col = cellIdx - row * BOARD_WIDTH;
           
           // Bounds check before accessing board
           if (row >= 0 && row < BOARD_HEIGHT && col >= 0 && col < BOARD_WIDTH) {
@@ -678,21 +660,23 @@ export default function Tetris() {
       case 'left': {
         // Check if any cell of the piece would go out of bounds or wrap around
         const coords = PIECES[currentPiece].rotations[currentRotation];
-        const baseCol = currentPosition % BOARD_WIDTH;
+        const basePosR = Math.floor(currentPosition / BOARD_WIDTH);
+        const basePosC = currentPosition - basePosR * BOARD_WIDTH;
         let canMoveLeft = true;
         
         for (let i = 0; i < coords.length; i++) {
           const cellIdx = currentPosition + coords[i];
-          const currentCol = cellIdx % BOARD_WIDTH;
+          const cellR = Math.floor(cellIdx / BOARD_WIDTH);
+          const cellC = cellIdx - cellR * BOARD_WIDTH;
           
-          // Check if cell is at left edge or would cause wrap-around
-          if (currentCol === 0) {
+          // Check if cell is at left edge
+          if (cellC === 0) {
             canMoveLeft = false;
             break;
           }
           
           // Check distance constraint (max 3 cells away from base)
-          const distance = Math.abs(currentCol - baseCol);
+          const distance = Math.abs(cellC - basePosC);
           if (distance > 3) {
             canMoveLeft = false;
             break;
@@ -707,21 +691,23 @@ export default function Tetris() {
       case 'right': {
         // Check if any cell of the piece would go out of bounds or wrap around
         const coords = PIECES[currentPiece].rotations[currentRotation];
-        const baseCol = currentPosition % BOARD_WIDTH;
+        const basePosR = Math.floor(currentPosition / BOARD_WIDTH);
+        const basePosC = currentPosition - basePosR * BOARD_WIDTH;
         let canMoveRight = true;
         
         for (let i = 0; i < coords.length; i++) {
           const cellIdx = currentPosition + coords[i];
-          const currentCol = cellIdx % BOARD_WIDTH;
+          const cellR = Math.floor(cellIdx / BOARD_WIDTH);
+          const cellC = cellIdx - cellR * BOARD_WIDTH;
           
-          // Check if cell is at right edge or would cause wrap-around
-          if (currentCol === BOARD_WIDTH - 1) {
+          // Check if cell is at right edge
+          if (cellC === BOARD_WIDTH - 1) {
             canMoveRight = false;
             break;
           }
           
           // Check distance constraint (max 3 cells away from base)
-          const distance = Math.abs(currentCol - baseCol);
+          const distance = Math.abs(cellC - basePosC);
           if (distance > 3) {
             canMoveRight = false;
             break;
@@ -1019,7 +1005,7 @@ export default function Tetris() {
       for (let i = 0; i < coords.length; i++) {
         const cellIdx = currentPosition + coords[i];
         const row = Math.floor(cellIdx / BOARD_WIDTH);
-        const col = cellIdx % BOARD_WIDTH;
+        const col = cellIdx - row * BOARD_WIDTH;
         if (row >= 0 && row < BOARD_HEIGHT && col >= 0 && col < BOARD_WIDTH) {
           displayBoard[row][col] = currentPiece; // Store piece name instead of just true
         }
