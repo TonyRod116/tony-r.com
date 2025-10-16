@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ExternalLink, Github, Play, Brain, Zap, Target, Network } from 'lucide-react'
+import { ExternalLink, Github, Play, Brain, Zap, Target, Network, Gamepad2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../hooks/useLanguage.jsx'
 
@@ -36,6 +36,16 @@ export default function AiLab() {
       githubUrl: 'https://github.com/TonyRod116/AI-Nim',
       status: 'completed',
       tech: ['JavaScript', 'Q-Learning', 'Reinforcement Learning']
+    },
+    {
+      id: 'tetris',
+      title: t('aiLab.projects.tetris.title'),
+      description: t('aiLab.projects.tetris.description'),
+      icon: Gamepad2,
+      demoUrl: '/ai/tetris',
+      githubUrl: 'https://github.com/TonyRod116/T-Tetris',
+      status: 'completed',
+      tech: ['JavaScript', 'Custom Physics', 'AI Simulation']
     },
     // {
     //   id: 'six-degrees',
@@ -90,7 +100,7 @@ export default function AiLab() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto"
         >
           {aiProjects.map((project, index) => {
             const IconComponent = project.icon

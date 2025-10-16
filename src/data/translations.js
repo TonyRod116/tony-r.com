@@ -209,6 +209,10 @@ export const translations = {
         nim: {
           title: 'Nim AI',
           description: 'Q-Learning AI that learns optimal strategies by playing thousands of games against itself.'
+        },
+        tetris: {
+          title: 'Tetris AI',
+          description: 'Custom T piece (dissolve mechanic). I designed a special T-shaped piece that "dissolves" on landing: each block of the T falls straight down and fills every cell until it reaches support. The AI was updated to simulate this non-standard physics, so its heuristic and lookahead still choose optimal moves under the custom rule.'
         }
       },
       comingSoon: {
@@ -305,6 +309,28 @@ export const translations = {
             aiWins: 'AI Wins',
             humanWins: 'Human Wins'
           },
+          backToAI: 'Back to AI Lab'
+        },
+        tetris: {
+          title: 'Tetris AI',
+          subtitle: 'Challenge the AI with custom T piece mechanics',
+          description: 'Custom T piece (dissolve mechanic). I designed a special T-shaped piece that "dissolves" on landing: each block of the T falls straight down and fills every cell until it reaches support. The AI was updated to simulate this non-standard physics, so its heuristic and lookahead still choose optimal moves under the custom rule.',
+          gameBoard: 'Game Board',
+          aiOn: 'AI On',
+          aiOff: 'AI Off',
+          magicT: 'Custom rule: T piece dissolves on landing',
+          magicTOn: 'Magic T On',
+          magicTOff: 'Magic T Off',
+          aiMove: 'AI Move',
+          score: 'Score',
+          points: 'Points',
+          lines: 'Lines',
+          level: 'Level',
+          stats: 'Statistics',
+          gamesPlayed: 'Games Played',
+          aiMoves: 'AI Moves',
+          gamesWon: 'Games Won',
+          newGame: 'New Game',
           backToAI: 'Back to AI Lab'
         }
       }
@@ -662,6 +688,10 @@ export const translations = {
         nim: {
           title: 'IA Nim',
           description: 'IA de Q-Learning que aprende estrategias óptimas jugando miles de partidas contra sí misma.'
+        },
+        tetris: {
+          title: 'IA Tetris',
+          description: 'Pieza T personalizada (mecánica de disolución). Diseñé una pieza en forma de T que se "disuelve" al aterrizar: cada bloque cae verticalmente y rellena todas las celdas hasta encontrar soporte. La IA se actualizó para simular esta física no estándar, de modo que su heurística y lookahead sigan escogiendo jugadas óptimas con la regla custom.'
         }
       },
       comingSoon: {
@@ -785,6 +815,28 @@ export const translations = {
             aiWins: 'Victorias IA',
             humanWins: 'Victorias Humanas'
           },
+          backToAI: 'Volver al Lab de IA'
+        },
+        tetris: {
+          title: 'IA Tetris',
+          subtitle: 'Desafía a la IA con mecánicas de pieza T personalizada',
+          description: 'Pieza T personalizada (mecánica de disolución). Diseñé una pieza en forma de T que se "disuelve" al aterrizar: cada bloque cae verticalmente y rellena todas las celdas hasta encontrar soporte. La IA se actualizó para simular esta física no estándar, de modo que su heurística y lookahead sigan escogiendo jugadas óptimas con la regla custom.',
+          gameBoard: 'Tablero de Juego',
+          aiOn: 'IA Activada',
+          aiOff: 'IA Desactivada',
+          magicT: 'Regla custom: la pieza T se disuelve al caer',
+          magicTOn: 'T Mágica Activada',
+          magicTOff: 'T Mágica Desactivada',
+          aiMove: 'Movimiento IA',
+          score: 'Puntuación',
+          points: 'Puntos',
+          lines: 'Líneas',
+          level: 'Nivel',
+          stats: 'Estadísticas',
+          gamesPlayed: 'Juegos Jugados',
+          aiMoves: 'Movimientos IA',
+          gamesWon: 'Juegos Ganados',
+          newGame: 'Nuevo Juego',
           backToAI: 'Volver al Lab de IA'
         }
       }
@@ -1142,6 +1194,10 @@ export const translations = {
         nim: {
           title: 'IA Nim',
           description: 'IA de Q-Learning que aprèn estratègies òptimes jugant milers de partides contra si mateixa.'
+        },
+        tetris: {
+          title: 'IA Tetris',
+          description: 'Peça T personalitzada (mecànica de dissolució). Vaig dissenyar una peça en forma de T que es "dissol" en aterrar: cada bloc cau verticalment i omple totes les cel·les fins trobar suport. L\'IA s\'ha adaptat per simular aquesta física no estàndard, perquè l\'heurística i el lookahead continuïn sent òptims amb la regla custom.'
         }
       },
       comingSoon: {
@@ -1238,6 +1294,28 @@ export const translations = {
             aiWins: 'Victòries IA',
             humanWins: 'Victòries Humanes'
           },
+          backToAI: 'Tornar al Lab d\'IA'
+        },
+        tetris: {
+          title: 'IA Tetris',
+          subtitle: 'Desafia a la IA amb mecàniques de peça T personalitzada',
+          description: 'Peça T personalitzada (mecànica de dissolució). Vaig dissenyar una peça en forma de T que es "dissol" en aterrar: cada bloc cau verticalment i omple totes les cel·les fins trobar suport. L\'IA s\'ha adaptat per simular aquesta física no estàndard, perquè l\'heurística i el lookahead continuïn sent òptims amb la regla custom.',
+          gameBoard: 'Taulell de Joc',
+          aiOn: 'IA Activada',
+          aiOff: 'IA Desactivada',
+          magicT: 'Regla custom: la peça T es dissol en caure',
+          magicTOn: 'T Màgica Activada',
+          magicTOff: 'T Màgica Desactivada',
+          aiMove: 'Moviment IA',
+          score: 'Puntuació',
+          points: 'Punts',
+          lines: 'Línies',
+          level: 'Nivell',
+          stats: 'Estadístiques',
+          gamesPlayed: 'Jocs Jugats',
+          aiMoves: 'Moviments IA',
+          gamesWon: 'Jocs Guanyats',
+          newGame: 'Nou Joc',
           backToAI: 'Tornar al Lab d\'IA'
         }
       }

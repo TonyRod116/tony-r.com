@@ -16,6 +16,7 @@ import TicTacToe from './components/games/TicTacToe'
 import Minesweeper from './components/games/Minesweeper'
 import SixDegrees from './components/games/SixDegrees'
 import Nim from './components/games/Nim'
+import Tetris from './components/games/Tetris'
 
 function App() {
   // Prevenir overflow horizontal globalmente y forzar modo oscuro
@@ -52,6 +53,7 @@ function App() {
               <Route path="/ai/minesweeper" element={<Minesweeper />} />
               <Route path="/ai/sixdegrees" element={<SixDegrees />} />
               <Route path="/ai/nim" element={<Nim />} />
+              <Route path="/ai/tetris" element={<Tetris />} />
             </Routes>
           </main>
           <Footer />
