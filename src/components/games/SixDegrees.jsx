@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../hooks/useLanguage';
 import { useNavigate } from 'react-router-dom';
+import sampleData from '../../assets/large/sample-data.json';
 
 // Six Degrees of Kevin Bacon Implementation
 class Node {
@@ -260,13 +261,48 @@ const SixDegrees = () => {
     };
 
     useEffect(() => {
-        // Simulate loading data
-        setTimeout(() => {
-            setPeople(sampleData.people);
-            setMovies(sampleData.movies);
-            setNames(sampleData.names);
-            setLoading(false);
-        }, 1000);
+        const loadData = async () => {
+            try {
+                setLoading(true);
+                
+                // Convert arrays back to Sets for the algorithm
+                const peopleMap = {};
+                const moviesMap = {};
+                const namesMap = {};
+                
+                // Process people
+                Object.keys(sampleData.people).forEach(id => {
+                    const person = sampleData.people[id];
+                    peopleMap[id] = {
+                        name: person.name,
+                        birth: person.birth,
+                        movies: new Set(person.movies)
+                    };
+                    namesMap[person.name.toLowerCase()] = new Set([id]);
+                });
+                
+                // Process movies
+                Object.keys(sampleData.movies).forEach(id => {
+                    const movie = sampleData.movies[id];
+                    moviesMap[id] = {
+                        title: movie.title,
+                        year: movie.year,
+                        stars: new Set(movie.stars)
+                    };
+                });
+                
+                setPeople(peopleMap);
+                setMovies(moviesMap);
+                setNames(namesMap);
+                setLoading(false);
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                setLoading(false);
+            }
+        };
+        
+        loadData();
     }, []);
 
     const personIdForName = (name) => {

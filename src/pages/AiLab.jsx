@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ExternalLink, Github, Play, Brain, Zap, Target } from 'lucide-react'
+import { ExternalLink, Github, Play, Brain, Zap, Target, Network } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../hooks/useLanguage.jsx'
 
@@ -36,13 +36,12 @@ export default function AiLab() {
       githubUrl: 'https://github.com/TonyRod116/AI-Nim',
       status: 'completed',
       tech: ['JavaScript', 'Q-Learning', 'Reinforcement Learning']
-    }
-    // Temporarily hidden - Six Degrees of Kevin Bacon
+    },
     // {
     //   id: 'six-degrees',
     //   title: t('aiLab.projects.sixDegrees.title'),
     //   description: t('aiLab.projects.sixDegrees.description'),
-    //   icon: Brain,
+    //   icon: Network,
     //   demoUrl: '/ai/sixdegrees',
     //   githubUrl: 'https://github.com/TonyRod116/AI-degrees-of-KB',
     //   status: 'completed',
