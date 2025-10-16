@@ -404,7 +404,7 @@ export default function Tetris() {
   const [stats, setStats] = useState({
     gamesPlayed: parseInt(localStorage.getItem('tetris_games') || '0'),
     aiMoves: parseInt(localStorage.getItem('tetris_ai_moves') || '0'),
-    gamesWon: parseInt(localStorage.getItem('tetris_gamesWon') || '0')
+    maxScore: parseInt(localStorage.getItem('tetris_maxScore') || '0')
   });
 
   const aiRef = useRef(new TetrisAI());
@@ -456,18 +456,12 @@ export default function Tetris() {
     const nextPieceName = PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)];
     setNextPiece(nextPieceName);
     
-    // Get AI suggestion if enabled
-    if (aiEnabled) {
-      const suggestion = ai.suggestBestMove(newBoard, pieceName);
-      setAiSuggestion(suggestion);
-    }
-    
     // Start music if not muted
     if (audioRef.current && !isMuted) {
       audioRef.current.volume = 0.2;
       audioRef.current.play().catch(console.error);
     }
-  }, [aiEnabled, ai]);
+  }, [ai]);
 
 
 
@@ -620,6 +614,7 @@ export default function Tetris() {
       
       if (!canSpawn) {
         setGameOver(true);
+        // Update games played count
         setStats(prev => {
           const newStats = { ...prev, gamesPlayed: prev.gamesPlayed + 1 };
           localStorage.setItem('tetris_games', newStats.gamesPlayed.toString());
@@ -822,6 +817,30 @@ export default function Tetris() {
     }
   }, [blinkingLines]);
 
+  // Update max score when game ends
+  useEffect(() => {
+    if (gameOver && score > 0) {
+      setStats(prev => {
+        const newMaxScore = Math.max(prev.maxScore, score);
+        if (newMaxScore > prev.maxScore) {
+          localStorage.setItem('tetris_maxScore', newMaxScore.toString());
+          return { ...prev, maxScore: newMaxScore };
+        }
+        return prev;
+      });
+    }
+  }, [gameOver, score]);
+
+  // Generate AI suggestion when AI is enabled and there's a current piece
+  useEffect(() => {
+    if (aiEnabled && currentPiece && !gameOver && gameStarted) {
+      const suggestion = ai.suggestBestMove(board, currentPiece);
+      setAiSuggestion(suggestion);
+    } else if (!aiEnabled) {
+      setAiSuggestion(null);
+    }
+  }, [aiEnabled, currentPiece, board, gameOver, gameStarted, ai]);
+
   // Render board with current piece
   const renderBoard = () => {
     const displayBoard = board.map(row => [...row]);
@@ -848,6 +867,49 @@ export default function Tetris() {
       <audio ref={audioRef} loop preload="auto">
         <source src="/assets/ttris/TetrisStrings.mp3" type="audio/mpeg" />
       </audio>
+
+      {/* Game Over Modal */}
+      {gameOver && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md mx-4 text-center shadow-2xl">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              Game Over!
+            </h2>
+            <div className="space-y-3 mb-6">
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-300">Final Score:</span>
+                <span className="font-bold text-gray-900 dark:text-white">{score}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-300">Lines:</span>
+                <span className="font-bold text-gray-900 dark:text-white">{lines}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-300">Level:</span>
+                <span className="font-bold text-gray-900 dark:text-white">{level}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-300">Max Score:</span>
+                <span className="font-bold text-gray-900 dark:text-white">{stats.maxScore}</span>
+              </div>
+            </div>
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={initializeGame}
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition-colors"
+              >
+                Play Again
+              </button>
+              <button
+                onClick={() => navigate('/ai')}
+                className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-bold transition-colors"
+              >
+                Back to AI Lab
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
@@ -954,7 +1016,7 @@ export default function Tetris() {
                 </div>
 
                 {/* Controls */}
-                <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
+                <div className="mt-6 flex flex-wrap justify-center gap-3 sm:gap-4">
                   <button
                     onClick={() => movePiece('left')}
                     className="px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95"
@@ -988,7 +1050,7 @@ export default function Tetris() {
                 </div>
 
                 {/* Mobile Controls Info */}
-                <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400 sm:hidden">
+                <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400 sm:hidden">
                   Use arrow keys (↓ to drop) or buttons above
                 </div>
 
@@ -1084,8 +1146,8 @@ export default function Tetris() {
                     <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">{stats.aiMoves}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">{t('aiLab.games.tetris.gamesWon')}</span>
-                    <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">{stats.gamesWon}</span>
+                    <span className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">Max Score</span>
+                    <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">{stats.maxScore}</span>
                   </div>
                 </div>
               </div>
