@@ -163,29 +163,25 @@ class TetrisAI {
   simulateDrop(matrix, shapeName, rotationIndex, startCol) {
     // posición en la fila superior usando la columna pedida
     let pos = startCol;
-    const maxShift = 4;
-    let shifted = 0;
-
-    // Adjust position to stay in bounds
-    while (shifted <= maxShift) {
-      const coords = PIECES[shapeName].rotations[rotationIndex];
-      let canPlace = true;
+    const coords = PIECES[shapeName].rotations[rotationIndex];
+    
+    // Verificar que todas las celdas estén dentro de los límites laterales
+    let validPosition = true;
+    for (let i = 0; i < coords.length; i++) {
+      const cellIdx = pos + coords[i];
+      const row = Math.floor(cellIdx / BOARD_WIDTH);
+      const col = cellIdx - row * BOARD_WIDTH;
       
-      for (let i = 0; i < coords.length; i++) {
-        const cellIdx = pos + coords[i];
-        if (cellIdx < 0 || cellIdx >= CELL_COUNT) {
-          canPlace = false;
-          break;
-        }
-        const col = cellIdx % BOARD_WIDTH;
-        if (col < 0 || col >= BOARD_WIDTH) {
-          canPlace = false;
-          break;
-        }
+      // Verificar límites laterales (ignorar si está por encima del tablero)
+      if (row >= 0 && (col < 0 || col >= BOARD_WIDTH)) {
+        validPosition = false;
+        break;
       }
-      
-      if (canPlace) break;
-      pos++; shifted++;
+    }
+    
+    // Si la posición no es válida, esta rotación/columna no es posible
+    if (!validPosition) {
+      return null;
     }
 
     // Drop until collision (con guards)
@@ -203,12 +199,21 @@ class TetrisAI {
         }
 
         const r = Math.floor(cellBelowIdx / BOARD_WIDTH);
-        const c = cellBelowIdx % BOARD_WIDTH;
-
+        
         // Si todavía está por encima del tablero, ignora colisiones
         if (r < 0) continue;
+        
+        // Calcular columna correctamente (evitando problemas con módulo negativo)
+        const c = cellBelowIdx - r * BOARD_WIDTH;
+        
+        // Verificar que la columna esté en rango
+        if (c < 0 || c >= BOARD_WIDTH) {
+          canDrop = false;
+          break;
+        }
 
-        if (matrix[r][c]) {
+        // Verificar colisión con bloque existente
+        if (matrix[r][c] !== null) {
           canDrop = false;
           break;
         }
@@ -228,9 +233,9 @@ class TetrisAI {
       for (let i = 0; i < coords.length; i++) {
         const cellIdx = pos + coords[i];
         let r = Math.floor(cellIdx / BOARD_WIDTH);
-        let c = cellIdx % BOARD_WIDTH;
+        let c = cellIdx - r * BOARD_WIDTH;
 
-        if (r >= 0 && r < BOARD_HEIGHT) {
+        if (r >= 0 && r < BOARD_HEIGHT && c >= 0 && c < BOARD_WIDTH) {
           next[r][c] = shapeName;
         }
 
@@ -238,12 +243,15 @@ class TetrisAI {
         let dropPos = cellIdx;
         while (dropPos + BOARD_WIDTH < CELL_COUNT) {
           const rr = Math.floor((dropPos + BOARD_WIDTH) / BOARD_WIDTH);
-          const cc = (dropPos + BOARD_WIDTH) % BOARD_WIDTH;
-          if (rr >= 0 && next[rr][cc] !== null) break;
+          const cc = (dropPos + BOARD_WIDTH) - rr * BOARD_WIDTH;
+          if (rr < 0 || rr >= BOARD_HEIGHT || cc < 0 || cc >= BOARD_WIDTH) break;
+          if (next[rr][cc] !== null) break;
           dropPos += BOARD_WIDTH;
           const r2 = Math.floor(dropPos / BOARD_WIDTH);
-          const c2 = dropPos % BOARD_WIDTH;
-          if (r2 >= 0 && r2 < BOARD_HEIGHT) next[r2][c2] = shapeName;
+          const c2 = dropPos - r2 * BOARD_WIDTH;
+          if (r2 >= 0 && r2 < BOARD_HEIGHT && c2 >= 0 && c2 < BOARD_WIDTH) {
+            next[r2][c2] = shapeName;
+          }
         }
 
         const finalRow = Math.floor(dropPos / BOARD_WIDTH);
@@ -254,8 +262,10 @@ class TetrisAI {
       for (let i = 0; i < coords.length; i++) {
         const cellIdx = pos + coords[i];
         const r = Math.floor(cellIdx / BOARD_WIDTH);
-        const c = cellIdx % BOARD_WIDTH;
-        if (r >= 0 && r < BOARD_HEIGHT) next[r][c] = shapeName;
+        const c = cellIdx - r * BOARD_WIDTH;
+        if (r >= 0 && r < BOARD_HEIGHT && c >= 0 && c < BOARD_WIDTH) {
+          next[r][c] = shapeName;
+        }
       }
     }
 
@@ -727,16 +737,110 @@ export default function Tetris() {
 
   // AI move
   const makeAIMove = useCallback(() => {
-    if (!aiSuggestion || gameOver || !gameStarted) return;
+    if (!aiSuggestion || gameOver || !gameStarted || !currentPiece) return;
 
-    setCurrentPosition(aiSuggestion.col);
-    setCurrentRotation(aiSuggestion.rotationIndex);
+    // La IA ya calculó y simuló todo
+    const finalBoard = aiSuggestion.matrix;
     
-    // Auto-drop after AI move
-    setTimeout(() => {
-      dropPiece();
-    }, 500);
-  }, [aiSuggestion, gameOver, gameStarted, dropPiece]);
+    // Actualizar estadísticas de AI Moves
+    setStats(prev => {
+      const newStats = { ...prev, aiMoves: prev.aiMoves + 1 };
+      localStorage.setItem('tetris_ai_moves', newStats.aiMoves.toString());
+      return newStats;
+    });
+    
+    // Si la IA completó líneas, mostrar efecto de parpadeo antes de aplicar
+    if (aiSuggestion.linesCleared > 0) {
+      // Primero, necesitamos identificar qué líneas se completaron
+      // Para eso, aplicamos la pieza al tablero actual SIN borrar líneas
+      const tempBoard = board.map(row => [...row]);
+      const coords = PIECES[currentPiece].rotations[aiSuggestion.rotationIndex];
+      const pos = aiSuggestion.pos;
+      
+      // Aplicar la pieza al tablero temporal
+      for (let i = 0; i < coords.length; i++) {
+        const cellIdx = pos + coords[i];
+        const row = Math.floor(cellIdx / BOARD_WIDTH);
+        const col = cellIdx - row * BOARD_WIDTH;
+        if (row >= 0 && row < BOARD_HEIGHT && col >= 0 && col < BOARD_WIDTH) {
+          tempBoard[row][col] = currentPiece;
+        }
+      }
+      
+      // Detectar líneas completas
+      const completedRows = [];
+      for (let r = 0; r < BOARD_HEIGHT; r++) {
+        if (tempBoard[r].every(cell => cell !== null)) {
+          completedRows.push(r);
+        }
+      }
+      
+      // Aplicar tablero temporal (con líneas completas aún visibles)
+      setBoard(tempBoard);
+      
+      // Activar parpadeo
+      setBlinkingLines(completedRows);
+      setIsBlinking(true);
+      
+      // Después del parpadeo, aplicar el tablero final y actualizar stats
+      setTimeout(() => {
+        setBoard(finalBoard);
+        setBlinkingLines([]);
+        setIsBlinking(false);
+        
+        // Actualizar score y líneas
+        setScore(prev => prev + aiSuggestion.linesCleared * 100);
+        setLines(prev => {
+          const total = prev + aiSuggestion.linesCleared;
+          setLevel(Math.floor(total / 10) + 1);
+          return total;
+        });
+        
+        // Spawn siguiente pieza
+        const next = nextPiece || PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)];
+        const spawnPos = topCenterPos();
+        const canSpawn = !wouldCollide(finalBoard, next, 0, spawnPos, 0, 0);
+        
+        if (!canSpawn) {
+          setGameOver(true);
+          setStats(prev => {
+            const newStats = { ...prev, gamesPlayed: prev.gamesPlayed + 1 };
+            localStorage.setItem('tetris_games', newStats.gamesPlayed.toString());
+            return newStats;
+          });
+          return;
+        }
+        
+        setCurrentPiece(next);
+        setCurrentPosition(spawnPos);
+        setCurrentRotation(0);
+        setNextPiece(PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)]);
+      }, 1000); // Mismo delay que el juego normal
+    } else {
+      // No hay líneas completas, aplicar directamente
+      setBoard(finalBoard);
+      
+      // Spawn siguiente pieza
+      const next = nextPiece || PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)];
+      const spawnPos = topCenterPos();
+      const canSpawn = !wouldCollide(finalBoard, next, 0, spawnPos, 0, 0);
+      
+      if (!canSpawn) {
+        setGameOver(true);
+        setStats(prev => {
+          const newStats = { ...prev, gamesPlayed: prev.gamesPlayed + 1 };
+          localStorage.setItem('tetris_games', newStats.gamesPlayed.toString());
+          return newStats;
+        });
+        return;
+      }
+      
+      setCurrentPiece(next);
+      setCurrentPosition(spawnPos);
+      setCurrentRotation(0);
+      setNextPiece(PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)]);
+    }
+  }, [aiSuggestion, gameOver, gameStarted, currentPiece, nextPiece, board, wouldCollide]);
 
   // Toggle magic T
   const toggleMagicT = useCallback(() => {
