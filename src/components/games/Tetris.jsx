@@ -441,28 +441,28 @@ export default function Tetris() {
     if (!name) return true;
     const offs = PIECES[name].rotations[rot];
 
+    // Calcular posición base después del movimiento
+    const newPos = pos + dx + dy * BOARD_WIDTH;
+    const basePosR = Math.floor(newPos / BOARD_WIDTH);
+    const basePosC = newPos - basePosR * BOARD_WIDTH;
+
     for (const off of offs) {
-      // Calcular columna con offset relativo
-      const offsetR = Math.floor(off / BOARD_WIDTH);
-      const offsetC = off - offsetR * BOARD_WIDTH;
+      // Calcular offset de la celda relativa a la pieza
+      const offR = Math.floor(off / BOARD_WIDTH);
+      const offC = off - offR * BOARD_WIDTH;
       
-      const baseIdx = pos + dx + dy * BOARD_WIDTH;
-      const baseR = Math.floor(baseIdx / BOARD_WIDTH);
-      const baseC = baseIdx - baseR * BOARD_WIDTH;
-      
-      const r = baseR + offsetR;
-      const c = baseC + offsetC;
+      // Posición absoluta de esta celda
+      const r = basePosR + offR;
+      const c = basePosC + offC;
 
-      // fuera por abajo
+      // Verificar límites verticales
       if (r >= BOARD_HEIGHT) return true;
+      if (r < 0) continue; // Por encima del tablero, ignorar
 
-      // si está por encima del tablero, ignoramos colisión y límites laterales
-      if (r < 0) continue;
-
-      // fuera por los lados (dentro del tablero)
+      // Verificar límites horizontales
       if (c < 0 || c >= BOARD_WIDTH) return true;
 
-      // colisión con bloque ya colocado
+      // Verificar colisión con bloques existentes
       if (matrix[r][c] !== null) return true;
     }
     return false;
@@ -750,12 +750,42 @@ export default function Tetris() {
         });
         return; // No ejecutar el código de abajo
       }
-      case 'rotate':
+      case 'rotate': {
         const nextRotation = (currentRotation + 1) % PIECES[currentPiece].rotations.length;
+        
+        // Try rotation at current position first
         if (!wouldCollide(board, currentPiece, nextRotation, currentPosition, 0, 0)) {
           newRotation = nextRotation;
+          break;
+        }
+        
+        // Wall kick attempts: try moving left or right slightly
+        const kicks = [
+          -1,  // Try one left
+          1,   // Try one right
+          -2,  // Try two left
+          2,   // Try two right
+        ];
+        
+        const basePosR = Math.floor(currentPosition / BOARD_WIDTH);
+        const basePosC = currentPosition - basePosR * BOARD_WIDTH;
+        
+        for (const kickDx of kicks) {
+          const newCol = basePosC + kickDx;
+          
+          // Skip if new column would be out of bounds
+          if (newCol < 0 || newCol >= BOARD_WIDTH) continue;
+          
+          const kickPos = basePosR * BOARD_WIDTH + newCol;
+          
+          if (!wouldCollide(board, currentPiece, nextRotation, kickPos, 0, 0)) {
+            newRotation = nextRotation;
+            newPosition = kickPos;
+            break;
+          }
         }
         break;
+      }
     }
 
     if (newPosition !== currentPosition || newRotation !== currentRotation) {

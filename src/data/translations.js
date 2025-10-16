@@ -229,6 +229,7 @@ export const translations = {
           title: 'Tic-Tac-Toe AI',
           subtitle: 'Challenge the AI\'s unbeatable Minimax algorithm',
           description: 'This Tic-Tac-Toe AI was built from my Minimax implementation (originally in Python, then ported to JavaScript) as part of Harvard\'s CS50 Introduction to Artificial Intelligence.\nIt performs adversarial search over the full game tree (up to 9 plies) with exact Minimax evaluation, guaranteeing optimal play: the agent will never lose and will force a draw against any optimal opponent.\n(Note: ~255,168 is the number of possible game sequences, not distinct board positions.)\n\n"This isn\'t just a game — it\'s proof that I understand adversarial search and optimal decision-making, not just how to wire up an API."',
+          howToPlay: 'How to Play: Take turns placing X\'s and O\'s on a 3×3 grid. Get three in a row (horizontally, vertically, or diagonally) to win! You play as X, the AI plays as O.',
           newGame: 'New Game',
           easyMode: 'Easy Mode',
           hardMode: 'Hard Mode',
@@ -249,6 +250,7 @@ export const translations = {
           title: 'Minesweeper AI',
           subtitle: 'Watch the AI solve Minesweeper puzzles using logical deduction',
           description: 'This interactive Minesweeper AI was built as part of Harvard\'s CS50 Introduction to Artificial Intelligence with Python, which I later ported fully to JavaScript.\nUnlike neural networks or probability-based solvers, this AI uses pure symbolic reasoning: it constructs knowledge sentences about the board and repeatedly applies rules like subset inference, constraint propagation, and safe-cell deduction.\nThe "AI Solve Step" button only activates when the agent can guarantee a mathematically safe move. If it\'s disabled, it means no logical inference is possible — just like when a human reaches a dead end.\n\n"This isn\'t just a game — it\'s proof that I understand how machines reason, not just how to call an API."',
+          howToPlay: 'How to Play: Click cells to reveal them. Numbers show how many mines are adjacent. Right-click to flag suspected mines. Clear all non-mine cells to win! Use "AI Solve Step" to see logical deduction in action.',
           newGame: 'New Game',
           enableAI: 'Enable AI',
           disableAI: 'Disable AI',
@@ -268,6 +270,7 @@ export const translations = {
           title: 'Six Degrees of Kevin Bacon',
           subtitle: 'Find connections between actors using breadth-first search',
           description: 'This AI uses my original breadth-first search implementation converted from Python to JavaScript. The algorithm finds the shortest path between any two actors through their shared movies.',
+          howToPlay: 'How to Play: Enter two actor names and click "Find Path" to discover the shortest connection between them through shared movies. The AI uses breadth-first search to find the optimal path.',
           firstPerson: 'First person\'s name:',
           secondPerson: 'Second person\'s name:',
           findPath: 'Find Path',
@@ -314,7 +317,7 @@ export const translations = {
         tetris: {
           title: 'Tetris AI',
           subtitle: 'Challenge the AI with custom T piece mechanics',
-          description: 'Custom T piece (dissolve mechanic). I designed a special T-shaped piece that "dissolves" on landing: each block of the T falls straight down and fills every cell until it reaches support. The AI was updated to simulate this non-standard physics, so its heuristic and lookahead still choose optimal moves under the custom rule.',
+          description: 'Custom T\' piece (dissolve mechanic). I designed a special T-shaped piece that "dissolves" on landing: each block of the T falls straight down and fills every cell until it reaches support. The AI was updated to simulate this non-standard physics, so its heuristic and lookahead still choose optimal moves under the custom rule.',
           gameBoard: 'Game Board',
           aiOn: 'AI On',
           aiOff: 'AI Off',
@@ -332,7 +335,7 @@ export const translations = {
           gamesWon: 'Games Won',
           newGame: 'New Game',
           backToAI: 'Back to AI Lab',
-          longDescription: 'AI Tetris — upgraded from my very first coding project. Back when I started programming at General Assembly, my first project was a vanilla JavaScript Tetris. This version is a re-edition with custom physics and an AI brain. One piece — the T block — has a special mechanic: when it lands, it dissolves and each cell falls straight down until it hits support, filling gaps like sand. You can play manually or enable AI Mode: it evaluates all possible placements using a feature-based heuristic + lookahead, choosing the most stable move (fewer holes, less bumpiness, more lines). Controls: ← → move • ↑ rotate • Space = drop. Toggle AI to auto-play • Toggle Magic T to enable/disable the special rule. Try building setups that only the dissolving T can clean up.'
+          longDescription: 'AI Tetris — upgraded from my very first coding project. Back when I started programming at General Assembly, my first project was a vanilla JavaScript Tetris. This version is a re-edition with custom physics and an AI brain. One piece — the T\' block — has a special mechanic: when it lands, it dissolves and each cell falls straight down until it hits support, filling gaps like sand. You can play manually or enable AI Mode: it evaluates all possible placements using a feature-based heuristic + lookahead, choosing the most stable move (fewer holes, less bumpiness, more lines). Controls: ← → move | ↑ rotate | ↓ = drop. Toggle AI to see the AI Move button that chooses the best placement — try clicking it repeatedly to score points fast!'
         }
       }
     },
@@ -709,6 +712,7 @@ export const translations = {
           title: 'IA Tres en Raya',
           subtitle: 'Desafía el algoritmo Minimax imbatible de la IA',
           description: 'Esta IA de Tres en Raya parte de mi implementación de Minimax (primero en Python, luego portada a JavaScript) dentro del curso CS50 de IA de Harvard.\nRealiza búsqueda adversaria en el árbol completo del juego (hasta 9 niveles) con evaluación Minimax exacta, lo que garantiza juego óptimo: la IA no pierde nunca y forzará el empate frente a un rival óptimo.\n(Nota: ~255,168 es el número de secuencias de partida posibles, no de "posiciones" distintas.)\n\n«Esto no es solo un juego — es la prueba de que entiendo la búsqueda adversaria y la decisión óptima, no solo cómo usar una API.»',
+          howToPlay: 'Cómo Jugar: Tomen turnos colocando X\'s y O\'s en una cuadrícula de 3×3. ¡Consigue tres en línea (horizontal, vertical o diagonal) para ganar! Tú juegas como X, la IA juega como O.',
           newGame: 'Nuevo Juego',
           easyMode: 'Modo Fácil',
           hardMode: 'Modo Difícil',
@@ -729,6 +733,7 @@ export const translations = {
           title: 'IA Buscaminas',
           subtitle: 'Observa cómo la IA resuelve puzzles de Buscaminas usando deducción lógica',
           description: 'Esta IA de Buscaminas forma parte del curso de Inteligencia Artificial de Harvard (CS50 AI en Python), y posteriormente la reescribí completamente en JavaScript.\nA diferencia de las redes neuronales o los enfoques probabilísticos, esta IA usa razonamiento simbólico puro: genera oraciones de conocimiento sobre el tablero y aplica reglas como inferencia por subconjuntos, propagación de restricciones y detección de casillas seguras.\nEl botón "Resolver con IA (Paso)" solo se activa cuando el agente puede garantizar un movimiento matemáticamente seguro. Si está apagado, significa que no hay deducciones lógicas posibles, igual que le ocurre a un humano.\n\n«Esto no es solo un juego — es la prueba de que entiendo cómo razonan las máquinas, no solo cómo usar una API.»',
+          howToPlay: 'Cómo Jugar: Haz clic en las casillas para revelarlas. Los números muestran cuántas minas hay adyacentes. Clic derecho para marcar minas sospechosas. ¡Limpia todas las casillas sin minas para ganar! Usa "IA Resolver Paso" para ver la deducción lógica en acción.',
           newGame: 'Nuevo Juego',
           enableAI: 'Activar IA',
           disableAI: 'Desactivar IA',
@@ -775,6 +780,7 @@ export const translations = {
           title: 'Seis Grados de Kevin Bacon',
           subtitle: 'Encuentra conexiones entre actores usando búsqueda en amplitud',
           description: 'Esta IA usa mi implementación original de búsqueda en amplitud convertida de Python a JavaScript. El algoritmo encuentra el camino más corto entre dos actores a través de sus películas compartidas.',
+          howToPlay: 'Cómo Jugar: Ingresa dos nombres de actores y haz clic en "Encontrar Camino" para descubrir la conexión más corta entre ellos a través de películas compartidas. La IA usa búsqueda en amplitud para encontrar el camino óptimo.',
           firstPerson: 'Nombre de la primera persona:',
           secondPerson: 'Nombre de la segunda persona:',
           findPath: 'Encontrar Camino',
@@ -821,7 +827,7 @@ export const translations = {
         tetris: {
           title: 'IA Tetris',
           subtitle: 'Desafía a la IA con mecánicas de pieza T personalizada',
-          description: 'Pieza T personalizada (mecánica de disolución). Diseñé una pieza en forma de T que se "disuelve" al aterrizar: cada bloque cae verticalmente y rellena todas las celdas hasta encontrar soporte. La IA se actualizó para simular esta física no estándar, de modo que su heurística y lookahead sigan escogiendo jugadas óptimas con la regla custom.',
+          description: 'Pieza T\' personalizada (mecánica de disolución). Diseñé una pieza en forma de T que se "disuelve" al aterrizar: cada bloque cae verticalmente y rellena todas las celdas hasta encontrar soporte. La IA se actualizó para simular esta física no estándar, de modo que su heurística y lookahead sigan escogiendo jugadas óptimas con la regla custom.',
           gameBoard: 'Tablero de Juego',
           aiOn: 'IA Activada',
           aiOff: 'IA Desactivada',
@@ -839,7 +845,7 @@ export const translations = {
           gamesWon: 'Juegos Ganados',
           newGame: 'Nuevo Juego',
           backToAI: 'Volver al Lab de IA',
-          longDescription: 'Tetris con IA — re-edición de mi primer proyecto en General Assembly. Cuando empecé a programar, mi primer juego fue un Tetris en JavaScript puro. Esta versión es una actualización con física personalizada y cerebro de IA. Una pieza — la T — tiene una mecánica especial: al tocar el suelo se "disuelve" y cada bloque cae en vertical hasta encontrar apoyo, rellenando huecos como arena. Puedes jugar tú o activar el Modo IA: evalúa todas las posiciones posibles con una heurística + lookahead y elige el movimiento más estable (menos huecos, menos irregularidad, más líneas). Controles: ← → mover • ↑ girar • Espacio = dejar caer. Activa AI para que juegue sola • Activa Magic T para activar/desactivar la regla especial. Prueba a crear setups que solo la T disolvente puede resolver.'
+          longDescription: 'Tetris con IA — re-edición de mi primer proyecto en General Assembly. Cuando empecé a programar, mi primer juego fue un Tetris en JavaScript puro. Esta versión es una actualización con física personalizada y cerebro de IA. Una pieza — la T\' — tiene una mecánica especial: al tocar el suelo se "disuelve" y cada bloque cae en vertical hasta encontrar apoyo, rellenando huecos como arena. Puedes jugar tú o activar el Modo IA: evalúa todas las posiciones posibles con una heurística + lookahead y elige el movimiento más estable (menos huecos, menos irregularidad, más líneas). Controles: ← → mover | ↑ girar | ↓ = dejar caer. Activa AI para ver el botón AI Move que elige la mejor colocación — ¡prueba hacer clic repetidamente para puntuar rápido!'
         }
       }
     },
@@ -1216,6 +1222,7 @@ export const translations = {
           title: 'IA Tres en Ratlla',
           subtitle: 'Desafia l\'algoritme Minimax imbatible de Tony',
           description: 'Aquesta IA de Tres en Ratlla sorgeix de la meva implementació de Minimax (primer en Python i després portada a JavaScript) dins del curs CS50 d\'IA de Harvard.\nFa cerca adversària sobre l\'arbre complet (fins a 9 jugades) amb Minimax exacte i assegura joc òptim: la IA no perd i força l\'empat contra qualsevol oponent òptim.\n(Nota: ~255.168 és el nombre de seqüències de partida possibles, no de "posicions" úniques.)\n\n«Això no és només un joc — és la prova que entenc la cerca adversària i la decisió òptima, no només com fer servir una API.»',
+          howToPlay: 'Com Jugar: Prenen torns col·locant X\'s i O\'s en una graella de 3×3. ¡Consegueix tres en ratlla (horitzontal, vertical o diagonal) per guanyar! Tu jugues com X, l\'IA juga com O.',
           newGame: 'Nou Joc',
           easyMode: 'Mode Fàcil',
           hardMode: 'Mode Difícil',
@@ -1236,6 +1243,7 @@ export const translations = {
           title: 'IA Buscamines',
           subtitle: 'Observa com l\'IA resol trencaclosques de Buscamines usant deducció lògica',
           description: 'Aquesta IA de Buscamines prové del curs d\'Intel·ligència Artificial de Harvard (CS50 AI en Python), i després la vaig portar completament a JavaScript.\nA diferència dels sistemes neuronals o probabilístics, aquesta IA es basa en raonament simbòlic pur: construeix frases de coneixement i aplica regles com inferència per subconjunts, propagació de restriccions i determinació de moviments segurs.\nEl botó "IA Resoldre Pas" només s\'activa quan l\'algorisme pot garantir un moviment 100% segur. Si està desactivat, significa que no hi ha cap deducció lògica possible, tal com passa a una persona.\n\n«Això no és només un joc — és la prova que entenc com raonen les màquines, no només com fer servir una API.»',
+          howToPlay: 'Com Jugar: Fes clic a les caselles per revelar-les. Els números mostren quantes mines hi ha adjacents. Clic dret per marcar mines sospitoses. ¡Neteja totes les caselles sense minas per guanyar! Usa "IA Resoldre Pas" per veure la deducció lògica en acció.',
           newGame: 'Nou Joc',
           enableAI: 'Activar IA',
           disableAI: 'Desactivar IA',
@@ -1255,6 +1263,7 @@ export const translations = {
           title: 'Sis Graus de Kevin Bacon',
           subtitle: 'Troba connexions entre actors usant cerca en amplada',
           description: 'Aquesta IA usa la meva implementació original de cerca en amplada convertida de Python a JavaScript. L\'algoritme troba el camí més curt entre dos actors a través de les seves pel·lícules compartides.',
+          howToPlay: 'Com Jugar: Introdueix dos noms d\'actors i fes clic a "Trobar Camí" per descobrir la connexió més curta entre ells a través de pel·lícules compartides. L\'IA usa cerca en amplada per trobar el camí òptim.',
           firstPerson: 'Nom de la primera persona:',
           secondPerson: 'Nom de la segona persona:',
           findPath: 'Trobar Camí',
@@ -1301,7 +1310,7 @@ export const translations = {
         tetris: {
           title: 'IA Tetris',
           subtitle: 'Desafia a la IA amb mecàniques de peça T personalitzada',
-          description: 'Peça T personalitzada (mecànica de dissolució). Vaig dissenyar una peça en forma de T que es "dissol" en aterrar: cada bloc cau verticalment i omple totes les cel·les fins trobar suport. L\'IA s\'ha adaptat per simular aquesta física no estàndard, perquè l\'heurística i el lookahead continuïn sent òptims amb la regla custom.',
+          description: 'Peça T\' personalitzada (mecànica de dissolució). Vaig dissenyar una peça en forma de T que es "dissol" en aterrar: cada bloc cau verticalment i omple totes les cel·les fins trobar suport. L\'IA s\'ha adaptat per simular aquesta física no estàndard, perquè l\'heurística i el lookahead continuïn sent òptims amb la regla custom.',
           gameBoard: 'Taulell de Joc',
           aiOn: 'IA Activada',
           aiOff: 'IA Desactivada',
@@ -1319,7 +1328,7 @@ export const translations = {
           gamesWon: 'Jocs Guanyats',
           newGame: 'Nou Joc',
           backToAI: 'Tornar al Lab d\'IA',
-          longDescription: 'Tetris amb IA — re-edició del meu primer projecte a General Assembly. Quan vaig començar a programar, el meu primer joc va ser un Tetris en JavaScript pur. Aquesta versió és una actualització amb física personalitzada i cervell d\'IA. Una peça — la T — té una mecànica especial: quan toca el terra es "dissol" i cada bloc cau verticalment fins trobar suport, omplint forats com sorra. Pots jugar tu o activar el Mode IA: avalua totes les posicions possibles amb una heurística + lookahead i tria el moviment més estable (menys forats, menys irregularitat, més línies). Controls: ← → moure • ↑ girar • Espai = deixar caure. Activa AI perquè jugui sola • Activa Magic T per activar/desactivar la regla especial. Prova a crear setups que només la T dissolvent pot resoldre.'
+          longDescription: 'Tetris amb IA — re-edició del meu primer projecte a General Assembly. Quan vaig començar a programar, el meu primer joc va ser un Tetris en JavaScript pur. Aquesta versió és una actualització amb física personalitzada i cervell d\'IA. Una peça — la T\' — té una mecànica especial: quan toca el terra es "dissol" i cada bloc cau verticalment fins trobar suport, omplint forats com sorra. Pots jugar tu o activar el Mode IA: avalua totes les posicions possibles amb una heurística + lookahead i tria el moviment més estable (menys forats, menys irregularitat, més línies). Controls: ← → moure | ↑ girar | ↓ = deixar caure. Activa AI per veure el botó AI Move que tria la millor col·locació — prova fer clic repetidament per puntuar ràpid!'
         }
       }
     },
