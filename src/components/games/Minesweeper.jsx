@@ -366,10 +366,12 @@ const Minesweeper = () => {
         // Check win condition
         if (newRevealed.size === 64 - mines.size) {
             setGameWon(true);
-            // Increment games won counter
-            const newStats = { ...stats, gamesWon: stats.gamesWon + 1 };
-            setStats(newStats);
-            localStorage.setItem('ms_gamesWon', newStats.gamesWon.toString());
+            // Increment games won counter (functional update)
+            setStats(prev => {
+                const newGamesWon = prev.gamesWon + 1;
+                localStorage.setItem('ms_gamesWon', newGamesWon.toString());
+                return { ...prev, gamesWon: newGamesWon };
+            });
         }
     };
 
@@ -394,17 +396,21 @@ const Minesweeper = () => {
         const [row, col] = safe;
         revealCell(row, col);
         ai.addKnowledge([row, col], getNeighborMines(row, col));
-        const newStats = { ...stats, aiMoves: stats.aiMoves + 1 };
-        setStats(newStats);
-        localStorage.setItem('ms_ai_moves', newStats.aiMoves.toString());
+        setStats(prev => {
+            const newAiMoves = prev.aiMoves + 1;
+            localStorage.setItem('ms_ai_moves', newAiMoves.toString());
+            return { ...prev, aiMoves: newAiMoves };
+        });
         recomputeCanSolve();
     };
 
     const newGame = () => {
         initializeGame();
-        const newStats = { ...stats, gamesPlayed: stats.gamesPlayed + 1 };
-        setStats(newStats);
-        localStorage.setItem('ms_games', newStats.gamesPlayed.toString());
+        setStats(prev => {
+            const newGames = prev.gamesPlayed + 1;
+            localStorage.setItem('ms_games', newGames.toString());
+            return { ...prev, gamesPlayed: newGames };
+        });
     };
 
     const getCellContent = (row, col) => {
