@@ -59,7 +59,7 @@ export const translations = {
         description: 'Discover interactive demos showcasing my original AI implementations, from unbeatable Minimax algorithms to logical deduction systems.',
         features: {
           tictactoe: 'Unbeatable Tic-Tac-Toe AI',
-          minesweeper: 'Logical Minesweeper Solver',
+          minesweeper: 'Minesweeper AI',
           algorithms: 'Original Algorithm Implementations'
         },
         cta: 'Explore AI Lab'
@@ -199,7 +199,7 @@ export const translations = {
           description: 'Unbeatable Minimax opponent: searches the full game tree for optimal play—never loses; at worst, a draw.'
         },
         minesweeper: {
-          title: 'Minesweeper Solver',
+          title: 'Minesweeper AI',
           description: 'Logical inference (constraint propagation + subset reasoning) that only plays when a safe move is provable.'
         },
         sixDegrees: {
@@ -682,7 +682,7 @@ export const translations = {
           description: 'Oponente Minimax imbatible: busca en el árbol completo del juego para jugar óptimamente—nunca pierde; como mucho, empata.'
         },
         minesweeper: {
-          title: 'Resolvedor de Buscaminas',
+          title: 'IA de Buscaminas',
           description: 'Inferencia lógica (propagación de restricciones + razonamiento por subconjuntos) que solo juega cuando un movimiento seguro es demostrable.'
         },
         sixDegrees: {
@@ -1192,7 +1192,7 @@ export const translations = {
           description: 'Oponent Minimax imbatible: cerca a l\'arbre complet del joc per jugar òptimament—mai perd; com a molt, empata.'
         },
         minesweeper: {
-          title: 'Resolvedor de Buscamines',
+          title: 'IA de Buscamines',
           description: 'Inferència lògica (propagació de restriccions + raonament per subconjunts) que només juga quan un moviment segur és demostrable.'
         },
         sixDegrees: {

@@ -1224,10 +1224,7 @@ export default function Tetris() {
                   )}
                 </div>
 
-                {/* Mobile Controls Info */}
-                <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400 sm:hidden">
-                  Use arrow keys (↓ soft drop, SPACE hard drop) or buttons above
-                </div>
+                {/* Mobile Controls Info removed per request */}
               </div>
             </div>
 
