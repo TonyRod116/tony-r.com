@@ -196,11 +196,11 @@ export const translations = {
       projects: {
         ttt: {
           title: 'Tic-Tac-Toe AI',
-          description: 'Unbeatable AI opponent using minimax algorithm. Challenge yourself against perfect play!'
+          description: 'Unbeatable Minimax opponent: searches the full game tree for optimal play—never loses; at worst, a draw.'
         },
         minesweeper: {
           title: 'Minesweeper Solver',
-          description: 'AI that solves Minesweeper puzzles using logical deduction and probability analysis.'
+          description: 'Logical inference (constraint propagation + subset reasoning) that only plays when a safe move is provable.'
         },
         sixDegrees: {
           title: 'Six Degrees of Separation',
@@ -208,11 +208,11 @@ export const translations = {
         },
         nim: {
           title: 'Nim AI',
-          description: 'Q-Learning AI that learns optimal strategies by playing thousands of games against itself.'
+          description: 'Q-learning agent trained via self-play and rewards; compare novice vs expert policies after thousands of simulations.'
         },
         tetris: {
           title: 'Tetris AI',
-          description: 'Custom T piece (dissolve mechanic). I designed a special T-shaped piece that "dissolves" on landing: each block of the T falls straight down and fills every cell until it reaches support. The AI was updated to simulate this non-standard physics, so its heuristic and lookahead still choose optimal moves under the custom rule.'
+          description: 'Heuristic + lookahead bot that also simulates my custom "dissolving T" physics; scores holes, bumpiness, wells, height, lines.'
         }
       },
       comingSoon: {
@@ -331,7 +331,8 @@ export const translations = {
           aiMoves: 'AI Moves',
           gamesWon: 'Games Won',
           newGame: 'New Game',
-          backToAI: 'Back to AI Lab'
+          backToAI: 'Back to AI Lab',
+          longDescription: 'AI Tetris — upgraded from my very first coding project. Back when I started programming at General Assembly, my first project was a vanilla JavaScript Tetris. This version is a re-edition with custom physics and an AI brain. One piece — the T block — has a special mechanic: when it lands, it dissolves and each cell falls straight down until it hits support, filling gaps like sand. You can play manually or enable AI Mode: it evaluates all possible placements using a feature-based heuristic + lookahead, choosing the most stable move (fewer holes, less bumpiness, more lines). Controls: ← → move • ↑ rotate • Space = drop. Toggle AI to auto-play • Toggle Magic T to enable/disable the special rule. Try building setups that only the dissolving T can clean up.'
         }
       }
     },
@@ -675,11 +676,11 @@ export const translations = {
       projects: {
         ttt: {
           title: 'IA de Tres en Raya',
-          description: 'Oponente de IA imbatible usando algoritmo minimax. ¡Desafíate contra el juego perfecto!'
+          description: 'Oponente Minimax imbatible: busca en el árbol completo del juego para jugar óptimamente—nunca pierde; como mucho, empata.'
         },
         minesweeper: {
           title: 'Resolvedor de Buscaminas',
-          description: 'IA que resuelve puzzles de Buscaminas usando deducción lógica y análisis de probabilidades.'
+          description: 'Inferencia lógica (propagación de restricciones + razonamiento por subconjuntos) que solo juega cuando un movimiento seguro es demostrable.'
         },
         sixDegrees: {
           title: 'Seis Grados de Separación',
@@ -687,11 +688,11 @@ export const translations = {
         },
         nim: {
           title: 'IA Nim',
-          description: 'IA de Q-Learning que aprende estrategias óptimas jugando miles de partidas contra sí misma.'
+          description: 'Agente Q-learning entrenado mediante auto-juego y recompensas; compara políticas novato vs experto después de miles de simulaciones.'
         },
         tetris: {
           title: 'IA Tetris',
-          description: 'Pieza T personalizada (mecánica de disolución). Diseñé una pieza en forma de T que se "disuelve" al aterrizar: cada bloque cae verticalmente y rellena todas las celdas hasta encontrar soporte. La IA se actualizó para simular esta física no estándar, de modo que su heurística y lookahead sigan escogiendo jugadas óptimas con la regla custom.'
+          description: 'Bot heurístico + lookahead que también simula mi física custom de "T disolvente"; puntúa agujeros, irregularidad, pozos, altura, líneas.'
         }
       },
       comingSoon: {
@@ -837,7 +838,8 @@ export const translations = {
           aiMoves: 'Movimientos IA',
           gamesWon: 'Juegos Ganados',
           newGame: 'Nuevo Juego',
-          backToAI: 'Volver al Lab de IA'
+          backToAI: 'Volver al Lab de IA',
+          longDescription: 'Tetris con IA — re-edición de mi primer proyecto en General Assembly. Cuando empecé a programar, mi primer juego fue un Tetris en JavaScript puro. Esta versión es una actualización con física personalizada y cerebro de IA. Una pieza — la T — tiene una mecánica especial: al tocar el suelo se "disuelve" y cada bloque cae en vertical hasta encontrar apoyo, rellenando huecos como arena. Puedes jugar tú o activar el Modo IA: evalúa todas las posiciones posibles con una heurística + lookahead y elige el movimiento más estable (menos huecos, menos irregularidad, más líneas). Controles: ← → mover • ↑ girar • Espacio = dejar caer. Activa AI para que juegue sola • Activa Magic T para activar/desactivar la regla especial. Prueba a crear setups que solo la T disolvente puede resolver.'
         }
       }
     },
@@ -1181,11 +1183,11 @@ export const translations = {
       projects: {
         ttt: {
           title: 'IA de Tres en Ratlla',
-          description: 'Oponent d\'IA imbatible usant algorisme minimax. ¡Desafia\'t contra el joc perfecte!'
+          description: 'Oponent Minimax imbatible: cerca a l\'arbre complet del joc per jugar òptimament—mai perd; com a molt, empata.'
         },
         minesweeper: {
           title: 'Resolvedor de Buscamines',
-          description: 'IA que resol puzzles de Buscamines usant deducció lògica i anàlisi de probabilitats.'
+          description: 'Inferència lògica (propagació de restriccions + raonament per subconjunts) que només juga quan un moviment segur és demostrable.'
         },
         sixDegrees: {
           title: 'Sis Graus de Separació',
@@ -1193,11 +1195,11 @@ export const translations = {
         },
         nim: {
           title: 'IA Nim',
-          description: 'IA de Q-Learning que aprèn estratègies òptimes jugant milers de partides contra si mateixa.'
+          description: 'Agent Q-learning entrenat mitjançant auto-joc i recompenses; compara polítiques novell vs expert després de milers de simulacions.'
         },
         tetris: {
           title: 'IA Tetris',
-          description: 'Peça T personalitzada (mecànica de dissolució). Vaig dissenyar una peça en forma de T que es "dissol" en aterrar: cada bloc cau verticalment i omple totes les cel·les fins trobar suport. L\'IA s\'ha adaptat per simular aquesta física no estàndard, perquè l\'heurística i el lookahead continuïn sent òptims amb la regla custom.'
+          description: 'Bot heurístic + lookahead que també simula la meva física custom de "T dissolvent"; puntua forats, irregularitat, pous, alçada, línies.'
         }
       },
       comingSoon: {
@@ -1316,7 +1318,8 @@ export const translations = {
           aiMoves: 'Moviments IA',
           gamesWon: 'Jocs Guanyats',
           newGame: 'Nou Joc',
-          backToAI: 'Tornar al Lab d\'IA'
+          backToAI: 'Tornar al Lab d\'IA',
+          longDescription: 'Tetris amb IA — re-edició del meu primer projecte a General Assembly. Quan vaig començar a programar, el meu primer joc va ser un Tetris en JavaScript pur. Aquesta versió és una actualització amb física personalitzada i cervell d\'IA. Una peça — la T — té una mecànica especial: quan toca el terra es "dissol" i cada bloc cau verticalment fins trobar suport, omplint forats com sorra. Pots jugar tu o activar el Mode IA: avalua totes les posicions possibles amb una heurística + lookahead i tria el moviment més estable (menys forats, menys irregularitat, més línies). Controls: ← → moure • ↑ girar • Espai = deixar caure. Activa AI perquè jugui sola • Activa Magic T per activar/desactivar la regla especial. Prova a crear setups que només la T dissolvent pot resoldre.'
         }
       }
     },

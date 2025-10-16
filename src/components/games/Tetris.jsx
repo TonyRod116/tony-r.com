@@ -6,7 +6,9 @@ import { useNavigate } from 'react-router-dom';
 const BOARD_WIDTH = 10;
 const BOARD_HEIGHT = 20;
 const CELL_COUNT = BOARD_WIDTH * BOARD_HEIGHT;
-const STARTING_POS = 24;
+
+// Utility function for top center position
+const topCenterPos = () => Math.floor(BOARD_WIDTH / 2);
 
 // Tetris pieces with original colors and classes
 const PIECES = {
@@ -94,6 +96,32 @@ const PIECES = {
 
 const PIECE_NAMES = Object.keys(PIECES);
 
+// Helper function for Next Piece preview
+function getPreviewCells(name) {
+  const offs = PIECES[name].rotations[0];
+  
+  // Convert offsets to relative positions
+  const cells = offs.map(off => {
+    const r = Math.floor(off / BOARD_WIDTH);
+    const c = off % BOARD_WIDTH;
+    return { r, c };
+  });
+  
+  // Find bounds
+  const minR = Math.min(...cells.map(c => c.r));
+  const maxR = Math.max(...cells.map(c => c.r));
+  const minC = Math.min(...cells.map(c => c.c));
+  const maxC = Math.max(...cells.map(c => c.c));
+  
+  // Normalize to 4x4 grid starting from (0,0)
+  const normalized = cells.map(({ r, c }) => ({
+    r: r - minR,
+    c: c - minC
+  }));
+  
+  return normalized;
+}
+
 // AI Implementation
 class TetrisAI {
   constructor() {
@@ -123,8 +151,8 @@ class TetrisAI {
 
   // Simulate drop with magic T mechanic (based on original stoppedShape logic)
   simulateDrop(matrix, shapeName, rotationIndex, startCol) {
-    // Position piece at top
-    let pos = STARTING_POS;
+    // posición en la fila superior usando la columna pedida
+    let pos = startCol;
     const maxShift = 4;
     let shifted = 0;
 
@@ -150,20 +178,32 @@ class TetrisAI {
       pos++; shifted++;
     }
 
-    // Drop until collision
+    // Drop until collision (con guards)
     while (true) {
       const coords = PIECES[shapeName].rotations[rotationIndex];
       let canDrop = true;
-      
+
       for (let i = 0; i < coords.length; i++) {
         const cellIdx = pos + coords[i];
         const cellBelowIdx = cellIdx + BOARD_WIDTH;
-        if (cellBelowIdx >= CELL_COUNT || matrix[Math.floor(cellBelowIdx / BOARD_WIDTH)][cellBelowIdx % BOARD_WIDTH]) {
+
+        if (cellBelowIdx >= CELL_COUNT) { // tocar suelo
+          canDrop = false;
+          break;
+        }
+
+        const r = Math.floor(cellBelowIdx / BOARD_WIDTH);
+        const c = cellBelowIdx % BOARD_WIDTH;
+
+        // Si todavía está por encima del tablero, ignora colisiones
+        if (r < 0) continue;
+
+        if (matrix[r][c]) {
           canDrop = false;
           break;
         }
       }
-      
+
       if (!canDrop) break;
       pos += BOARD_WIDTH;
     }
@@ -172,48 +212,49 @@ class TetrisAI {
     const next = matrix.map(row => [...row]);
 
     if (this.magicT && shapeName === 'T') {
-      // MAGIC T DISSOLUTION: based on original stoppedShape logic
       const coords = PIECES['T'].rotations[rotationIndex];
       let highestRow = BOARD_HEIGHT;
-      
+
       for (let i = 0; i < coords.length; i++) {
         const cellIdx = pos + coords[i];
-        const row = Math.floor(cellIdx / BOARD_WIDTH);
-        const col = cellIdx % BOARD_WIDTH;
-        
-        // Mark the T cell where it lands
-        next[row][col] = true;
-        
-        // Fall vertically filling until hitting occupied or ground
-        let dropPos = cellIdx;
-        while (dropPos + BOARD_WIDTH < CELL_COUNT && !next[Math.floor((dropPos + BOARD_WIDTH) / BOARD_WIDTH)][(dropPos + BOARD_WIDTH) % BOARD_WIDTH]) {
-          dropPos += BOARD_WIDTH;
-          next[Math.floor(dropPos / BOARD_WIDTH)][dropPos % BOARD_WIDTH] = true;
+        let r = Math.floor(cellIdx / BOARD_WIDTH);
+        let c = cellIdx % BOARD_WIDTH;
+
+        if (r >= 0 && r < BOARD_HEIGHT) {
+          next[r][c] = shapeName;
         }
-        
+
+        // "disolución" hacia abajo con guards
+        let dropPos = cellIdx;
+        while (dropPos + BOARD_WIDTH < CELL_COUNT) {
+          const rr = Math.floor((dropPos + BOARD_WIDTH) / BOARD_WIDTH);
+          const cc = (dropPos + BOARD_WIDTH) % BOARD_WIDTH;
+          if (rr >= 0 && next[rr][cc] !== null) break;
+          dropPos += BOARD_WIDTH;
+          const r2 = Math.floor(dropPos / BOARD_WIDTH);
+          const c2 = dropPos % BOARD_WIDTH;
+          if (r2 >= 0 && r2 < BOARD_HEIGHT) next[r2][c2] = shapeName;
+        }
+
         const finalRow = Math.floor(dropPos / BOARD_WIDTH);
         if (finalRow < highestRow) highestRow = finalRow;
       }
     } else {
-      // Normal behavior
       const coords = PIECES[shapeName].rotations[rotationIndex];
-      let highestRow = BOARD_HEIGHT;
-      
       for (let i = 0; i < coords.length; i++) {
         const cellIdx = pos + coords[i];
-        const row = Math.floor(cellIdx / BOARD_WIDTH);
-        const col = cellIdx % BOARD_WIDTH;
-        next[row][col] = true;
-        if (row < highestRow) highestRow = row;
+        const r = Math.floor(cellIdx / BOARD_WIDTH);
+        const c = cellIdx % BOARD_WIDTH;
+        if (r >= 0 && r < BOARD_HEIGHT) next[r][c] = shapeName;
       }
     }
 
     // Clear lines and count how many
     let linesCleared = 0;
     for (let r = BOARD_HEIGHT - 1; r >= 0; r--) {
-      if (next[r].every(v => v)) {
+      if (next[r].every(v => v !== null)) {
         next.splice(r, 1);
-        next.unshift(Array(BOARD_WIDTH).fill(false));
+        next.unshift(Array(BOARD_WIDTH).fill(null));
         linesCleared++;
         r++; // Re-evaluate after shift
       }
@@ -326,11 +367,11 @@ export default function Tetris() {
   const audioRef = useRef(null);
   
   const [board, setBoard] = useState(() => 
-    Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(false))
+    Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(null))
   );
   const [currentPiece, setCurrentPiece] = useState(null);
   const [nextPiece, setNextPiece] = useState(null);
-  const [currentPosition, setCurrentPosition] = useState(STARTING_POS);
+  const [currentPosition, setCurrentPosition] = useState(topCenterPos());
   const [currentRotation, setCurrentRotation] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
@@ -339,52 +380,58 @@ export default function Tetris() {
   const [aiEnabled, setAiEnabled] = useState(false);
   const [aiSuggestion, setAiSuggestion] = useState(null);
   const [magicTEnabled, setMagicTEnabled] = useState(true);
-  const [gameStarted, setGameStarted] = useState(false);
+  const [gameStarted, setGameStarted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const [stats, setStats] = useState({
     gamesPlayed: parseInt(localStorage.getItem('tetris_games') || '0'),
     aiMoves: parseInt(localStorage.getItem('tetris_ai_moves') || '0'),
     gamesWon: parseInt(localStorage.getItem('tetris_gamesWon') || '0')
   });
 
-  const ai = new TetrisAI();
+  const aiRef = useRef(new TetrisAI());
+  const ai = aiRef.current;
+
+  // Helper function for unified collision detection
+  const wouldCollide = useCallback((matrix, name, rot, pos, dx, dy) => {
+    if (!name) return true;
+    const offs = PIECES[name].rotations[rot];
+
+    for (const off of offs) {
+      const idx = pos + off + dx + dy * BOARD_WIDTH;
+      const r = Math.floor(idx / BOARD_WIDTH);
+      const c = idx % BOARD_WIDTH; // NO normalizar con +BOARD_WIDTH
+
+      // fuera por abajo
+      if (r >= BOARD_HEIGHT) return true;
+
+      // si está por encima del tablero, ignoramos colisión y límites laterales
+      if (r < 0) continue;
+
+      // fuera por los lados (dentro del tablero)
+      if (c < 0 || c >= BOARD_WIDTH) return true;
+
+      // colisión con bloque ya colocado
+      if (matrix[r][c] !== null) return true;
+    }
+    return false;
+  }, []);
 
   // Initialize game
   const initializeGame = useCallback(() => {
-    const newBoard = Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(false));
+    const newBoard = Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(null));
     setBoard(newBoard);
-    setCurrentPiece(null);
-    setNextPiece(null);
-    setCurrentPosition(STARTING_POS);
+    setCurrentPosition(topCenterPos());
     setCurrentRotation(0);
     setGameOver(false);
     setScore(0);
     setLines(0);
     setLevel(1);
     setAiSuggestion(null);
-    setGameStarted(false);
-    spawnNewPiece();
-  }, []);
-
-  // Start game
-  const startGame = useCallback(() => {
     setGameStarted(true);
-    if (audioRef.current) {
-      audioRef.current.volume = 0.2;
-      audioRef.current.play().catch(console.error);
-    }
-  }, []);
-
-  // Spawn new piece
-  const spawnNewPiece = useCallback(() => {
-    if (nextPiece === null) {
-      const pieceName = PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)];
-      setNextPiece(pieceName);
-    }
     
-    const pieceName = nextPiece || PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)];
+    // Spawn the first piece automatically
+    const pieceName = PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)];
     setCurrentPiece(pieceName);
-    setCurrentPosition(STARTING_POS);
-    setCurrentRotation(0);
     
     // Generate next piece
     const nextPieceName = PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)];
@@ -392,119 +439,24 @@ export default function Tetris() {
     
     // Get AI suggestion if enabled
     if (aiEnabled) {
-      const suggestion = ai.suggestBestMove(board, pieceName);
+      const suggestion = ai.suggestBestMove(newBoard, pieceName);
       setAiSuggestion(suggestion);
     }
-  }, [board, aiEnabled, nextPiece]);
-
-  // Check collisions
-  const downCollision = useCallback(() => {
-    if (!currentPiece) return true;
     
-    const coords = PIECES[currentPiece].rotations[currentRotation];
-    for (let i = 0; i < coords.length; i++) {
-      const cellIdx = currentPosition + coords[i];
-      const cellBelowIdx = cellIdx + BOARD_WIDTH;
-      if (cellBelowIdx >= CELL_COUNT || 
-          (Math.floor(cellBelowIdx / BOARD_WIDTH) < BOARD_HEIGHT && 
-           board[Math.floor(cellBelowIdx / BOARD_WIDTH)][cellBelowIdx % BOARD_WIDTH])) {
-        return true;
-      }
+    // Start music if not muted
+    if (audioRef.current && !isMuted) {
+      audioRef.current.volume = 0.2;
+      audioRef.current.play().catch(console.error);
     }
-    return false;
-  }, [currentPiece, currentRotation, currentPosition, board]);
+  }, [aiEnabled, ai]);
 
-  const leftCollision = useCallback(() => {
-    if (!currentPiece) return true;
-    
-    const coords = PIECES[currentPiece].rotations[currentRotation]; 
-    for (let i = 0; i < coords.length; i++) {
-      const cellIdx = currentPosition + coords[i];        
-      const cellLeftToIdx = cellIdx - 1;        
-      if (cellLeftToIdx >= 0 && 
-          Math.floor(cellLeftToIdx / BOARD_WIDTH) < BOARD_HEIGHT &&
-          board[Math.floor(cellLeftToIdx / BOARD_WIDTH)][cellLeftToIdx % BOARD_WIDTH] && 
-          (cellIdx % BOARD_WIDTH !== 0)) { 
-        return true; 
-      }
-    }
-    return false; 
-  }, [currentPiece, currentRotation, currentPosition, board]);
 
-  const rightCollision = useCallback(() => {
-    if (!currentPiece) return true;
-    
-    const coords = PIECES[currentPiece].rotations[currentRotation]; 
-    for (let i = 0; i < coords.length; i++) {
-      const cellIdx = currentPosition + coords[i];        
-      const cellRightToIdx = cellIdx + 1;        
-      if (cellRightToIdx < CELL_COUNT &&
-          Math.floor(cellRightToIdx / BOARD_WIDTH) < BOARD_HEIGHT &&
-          board[Math.floor(cellRightToIdx / BOARD_WIDTH)][cellRightToIdx % BOARD_WIDTH] && 
-          (cellIdx % BOARD_WIDTH !== BOARD_WIDTH - 1)) { 
-        return true; 
-      }
-    }
-    return false; 
-  }, [currentPiece, currentRotation, currentPosition, board]);
-
-  const canRotate = useCallback((nextRotation) => {
-    if (!currentPiece) return false;
-    
-    const nextCoords = PIECES[currentPiece].rotations[nextRotation];
-    const baseCol = currentPosition % BOARD_WIDTH;  
-    for (let i = 0; i < nextCoords.length; i++) {
-      const idx = currentPosition + nextCoords[i];
-      if (idx < 0 || idx >= CELL_COUNT) return false;
-      const col = idx % BOARD_WIDTH;
-      if (col < 0 || col >= BOARD_WIDTH) return false;
-      if (Math.abs(col - baseCol) > 3) return false; 
-      if (Math.floor(idx / BOARD_WIDTH) < BOARD_HEIGHT && 
-          board[Math.floor(idx / BOARD_WIDTH)][idx % BOARD_WIDTH]) return false;
-    }
-    return true;
-  }, [currentPiece, currentPosition, board]);
-
-  // Move piece
-  const movePiece = useCallback((direction) => {
-    if (!currentPiece || gameOver || !gameStarted) return;
-
-    let newPosition = currentPosition;
-    let newRotation = currentRotation;
-
-    switch (direction) {
-      case 'left':
-        if (!leftCollision()) {
-          newPosition = Math.max(0, currentPosition - 1);
-        }
-        break;
-      case 'right':
-        if (!rightCollision()) {
-          newPosition = Math.min(CELL_COUNT - 1, currentPosition + 1);
-        }
-        break;
-      case 'down':
-        // Handle drop
-        break;
-      case 'rotate':
-        const nextRotation = (currentRotation + 1) % PIECES[currentPiece].rotations.length;
-        if (canRotate(nextRotation)) {
-          newRotation = nextRotation;
-        }
-        break;
-    }
-
-    if (newPosition !== currentPosition || newRotation !== currentRotation) {
-      setCurrentPosition(newPosition);
-      setCurrentRotation(newRotation);
-    }
-  }, [currentPiece, currentPosition, currentRotation, gameOver, gameStarted, leftCollision, rightCollision, canRotate]);
 
   // Drop piece
   const dropPiece = useCallback(() => {
     if (!currentPiece || gameOver || !gameStarted) return;
 
-    if (downCollision()) {
+    if (wouldCollide(board, currentPiece, currentRotation, currentPosition, 0, 1)) {
       // Piece has landed - apply magic T logic
       const newBoard = board.map(row => [...row]);
       
@@ -518,18 +470,21 @@ export default function Tetris() {
           const row = Math.floor(cellIdx / BOARD_WIDTH);
           const col = cellIdx % BOARD_WIDTH;
           
-          // Mark the T cell where it lands
-          newBoard[row][col] = true;
+          // Bounds check before accessing board
+          if (row >= 0 && row < BOARD_HEIGHT && col >= 0 && col < BOARD_WIDTH) {
+            // Mark the T cell where it lands
+            newBoard[row][col] = currentPiece;
           
-          // Fall vertically filling until hitting occupied or ground
-          let dropPos = cellIdx;
-          while (dropPos + BOARD_WIDTH < CELL_COUNT && !newBoard[Math.floor((dropPos + BOARD_WIDTH) / BOARD_WIDTH)][(dropPos + BOARD_WIDTH) % BOARD_WIDTH]) {
-            dropPos += BOARD_WIDTH;
-            newBoard[Math.floor(dropPos / BOARD_WIDTH)][dropPos % BOARD_WIDTH] = true;
+            // Fall vertically filling until hitting occupied or ground
+            let dropPos = cellIdx;
+            while (dropPos + BOARD_WIDTH < CELL_COUNT && newBoard[Math.floor((dropPos + BOARD_WIDTH) / BOARD_WIDTH)][(dropPos + BOARD_WIDTH) % BOARD_WIDTH] === null) {
+              dropPos += BOARD_WIDTH;
+              newBoard[Math.floor(dropPos / BOARD_WIDTH)][dropPos % BOARD_WIDTH] = currentPiece;
+            }
+            
+            const finalRow = Math.floor(dropPos / BOARD_WIDTH);
+            if (finalRow < highestRow) highestRow = finalRow;
           }
-          
-          const finalRow = Math.floor(dropPos / BOARD_WIDTH);
-          if (finalRow < highestRow) highestRow = finalRow;
         }
         
         // Calculate score based on height (from original code)
@@ -564,8 +519,12 @@ export default function Tetris() {
           const cellIdx = currentPosition + coords[i];
           const row = Math.floor(cellIdx / BOARD_WIDTH);
           const col = cellIdx % BOARD_WIDTH;
-          newBoard[row][col] = true;
-          if (row < highestRow) highestRow = row;
+          
+          // Bounds check before accessing board
+          if (row >= 0 && row < BOARD_HEIGHT && col >= 0 && col < BOARD_WIDTH) {
+            newBoard[row][col] = currentPiece;
+            if (row < highestRow) highestRow = row;
+          }
         }
         
         // Calculate score based on height (from original code)
@@ -596,7 +555,7 @@ export default function Tetris() {
       // Check for completed rows
       let rowsToDelete = [];
       for (let i = 0; i < BOARD_HEIGHT; i++) {
-        if (newBoard[i].every(v => v)) {
+        if (newBoard[i].every(v => v !== null)) {
           rowsToDelete.push(i);
         }
       }
@@ -609,7 +568,7 @@ export default function Tetris() {
         // Remove completed rows
         rowsToDelete.forEach(rowIdx => {
           newBoard.splice(rowIdx, 1);
-          newBoard.unshift(Array(BOARD_WIDTH).fill(false));
+          newBoard.unshift(Array(BOARD_WIDTH).fill(null));
         });
       }
       
@@ -624,22 +583,122 @@ export default function Tetris() {
         });
       }
       
-      spawnNewPiece();
+      // decidir siguiente pieza y comprobar spawn
+      const next = nextPiece || PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)];
+      const spawnPos = topCenterPos();
+      const canSpawn = !wouldCollide(newBoard, next, 0, spawnPos, 0, 0);
       
-      // Check for game over
-      if (downCollision()) {
+      if (!canSpawn) {
         setGameOver(true);
         setStats(prev => {
           const newStats = { ...prev, gamesPlayed: prev.gamesPlayed + 1 };
           localStorage.setItem('tetris_games', newStats.gamesPlayed.toString());
           return newStats;
         });
+        return;
       }
+      
+      // colocar siguiente pieza y generar la otra
+      setCurrentPiece(next);
+      setCurrentPosition(spawnPos);
+      setCurrentRotation(0);
+      setNextPiece(PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)]);
     } else {
       // Move piece down
       setCurrentPosition(prev => prev + BOARD_WIDTH);
     }
-  }, [currentPiece, currentRotation, currentPosition, gameOver, gameStarted, board, magicTEnabled, downCollision, aiEnabled, lines, spawnNewPiece]);
+  }, [currentPiece, currentRotation, currentPosition, gameOver, gameStarted, board, magicTEnabled, aiEnabled, lines, nextPiece, wouldCollide]);
+
+  // Move piece
+  const movePiece = useCallback((direction) => {
+    if (!currentPiece || gameOver || !gameStarted) return;
+
+    let newPosition = currentPosition;
+    let newRotation = currentRotation;
+
+    switch (direction) {
+      case 'left': {
+        // Check if any cell of the piece would go out of bounds or wrap around
+        const coords = PIECES[currentPiece].rotations[currentRotation];
+        const baseCol = currentPosition % BOARD_WIDTH;
+        let canMoveLeft = true;
+        
+        for (let i = 0; i < coords.length; i++) {
+          const cellIdx = currentPosition + coords[i];
+          const currentCol = cellIdx % BOARD_WIDTH;
+          
+          // Check if cell is at left edge or would cause wrap-around
+          if (currentCol === 0) {
+            canMoveLeft = false;
+            break;
+          }
+          
+          // Check distance constraint (max 3 cells away from base)
+          const distance = Math.abs(currentCol - baseCol);
+          if (distance > 3) {
+            canMoveLeft = false;
+            break;
+          }
+        }
+        
+        if (canMoveLeft && !wouldCollide(board, currentPiece, currentRotation, currentPosition, -1, 0)) {
+          newPosition = currentPosition - 1;
+        }
+        break;
+      }
+      case 'right': {
+        // Check if any cell of the piece would go out of bounds or wrap around
+        const coords = PIECES[currentPiece].rotations[currentRotation];
+        const baseCol = currentPosition % BOARD_WIDTH;
+        let canMoveRight = true;
+        
+        for (let i = 0; i < coords.length; i++) {
+          const cellIdx = currentPosition + coords[i];
+          const currentCol = cellIdx % BOARD_WIDTH;
+          
+          // Check if cell is at right edge or would cause wrap-around
+          if (currentCol === BOARD_WIDTH - 1) {
+            canMoveRight = false;
+            break;
+          }
+          
+          // Check distance constraint (max 3 cells away from base)
+          const distance = Math.abs(currentCol - baseCol);
+          if (distance > 3) {
+            canMoveRight = false;
+            break;
+          }
+        }
+        
+        if (canMoveRight && !wouldCollide(board, currentPiece, currentRotation, currentPosition, 1, 0)) {
+          newPosition = currentPosition + 1;
+        }
+        break;
+      }
+      case 'drop': {
+        // Baja hasta colisionar
+        let nextPos = currentPosition;
+        while (!wouldCollide(board, currentPiece, currentRotation, nextPos, 0, 1)) {
+          nextPos += BOARD_WIDTH;
+        }
+        setCurrentPosition(nextPos);
+        // y suelta la pieza
+        dropPiece();
+        break;
+      }
+      case 'rotate':
+        const nextRotation = (currentRotation + 1) % PIECES[currentPiece].rotations.length;
+        if (!wouldCollide(board, currentPiece, nextRotation, currentPosition, 0, 0)) {
+          newRotation = nextRotation;
+        }
+        break;
+    }
+
+    if (newPosition !== currentPosition || newRotation !== currentRotation) {
+      setCurrentPosition(newPosition);
+      setCurrentRotation(newRotation);
+    }
+  }, [currentPiece, currentPosition, currentRotation, gameOver, gameStarted, board, dropPiece, wouldCollide]);
 
   // AI move
   const makeAIMove = useCallback(() => {
@@ -658,8 +717,20 @@ export default function Tetris() {
   const toggleMagicT = useCallback(() => {
     const newValue = !magicTEnabled;
     setMagicTEnabled(newValue);
-    ai.magicT = newValue;
+    aiRef.current.magicT = newValue;
   }, [magicTEnabled]);
+
+  // Toggle mute
+  const toggleMute = useCallback(() => {
+    if (audioRef.current) {
+      if (isMuted) {
+        audioRef.current.play().catch(console.error);
+      } else {
+        audioRef.current.pause();
+      }
+    }
+    setIsMuted(!isMuted);
+  }, [isMuted]);
 
   // Keyboard controls
   useEffect(() => {
@@ -677,7 +748,7 @@ export default function Tetris() {
           break;
         case 'ArrowDown':
           e.preventDefault();
-          movePiece('down');
+          dropPiece();
           break;
         case 'ArrowUp':
           e.preventDefault();
@@ -685,7 +756,7 @@ export default function Tetris() {
           break;
         case ' ':
           e.preventDefault();
-          dropPiece();
+          movePiece('drop');
           break;
       }
     };
@@ -722,7 +793,7 @@ export default function Tetris() {
         const row = Math.floor(cellIdx / BOARD_WIDTH);
         const col = cellIdx % BOARD_WIDTH;
         if (row >= 0 && row < BOARD_HEIGHT && col >= 0 && col < BOARD_WIDTH) {
-          displayBoard[row][col] = true;
+          displayBoard[row][col] = currentPiece; // Store piece name instead of just true
         }
       }
     }
@@ -731,27 +802,16 @@ export default function Tetris() {
   };
 
   return (
-    <div 
-      className="min-h-screen relative overflow-hidden"
-      style={{
-        backgroundImage: `url('/assets/ttris/T-Tetris_fondo1.jpg')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
-      }}
-    >
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 pt-32">
       {/* Audio */}
       <audio ref={audioRef} loop preload="auto">
         <source src="/assets/ttris/TetrisStrings.mp3" type="audio/mpeg" />
       </audio>
-
-      {/* Overlay for better text readability */}
-      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
       
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
+        <div className="text-center mb-12">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-6">
             <button
               onClick={() => navigate('/ai')}
               className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm sm:text-base"
@@ -761,7 +821,7 @@ export default function Tetris() {
             <img 
               src="/assets/ttris/T-Tris2.PNG" 
               alt="T-Tris Logo" 
-              className="h-12 sm:h-16 md:h-20 w-auto"
+              className="h-16 sm:h-20 md:h-24 w-auto"
             />
             {magicTEnabled && (
               <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-sm font-medium rounded-full">
@@ -769,37 +829,16 @@ export default function Tetris() {
               </span>
             )}
           </div>
-          <p className="text-lg text-white max-w-2xl mx-auto drop-shadow-lg">
-            {t('aiLab.games.tetris.description')}
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            {t('aiLab.games.tetris.longDescription')}
           </p>
         </div>
 
-        {/* Game Start Screen */}
-        {!gameStarted && (
-          <div className="flex justify-center items-center min-h-[400px]">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg text-center">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                {t('aiLab.games.tetris.title')}
-              </h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
-                {magicTEnabled ? 'Magic T mode enabled!' : 'Classic Tetris mode'}
-              </p>
-              <button
-                onClick={startGame}
-                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-medium transition-all duration-200 text-lg"
-              >
-                Start Game
-              </button>
-            </div>
-          </div>
-        )}
-
         {/* Game Board */}
-        {gameStarted && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* Game Board */}
-            <div className="lg:col-span-2">
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 shadow-lg">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {/* Game Board */}
+          <div className="lg:col-span-2">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 shadow-lg">
                 <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-2">
                   <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
                     {t('aiLab.games.tetris.gameBoard')}
@@ -825,60 +864,79 @@ export default function Tetris() {
                     >
                       {magicTEnabled ? t('aiLab.games.tetris.magicTOn') : t('aiLab.games.tetris.magicTOff')}
                     </button>
+                    <button
+                      onClick={toggleMute}
+                      className={`px-3 py-2 rounded-lg font-medium transition-colors text-sm ${
+                        isMuted
+                          ? 'bg-red-600 hover:bg-red-700 text-white'
+                          : 'bg-blue-600 hover:bg-blue-700 text-white'
+                      }`}
+                    >
+                      {isMuted ? '🔇 Mute' : '🔊 Music'}
+                    </button>
                   </div>
                 </div>
 
                 {/* Tetris Board */}
-                <div className="bg-gray-900 rounded-lg p-2 sm:p-4 mb-4">
-                  <div className="grid grid-cols-10 gap-1 mx-auto" style={{ maxWidth: '300px' }}>
-                    {renderBoard().map((row, rowIndex) =>
-                      row.map((cell, colIndex) => (
-                        <div
-                          key={`${rowIndex}-${colIndex}`}
-                          className={`aspect-square rounded ${
-                            cell ? 'bg-blue-500' : 'bg-gray-800'
-                          }`}
-                          style={{ 
-                            minHeight: '12px',
-                            minWidth: '12px'
-                          }}
-                        />
+                <div className="rounded-lg p-3 bg-gray-900 overflow-hidden">
+                  <div
+                    className="mx-auto grid gap-[1px] bg-gray-800 p-[1px] rounded overflow-hidden"
+                    style={{
+                      '--cell':'24px',
+                      display:'grid',
+                      gridTemplateColumns:`repeat(${BOARD_WIDTH}, var(--cell))`,
+                      gridTemplateRows:`repeat(${BOARD_HEIGHT}, var(--cell))`,
+                      width:`calc(var(--cell) * ${BOARD_WIDTH} + 2px)`,
+                      height:`calc(var(--cell) * ${BOARD_HEIGHT} + 2px)`,
+                    }}
+                  >
+                    {renderBoard().flatMap((row, r) =>
+                      row.map((cell, c) => (
+                        <div key={`${r}-${c}`}
+                            className="rounded-sm"
+                            style={{backgroundColor: cell ? PIECES[cell].color : 'rgba(17,24,39,0.9)'}}/>
                       ))
                     )}
                   </div>
                 </div>
 
                 {/* Controls */}
-                <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
+                <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
                   <button
                     onClick={() => movePiece('left')}
-                    className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm sm:text-base"
+                    className="px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95"
                   >
                     ←
                   </button>
                   <button
                     onClick={() => movePiece('rotate')}
-                    className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm sm:text-base"
+                    className="px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95"
                   >
                     ↻
                   </button>
                   <button
                     onClick={() => movePiece('right')}
-                    className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm sm:text-base"
+                    className="px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95"
                   >
                     →
                   </button>
                   <button
                     onClick={dropPiece}
-                    className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-sm sm:text-base"
+                    className="px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95"
                   >
                     ↓
+                  </button>
+                  <button
+                    onClick={() => movePiece('drop')}
+                    className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-bold transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95"
+                  >
+                    DROP
                   </button>
                 </div>
 
                 {/* Mobile Controls Info */}
                 <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400 sm:hidden">
-                  Use arrow keys or buttons above
+                  Use arrow keys (↓ to drop) or buttons above
                 </div>
 
                 {aiEnabled && aiSuggestion && (
@@ -924,10 +982,34 @@ export default function Tetris() {
                     Next Piece
                   </h3>
                   <div className="flex justify-center">
-                    <div 
-                      className="w-8 h-8 sm:w-12 sm:h-12 rounded"
-                      style={{ backgroundColor: PIECES[nextPiece].color }}
-                    />
+                    <div
+                      className="bg-gray-900 rounded-lg p-3 border-2 border-gray-700"
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(4, 16px)',
+                        gridTemplateRows: 'repeat(4, 16px)',
+                        gap: '1px'
+                      }}
+                    >
+                      {Array.from({ length: 16 }, (_, i) => {
+                        const r = Math.floor(i / 4);
+                        const c = i % 4;
+                        const cells = getPreviewCells(nextPiece);
+                        const filled = cells.some(p => p.r === r && p.c === c);
+                        return (
+                          <div
+                            key={i}
+                            style={{
+                              width: 16,
+                              height: 16,
+                              background: filled ? PIECES[nextPiece].color : 'transparent',
+                              border: filled ? `1px solid ${PIECES[nextPiece].color}80` : '1px solid transparent',
+                              borderRadius: 2
+                            }}
+                          />
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               )}
@@ -953,6 +1035,18 @@ export default function Tetris() {
                 </div>
               </div>
 
+              {/* Start Game */}
+              {!gameStarted && (
+                <div className="text-center">
+                  <button
+                    onClick={startGame}
+                    className="w-full px-4 py-3 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white rounded-lg font-medium transition-all duration-200 text-sm sm:text-base"
+                  >
+                    {t('aiLab.games.tetris.startGame') || 'Start Game'}
+                  </button>
+                </div>
+              )}
+
               {/* New Game */}
               <div className="text-center">
                 <button
@@ -964,27 +1058,7 @@ export default function Tetris() {
               </div>
             </div>
           </div>
-        )}
 
-        {/* Game Over Screen */}
-        {gameOver && (
-          <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg text-center max-w-md mx-4">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                Game Over!
-              </h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
-                Score: <span className="font-bold">{score}</span>
-              </p>
-              <button
-                onClick={initializeGame}
-                className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-medium transition-all duration-200"
-              >
-                Play Again
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
