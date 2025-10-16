@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useLanguage } from '../../hooks/useLanguage';
 import { useNavigate } from 'react-router-dom';
 
@@ -98,28 +98,22 @@ const PIECE_NAMES = Object.keys(PIECES);
 
 // Helper function for Next Piece preview
 function getPreviewCells(name) {
-  const offs = PIECES[name].rotations[0];
-  
-  // Convert offsets to relative positions
+  const offs = PIECES[name].rotations[0]; // preview con rotación 0
+
+  // Conversión correcta a (r,c) con resto "euclidiano"
   const cells = offs.map(off => {
     const r = Math.floor(off / BOARD_WIDTH);
-    const c = off % BOARD_WIDTH;
+    const c = off - r * BOARD_WIDTH;  // <- NO usar off % BOARD_WIDTH
     return { r, c };
   });
-  
-  // Find bounds
-  const minR = Math.min(...cells.map(c => c.r));
-  const maxR = Math.max(...cells.map(c => c.r));
-  const minC = Math.min(...cells.map(c => c.c));
-  const maxC = Math.max(...cells.map(c => c.c));
-  
-  // Normalize to 4x4 grid starting from (0,0)
-  const normalized = cells.map(({ r, c }) => ({
-    r: r - minR,
-    c: c - minC
-  }));
-  
-  return normalized;
+
+  // Normaliza a origen (0,0)
+  const minR = Math.min(...cells.map(x => x.r));
+  const minC = Math.min(...cells.map(x => x.c));
+  const norm = cells.map(({ r, c }) => ({ r: r - minR, c: c - minC }));
+
+  // Asegura que encaje en 4x4
+  return norm.filter(({ r, c }) => r >= 0 && r < 4 && c >= 0 && c < 4);
 }
 
 // AI Implementation
@@ -371,6 +365,13 @@ export default function Tetris() {
   );
   const [currentPiece, setCurrentPiece] = useState(null);
   const [nextPiece, setNextPiece] = useState(null);
+  
+  // Memoize preview cells to avoid recalculating 16 times per render
+  const previewCells = useMemo(
+    () => (nextPiece ? getPreviewCells(nextPiece) : []),
+    [nextPiece]
+  );
+  
   const [currentPosition, setCurrentPosition] = useState(topCenterPos());
   const [currentRotation, setCurrentRotation] = useState(0);
   const [gameOver, setGameOver] = useState(false);
@@ -986,22 +987,21 @@ export default function Tetris() {
                       className="bg-gray-900 rounded-lg p-3 border-2 border-gray-700"
                       style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(4, 16px)',
-                        gridTemplateRows: 'repeat(4, 16px)',
+                        gridTemplateColumns: 'repeat(4, 20px)',
+                        gridTemplateRows: 'repeat(4, 20px)',
                         gap: '1px'
                       }}
                     >
                       {Array.from({ length: 16 }, (_, i) => {
                         const r = Math.floor(i / 4);
                         const c = i % 4;
-                        const cells = getPreviewCells(nextPiece);
-                        const filled = cells.some(p => p.r === r && p.c === c);
+                        const filled = previewCells.some(p => p.r === r && p.c === c);
                         return (
                           <div
                             key={i}
                             style={{
-                              width: 16,
-                              height: 16,
+                              width: 20,
+                              height: 20,
                               background: filled ? PIECES[nextPiece].color : 'transparent',
                               border: filled ? `1px solid ${PIECES[nextPiece].color}80` : '1px solid transparent',
                               borderRadius: 2
