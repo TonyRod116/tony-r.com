@@ -178,6 +178,32 @@ class TetrisAI {
     this.magicT = true; // Enable magic T mechanic
   }
 
+  // Apply Magic T dissolution (reusable function)
+  applyMagicTDissolution(next, basePos, coords, name = 'T') {
+    // Place T cells and let each cell fall vertically
+    for (let i = 0; i < coords.length; i++) {
+      const idx = basePos + coords[i];
+      let r = Math.floor(idx / BOARD_WIDTH);
+      let c = idx % BOARD_WIDTH;
+
+      if (r >= 0 && r < BOARD_HEIGHT && c >= 0 && c < BOARD_WIDTH) {
+        next[r][c] = name;
+        // Vertical drop cell by cell
+        let dropIdx = idx;
+        while (true) {
+          const nextIdx = dropIdx + BOARD_WIDTH;
+          const nr = Math.floor(nextIdx / BOARD_WIDTH);
+          const nc = nextIdx % BOARD_WIDTH;
+          if (nr >= BOARD_HEIGHT) break;
+          if (nc < 0 || nc >= BOARD_WIDTH) break;
+          if (next[nr][nc] !== null) break;
+          dropIdx = nextIdx;
+          next[nr][nc] = name;
+        }
+      }
+    }
+  }
+
   // Get all possible placements for a piece
   allPlacementsFor(matrix, shapeName) {
     // SAFETY CHECK: Validate inputs
@@ -206,6 +232,7 @@ class TetrisAI {
         continue;
       }
       
+      let validPlacementsForRotation = 0;
       for (let col = 0; col < BOARD_WIDTH; col++) {
         const result = this.simulateDrop(matrix, shapeName, rotationIndex, col);
         if (result) {
@@ -214,8 +241,10 @@ class TetrisAI {
             col,
             rotationIndex
           });
+          validPlacementsForRotation++;
         }
       }
+      console.log(`🔄 Rotation ${rotationIndex} for ${shapeName}: ${validPlacementsForRotation} valid placements`);
     }
     
     return placements;
@@ -272,36 +301,42 @@ class TetrisAI {
       }
     }
       
-    // PREVALIDATE lateral bounds using base column + relative offset column
+    // PREVALIDATE lateral bounds - only reject if ALL cells would be out of bounds
     const baseRow0 = 0;
     const baseCol0 = startCol;
-      for (let i = 0; i < coords.length; i++) {
+    let validCells = 0;
+    let outOfBoundsCells = 0;
+    
+    for (let i = 0; i < coords.length; i++) {
       const offRow = Math.floor(coords[i] / BOARD_WIDTH);
-      const offCol = coords[i] - offRow * BOARD_WIDTH;
+      const offCol = coords[i] % BOARD_WIDTH; // Use signed modulo to avoid wrap-around
       const c = baseCol0 + offCol;
       if (c < 0 || c >= BOARD_WIDTH) {
-        return null; // would cross walls even above the board
+        outOfBoundsCells++;
+      } else {
+        validCells++;
       }
     }
+    
+    // Only reject if more than half the piece would be out of bounds
+    if (outOfBoundsCells > coords.length / 2) {
+      return null;
+    }
 
-    // Drop until collision using base row/col + relative offsets
+    // Drop until collision using absolute indices
     while (true) {
-      const posRow = Math.floor(pos / BOARD_WIDTH);
-      const posCol = pos - posRow * BOARD_WIDTH;
       let canDrop = true;
-      
       for (let i = 0; i < coords.length; i++) {
-        const offRow = Math.floor(coords[i] / BOARD_WIDTH);
-        const offCol = coords[i] - offRow * BOARD_WIDTH;
-        const rBelow = posRow + offRow + 1;
-        const c = posCol + offCol;
-
+        const idxBelow = (pos + coords[i]) + BOARD_WIDTH;
+        const rBelow = Math.floor(idxBelow / BOARD_WIDTH);
+        const cBelow = idxBelow % BOARD_WIDTH; // Use signed modulo
+        
         // Below the board -> cannot drop
         if (rBelow >= BOARD_HEIGHT) { canDrop = false; break; }
         // Lateral bounds must always hold
-        if (c < 0 || c >= BOARD_WIDTH) { canDrop = false; break; }
+        if (cBelow < 0 || cBelow >= BOARD_WIDTH) { canDrop = false; break; }
         // If inside the board, check collision
-        if (rBelow >= 0 && matrix[rBelow][c] !== null) { canDrop = false; break; }
+        if (rBelow >= 0 && matrix[rBelow][cBelow] !== null) { canDrop = false; break; }
       }
       
       if (!canDrop) break;
@@ -320,45 +355,40 @@ class TetrisAI {
     if (this.magicT && shapeName === 'T') {
       const coords = PIECES['T'].rotations[rotationIndex];
       let highestRow = BOARD_HEIGHT;
-
-      const posRow = Math.floor(pos / BOARD_WIDTH);
-      const posCol = pos - posRow * BOARD_WIDTH;
       
       for (let i = 0; i < coords.length; i++) {
-        const offRow = Math.floor(coords[i] / BOARD_WIDTH);
-        const offCol = coords[i] - offRow * BOARD_WIDTH;
-        const r = posRow + offRow;
-        const c = posCol + offCol;
+        const idx = pos + coords[i];
+        const r = Math.floor(idx / BOARD_WIDTH);
+        const c = idx % BOARD_WIDTH; // Use signed modulo
 
         if (r >= 0 && r < BOARD_HEIGHT && c >= 0 && c < BOARD_WIDTH) {
           next[r][c] = shapeName;
         }
 
-        // Dissolve downward with guards
-        let dropRow = r;
-        while (dropRow + 1 < BOARD_HEIGHT) {
-          if (c < 0 || c >= BOARD_WIDTH) break;
-          // SAFETY CHECK: Ensure the row exists before accessing it
-          if (!next[dropRow + 1] || next[dropRow + 1][c] !== null) break;
-          dropRow++;
-          if (dropRow >= 0 && dropRow < BOARD_HEIGHT && c >= 0 && c < BOARD_WIDTH) {
-            // SAFETY CHECK: Ensure the row exists before setting it
-            if (next[dropRow]) {
-              next[dropRow][c] = shapeName;
-            }
-          }
+        // Dissolve downward using absolute indices
+        let dropIdx = idx;
+        while (true) {
+          const nextIdx = dropIdx + BOARD_WIDTH;
+          const nr = Math.floor(nextIdx / BOARD_WIDTH);
+          const nc = nextIdx % BOARD_WIDTH; // Use signed modulo
+          
+          if (nr >= BOARD_HEIGHT) break;
+          if (nc < 0 || nc >= BOARD_WIDTH) break;
+          if (next[nr][nc] !== null) break;
+          
+          dropIdx = nextIdx;
+          next[nr][nc] = shapeName;
         }
 
+        const dropRow = Math.floor(dropIdx / BOARD_WIDTH);
         if (dropRow < highestRow) highestRow = dropRow;
       }
     } else {
-      const posRow = Math.floor(pos / BOARD_WIDTH);
-      const posCol = pos - posRow * BOARD_WIDTH;
       for (let i = 0; i < coords.length; i++) {
-        const offRow = Math.floor(coords[i] / BOARD_WIDTH);
-        const offCol = coords[i] - offRow * BOARD_WIDTH;
-        const r = posRow + offRow;
-        const c = posCol + offCol;
+        const idx = pos + coords[i];
+        const r = Math.floor(idx / BOARD_WIDTH);
+        const c = idx % BOARD_WIDTH; // Use signed modulo
+
         if (r >= 0 && r < BOARD_HEIGHT && c >= 0 && c < BOARD_WIDTH) {
           next[r][c] = shapeName;
         }
@@ -612,7 +642,7 @@ class TetrisAI {
       // Simulate piece placement
       for (let i = 0; i < coords.length; i++) {
         const offRow = Math.floor(coords[i] / BOARD_WIDTH);
-        const offCol = coords[i] - offRow * BOARD_WIDTH;
+        const offCol = coords[i] % BOARD_WIDTH; // Use signed modulo to avoid wrap-around
         const targetCol = placementCol + offCol;
         
         if (targetCol >= 0 && targetCol < BOARD_WIDTH) {
@@ -685,7 +715,9 @@ class TetrisAI {
       return null;
     }
     
+    console.log(`🎯 AI evaluating ${currentPiece} piece with ${PIECES[currentPiece].rotations.length} rotations`);
     const placements = this.allPlacementsFor(matrix, currentPiece);
+    console.log(`📊 Found ${placements.length} valid placements for ${currentPiece}`);
     
     if (placements.length === 0) return null;
 
@@ -861,7 +893,7 @@ export default function Tetris() {
         // Silently ignore audio errors
       });
     }
-  }, [ai, userHasInteracted, isMuted]);
+  }, [ai, userHasInteracted]);
 
 
 
