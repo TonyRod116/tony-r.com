@@ -1139,7 +1139,7 @@ export default function Tetris() {
                                 width: 20,
                                 height: 20,
                                 backgroundColor: filled ? (nextPiece === 'T' ? 'transparent' : PIECES[nextPiece].color) : 'transparent',
-                                backgroundImage: filled && nextPiece === 'T' ? 'url(/src/assets/ttris/PRGif.gif)' : 'none',
+                                backgroundImage: filled && nextPiece === 'T' ? 'url(/assets/ttris/PRGif.gif)' : 'none',
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                                 border: filled ? `1px solid ${PIECES[nextPiece].color}80` : '1px solid transparent',
@@ -1176,7 +1176,7 @@ export default function Tetris() {
                               className="rounded-sm"
                               style={{
                                 backgroundColor: shouldShow && cell ? (cell === 'T' ? 'transparent' : PIECES[cell].color) : 'rgba(17,24,39,0.9)',
-                                backgroundImage: shouldShow && cell === 'T' ? 'url(/src/assets/ttris/PRGif.gif)' : 'none',
+                                backgroundImage: shouldShow && cell === 'T' ? 'url(/assets/ttris/PRGif.gif)' : 'none',
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                                 opacity: isBlinkingRow ? (isBlinking ? 1 : 0.3) : 1,
@@ -1278,7 +1278,7 @@ export default function Tetris() {
                               width: 20,
                               height: 20,
                               backgroundColor: filled ? (nextPiece === 'T' ? 'transparent' : PIECES[nextPiece].color) : 'transparent',
-                              backgroundImage: filled && nextPiece === 'T' ? 'url(/src/assets/ttris/PRGif.gif)' : 'none',
+                              backgroundImage: filled && nextPiece === 'T' ? 'url(/assets/ttris/PRGif.gif)' : 'none',
                               backgroundSize: 'cover',
                               backgroundPosition: 'center',
                               border: filled ? `1px solid ${PIECES[nextPiece].color}80` : '1px solid transparent',

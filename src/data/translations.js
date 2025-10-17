@@ -249,7 +249,7 @@ export const translations = {
         minesweeper: {
           title: 'Minesweeper AI',
           subtitle: 'Watch the AI solve Minesweeper puzzles using logical deduction',
-          description: 'This interactive Minesweeper AI was built as part of Harvard\'s CS50 Introduction to Artificial Intelligence with Python, which I later ported fully to JavaScript.\nUnlike neural networks or probability-based solvers, this AI uses pure symbolic reasoning: it constructs knowledge sentences about the board and repeatedly applies rules like subset inference, constraint propagation, and safe-cell deduction.\nThe "AI Solve Step" button only activates when the agent can guarantee a mathematically safe move. If it\'s disabled, it means no logical inference is possible — just like when a human reaches a dead end.\n\n"This isn\'t just a game — it\'s proof that I understand how machines reason, not just how to call an API."',
+          description: 'This interactive Minesweeper AI was built as part of Harvard\'s CS50 Introduction to Artificial Intelligence with Python, which I later ported fully to JavaScript.\nUnlike neural networks or probability-based AI systems, this AI uses pure symbolic reasoning: it constructs knowledge sentences about the board and repeatedly applies rules like subset inference, constraint propagation, and safe-cell deduction.\nThe "AI Solve Step" button only activates when the agent can guarantee a mathematically safe move. If it\'s disabled, it means no logical inference is possible — just like when a human reaches a dead end.\n\n"This isn\'t just a game — it\'s proof that I understand how machines reason, not just how to call an API."',
           howToPlay: 'How to Play: Click cells to reveal them. Numbers show how many mines are adjacent. Right-click to flag suspected mines. Clear all non-mine cells to win! Use "AI Solve Step" to see logical deduction in action.',
           newGame: 'New Game',
           enableAI: 'Enable AI',
@@ -542,7 +542,7 @@ export const translations = {
         description: 'Descubre demos interactivos que muestran mis implementaciones originales de IA, desde algoritmos Minimax imbatibles hasta sistemas de deducción lógica.',
         features: {
           tictactoe: 'IA Tres en Raya Imbatible',
-          minesweeper: 'Solucionador Lógico de Buscaminas',
+          minesweeper: 'IA de Buscaminas',
           algorithms: 'Implementaciones de Algoritmos Originales'
         },
         cta: 'Explorar Lab de IA'
@@ -732,7 +732,7 @@ export const translations = {
         minesweeper: {
           title: 'IA Buscaminas',
           subtitle: 'Observa cómo la IA resuelve puzzles de Buscaminas usando deducción lógica',
-          description: 'Esta IA de Buscaminas forma parte del curso de Inteligencia Artificial de Harvard (CS50 AI en Python), y posteriormente la reescribí completamente en JavaScript.\nA diferencia de las redes neuronales o los enfoques probabilísticos, esta IA usa razonamiento simbólico puro: genera oraciones de conocimiento sobre el tablero y aplica reglas como inferencia por subconjuntos, propagación de restricciones y detección de casillas seguras.\nEl botón "Resolver con IA (Paso)" solo se activa cuando el agente puede garantizar un movimiento matemáticamente seguro. Si está apagado, significa que no hay deducciones lógicas posibles, igual que le ocurre a un humano.\n\n«Esto no es solo un juego — es la prueba de que entiendo cómo razonan las máquinas, no solo cómo usar una API.»',
+          description: 'Esta IA de Buscaminas forma parte del curso de Inteligencia Artificial de Harvard (CS50 AI en Python), y posteriormente la reescribí completamente en JavaScript.\nA diferencia de las redes neuronales o los sistemas de IA probabilísticos, esta IA usa razonamiento simbólico puro: genera oraciones de conocimiento sobre el tablero y aplica reglas como inferencia por subconjuntos, propagación de restricciones y detección de casillas seguras.\nEl botón "Resolver con IA (Paso)" solo se activa cuando el agente puede garantizar un movimiento matemáticamente seguro. Si está apagado, significa que no hay deducciones lógicas posibles, igual que le ocurre a un humano.\n\n«Esto no es solo un juego — es la prueba de que entiendo cómo razonan las máquinas, no solo cómo usar una API.»',
           howToPlay: 'Cómo Jugar: Haz clic en las casillas para revelarlas. Los números muestran cuántas minas hay adyacentes. Clic derecho para marcar minas sospechosas. ¡Limpia todas las casillas sin minas para ganar! Usa "IA Resolver Paso" para ver la deducción lógica en acción.',
           newGame: 'Nuevo Juego',
           enableAI: 'Activar IA',
@@ -1052,7 +1052,7 @@ export const translations = {
         description: 'Descobreix demos interactius que mostren les meves implementacions originals d\'IA, des d\'algoritmes Minimax imbatibles fins a sistemes de deducció lògica.',
         features: {
           tictactoe: 'IA Tres en Ratlla Imbatible',
-          minesweeper: 'Solucionador Lògic de Buscamines',
+          minesweeper: 'IA de Buscamines',
           algorithms: 'Implementacions d\'Algoritmes Originals'
         },
         cta: 'Explorar Lab d\'IA'
@@ -1242,7 +1242,7 @@ export const translations = {
         minesweeper: {
           title: 'IA Buscamines',
           subtitle: 'Observa com l\'IA resol trencaclosques de Buscamines usant deducció lògica',
-          description: 'Aquesta IA de Buscamines prové del curs d\'Intel·ligència Artificial de Harvard (CS50 AI en Python), i després la vaig portar completament a JavaScript.\nA diferència dels sistemes neuronals o probabilístics, aquesta IA es basa en raonament simbòlic pur: construeix frases de coneixement i aplica regles com inferència per subconjunts, propagació de restriccions i determinació de moviments segurs.\nEl botó "IA Resoldre Pas" només s\'activa quan l\'algorisme pot garantir un moviment 100% segur. Si està desactivat, significa que no hi ha cap deducció lògica possible, tal com passa a una persona.\n\n«Això no és només un joc — és la prova que entenc com raonen les màquines, no només com fer servir una API.»',
+          description: 'Aquesta IA de Buscamines prové del curs d\'Intel·ligència Artificial de Harvard (CS50 AI en Python), i després la vaig portar completament a JavaScript.\nA diferència dels sistemes neuronals o de IA probabilístics, aquesta IA es basa en raonament simbòlic pur: construeix frases de coneixement i aplica regles com inferència per subconjunts, propagació de restriccions i determinació de moviments segurs.\nEl botó "IA Resoldre Pas" només s\'activa quan l\'algorisme pot garantir un moviment 100% segur. Si està desactivat, significa que no hi ha cap deducció lògica possible, tal com passa a una persona.\n\n«Això no és només un joc — és la prova que entenc com raonen les màquines, no només com fer servir una API.»',
           howToPlay: 'Com Jugar: Fes clic a les caselles per revelar-les. Els números mostren quantes mines hi ha adjacents. Clic dret per marcar mines sospitoses. ¡Neteja totes les caselles sense minas per guanyar! Usa "IA Resoldre Pas" per veure la deducció lògica en acció.',
           newGame: 'Nou Joc',
           enableAI: 'Activar IA',
