@@ -10,11 +10,40 @@ const CELL_COUNT = BOARD_WIDTH * BOARD_HEIGHT;
 // Utility function for top center position
 const topCenterPos = () => Math.floor(BOARD_WIDTH / 2);
 
+// Neon helpers for modern AI look
+function hexToRgb(hex) {
+  let c = hex.replace('#', '');
+  if (c.length === 3) c = c.split('').map(x => x + x).join('');
+  const num = parseInt(c, 16);
+  return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
+}
+
+function neonCellStyle(color) {
+  const { r, g, b } = hexToRgb(color);
+  const rgba = (a) => `rgba(${r}, ${g}, ${b}, ${a})`;
+  return {
+    backgroundImage: `linear-gradient(135deg, ${rgba(0.95)} 0%, ${rgba(0.45)} 100%)`,
+    boxShadow: `0 0 8px ${rgba(0.7)}, 0 0 16px ${rgba(0.4)}, inset 0 0 6px ${rgba(0.5)}`,
+    border: `1px solid ${rgba(0.6)}`,
+    backgroundColor: 'transparent'
+  };
+}
+
+// Neon glow only (keeps existing backgroundImage like GIF)
+function neonGlowOnly(color) {
+  const { r, g, b } = hexToRgb(color);
+  const rgba = (a) => `rgba(${r}, ${g}, ${b}, ${a})`;
+  return {
+    boxShadow: `0 0 8px ${rgba(0.7)}, 0 0 16px ${rgba(0.4)}, inset 0 0 6px ${rgba(0.5)}`,
+    border: `1px solid ${rgba(0.6)}`
+  };
+}
+
 // Tetris pieces with original colors and classes
 const PIECES = {
   L: {
     className: 'blueShape',
-    color: '#3b82f6',
+    color: '#1F51FF',
     rotations: [
       [-(BOARD_WIDTH*2), -BOARD_WIDTH, 0, 1],
       [-(BOARD_WIDTH)+1, -(BOARD_WIDTH)-1, -(BOARD_WIDTH), -1],      
@@ -24,7 +53,7 @@ const PIECES = {
   },
   Li: {
     className: 'redShape',
-    color: '#ef4444',
+    color: '#FF007F',
     rotations: [
       [-(BOARD_WIDTH*2) +1, -(BOARD_WIDTH) +1, 0, 1], 
       [-(BOARD_WIDTH*2) -1, -(BOARD_WIDTH) -1, -(BOARD_WIDTH), -(BOARD_WIDTH) +1,],
@@ -34,7 +63,7 @@ const PIECES = {
   },
   S: {
     className: 'greenShape',
-    color: '#10b981',
+    color: '#39FF14',
     rotations: [
       [-(BOARD_WIDTH*2), -BOARD_WIDTH, -(BOARD_WIDTH)+1, 1],
       [-(BOARD_WIDTH*2) +1, -(BOARD_WIDTH*2), -(BOARD_WIDTH) -1, -(BOARD_WIDTH)],
@@ -44,7 +73,7 @@ const PIECES = {
   },
   Si: {
     className: 'yellowShape',
-    color: '#f59e0b',
+    color: '#F7FF00',
     rotations: [
       [-(BOARD_WIDTH*2) +1, -(BOARD_WIDTH) +1, -(BOARD_WIDTH), 0],
       [-(BOARD_WIDTH) -1, -(BOARD_WIDTH), 0, 1],
@@ -54,7 +83,7 @@ const PIECES = {
   },
   M: {
     className: 'purpleShape',
-    color: '#8b5cf6',
+    color: '#7C3AED',
     rotations: [
       [-(BOARD_WIDTH*2), -BOARD_WIDTH, -(BOARD_WIDTH) + 1, 0],
       [-(BOARD_WIDTH), -(BOARD_WIDTH)-1, -(BOARD_WIDTH) + 1, 0],
@@ -64,7 +93,7 @@ const PIECES = {
   },
   O: {
     className: 'orangeShape',
-    color: '#f97316',
+    color: '#FF6B00',
     rotations: [
       [-(BOARD_WIDTH), -BOARD_WIDTH+1, 0, 1],
       [-(BOARD_WIDTH), -BOARD_WIDTH+1, 0, 1],
@@ -74,7 +103,7 @@ const PIECES = {
   },
   I: {
     className: 'pinkShape',
-    color: '#ec4899',
+    color: '#FF00FF',
     rotations: [
       [-(BOARD_WIDTH*2), -BOARD_WIDTH, 0, BOARD_WIDTH],
       [-1, 0, 1, 2],
@@ -1138,12 +1167,17 @@ export default function Tetris() {
                               style={{
                                 width: 20,
                                 height: 20,
-                                backgroundColor: filled ? (nextPiece === 'T' ? 'transparent' : PIECES[nextPiece].color) : 'transparent',
-                                backgroundImage: filled && nextPiece === 'T' ? 'url(/assets/ttris/PRGif.gif)' : 'none',
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center',
-                                border: filled ? `1px solid ${PIECES[nextPiece].color}80` : '1px solid transparent',
-                                borderRadius: 2
+                                ...(filled
+                                  ? (nextPiece === 'T'
+                                      ? {
+                                          backgroundImage: 'url(/assets/ttris/PRGif.gif)',
+                                          backgroundSize: 'cover',
+                                          backgroundPosition: 'center',
+                                          borderRadius: 2,
+                                          ...neonGlowOnly(PIECES['T'].color)
+                                        }
+                                      : { ...neonCellStyle(PIECES[nextPiece].color), borderRadius: 2 })
+                                  : { backgroundColor: 'transparent', border: '1px solid transparent', borderRadius: 2 })
                               }}
                             />
                           );
@@ -1175,10 +1209,16 @@ export default function Tetris() {
                           <div key={`${r}-${c}`}
                               className="rounded-sm"
                               style={{
-                                backgroundColor: shouldShow && cell ? (cell === 'T' ? 'transparent' : PIECES[cell].color) : 'rgba(17,24,39,0.9)',
-                                backgroundImage: shouldShow && cell === 'T' ? 'url(/assets/ttris/PRGif.gif)' : 'none',
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center',
+                                ...(shouldShow && cell
+                                  ? (cell === 'T'
+                                      ? {
+                                          backgroundImage: 'url(/assets/ttris/PRGif.gif)',
+                                          backgroundSize: 'cover',
+                                          backgroundPosition: 'center',
+                                          ...neonGlowOnly(PIECES['T'].color)
+                                        }
+                                      : neonCellStyle(PIECES[cell].color))
+                                  : { backgroundColor: 'rgba(17,24,39,0.9)' }),
                                 opacity: isBlinkingRow ? (isBlinking ? 1 : 0.3) : 1,
                                 transition: 'opacity 0.1s ease-in-out'
                               }}/>
@@ -1277,12 +1317,17 @@ export default function Tetris() {
                             style={{
                               width: 20,
                               height: 20,
-                              backgroundColor: filled ? (nextPiece === 'T' ? 'transparent' : PIECES[nextPiece].color) : 'transparent',
-                              backgroundImage: filled && nextPiece === 'T' ? 'url(/assets/ttris/PRGif.gif)' : 'none',
-                              backgroundSize: 'cover',
-                              backgroundPosition: 'center',
-                              border: filled ? `1px solid ${PIECES[nextPiece].color}80` : '1px solid transparent',
-                              borderRadius: 2
+                              ...(filled
+                                ? (nextPiece === 'T'
+                                    ? {
+                                        backgroundImage: 'url(/assets/ttris/PRGif.gif)',
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                        borderRadius: 2,
+                                        ...neonGlowOnly(PIECES['T'].color)
+                                      }
+                                    : { ...neonCellStyle(PIECES[nextPiece].color), borderRadius: 2 })
+                                : { backgroundColor: 'transparent', border: '1px solid transparent', borderRadius: 2 })
                             }}
                           />
                         );
