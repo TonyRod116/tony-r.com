@@ -27,10 +27,10 @@ export default function Contact() {
   ]
 
   const availabilityOptions = [
-    { value: 'immediate', label: t('contact.availability.immediate') },
-    { value: '1month', label: t('contact.availability.1month') },
-    { value: '3months', label: t('contact.availability.3months') },
-    { value: 'flexible', label: t('contact.availability.flexible') },
+    { value: 'immediate', label: t('contact.availabilityOptions.immediate') },
+    { value: '1month', label: t('contact.availabilityOptions.1month') },
+    { value: '3months', label: t('contact.availabilityOptions.3months') },
+    { value: 'flexible', label: t('contact.availabilityOptions.flexible') },
   ]
 
   const handleSubmit = async (e) => {

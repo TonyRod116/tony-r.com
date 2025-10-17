@@ -640,9 +640,9 @@ export default function Home() {
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{project.title}</h3>
                     <div className="mb-4">
                       <p className={`text-gray-600 dark:text-gray-300 text-sm ${!expandedProjects[project.id] ? 'line-clamp-2' : ''}`}>
-                        {project.description}
+                        {t(`projects.projects.${project.id}.description`)}
                       </p>
-                      {project.description.length > 100 && (
+                      {t(`projects.projects.${project.id}.description`).length > 100 && (
                         <button
                           onClick={() => toggleExpanded(project.id)}
                           className="text-primary-600 hover:text-primary-700 text-sm font-medium mt-2 flex items-center gap-1"
