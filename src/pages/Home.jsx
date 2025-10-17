@@ -122,6 +122,37 @@ function ScrollAnimatedSection({ children, delay = 0, className = "" }) {
   )
 }
 
+// Component for AI Lab game cards with Z rotation
+function ScrollAnimatedAICard({ children, delay = 0, className = "", rotation = 0 }) {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  })
+  
+  // AI Card effects with Z rotation - enderezar antes
+  const scale = useTransform(scrollYProgress, [0, 0.2, 1], [0.8, 1, 1])
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
+  const rotateZ = useTransform(scrollYProgress, [0, 0.2, 1], [rotation, 0, 0])
+
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      style={{ 
+        scale, 
+        opacity,
+        rotateZ,
+        transformOrigin: "center center",
+        transformStyle: "preserve-3d"
+      }}
+      transition={{ delay }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
 // Component for center project (from background)
 function ScrollAnimatedProjectCenter({ children, delay = 0, className = "" }) {
   const ref = useRef(null)
@@ -747,9 +778,10 @@ export default function Home() {
 
           {/* AI Games Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {/* Tic Tac Toe - From Left */}
-            <ScrollAnimatedProjectLeft
+            {/* Tic Tac Toe - Clockwise rotation */}
+            <ScrollAnimatedAICard
               delay={0.1}
+              rotation={30}
             >
               <Link 
                 to="/ai/tictactoe"
@@ -771,11 +803,12 @@ export default function Home() {
                   </div>
                 </div>
               </Link>
-            </ScrollAnimatedProjectLeft>
+            </ScrollAnimatedAICard>
 
-            {/* Minesweeper - From Center */}
-            <ScrollAnimatedProjectCenter
+            {/* Minesweeper - Counter-clockwise rotation */}
+            <ScrollAnimatedAICard
               delay={0.2}
+              rotation={-30}
             >
               <Link 
                 to="/ai/minesweeper"
@@ -797,11 +830,12 @@ export default function Home() {
                   </div>
                 </div>
               </Link>
-            </ScrollAnimatedProjectCenter>
+            </ScrollAnimatedAICard>
 
-            {/* Nim - From Center */}
-            <ScrollAnimatedProjectCenter
+            {/* Nim - Clockwise rotation */}
+            <ScrollAnimatedAICard
               delay={0.3}
+              rotation={30}
             >
               <Link 
                 to="/ai/nim"
@@ -823,11 +857,12 @@ export default function Home() {
                   </div>
                 </div>
               </Link>
-            </ScrollAnimatedProjectCenter>
+            </ScrollAnimatedAICard>
 
-            {/* Tetris - From Right */}
-            <ScrollAnimatedProjectRight
+            {/* Tetris - Counter-clockwise rotation */}
+            <ScrollAnimatedAICard
               delay={0.4}
+              rotation={-30}
             >
               <Link 
                 to="/ai/tetris"
@@ -849,7 +884,7 @@ export default function Home() {
                   </div>
                 </div>
               </Link>
-            </ScrollAnimatedProjectRight>
+            </ScrollAnimatedAICard>
           </div>
 
           <ScrollAnimatedProjectCenter
