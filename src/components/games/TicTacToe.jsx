@@ -250,7 +250,7 @@ const TicTacToe = () => {
         return possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
     };
 
-    // Función para detectar si el jugador puede hacer tres en raya
+    // Function to detect if player can make three in a row
     const canPlayerWin = (board, player) => {
         // Check rows
         for (let i = 0; i < 3; i++) {
@@ -295,7 +295,7 @@ const TicTacToe = () => {
         return null;
     };
 
-    // Función para el modo fácil: 50% random, 50% inteligente
+    // Function for easy mode: 50% random, 50% intelligent
     const getEasyModeMove = (board) => {
         // 50% de probabilidad de hacer movimiento aleatorio
         if (Math.random() < 0.5) {

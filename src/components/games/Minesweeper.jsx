@@ -95,7 +95,7 @@ class MinesweeperAI {
     for (const k of neighbors) {
       if (this.mines.has(k)) remaining -= 1;
       else if (!this.safes.has(k)) unknown.push(k);
-      // si es safe conocido, no entra en la oración
+      // if it's a known safe cell, it doesn't enter the sentence
     }
 
     if (unknown.length > 0) {
@@ -123,7 +123,7 @@ class MinesweeperAI {
         }
       }
 
-      // 3b) eliminación y normalización de oraciones vacías/duplicadas
+      // 3b) elimination and normalization of empty/duplicate sentences
       const compact = [];
       for (const s of this.knowledge) {
         if (s.cells.size === 0) continue;
@@ -180,7 +180,7 @@ class MinesweeperAI {
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
         const k = key(i, j);
-        // Verificar que no esté en movesMade (ya jugada), ni en mines (mina conocida), ni ya revelada
+        // Check that it's not in movesMade (already played), nor in mines (known mine), nor already revealed
         if (!this.movesMade.has(k) && !this.mines.has(k) && !revealedCells.has(k)) {
           return [i, j];
         }
@@ -268,7 +268,7 @@ const Minesweeper = () => {
     const currentT = translations[currentLang];
 
     const recomputeCanSolve = () => {
-        // La IA siempre está activa, solo verifica el estado del juego y si hay movimientos seguros
+        // AI is always active, only checks game state and if there are safe moves
         setCanSolve(!gameOver && !gameWon && ai.hasSafeMove());
     };
 

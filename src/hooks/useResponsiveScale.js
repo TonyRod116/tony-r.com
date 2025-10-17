@@ -25,12 +25,12 @@ export const useResponsiveScale = () => {
         scale = 1
       }
       
-      // Ajuste adicional basado en la relación de aspecto
+      // Additional adjustment based on aspect ratio
       const aspectRatio = width / height
       if (aspectRatio > 2.5) {
-        scale *= 1.1 // Pantallas ultra anchas
+        scale *= 1.1 // Ultra-wide screens
       } else if (aspectRatio < 1.3) {
-        scale *= 0.95 // Pantallas más cuadradas
+        scale *= 0.95 // More square screens
       }
       
       setScaleFactor(scale)
