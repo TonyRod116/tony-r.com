@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { ExternalLink, Github, Play, Brain, Zap, Target, Network, Gamepad2 } from 'lucide-react'
+import tttIcon from '../assets/tictactoe.svg'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../hooks/useLanguage.jsx'
 
@@ -113,7 +114,11 @@ export default function AiLab() {
               >
                 {/* Icon */}
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg mb-6">
-                  <IconComponent className="h-6 w-6 text-white" />
+                  {project.id === 'ttt' ? (
+                    <img src={tttIcon} alt="Tic-Tac-Toe" className="h-6 w-6" />
+                  ) : (
+                    <IconComponent className="h-6 w-6 text-white" />
+                  )}
                 </div>
 
                 {/* Title */}

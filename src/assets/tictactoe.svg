@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Neon gradient background -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f1226"/>
+      <stop offset="50%" stop-color="#121a3a"/>
+      <stop offset="100%" stop-color="#04101e"/>
+    </linearGradient>
+
+    <!-- Holographic accent gradient -->
+    <linearGradient id="holo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7DF9FF"/>
+      <stop offset="25%" stop-color="#00E5FF"/>
+      <stop offset="50%" stop-color="#7A5CFF"/>
+      <stop offset="75%" stop-color="#FF45C7"/>
+      <stop offset="100%" stop-color="#00FFA8"/>
+    </linearGradient>
+
+    <!-- Glow filter for neon effect -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feColorMatrix type="matrix"
+        values="0 0 0 0 0
+                0 0 0 0 0.9
+                0 0 0 0 1
+                0 0 0 1 0" result="blueish"/>
+      <feMerge>
+        <feMergeNode in="blueish"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Inner shadow for depth -->
+    <filter id="innerShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feOffset dx="0" dy="2"/>
+      <feGaussianBlur stdDeviation="8" result="offset-blur"/>
+      <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"/>
+      <feFlood flood-color="#000000" flood-opacity="0.6" result="color"/>
+      <feComposite operator="in" in="color" in2="inverse" result="shadow"/>
+      <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+    </filter>
+
+    <!-- Soft outer glow for grid lines -->
+    <filter id="gridGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Scanline pattern -->
+    <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="1" y="0" fill="rgba(255,255,255,0.04)"/>
+    </pattern>
+
+    <!-- Drop shadow for XO marks -->
+    <filter id="xoShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#00E5FF" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Rounded background card -->
+  <rect x="32" y="32" width="960" height="960" rx="180" ry="180" fill="url(#bgGrad)" filter="url(#innerShadow)"/>
+  <!-- Holographic border -->
+  <rect x="32" y="32" width="960" height="960" rx="180" ry="180" fill="none" stroke="url(#holo)" stroke-width="6" opacity="0.8"/>
+
+  <!-- Subtle scanlines -->
+  <rect x="32" y="32" width="960" height="960" rx="180" ry="180" fill="url(#scan)" opacity="0.5"/>
+
+  <!-- Tic Tac Toe grid -->
+  <!-- Grid bounds -->
+  <g transform="translate(128,128)">
+    <!-- Grid container is 768x768 -->
+    <g id="grid">
+      <!-- Vertical lines -->
+      <line x1="384" y1="0" x2="384" y2="768" stroke="url(#holo)" stroke-width="10" opacity="0.9" filter="url(#gridGlow)"/>
+      <line x1="256" y1="0" x2="256" y2="768" stroke="#00E5FF" stroke-width="2" opacity="0.4" filter="url(#gridGlow)"/>
+      <line x1="512" y1="0" x2="512" y2="768" stroke="#7A5CFF" stroke-width="2" opacity="0.4" filter="url(#gridGlow)"/>
+
+      <!-- Horizontal lines -->
+      <line x1="0" y1="384" x2="768" y2="384" stroke="url(#holo)" stroke-width="10" opacity="0.9" filter="url(#gridGlow)"/>
+      <line x1="0" y1="256" x2="768" y2="256" stroke="#00E5FF" stroke-width="2" opacity="0.4" filter="url(#gridGlow)"/>
+      <line x1="0" y1="512" x2="768" y2="512" stroke="#7A5CFF" stroke-width="2" opacity="0.4" filter="url(#gridGlow)"/>
+    </g>
+
+    <!-- XO marks -->
+    <!-- X top-left -->
+    <g transform="translate(64,64)" filter="url(#xoShadow)">
+      <g filter="url(#glow)">
+        <path d="M0,0 L192,192 M192,0 L0,192" stroke="url(#holo)" stroke-width="18" stroke-linecap="round"/>
+      </g>
+    </g>
+
+    <!-- O center -->
+    <g transform="translate(288,288)" filter="url(#xoShadow)">
+      <g filter="url(#glow)">
+        <circle cx="96" cy="96" r="76" fill="none" stroke="url(#holo)" stroke-width="18"/>
+      </g>
+    </g>
+
+    <!-- X bottom-right -->
+    <g transform="translate(544,544)" filter="url(#xoShadow)">
+      <g filter="url(#glow)">
+        <path d="M0,0 L160,160 M160,0 L0,160" stroke="url(#holo)" stroke-width="16" stroke-linecap="round"/>
+      </g>
+    </g>
+
+    <!-- Futuristic subtle HUD arcs -->
+    <g opacity="0.35">
+      <path d="M40,720 A360,360 0 0,1 720,40" fill="none" stroke="#00FFA8" stroke-width="2"/>
+      <path d="M720,680 A320,320 0 0,0 80,80" fill="none" stroke="#7DF9FF" stroke-width="2"/>
+    </g>
+
+    <!-- Tiny coordinate ticks -->
+    <g opacity="0.25">
+      <rect x="-8" y="380" width="16" height="8" fill="#00E5FF"/>
+      <rect x="380" y="-8" width="8" height="16" fill="#00E5FF"/>
+      <rect x="760" y="380" width="16" height="8" fill="#7A5CFF"/>
+      <rect x="380" y="760" width="8" height="16" fill="#7A5CFF"/>
+    </g>
+  </g>
+
+  <!-- Tiny caption (optional, removable) -->
+  </svg>

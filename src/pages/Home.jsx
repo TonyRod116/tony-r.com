@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Github, Linkedin, Mail, Star, Zap, Users, Code, ChevronDown, ChevronUp } from 'lucide-react'
+import { ArrowRight, Github, Linkedin, Mail, Star, Zap, Users, Code, ChevronDown, ChevronUp, Brain } from 'lucide-react'
+import tttIcon from '../assets/tictactoe.svg'
 import { profile } from '../data/profile'
 import { projects } from '../data/projects'
 import { useLanguage } from '../hooks/useLanguage.jsx'
@@ -725,34 +726,138 @@ export default function Home() {
       {/* AI Lab Section */}
       <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+          <ScrollAnimatedProjectCenter
             className="text-center mb-12"
+            delay={0.1}
           >
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-6">
+              <Brain className="h-8 w-8 text-white" />
+            </div>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{t('home.aiLab.title')}</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-4">
               {t('home.aiLab.subtitle')}
             </p>
             <p className="text-base text-gray-500 dark:text-gray-400 max-w-3xl mx-auto">
               {t('home.aiLab.description')}
             </p>
-          </motion.div>
+          </ScrollAnimatedProjectCenter>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
+          {/* AI Games Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {/* Tic Tac Toe - From Left */}
+            <ScrollAnimatedProjectLeft
+              delay={0.1}
+            >
+              <Link 
+                to="/ai/tictactoe"
+                className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
+              >
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <img src={tttIcon} alt="Tic-Tac-Toe" className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                    Tic-Tac-Toe AI
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                    Unbeatable Minimax algorithm
+                  </p>
+                  <div className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium">
+                    <span>Play Now</span>
+                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </Link>
+            </ScrollAnimatedProjectLeft>
+
+            {/* Minesweeper - From Center */}
+            <ScrollAnimatedProjectCenter
+              delay={0.2}
+            >
+              <Link 
+                to="/ai/minesweeper"
+                className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
+              >
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Zap className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                    Minesweeper AI
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                    Logical deduction system
+                  </p>
+                  <div className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium">
+                    <span>Play Now</span>
+                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </Link>
+            </ScrollAnimatedProjectCenter>
+
+            {/* Nim - From Center */}
+            <ScrollAnimatedProjectCenter
+              delay={0.3}
+            >
+              <Link 
+                to="/ai/nim"
+                className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
+              >
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Brain className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                    Nim Q-Learning
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                    Reinforcement learning agent
+                  </p>
+                  <div className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium">
+                    <span>Play Now</span>
+                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </Link>
+            </ScrollAnimatedProjectCenter>
+
+            {/* Tetris - From Right */}
+            <ScrollAnimatedProjectRight
+              delay={0.4}
+            >
+              <Link 
+                to="/ai/tetris"
+                className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
+              >
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Code className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                    Tetris AI
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                    Heuristic bot with custom physics
+                  </p>
+                  <div className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium">
+                    <span>Play Now</span>
+                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </Link>
+            </ScrollAnimatedProjectRight>
+          </div>
+
+          <ScrollAnimatedProjectCenter
             className="text-center"
+            delay={0.5}
           >
             <Link to="/ai" className="btn-primary inline-flex items-center">
               {t('home.aiLab.cta')}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
-          </motion.div>
+          </ScrollAnimatedProjectCenter>
         </div>
       </section>
 
