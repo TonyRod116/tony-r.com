@@ -440,28 +440,28 @@ export default function Tetris() {
   const aiRef = useRef(new TetrisAI());
   const ai = aiRef.current;
 
-  // Helper function for unified collision detection
+  // Helper function for unified collision detection - FIXED with hardcoded 10
   const wouldCollide = useCallback((matrix, name, rot, pos, dx, dy) => {
     if (!name) return true;
     const offs = PIECES[name].rotations[rot];
 
     // Calcular posición base después del movimiento
-    const newPos = pos + dx + dy * BOARD_WIDTH;
-    const basePosR = Math.floor(newPos / BOARD_WIDTH);
-    const basePosC = newPos - basePosR * BOARD_WIDTH;
+    const newPos = pos + dx + dy * 10; // HARDCODED 10 instead of BOARD_WIDTH
+    const basePosR = Math.floor(newPos / 10); // HARDCODED 10
+    const basePosC = newPos - basePosR * 10; // HARDCODED 10
 
     for (const off of offs) {
       // Calcular la posición absoluta sumando el offset directamente
       const targetIdx = newPos + off;
-      const r = Math.floor(targetIdx / BOARD_WIDTH);
-      const c = targetIdx - r * BOARD_WIDTH;
+      const r = Math.floor(targetIdx / 10); // HARDCODED 10
+      const c = targetIdx - r * 10; // HARDCODED 10
 
       // Verificar límites verticales
-      if (r >= BOARD_HEIGHT) return true;
+      if (r >= 20) return true; // HARDCODED 20 instead of BOARD_HEIGHT
       if (r < 0) continue; // Por encima del tablero, ignorar
 
       // Verificar límites horizontales
-      if (c < 0 || c >= BOARD_WIDTH) return true;
+      if (c < 0 || c >= 10) return true; // HARDCODED 10 instead of BOARD_WIDTH
 
       // Verificar colisión con bloques existentes
       if (matrix[r][c] !== null) return true;
@@ -469,7 +469,39 @@ export default function Tetris() {
     return false;
   }, []);
 
-  // Rotation-specific placement check: allow r<0 but still enforce lateral bounds
+  // Simple distance check - prevent rotation if any cell appears more than 4 cells away
+  const canRotateWithDistanceCheck = useCallback((name, rot, pos) => {
+    if (!name) return false;
+    const offs = PIECES[name].rotations[rot];
+    
+    // Get current piece position
+    const baseRow = Math.floor(pos / 10);
+    const baseCol = pos - baseRow * 10;
+    
+    // Check each cell of the rotated piece
+    for (const off of offs) {
+      const idx = pos + off;
+      const r = Math.floor(idx / 10);
+      const c = idx - r * 10;
+      
+      // Calculate distance from base position
+      const distance = Math.abs(c - baseCol);
+      
+      // If any cell is more than 4 cells away, don't allow rotation
+      if (distance > 4) {
+        return false;
+      }
+      
+      // Also check if cell would be outside board bounds
+      if (c < 0 || c >= 10) {
+        return false;
+      }
+    }
+    
+    return true;
+  }, []);
+
+  // Rotation-specific placement check: allow r<0 but still enforce lateral bounds - FIXED with hardcoded 10
   const canRotateAt = useCallback((matrix, name, rot, pos) => {
     if (!name) return false;
     const offs = PIECES[name].rotations[rot];
@@ -477,13 +509,13 @@ export default function Tetris() {
     for (const off of offs) {
       // Compute absolute cell index, then row/col via floor and diff (robust for negatives)
       const idx = pos + off;
-      const r = Math.floor(idx / BOARD_WIDTH);
-      const c = idx - r * BOARD_WIDTH;
+      const r = Math.floor(idx / 10); // HARDCODED 10 instead of BOARD_WIDTH
+      const c = idx - r * 10; // HARDCODED 10 instead of BOARD_WIDTH
 
       // Horizontal bounds must always hold
-      if (c < 0 || c >= BOARD_WIDTH) return false;
+      if (c < 0 || c >= 10) return false; // HARDCODED 10 instead of BOARD_WIDTH
       // Below board invalid
-      if (r >= BOARD_HEIGHT) return false;
+      if (r >= 20) return false; // HARDCODED 20 instead of BOARD_HEIGHT
       // Collisions only once inside the board
       if (r >= 0 && matrix[r][c] !== null) return false;
     }
@@ -531,31 +563,31 @@ export default function Tetris() {
       if (magicTEnabled && currentPiece === 'T') {
         // MAGIC T DISSOLUTION: based on original stoppedShape logic
         const coords = PIECES['T'].rotations[currentRotation];
-        let highestRow = BOARD_HEIGHT;
+        let highestRow = 20; // HARDCODED 20 instead of BOARD_HEIGHT
         
         for (let i = 0; i < coords.length; i++) {
           const cellIdx = currentPosition + coords[i];
-          const row = Math.floor(cellIdx / BOARD_WIDTH);
-          const col = cellIdx - row * BOARD_WIDTH;
+          const row = Math.floor(cellIdx / 10); // HARDCODED 10 instead of BOARD_WIDTH
+          const col = cellIdx - row * 10; // HARDCODED 10 instead of BOARD_WIDTH
           
           // Bounds check before accessing board
-          if (row >= 0 && row < BOARD_HEIGHT && col >= 0 && col < BOARD_WIDTH) {
+          if (row >= 0 && row < 20 && col >= 0 && col < 10) { // HARDCODED 20 and 10
           // Mark the T cell where it lands
             newBoard[row][col] = currentPiece;
           
           // Fall vertically filling until hitting occupied or ground
           let dropPos = cellIdx;
-            while (dropPos + BOARD_WIDTH < CELL_COUNT) {
-              const nextRow = Math.floor((dropPos + BOARD_WIDTH) / BOARD_WIDTH);
-              const nextCol = (dropPos + BOARD_WIDTH) - nextRow * BOARD_WIDTH;
+            while (dropPos + 10 < 200) { // HARDCODED 10 and 200 (10*20)
+              const nextRow = Math.floor((dropPos + 10) / 10); // HARDCODED 10
+              const nextCol = (dropPos + 10) - nextRow * 10; // HARDCODED 10
               if (newBoard[nextRow][nextCol] !== null) break;
-            dropPos += BOARD_WIDTH;
-              const dropRow = Math.floor(dropPos / BOARD_WIDTH);
-              const dropCol = dropPos - dropRow * BOARD_WIDTH;
+            dropPos += 10; // HARDCODED 10 instead of BOARD_WIDTH
+              const dropRow = Math.floor(dropPos / 10); // HARDCODED 10
+              const dropCol = dropPos - dropRow * 10; // HARDCODED 10
               newBoard[dropRow][dropCol] = currentPiece;
           }
           
-          const finalRow = Math.floor(dropPos / BOARD_WIDTH);
+          const finalRow = Math.floor(dropPos / 10); // HARDCODED 10
           if (finalRow < highestRow) highestRow = finalRow;
           }
         }
@@ -584,17 +616,17 @@ export default function Tetris() {
         
         setScore(prev => prev + sumPoints);
       } else {
-        // Normal behavior
+        // Normal behavior - FIXED with hardcoded values
         const coords = PIECES[currentPiece].rotations[currentRotation];
-        let highestRow = BOARD_HEIGHT;
+        let highestRow = 20; // HARDCODED 20 instead of BOARD_HEIGHT
         
         for (let i = 0; i < coords.length; i++) {
           const cellIdx = currentPosition + coords[i];
-          const row = Math.floor(cellIdx / BOARD_WIDTH);
-          const col = cellIdx - row * BOARD_WIDTH;
+          const row = Math.floor(cellIdx / 10); // HARDCODED 10 instead of BOARD_WIDTH
+          const col = cellIdx - row * 10; // HARDCODED 10 instead of BOARD_WIDTH
           
           // Bounds check before accessing board
-          if (row >= 0 && row < BOARD_HEIGHT && col >= 0 && col < BOARD_WIDTH) {
+          if (row >= 0 && row < 20 && col >= 0 && col < 10) { // HARDCODED 20 and 10
             newBoard[row][col] = currentPiece;
           if (row < highestRow) highestRow = row;
           }
@@ -690,7 +722,7 @@ export default function Tetris() {
       setNextPiece(PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)]);
     } else {
       // Move piece down
-      setCurrentPosition(prev => prev + BOARD_WIDTH);
+      setCurrentPosition(prev => prev + 10); // HARDCODED 10 instead of BOARD_WIDTH
     }
   }, [currentPiece, currentRotation, currentPosition, gameOver, gameStarted, board, magicTEnabled, aiEnabled, lines, nextPiece, wouldCollide]);
 
@@ -703,16 +735,16 @@ export default function Tetris() {
 
     switch (direction) {
       case 'left': {
-        // Check if any cell of the piece would go out of bounds or wrap around
+        // Check if any cell of the piece would go out of bounds or wrap around - FIXED with hardcoded 10
         const coords = PIECES[currentPiece].rotations[currentRotation];
-        const basePosR = Math.floor(currentPosition / BOARD_WIDTH);
-        const basePosC = currentPosition - basePosR * BOARD_WIDTH;
+        const basePosR = Math.floor(currentPosition / 10); // HARDCODED 10
+        const basePosC = currentPosition - basePosR * 10; // HARDCODED 10
         let canMoveLeft = true;
         
         for (let i = 0; i < coords.length; i++) {
           const cellIdx = currentPosition + coords[i];
-          const cellR = Math.floor(cellIdx / BOARD_WIDTH);
-          const cellC = cellIdx - cellR * BOARD_WIDTH;
+          const cellR = Math.floor(cellIdx / 10); // HARDCODED 10
+          const cellC = cellIdx - cellR * 10; // HARDCODED 10
           
           // Check if cell is at left edge
           if (cellC === 0) {
@@ -734,19 +766,19 @@ export default function Tetris() {
         break;
       }
       case 'right': {
-        // Check if any cell of the piece would go out of bounds or wrap around
+        // Check if any cell of the piece would go out of bounds or wrap around - FIXED with hardcoded 10
         const coords = PIECES[currentPiece].rotations[currentRotation];
-        const basePosR = Math.floor(currentPosition / BOARD_WIDTH);
-        const basePosC = currentPosition - basePosR * BOARD_WIDTH;
+        const basePosR = Math.floor(currentPosition / 10); // HARDCODED 10
+        const basePosC = currentPosition - basePosR * 10; // HARDCODED 10
         let canMoveRight = true;
         
         for (let i = 0; i < coords.length; i++) {
           const cellIdx = currentPosition + coords[i];
-          const cellR = Math.floor(cellIdx / BOARD_WIDTH);
-          const cellC = cellIdx - cellR * BOARD_WIDTH;
+          const cellR = Math.floor(cellIdx / 10); // HARDCODED 10
+          const cellC = cellIdx - cellR * 10; // HARDCODED 10
           
           // Check if cell is at right edge
-          if (cellC === BOARD_WIDTH - 1) {
+          if (cellC === 9) { // HARDCODED 9 instead of BOARD_WIDTH - 1
             canMoveRight = false;
             break;
           }
@@ -765,10 +797,10 @@ export default function Tetris() {
         break;
       }
       case 'drop': {
-        // Hard drop: baja hasta que no pueda bajar más y fija inmediatamente
+        // Hard drop: baja hasta que no pueda bajar más y fija inmediatamente - FIXED with hardcoded 10
         let finalPos = currentPosition;
         while (!wouldCollide(board, currentPiece, currentRotation, finalPos, 0, 1)) {
-          finalPos += BOARD_WIDTH;
+          finalPos += 10; // HARDCODED 10 instead of BOARD_WIDTH
         }
         // Actualizar posición temporalmente para el drop
         setCurrentPosition(finalPos);
@@ -784,25 +816,21 @@ export default function Tetris() {
       case 'rotate': {
         const nextRotation = (currentRotation + 1) % PIECES[currentPiece].rotations.length;
 
-        // Try rotate in place with strict check
-        if (canRotateAt(board, currentPiece, nextRotation, currentPosition)) {
-          newRotation = nextRotation;
+        // FIRST: Check distance limit (4 cells max)
+        if (!canRotateWithDistanceCheck(currentPiece, nextRotation, currentPosition)) {
+          console.log(`Rotation blocked: piece would extend more than 4 cells away`);
           break;
         }
 
-        // Try kicks (right/left up to 2 cells)
-        const baseRow = Math.floor(currentPosition / BOARD_WIDTH);
-        const baseCol = currentPosition - baseRow * BOARD_WIDTH;
-        for (const dx of [1, -1, 2, -2]) {
-          const newCol = baseCol + dx;
-          if (newCol < 0 || newCol >= BOARD_WIDTH) continue;
-          const testPos = baseRow * BOARD_WIDTH + newCol;
-          if (canRotateAt(board, currentPiece, nextRotation, testPos)) {
-            newRotation = nextRotation;
-            newPosition = testPos;
-            break;
-          }
+        // SECOND: Check for collisions
+        if (!canRotateAt(board, currentPiece, nextRotation, currentPosition)) {
+          console.log(`Rotation blocked: collision detected`);
+          break;
         }
+
+        // If we get here, rotation is allowed
+        console.log(`Rotation allowed`);
+        newRotation = nextRotation;
         break;
       }
     }
@@ -811,7 +839,7 @@ export default function Tetris() {
       setCurrentPosition(newPosition);
       setCurrentRotation(newRotation);
     }
-  }, [currentPiece, currentPosition, currentRotation, gameOver, gameStarted, board, dropPiece, wouldCollide, canRotateAt]);
+  }, [currentPiece, currentPosition, currentRotation, gameOver, gameStarted, board, dropPiece, wouldCollide, canRotateAt, canRotateWithDistanceCheck]);
 
   // AI move
   const makeAIMove = useCallback(() => {
@@ -1032,9 +1060,9 @@ export default function Tetris() {
       const coords = PIECES[currentPiece].rotations[currentRotation];
       for (let i = 0; i < coords.length; i++) {
         const cellIdx = currentPosition + coords[i];
-        const row = Math.floor(cellIdx / BOARD_WIDTH);
-        const col = cellIdx - row * BOARD_WIDTH;
-        if (row >= 0 && row < BOARD_HEIGHT && col >= 0 && col < BOARD_WIDTH) {
+        const row = Math.floor(cellIdx / 10); // HARDCODED 10 instead of BOARD_WIDTH
+        const col = cellIdx - row * 10; // HARDCODED 10 instead of BOARD_WIDTH
+        if (row >= 0 && row < 20 && col >= 0 && col < 10) { // HARDCODED 20 and 10
           displayBoard[row][col] = currentPiece; // Store piece name instead of just true
         }
       }
@@ -1152,7 +1180,7 @@ export default function Tetris() {
                      }`}
                    >
                      {isMuted ? '🔇 Mute' : '🔊 Music'}
-                   </button>
+                    </button>
                 </div>
 
                 {/* Next Piece (mobile only, shown above the board) */}
