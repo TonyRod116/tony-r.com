@@ -9,7 +9,13 @@ const CELL_COUNT = BOARD_WIDTH * BOARD_HEIGHT;
 
 // Helper functions to avoid wrap-around issues
 const rOf = (idx) => Math.floor(idx / BOARD_WIDTH);
-const cOf = (idx) => idx % BOARD_WIDTH; // signed modulo: for idx<0 returns negative (good!)
+const cOf = (idx) => ecOf(idx); // signed modulo: for idx<0 returns negative (good!)
+
+// Euclidean column (avoids wrap and negative remainders)
+const ecOf = (idx) => {
+  const r = Math.floor(idx / BOARD_WIDTH);
+  return idx - r * BOARD_WIDTH;
+};
 
 // Utility function for top center position
 const topCenterPos = () => Math.floor(BOARD_WIDTH / 2);
@@ -188,7 +194,7 @@ class TetrisAI {
     for (let i = 0; i < coords.length; i++) {
       const idx = basePos + coords[i];
       let r = Math.floor(idx / BOARD_WIDTH);
-      let c = idx % BOARD_WIDTH;
+      let c = ecOf(idx);
 
       if (r >= 0 && r < BOARD_HEIGHT && c >= 0 && c < BOARD_WIDTH) {
         next[r][c] = name;
@@ -197,7 +203,7 @@ class TetrisAI {
         while (true) {
           const nextIdx = dropIdx + BOARD_WIDTH;
           const nr = Math.floor(nextIdx / BOARD_WIDTH);
-          const nc = nextIdx % BOARD_WIDTH;
+          const nc = ecOf(nextIdx);
           if (nr >= BOARD_HEIGHT) break;
           if (nc < 0 || nc >= BOARD_WIDTH) break;
           if (next[nr][nc] !== null) break;
@@ -234,9 +240,18 @@ class TetrisAI {
       
       let validPlacementsForRotation = 0;
       for (let col = 0; col < BOARD_WIDTH; col++) {
-        // Hard filter: don't test walls with Magic T (columns 0-1 and 8-9)
-        if (shapeName === 'T' && (col <= 1 || col >= 8)) {
-          continue;
+        // Cell-level validation for Magic T: all cells must be in columns [2..7]
+        if (shapeName === 'T') {
+          const offs = PIECES.T.rotations[rotationIndex];
+          let ok = true;
+          for (const off of offs) {
+            const offRow = Math.floor(off / BOARD_WIDTH);
+            const offCol = off - offRow * BOARD_WIDTH; // euclidean
+            const c = col + offCol;
+            // Hard ban only on walls and near-walls
+            if (c < 2 || c > 7) { ok = false; break; }
+          }
+          if (!ok) continue; // discard this placement
         }
         
         const result = this.simulateDrop(matrix, shapeName, rotationIndex, col);
@@ -301,7 +316,7 @@ class TetrisAI {
     // PREVALIDATE lateral bounds - strict check (no fragmented placements)
     for (let i = 0; i < coords.length; i++) {
       const offRow = Math.floor(coords[i] / BOARD_WIDTH);
-      const offCol = coords[i] % BOARD_WIDTH; // Use signed modulo to avoid wrap-around
+      const offCol = ecOf(coords[i]); // Use signed modulo to avoid wrap-around
       const c = startCol + offCol;
       if (c < 0 || c >= BOARD_WIDTH) {
         return null; // Any cell out of bounds → invalid placement
@@ -323,7 +338,7 @@ class TetrisAI {
       for (let i = 0; i < coords.length; i++) {
         const idxBelow = (pos + coords[i]) + BOARD_WIDTH;
         const rBelow = Math.floor(idxBelow / BOARD_WIDTH);
-        const cBelow = idxBelow % BOARD_WIDTH; // Use signed modulo
+        const cBelow = ecOf(idxBelow); // Use signed modulo
         
         // Below the board -> cannot drop
         if (rBelow >= BOARD_HEIGHT) { canDrop = false; break; }
@@ -350,7 +365,7 @@ class TetrisAI {
       for (let i = 0; i < coords.length; i++) {
       const idx = pos + coords[i];
       const r = Math.floor(idx / BOARD_WIDTH);
-      const c = idx % BOARD_WIDTH; // signed modulo
+      const c = ecOf(idx); // signed modulo
       if (c < 0 || c >= BOARD_WIDTH) return null;     // lateral OOB → invalid
       if (r >= BOARD_HEIGHT) return null;             // below board → invalid
       if (r < 0) return null;                         // above board → invalid
@@ -374,7 +389,7 @@ class TetrisAI {
         while (true) {
           const nextIdx = dropIdx + BOARD_WIDTH;
           const nr = Math.floor(nextIdx / BOARD_WIDTH);
-          const nc = nextIdx % BOARD_WIDTH;
+          const nc = ecOf(nextIdx);
           if (nr >= BOARD_HEIGHT) break;
           if (nc < 0 || nc >= BOARD_WIDTH) break;
           if (next[nr][nc] !== null) break;
@@ -522,7 +537,7 @@ class TetrisAI {
       bumpiness: -5,
       wells: -10,
       height: -5,
-      sideWalls: -220,   // harder
+      sideWalls: -120,   // Reduced penalty
       centerBalance: 25  // center really matters
     };
 
@@ -562,20 +577,19 @@ class TetrisAI {
 
     // Generic penalty for placements near walls
     if (placementCol != null) {
-      if (placementCol <= 1 || placementCol >= BOARD_WIDTH-2) score -= 300; // edge
-      if (placementCol === 0 || placementCol === BOARD_WIDTH-1) score -= 500; // pure wall
+      if (placementCol <= 1 || placementCol >= BOARD_WIDTH-2) score -= 150; // Reduced edge penalty
+      if (placementCol === 0 || placementCol === BOARD_WIDTH-1) score -= 250; // Reduced pure wall penalty
     }
 
-    // ABSOLUTE BAN for Magic T placement in wall columns
+    // Moderate penalty for Magic T placement in wall columns
     if (this.magicT && shapeName === 'T' && placementCol !== null) {
-      // COMPLETE BAN: Magic T cannot be placed in wall columns (0, 9)
+      // Moderate penalty: Magic T in wall columns (0, 9)
       if (placementCol === 0 || placementCol === 9) {
-        score -= 10000; // ABSOLUTE BAN - should never be chosen
-        return score; // Return immediately to avoid any other calculations
+        score -= 500; // Reduced penalty
       }
-      // Heavy penalty for placing Magic T in near-wall columns (1, 8)
+      // Light penalty for placing Magic T in near-wall columns (1, 8)
       else if (placementCol === 1 || placementCol === 8) {
-        score -= 2000; // harder
+        score -= 300; // Reduced penalty
       }
       // Moderate penalty for placing Magic T in outer columns (2, 7)
       else if (placementCol === 2 || placementCol === 7) {
@@ -666,7 +680,7 @@ class TetrisAI {
       // Simulate piece placement
       for (let i = 0; i < coords.length; i++) {
         const offRow = Math.floor(coords[i] / BOARD_WIDTH);
-        const offCol = coords[i] % BOARD_WIDTH; // Use signed modulo to avoid wrap-around
+        const offCol = ecOf(coords[i]); // Use signed modulo to avoid wrap-around
         const targetCol = placementCol + offCol;
         
         if (targetCol >= 0 && targetCol < BOARD_WIDTH) {
@@ -1224,8 +1238,27 @@ export default function Tetris() {
     if (aiBusy) {
       return;
     }
-    if (!aiSuggestion || gameOver || !gameStarted || !currentPiece) {
+    if (gameOver || !gameStarted || !currentPiece) {
       return;
+    }
+    
+    // Don't allow AI moves for Magic T pieces
+    if (currentPiece === 'T') {
+      return;
+    }
+    
+    // If no suggestion available, try to generate one
+    if (!aiSuggestion) {
+      if (aiEnabled && currentPiece && !gameOver && gameStarted) {
+        const suggestion = ai.suggestBestMove(board, currentPiece, nextPiece);
+        if (suggestion) {
+          setAiSuggestion(suggestion);
+        } else {
+          return;
+        }
+      } else {
+        return;
+      }
     }
     
     setAiBusy(true);
@@ -1266,16 +1299,17 @@ export default function Tetris() {
         for (let i = 0; i < coords.length; i++) {
           const idx = pos + coords[i];
           const r = Math.floor(idx / BOARD_WIDTH);
-          const c = idx % BOARD_WIDTH;
+          const c = ecOf(idx);
           if (r < 0 || r >= BOARD_HEIGHT) { 
             setAiBusy(false);
             return; 
           }
           cellCols.push(c);
         }
-        const touchesEdge = cellCols.some(c => c === 0 || c === BOARD_WIDTH - 1);
-        const touchesNear = cellCols.some(c => c === 1 || c === BOARD_WIDTH - 2);
-        if (touchesEdge || touchesNear) {
+        // Rule: T only if ALL its cells are in [2..7]
+        const minC = Math.min(...cellCols);
+        const maxC = Math.max(...cellCols);
+        if (minC < 2 || maxC > 7) {
           setAiBusy(false);
           return;
         }
@@ -1299,7 +1333,7 @@ export default function Tetris() {
         for (let i = 0; i < coords.length; i++) {
           const idx = pos + coords[i];
           const row = Math.floor(idx / BOARD_WIDTH);
-          const col = idx % BOARD_WIDTH;
+          const col = ecOf(idx);
           if (row >= 0 && row < BOARD_HEIGHT && col >= 0 && col < BOARD_WIDTH) {
             tempBoard[row][col] = currentPiece;
           }
@@ -1384,7 +1418,7 @@ export default function Tetris() {
     setTimeout(() => {
       setAiBusy(false);
     }, 5000);
-  }, [aiBusy, aiSuggestion, gameOver, gameStarted, currentPiece, nextPiece, board, wouldCollide]);
+  }, [aiBusy, aiSuggestion, gameOver, gameStarted, currentPiece, nextPiece, board, wouldCollide, aiEnabled, ai]);
 
   // Toggle magic T
   const toggleMagicT = useCallback(() => {
@@ -1536,7 +1570,7 @@ export default function Tetris() {
           for (let i = 0; i < coords.length; i++) {
             const idx = pos + coords[i];
             const row = Math.floor(idx / BOARD_WIDTH);
-            const col = idx % BOARD_WIDTH;
+            const col = ecOf(idx);
             
             // Check bounds strictly
             if (row < 0 || row >= BOARD_HEIGHT || col < 0 || col >= BOARD_WIDTH) {
@@ -1810,11 +1844,17 @@ export default function Tetris() {
                   >
                     ↓
                   </button>
-                {aiEnabled && aiSuggestion && (
+                {aiEnabled && (
                     <button
-                      onClick={() => { handleFirstInteraction(); makeAIMove(); }}
-                      className="px-4 py-3 rounded-lg font-bold transition-transform active:scale-95"
+                      onClick={() => { 
+                        handleFirstInteraction(); 
+                        makeAIMove(); 
+                      }}
+                      className={`px-4 py-3 rounded-lg font-bold transition-transform active:scale-95 ${
+                        aiBusy || currentPiece === 'T' ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
                       style={gradientButtonStyle('rgba(0,168,255,0.98)', 'rgba(7, 79, 187, 0.98)')}
+                      disabled={aiBusy || currentPiece === 'T'}
                     >
                       🤖 AI
                     </button>
