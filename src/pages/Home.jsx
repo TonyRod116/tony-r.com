@@ -28,8 +28,9 @@ function AnimatedNumber({ value, suffix = '', duration = 2000, delay = 0 }) {
           const elapsed = Date.now() - startTime
           const progress = Math.min(elapsed / duration, 1)
           
-          // Linear animation for smoother entry
-          const currentValue = Math.floor(startValue + (endValue - startValue) * progress)
+          // Smooth easing function (ease-out)
+          const easeOut = 1 - Math.pow(1 - progress, 3)
+          const currentValue = Math.floor(startValue + (endValue - startValue) * easeOut)
           
           setCount(currentValue)
           
@@ -533,9 +534,6 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <Link to="/about" className="btn-secondary inline-flex">
-                {t('home.about.moreAboutMe')}
-              </Link>
             </ScrollAnimatedSection>
 
             <motion.div
@@ -550,7 +548,7 @@ export default function Home() {
                 delay={0.1}
               >
                 <div className="text-3xl font-bold text-white">
-                  <AnimatedNumber value="35" suffix="+" duration={1500} delay={200} />
+                  <AnimatedNumber value="35" suffix="+" duration={2000} delay={200} />
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.repositories')}</div>
               </ScrollAnimatedCard>
@@ -568,7 +566,7 @@ export default function Home() {
                 delay={0.3}
               >
                 <div className="text-3xl font-bold text-white">
-                  <AnimatedNumber value="15" suffix="+" duration={1500} delay={400} />
+                  <AnimatedNumber value="15" suffix="+" duration={2000} delay={400} />
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.yearsLeading')}</div>
               </ScrollAnimatedCard>
@@ -581,6 +579,13 @@ export default function Home() {
                 <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.drivenBy')}</div>
               </ScrollAnimatedCard>
             </motion.div>
+          </div>
+          
+          {/* Centered More About Me Button */}
+          <div className="flex justify-center mt-12">
+            <Link to="/about" className="btn-secondary inline-flex">
+              {t('home.about.moreAboutMe')}
+            </Link>
           </div>
         </div>
       </section>

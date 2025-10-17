@@ -516,7 +516,7 @@ export const translations = {
     // Home Page
     home: {
       hero: {
-        titlePart1: 'Software Engineer',
+        titlePart1: 'Ingeniero de Software',
         titlePart2: 'con visión de producto',
         subtitle: 'De emprendedor de construcción a crear soluciones digitales innovadoras.',
         cta: {
@@ -1045,7 +1045,7 @@ export const translations = {
     // Home Page
     home: {
       hero: {
-        titlePart1: 'Software Engineer',
+        titlePart1: 'Enginyer de Software',
         titlePart2: 'amb visió de producte',
         subtitle: 'D\'emprenedor de construcció a crear solucions digitals innovadores.',
         cta: {
