@@ -273,12 +273,22 @@ const Nim = () => {
 
     const getPileColor = (index) => {
         const colors = [
-            'bg-red-500',
-            'bg-blue-500', 
-            'bg-green-500',
-            'bg-yellow-500'
+            'bg-gradient-to-br from-pink-400 to-pink-600 shadow-lg shadow-pink-500/50',
+            'bg-gradient-to-br from-cyan-400 to-cyan-600 shadow-lg shadow-cyan-500/50', 
+            'bg-gradient-to-br from-lime-400 to-lime-600 shadow-lg shadow-lime-500/50',
+            'bg-gradient-to-br from-amber-400 to-amber-600 shadow-lg shadow-amber-500/50'
         ];
         return colors[index % colors.length];
+    };
+
+    const getButtonColor = (pileIndex) => {
+        const colors = [
+            'bg-gradient-to-br from-pink-400 to-pink-600 hover:from-pink-500 hover:to-pink-700 shadow-lg shadow-pink-500/50',
+            'bg-gradient-to-br from-cyan-400 to-cyan-600 hover:from-cyan-500 hover:to-cyan-700 shadow-lg shadow-cyan-500/50', 
+            'bg-gradient-to-br from-lime-400 to-lime-600 hover:from-lime-500 hover:to-lime-700 shadow-lg shadow-lime-500/50',
+            'bg-gradient-to-br from-amber-400 to-amber-600 hover:from-amber-500 hover:to-amber-700 shadow-lg shadow-amber-500/50'
+        ];
+        return colors[pileIndex % colors.length];
     };
 
     return (
@@ -411,9 +421,9 @@ const Nim = () => {
                                                             key={num}
                                                             onClick={() => makeMove(pileIndex, num)}
                                                             disabled={game.player !== 0}
-                                                            className={`px-3 py-1 text-sm rounded transition-colors ${
+                                                            className={`px-3 py-1 text-sm rounded transition-colors text-white font-bold ${
                                                                 game.player === 0 
-                                                                    ? 'bg-blue-500 hover:bg-blue-600 text-white' 
+                                                                    ? getButtonColor(pileIndex)
                                                                     : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
                                                             }`}
                                                         >
