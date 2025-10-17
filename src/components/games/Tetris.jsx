@@ -537,7 +537,7 @@ class TetrisAI {
       bumpiness: -5,
       wells: -10,
       height: -5,
-      sideWalls: -120,   // Reduced penalty
+      sideWalls: -80,   // Further reduced penalty
       centerBalance: 25  // center really matters
     };
 
@@ -558,7 +558,7 @@ class TetrisAI {
       const extremeCols = [0,1,8,9].map(c => heights[c]);
       const centerCols  = [3,4,5,6].map(c => heights[c]);
       const diff = (extremeCols.reduce((a,b)=>a+b,0)/4) - (centerCols.reduce((a,b)=>a+b,0)/4);
-      if (diff > 0) score -= diff * 50; // proportional penalty
+      if (diff > 0) score -= diff * 25; // Reduced proportional penalty
     }
 
     // Penalty if center (3..6) ends up significantly lower than sides (pit)
@@ -572,7 +572,7 @@ class TetrisAI {
       const avgCenter = center.reduce((a,b)=>a+b,0)/center.length;
       const avgSides  = sides.reduce((a,b)=>a+b,0)/sides.length;
       const gap = Math.max(0, avgSides - avgCenter); // sides > center
-      score -= gap * 80; // strong penalty
+      score -= gap * 40; // Reduced penalty for center being lower
     }
 
     // Generic penalty for placements near walls
@@ -595,9 +595,9 @@ class TetrisAI {
       else if (placementCol === 2 || placementCol === 7) {
         score -= 200; // Moderate penalty for outer Magic T placement
       }
-      // Large bonus for placing Magic T in center columns (3, 4, 5, 6)
+      // Moderate bonus for placing Magic T in center columns (3, 4, 5, 6)
       else if (placementCol >= 3 && placementCol <= 6) {
-        score += 300; // Large bonus for center Magic T placement
+        score += 100; // Reduced bonus for center Magic T placement
       }
       
       // Additional penalty if Magic T would create side walls after dissolution
@@ -1317,13 +1317,20 @@ export default function Tetris() {
       
       const finalBoard = aiSuggestion.matrix;
       
-      setStats(prev => {
-        const newStats = { ...prev, aiMoves: prev.aiMoves + 1 };
-        localStorage.setItem('tetris_ai_moves', newStats.aiMoves.toString());
-        return newStats;
-      });
+      // Apply rotation visually before placing the piece
+    setCurrentRotation(aiSuggestion.rotationIndex);
+    
+      // Small delay to show rotation before applying final board
+    setTimeout(() => {
+        setBoard(finalBoard);
+        
+        setStats(prev => {
+          const newStats = { ...prev, aiMoves: prev.aiMoves + 1 };
+          localStorage.setItem('tetris_ai_moves', newStats.aiMoves.toString());
+          return newStats;
+        });
 
-      if (aiSuggestion.linesCleared > 0) {
+        if (aiSuggestion.linesCleared > 0) {
         const tempBoard = board.map(row => [...row]);
         const pieceRotations = PIECES[currentPiece]?.rotations;
         if (!pieceRotations) { setAiBusy(false); return; }
@@ -1410,6 +1417,8 @@ export default function Tetris() {
         setNextPiece(PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)]);
         setAiBusy(false);
       }
+      
+      }, 100); // Close setTimeout with 100ms delay
     } catch (e) {
       setAiBusy(false);
     }
@@ -1845,7 +1854,7 @@ export default function Tetris() {
                     ↓
                   </button>
                 {aiEnabled && (
-                    <button
+                  <button
                       onClick={() => { 
                         handleFirstInteraction(); 
                         makeAIMove(); 
@@ -1857,7 +1866,7 @@ export default function Tetris() {
                       disabled={aiBusy || currentPiece === 'T'}
                     >
                       🤖 AI
-                    </button>
+                  </button>
                 )}
                 </div>
 
