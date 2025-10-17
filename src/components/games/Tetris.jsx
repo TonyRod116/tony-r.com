@@ -180,10 +180,32 @@ class TetrisAI {
 
   // Get all possible placements for a piece
   allPlacementsFor(matrix, shapeName) {
+    // SAFETY CHECK: Validate inputs
+    if (!matrix || !Array.isArray(matrix) || matrix.length !== BOARD_HEIGHT) {
+      console.error('Invalid matrix in allPlacementsFor:', matrix);
+      return [];
+    }
+    
+    if (!PIECES[shapeName]) {
+      console.error('Invalid shape name in allPlacementsFor:', shapeName);
+      return [];
+    }
+    
+    if (!PIECES[shapeName].rotations || !Array.isArray(PIECES[shapeName].rotations)) {
+      console.error('Invalid rotations in allPlacementsFor for shape:', shapeName);
+      return [];
+    }
+    
     const placements = [];
     const rotations = PIECES[shapeName].rotations;
     
     for (let rotationIndex = 0; rotationIndex < rotations.length; rotationIndex++) {
+      // SAFETY CHECK: Validate rotation
+      if (!rotations[rotationIndex] || !Array.isArray(rotations[rotationIndex])) {
+        console.error(`Invalid rotation at index ${rotationIndex} for shape ${shapeName}:`, rotations[rotationIndex]);
+        continue;
+      }
+      
       for (let col = 0; col < BOARD_WIDTH; col++) {
         const result = this.simulateDrop(matrix, shapeName, rotationIndex, col);
         if (result) {
@@ -201,9 +223,54 @@ class TetrisAI {
 
   // Simulate drop with magic T mechanic (based on original stoppedShape logic)
   simulateDrop(matrix, shapeName, rotationIndex, startCol) {
+    // SAFETY CHECK: Validate matrix structure
+    if (!matrix || !Array.isArray(matrix) || matrix.length !== BOARD_HEIGHT) {
+      console.error('Invalid matrix structure in simulateDrop:', matrix);
+      return null;
+    }
+    
+    // SAFETY CHECK: Validate each row
+    for (let i = 0; i < matrix.length; i++) {
+      if (!matrix[i] || !Array.isArray(matrix[i]) || matrix[i].length !== BOARD_WIDTH) {
+        console.error(`Invalid row ${i} in matrix:`, matrix[i]);
+        return null;
+      }
+    }
+    
     // Base spawn position at top row
     let pos = startCol; // absolute index with row 0, column=startCol
+    
+    // SAFETY CHECK: Validate piece and rotation
+    if (!PIECES[shapeName]) {
+      console.error('Invalid shape name:', shapeName);
+      return null;
+    }
+    
+    if (!PIECES[shapeName].rotations || !Array.isArray(PIECES[shapeName].rotations)) {
+      console.error('Invalid rotations for shape:', shapeName, PIECES[shapeName]);
+      return null;
+    }
+    
+    if (rotationIndex < 0 || rotationIndex >= PIECES[shapeName].rotations.length) {
+      console.error('Invalid rotation index:', rotationIndex, 'for shape:', shapeName);
+      return null;
+    }
+    
       const coords = PIECES[shapeName].rotations[rotationIndex];
+    
+    // SAFETY CHECK: Validate coords array
+    if (!coords || !Array.isArray(coords)) {
+      console.error('Invalid coords for shape:', shapeName, 'rotation:', rotationIndex, 'coords:', coords);
+      return null;
+    }
+    
+    // SAFETY CHECK: Validate each coord
+      for (let i = 0; i < coords.length; i++) {
+      if (typeof coords[i] !== 'number' || isNaN(coords[i])) {
+        console.error(`Invalid coord at index ${i}:`, coords[i], 'for shape:', shapeName);
+        return null;
+      }
+    }
       
     // PREVALIDATE lateral bounds using base column + relative offset column
     const baseRow0 = 0;
@@ -242,7 +309,13 @@ class TetrisAI {
     }
 
     // Clone matrix and apply landing using base row/col + relative offsets
-    const next = matrix.map(row => [...row]);
+    const next = matrix.map(row => {
+      if (!row || !Array.isArray(row)) {
+        console.error('Invalid row during cloning:', row);
+        return Array(BOARD_WIDTH).fill(null);
+      }
+      return [...row];
+    });
 
     if (this.magicT && shapeName === 'T') {
       const coords = PIECES['T'].rotations[rotationIndex];
@@ -265,10 +338,14 @@ class TetrisAI {
         let dropRow = r;
         while (dropRow + 1 < BOARD_HEIGHT) {
           if (c < 0 || c >= BOARD_WIDTH) break;
-          if (next[dropRow + 1][c] !== null) break;
+          // SAFETY CHECK: Ensure the row exists before accessing it
+          if (!next[dropRow + 1] || next[dropRow + 1][c] !== null) break;
           dropRow++;
           if (dropRow >= 0 && dropRow < BOARD_HEIGHT && c >= 0 && c < BOARD_WIDTH) {
-            next[dropRow][c] = shapeName;
+            // SAFETY CHECK: Ensure the row exists before setting it
+            if (next[dropRow]) {
+              next[dropRow][c] = shapeName;
+            }
           }
         }
 
@@ -309,7 +386,9 @@ class TetrisAI {
       bumpiness: 0,
       wells: 0,
       height: 0,
-      lines: 0
+      lines: 0,
+      sideWalls: 0, // New: penalize side walls
+      centerBalance: 0 // New: encourage center filling
     };
 
     // Calculate heights
@@ -324,6 +403,25 @@ class TetrisAI {
     }
 
     features.height = Math.max(...heights);
+    
+    // Additional aggressive height penalty - penalize any height above 8
+    if (features.height > 8) {
+      features.height += (features.height - 8) * 3; // Even more exponential penalty for high walls
+    }
+    
+    // Moderate penalty for side wall formation
+    const leftWallHeight2 = heights[0];
+    const rightWallHeight2 = heights[BOARD_WIDTH - 1];
+    const centerHeights2 = heights.slice(1, BOARD_WIDTH - 1);
+    const avgCenterHeight2 = centerHeights2.reduce((sum, h) => sum + h, 0) / centerHeights2.length;
+    
+    // Moderate penalty if side walls are forming
+    if (leftWallHeight2 > avgCenterHeight2 + 2) {
+      features.height += (leftWallHeight2 - avgCenterHeight2) * 2; // Moderate penalty
+    }
+    if (rightWallHeight2 > avgCenterHeight2 + 2) {
+      features.height += (rightWallHeight2 - avgCenterHeight2) * 2; // Moderate penalty
+    }
 
     // Calculate holes
     for (let col = 0; col < BOARD_WIDTH; col++) {
@@ -342,39 +440,251 @@ class TetrisAI {
       features.bumpiness += Math.abs(heights[i] - heights[i + 1]);
     }
 
-    // Calculate wells
+    // Calculate wells (improved detection)
     for (let col = 1; col < BOARD_WIDTH - 1; col++) {
-      if (heights[col] < heights[col - 1] && heights[col] < heights[col + 1]) {
-        features.wells += heights[col - 1] - heights[col];
-        features.wells += heights[col + 1] - heights[col];
+      const leftHeight = heights[col - 1];
+      const centerHeight = heights[col];
+      const rightHeight = heights[col + 1];
+      
+      if (centerHeight < leftHeight && centerHeight < rightHeight) {
+        const wellDepth = Math.min(leftHeight, rightHeight) - centerHeight;
+        features.wells += wellDepth * wellDepth; // Square the depth for exponential penalty
       }
     }
+
+    // Calculate side walls penalty (detect walls on left and right sides) - MORE AGGRESSIVE
+    const leftWallHeight = heights[0];
+    const rightWallHeight = heights[BOARD_WIDTH - 1];
+    const centerHeights = heights.slice(1, BOARD_WIDTH - 1);
+    const avgCenterHeight = centerHeights.reduce((sum, h) => sum + h, 0) / centerHeights.length;
+    
+    // Much more aggressive: penalize if side walls are even slightly higher than center
+    if (leftWallHeight > avgCenterHeight + 1) {
+      features.sideWalls += (leftWallHeight - avgCenterHeight) * 3; // Increased multiplier
+    }
+    if (rightWallHeight > avgCenterHeight + 1) {
+      features.sideWalls += (rightWallHeight - avgCenterHeight) * 3; // Increased multiplier
+    }
+    
+    // Additional penalty for extreme side walls (columns 0, 1, 8, 9)
+    const extremeSideColumns = [0, 1, 8, 9];
+    const extremeSideHeight = extremeSideColumns.reduce((sum, col) => sum + heights[col], 0) / extremeSideColumns.length;
+    if (extremeSideHeight > avgCenterHeight + 0.5) {
+      features.sideWalls += (extremeSideHeight - avgCenterHeight) * 5; // Heavy penalty for extreme sides
+    }
+
+    // Calculate center balance (encourage filling center columns)
+    const centerColumns = [3, 4, 5, 6]; // Middle columns
+    const sideColumns = [0, 1, 2, 7, 8, 9]; // Side columns
+    const avgCenterHeight3 = centerColumns.reduce((sum, col) => sum + heights[col], 0) / centerColumns.length;
+    const avgSideHeight = sideColumns.reduce((sum, col) => sum + heights[col], 0) / sideColumns.length;
+    
+    // Reward if center is higher than sides (good for line completion)
+    features.centerBalance = avgCenterHeight3 - avgSideHeight;
 
     return features;
   }
 
   // Evaluate board state
-  evaluateBoard(matrix, linesCleared) {
+  evaluateBoard(matrix, linesCleared, shapeName = null, placementCol = null) {
     const features = this.calculateFeatures(matrix);
     
-    // Scoring weights
+    // ULTRA-FOCUSED scoring weights - prioritize holes and lines above ALL
     const weights = {
-      lines: 100,
-      holes: -50,
-      bumpiness: -10,
-      wells: -20,
-      height: -5
+      lines: 1000,       // MAXIMUM priority: line completion
+      holes: -500,       // MAXIMUM penalty: heavily penalize holes
+      bumpiness: -5,     // Minimal: barely penalize uneven surface
+      wells: -10,        // Minimal: barely penalize deep wells
+      height: -5,        // Minimal: barely penalize height
+      sideWalls: -10,   // Minimal: barely penalize side walls
+      centerBalance: 5   // Minimal: barely reward center filling
     };
 
-    return linesCleared * weights.lines +
+    let score = linesCleared * weights.lines +
            features.holes * weights.holes +
            features.bumpiness * weights.bumpiness +
            features.wells * weights.wells +
-           features.height * weights.height;
+                features.height * weights.height +
+                features.sideWalls * weights.sideWalls +
+                features.centerBalance * weights.centerBalance;
+
+    // MASSIVE bonus for good piece fit - reward positions that fill gaps well
+    const fitBonus = this.evaluatePieceFit(matrix, shapeName, placementCol);
+    score += fitBonus * 200; // MASSIVE bonus for good fit
+
+    // ABSOLUTE BAN for Magic T placement in wall columns
+    if (this.magicT && shapeName === 'T' && placementCol !== null) {
+      // COMPLETE BAN: Magic T cannot be placed in wall columns (0, 9)
+      if (placementCol === 0 || placementCol === 9) {
+        score -= 10000; // ABSOLUTE BAN - should never be chosen
+        return score; // Return immediately to avoid any other calculations
+      }
+      // Heavy penalty for placing Magic T in near-wall columns (1, 8)
+      else if (placementCol === 1 || placementCol === 8) {
+        score -= 1000; // Heavy penalty for near-wall Magic T placement
+      }
+      // Moderate penalty for placing Magic T in outer columns (2, 7)
+      else if (placementCol === 2 || placementCol === 7) {
+        score -= 200; // Moderate penalty for outer Magic T placement
+      }
+      // Large bonus for placing Magic T in center columns (3, 4, 5, 6)
+      else if (placementCol >= 3 && placementCol <= 6) {
+        score += 300; // Large bonus for center Magic T placement
+      }
+      
+      // Additional penalty if Magic T would create side walls after dissolution
+      const magicTEffect = this.evaluateMagicTEffect(matrix, placementCol);
+      score += magicTEffect; // This will be negative if it creates side walls
+      
+      // MASSIVE bonus if Magic T could complete lines in center
+      const linePotential = this.evaluateMagicTLinePotential(matrix, placementCol);
+      score += linePotential; // This will be positive if it could complete lines
+    }
+
+    return score;
+  }
+
+  // Evaluate the effect of Magic T placement on side walls
+  evaluateMagicTEffect(matrix, placementCol) {
+    // Simulate Magic T dissolution effect
+    const heights = Array(BOARD_WIDTH).fill(0);
+    for (let col = 0; col < BOARD_WIDTH; col++) {
+      for (let row = 0; row < BOARD_HEIGHT; row++) {
+        if (matrix[row][col]) {
+          heights[col] = BOARD_HEIGHT - row;
+          break;
+        }
+      }
+    }
+    
+    // Estimate the effect of Magic T dissolution
+    // Magic T tends to fill columns more evenly, so we check if it would help balance
+    const centerColumns = [3, 4, 5, 6];
+    const sideColumns = [0, 1, 2, 7, 8, 9];
+    
+    const avgCenterHeight = centerColumns.reduce((sum, col) => sum + heights[col], 0) / centerColumns.length;
+    const avgSideHeight = sideColumns.reduce((sum, col) => sum + heights[col], 0) / sideColumns.length;
+    
+    // If placing Magic T in center would help balance (reduce side wall effect)
+    if (placementCol >= 3 && placementCol <= 6) {
+      return 25; // Moderate bonus for center placement
+    }
+    
+    // If placing Magic T in sides would worsen the imbalance
+    if (placementCol <= 1 || placementCol >= 8) {
+      return -75; // Moderate penalty for side placement
+    }
+    
+    // Light penalty for near-sides
+    if (placementCol === 2 || placementCol === 7) {
+      return -25; // Light penalty for near-side placement
+    }
+    
+    return 0; // Neutral for other positions
+  }
+
+  // Evaluate how well a piece fits in a position (avoids holes, fills gaps)
+  evaluatePieceFit(matrix, shapeName, placementCol) {
+    if (!shapeName || placementCol === null) return 0;
+    
+    // Calculate current heights
+    const heights = Array(BOARD_WIDTH).fill(0);
+    for (let col = 0; col < BOARD_WIDTH; col++) {
+      for (let row = 0; row < BOARD_HEIGHT; row++) {
+        if (matrix[row][col]) {
+          heights[col] = BOARD_HEIGHT - row;
+          break;
+        }
+      }
+    }
+    
+    // Check if placing piece in this column would fill gaps or create holes
+    const pieceRotations = PIECES[shapeName]?.rotations;
+    if (!pieceRotations) return 0;
+    
+    let bestFit = 0;
+    
+    // Check all rotations for this column
+    for (let rotationIndex = 0; rotationIndex < pieceRotations.length; rotationIndex++) {
+      const coords = pieceRotations[rotationIndex];
+      let fitScore = 0;
+      
+      // Simulate piece placement
+      for (let i = 0; i < coords.length; i++) {
+        const offRow = Math.floor(coords[i] / BOARD_WIDTH);
+        const offCol = coords[i] - offRow * BOARD_WIDTH;
+        const targetCol = placementCol + offCol;
+        
+        if (targetCol >= 0 && targetCol < BOARD_WIDTH) {
+          const currentHeight = heights[targetCol];
+          const pieceHeight = BOARD_HEIGHT - offRow; // Where piece would land
+          
+          // MASSIVE bonus for filling gaps (piece lands lower than current height)
+          if (pieceHeight < currentHeight) {
+            fitScore += (currentHeight - pieceHeight) * 5; // MASSIVE bonus for good fit
+          }
+          // Heavy penalty for creating holes (piece lands much higher than current height)
+          else if (pieceHeight > currentHeight + 1) {
+            fitScore -= (pieceHeight - currentHeight) * 10; // Heavy penalty for bad fit
+          }
+          // Small penalty for creating small holes
+          else if (pieceHeight > currentHeight) {
+            fitScore -= (pieceHeight - currentHeight) * 3; // Small penalty for small holes
+          }
+        }
+      }
+      
+      bestFit = Math.max(bestFit, fitScore);
+    }
+    
+    return bestFit;
+  }
+
+  // Special evaluation for Magic T - check if it would create completed lines
+  evaluateMagicTLinePotential(matrix, placementCol) {
+    if (!this.magicT || placementCol === null) return 0;
+    
+    // Calculate current heights
+    const heights = Array(BOARD_WIDTH).fill(0);
+    for (let col = 0; col < BOARD_WIDTH; col++) {
+      for (let row = 0; row < BOARD_HEIGHT; row++) {
+        if (matrix[row][col]) {
+          heights[col] = BOARD_HEIGHT - row;
+          break;
+        }
+      }
+    }
+    
+    // Check if Magic T in center would help complete lines
+    if (placementCol >= 3 && placementCol <= 6) {
+      // Check if center columns are close to completing lines
+      const centerColumns = [3, 4, 5, 6];
+      const centerHeights = centerColumns.map(col => heights[col]);
+      const minCenterHeight = Math.min(...centerHeights);
+      const maxCenterHeight = Math.max(...centerHeights);
+      
+      // If center columns are close in height, Magic T could complete a line
+      if (maxCenterHeight - minCenterHeight <= 2 && minCenterHeight > 5) {
+        return 500; // MASSIVE bonus for potential line completion
+      }
+    }
+    
+    return 0;
   }
 
   // Suggest best move
   suggestBestMove(matrix, currentPiece) {
+    // SAFETY CHECK: Validate inputs
+    if (!matrix || !Array.isArray(matrix) || matrix.length !== BOARD_HEIGHT) {
+      console.error('Invalid matrix in suggestBestMove:', matrix);
+      return null;
+    }
+    
+    if (!currentPiece || !PIECES[currentPiece]) {
+      console.error('Invalid currentPiece in suggestBestMove:', currentPiece);
+      return null;
+    }
+    
     const placements = this.allPlacementsFor(matrix, currentPiece);
     
     if (placements.length === 0) return null;
@@ -383,7 +693,7 @@ class TetrisAI {
     let bestScore = -Infinity;
 
     for (const placement of placements) {
-      const score = this.evaluateBoard(placement.matrix, placement.linesCleared);
+      const score = this.evaluateBoard(placement.matrix, placement.linesCleared, currentPiece, placement.col);
       if (score > bestScore) {
         bestScore = score;
         bestMove = placement;
@@ -430,6 +740,7 @@ export default function Tetris() {
   const [magicTEnabled, setMagicTEnabled] = useState(true);
   const [gameStarted, setGameStarted] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
+  const [userHasInteracted, setUserHasInteracted] = useState(false);
   const [stats, setStats] = useState({
     gamesPlayed: parseInt(localStorage.getItem('tetris_games') || '0'),
     aiMoves: parseInt(localStorage.getItem('tetris_ai_moves') || '0'),
@@ -489,7 +800,7 @@ export default function Tetris() {
       
       // If any cell is more than 4 cells away, don't allow rotation
       if (distance > 4) {
-        return false;
+    return false; 
       }
       
       // Also check if cell would be outside board bounds
@@ -543,12 +854,14 @@ export default function Tetris() {
     const nextPieceName = PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)];
     setNextPiece(nextPieceName);
     
-    // Start music if not muted
-    if (audioRef.current && !isMuted) {
+    // Start music if not muted and user has interacted
+    if (audioRef.current && !isMuted && userHasInteracted) {
       audioRef.current.volume = 0.2;
-      audioRef.current.play().catch(console.error);
+      audioRef.current.play().catch(() => {
+        // Silently ignore audio errors
+      });
     }
-  }, [ai]);
+  }, [ai, userHasInteracted, isMuted]);
 
 
 
@@ -843,12 +1156,76 @@ export default function Tetris() {
 
   // AI move
   const makeAIMove = useCallback(() => {
-    if (aiBusy) return;
-    if (!aiSuggestion || gameOver || !gameStarted || !currentPiece) return;
+    console.log('=== AI MOVE ATTEMPT ===');
+    console.log('aiBusy:', aiBusy);
+    console.log('aiSuggestion:', aiSuggestion);
+    console.log('gameOver:', gameOver);
+    console.log('gameStarted:', gameStarted);
+    console.log('currentPiece:', currentPiece);
+    
+    if (aiBusy) {
+      console.log('❌ AI Move blocked: already busy');
+      return;
+    }
+    if (!aiSuggestion || gameOver || !gameStarted || !currentPiece) {
+      console.log('❌ AI Move blocked: invalid state');
+      return;
+    }
+    
+    console.log('✅ AI Move starting...');
     setAiBusy(true);
 
     try {
+      console.log('🔍 Starting AI suggestion validation...');
+      
+      // STRICT VALIDATION: Check if AI suggestion is valid before applying
+      const pieceRotations = PIECES[currentPiece]?.rotations;
+      if (!pieceRotations) { 
+        console.log('❌ No piece rotations found');
+        setAiBusy(false); 
+        return; 
+      }
+      
+      const coords = pieceRotations[aiSuggestion.rotationIndex];
+      const pos = aiSuggestion.pos;
+      
+      console.log('📊 Validation details:');
+      console.log('- currentPiece:', currentPiece);
+      console.log('- rotationIndex:', aiSuggestion.rotationIndex);
+      console.log('- pos:', pos);
+      console.log('- coords:', coords);
+      
+      // Validate that all piece cells are within board bounds
+      let isValidPlacement = true;
+      for (let i = 0; i < coords.length; i++) {
+        const offRow = Math.floor(coords[i] / BOARD_WIDTH);
+        const offCol = coords[i] - offRow * BOARD_WIDTH;
+        const posRow = Math.floor(pos / BOARD_WIDTH);
+        const posCol = pos - posRow * BOARD_WIDTH;
+        const row = posRow + offRow;
+        const col = posCol + offCol;
+        
+        console.log(`  Cell ${i}: offset=${coords[i]}, offRow=${offRow}, offCol=${offCol}, finalRow=${row}, finalCol=${col}`);
+        
+        // Check bounds strictly
+        if (row < 0 || row >= BOARD_HEIGHT || col < 0 || col >= BOARD_WIDTH) {
+          console.log(`❌ AI suggestion invalid: cell at row=${row}, col=${col} is out of bounds`);
+          isValidPlacement = false;
+          break;
+        }
+      }
+      
+      if (!isValidPlacement) {
+        console.log('❌ AI suggestion rejected: invalid placement');
+        setAiBusy(false);
+        return;
+      }
+      
+      console.log('✅ AI suggestion validation passed');
+
       const finalBoard = aiSuggestion.matrix;
+      console.log('📋 Final board dimensions:', finalBoard.length, 'x', finalBoard[0]?.length);
+      
       setStats(prev => {
         const newStats = { ...prev, aiMoves: prev.aiMoves + 1 };
         localStorage.setItem('tetris_ai_moves', newStats.aiMoves.toString());
@@ -856,12 +1233,14 @@ export default function Tetris() {
       });
 
       if (aiSuggestion.linesCleared > 0) {
+        console.log('🎯 Lines cleared:', aiSuggestion.linesCleared);
         const tempBoard = board.map(row => [...row]);
         const pieceRotations = PIECES[currentPiece]?.rotations;
         if (!pieceRotations) { setAiBusy(false); return; }
         const coords = pieceRotations[aiSuggestion.rotationIndex];
         const pos = aiSuggestion.pos;
 
+        console.log('🎮 Applying piece to temp board...');
         for (let i = 0; i < coords.length; i++) {
           const offRow = Math.floor(coords[i] / BOARD_WIDTH);
           const offCol = coords[i] - offRow * BOARD_WIDTH;
@@ -869,8 +1248,12 @@ export default function Tetris() {
           const posCol = pos - posRow * BOARD_WIDTH;
           const row = posRow + offRow;
           const col = posCol + offCol;
+          console.log(`  Applying cell ${i} at row=${row}, col=${col}`);
           if (row >= 0 && row < BOARD_HEIGHT && col >= 0 && col < BOARD_WIDTH) {
             tempBoard[row][col] = currentPiece;
+            console.log(`  ✅ Cell applied successfully`);
+          } else {
+            console.log(`  ❌ Cell out of bounds!`);
           }
         }
 
@@ -881,11 +1264,15 @@ export default function Tetris() {
           }
         }
 
+        console.log('📊 Completed rows:', completedRows);
+        console.log('🔄 Setting board to temp board...');
         setBoard(tempBoard);
         setBlinkingLines(completedRows);
         setIsBlinking(true);
 
     setTimeout(() => {
+          console.log('⏰ Timeout: Setting final board...');
+          console.log('📋 Final board dimensions:', finalBoard.length, 'x', finalBoard[0]?.length);
           setBoard(finalBoard);
           setBlinkingLines([]);
           setIsBlinking(false);
@@ -919,6 +1306,8 @@ export default function Tetris() {
           setAiBusy(false);
         }, 1000);
       } else {
+        console.log('📋 No lines cleared, setting final board directly...');
+        console.log('📋 Final board dimensions:', finalBoard.length, 'x', finalBoard[0]?.length);
         setBoard(finalBoard);
 
         const next = nextPiece || PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)];
@@ -943,9 +1332,18 @@ export default function Tetris() {
         setAiBusy(false);
       }
     } catch (e) {
-      console.error(e);
+      console.error('💥 AI Move error:', e);
+      console.error('Error stack:', e.stack);
       setAiBusy(false);
     }
+    
+    // SAFETY TIMEOUT: Ensure aiBusy is always reset after 5 seconds
+    setTimeout(() => {
+      console.log('⏰ Safety timeout: resetting aiBusy');
+      setAiBusy(false);
+    }, 5000);
+    
+    console.log('=== AI MOVE COMPLETED ===');
   }, [aiBusy, aiSuggestion, gameOver, gameStarted, currentPiece, nextPiece, board, wouldCollide]);
 
   // Toggle magic T
@@ -955,8 +1353,23 @@ export default function Tetris() {
     aiRef.current.magicT = newValue;
   }, [magicTEnabled]);
 
+  // Handle first user interaction to enable audio
+  const handleFirstInteraction = useCallback(() => {
+    if (!userHasInteracted) {
+      setUserHasInteracted(true);
+      // Try to start music if not muted
+      if (audioRef.current && !isMuted) {
+        audioRef.current.volume = 0.2;
+        audioRef.current.play().catch(() => {
+          // Silently ignore if still can't play
+        });
+      }
+    }
+  }, [userHasInteracted, isMuted]);
+
   // Toggle mute
   const toggleMute = useCallback(() => {
+    handleFirstInteraction(); // Ensure user interaction is recorded
     if (audioRef.current) {
       if (isMuted) {
         audioRef.current.play().catch(console.error);
@@ -965,11 +1378,12 @@ export default function Tetris() {
       }
     }
     setIsMuted(!isMuted);
-  }, [isMuted]);
+  }, [isMuted, handleFirstInteraction]);
 
   // Keyboard controls
   useEffect(() => {
     const handleKeyPress = (e) => {
+      handleFirstInteraction(); // Record user interaction
       if (gameOver || !gameStarted) return;
 
       switch (e.key) {
@@ -998,7 +1412,7 @@ export default function Tetris() {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [movePiece, dropPiece, gameOver, gameStarted]);
+  }, [movePiece, dropPiece, gameOver, gameStarted, handleFirstInteraction]);
 
   // Auto-drop
   useEffect(() => {
@@ -1043,9 +1457,77 @@ export default function Tetris() {
 
   // Generate AI suggestion when AI is enabled and there's a current piece
   useEffect(() => {
-    if (aiEnabled && currentPiece && !gameOver && gameStarted) {
+    // Only proceed if AI is enabled
+    if (!aiEnabled) {
+      console.log('🤖 AI Suggestion Effect skipped: AI disabled');
+      setAiSuggestion(null);
+      return;
+    }
+    
+    console.log('🤖 AI Suggestion Effect triggered:');
+    console.log('- aiEnabled:', aiEnabled);
+    console.log('- currentPiece:', currentPiece);
+    console.log('- gameOver:', gameOver);
+    console.log('- gameStarted:', gameStarted);
+    
+    if (currentPiece && !gameOver && gameStarted) {
+      // SAFETY CHECK: Validate board structure before passing to AI
+      if (!board || !Array.isArray(board) || board.length !== BOARD_HEIGHT) {
+        console.error('❌ Invalid board structure:', board);
+        setAiSuggestion(null);
+        return;
+      }
+      
+      for (let i = 0; i < board.length; i++) {
+        if (!board[i] || !Array.isArray(board[i]) || board[i].length !== BOARD_WIDTH) {
+          console.error(`❌ Invalid board row ${i}:`, board[i]);
+          setAiSuggestion(null);
+          return;
+        }
+      }
+      
+      console.log('✅ Board structure validated');
+      console.log('🎯 Generating AI suggestion...');
       const suggestion = ai.suggestBestMove(board, currentPiece);
-      setAiSuggestion(suggestion);
+      console.log('📋 AI suggestion generated:', suggestion);
+      
+      // ADDITIONAL VALIDATION: Check if suggestion is valid
+      if (suggestion) {
+        const pieceRotations = PIECES[currentPiece]?.rotations;
+        if (pieceRotations) {
+          const coords = pieceRotations[suggestion.rotationIndex];
+          const pos = suggestion.pos;
+          
+          // Validate that all piece cells are within board bounds
+          let isValidSuggestion = true;
+          for (let i = 0; i < coords.length; i++) {
+            const offRow = Math.floor(coords[i] / BOARD_WIDTH);
+            const offCol = coords[i] - offRow * BOARD_WIDTH;
+            const posRow = Math.floor(pos / BOARD_WIDTH);
+            const posCol = pos - posRow * BOARD_WIDTH;
+            const row = posRow + offRow;
+            const col = posCol + offCol;
+            
+            // Check bounds strictly
+            if (row < 0 || row >= BOARD_HEIGHT || col < 0 || col >= BOARD_WIDTH) {
+              console.log(`AI suggestion invalid: cell at row=${row}, col=${col} is out of bounds`);
+              isValidSuggestion = false;
+              break;
+            }
+          }
+          
+          if (isValidSuggestion) {
+            setAiSuggestion(suggestion);
+          } else {
+            console.log('AI suggestion rejected: invalid placement');
+            setAiSuggestion(null);
+          }
+        } else {
+          setAiSuggestion(null);
+        }
+      } else {
+        setAiSuggestion(null);
+      }
     } else if (!aiEnabled) {
       setAiSuggestion(null);
     }
@@ -1273,28 +1755,28 @@ export default function Tetris() {
                 {/* Controls */}
                 <div className="mt-6 flex flex-wrap justify-center gap-3 sm:gap-4">
                   <button
-                    onClick={() => movePiece('left')}
+                    onClick={() => { handleFirstInteraction(); movePiece('left'); }}
                     className="px-4 py-3 rounded-lg font-bold transition-transform active:scale-95"
                     style={gradientButtonStyle('rgba(64, 108, 201, 0.95)', 'rgba(30,64,175,0.95)')}
                   >
                     ←
                   </button>
                   <button
-                    onClick={() => movePiece('rotate')}
+                    onClick={() => { handleFirstInteraction(); movePiece('rotate'); }}
                     className="px-4 py-3 rounded-lg font-bold transition-transform active:scale-95"
                     style={gradientButtonStyle('rgba(57, 190, 106, 0.95)', 'rgba(8, 112, 79, 0.95)')}
                   >
                     ↻
                   </button>
                   <button
-                    onClick={() => movePiece('right')}
+                    onClick={() => { handleFirstInteraction(); movePiece('right'); }}
                     className="px-4 py-3 rounded-lg font-bold transition-transform active:scale-95"
                     style={gradientButtonStyle('rgba(64, 108, 201, 0.95)', 'rgba(30,64,175,0.95)')}
                   >
                     →
                   </button>
                   <button
-                    onClick={dropPiece}
+                    onClick={() => { handleFirstInteraction(); dropPiece(); }}
                     className="px-4 py-3 rounded-lg font-bold transition-transform active:scale-95"
                     style={gradientButtonStyle('rgba(241, 55, 55, 0.95)', 'rgba(124, 21, 21, 0.95)')}
                   >
@@ -1302,7 +1784,7 @@ export default function Tetris() {
                   </button>
                 {aiEnabled && aiSuggestion && (
                     <button
-                      onClick={makeAIMove}
+                      onClick={() => { handleFirstInteraction(); makeAIMove(); }}
                       className="px-4 py-3 rounded-lg font-bold transition-transform active:scale-95"
                       style={gradientButtonStyle('rgba(0,168,255,0.98)', 'rgba(7, 79, 187, 0.98)')}
                     >
