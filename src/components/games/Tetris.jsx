@@ -10,6 +10,17 @@ const CELL_COUNT = BOARD_WIDTH * BOARD_HEIGHT;
 // Utility function for top center position
 const topCenterPos = () => Math.floor(BOARD_WIDTH / 2);
 
+// Subtle modern inner-gradient buttons
+function gradientButtonStyle(from, to, border = 'rgba(255,255,255,0.16)') {
+  return {
+    backgroundImage: `linear-gradient(135deg, ${from} 0%, ${to} 100%)`,
+    border: `1px solid ${border}`,
+    boxShadow: 'inset 0 1px 0 rgba(253, 253, 253, 0.12)',
+    filter: 'saturate(1.2) contrast(1.1) brightness(1.0)',
+    color: '#fff'
+  };
+}
+
 // Neon helpers for modern AI look
 function hexToRgb(hex) {
   let c = hex.replace('#', '');
@@ -192,12 +203,12 @@ class TetrisAI {
   simulateDrop(matrix, shapeName, rotationIndex, startCol) {
     // Base spawn position at top row
     let pos = startCol; // absolute index with row 0, column=startCol
-    const coords = PIECES[shapeName].rotations[rotationIndex];
-
+      const coords = PIECES[shapeName].rotations[rotationIndex];
+      
     // PREVALIDATE lateral bounds using base column + relative offset column
     const baseRow0 = 0;
     const baseCol0 = startCol;
-    for (let i = 0; i < coords.length; i++) {
+      for (let i = 0; i < coords.length; i++) {
       const offRow = Math.floor(coords[i] / BOARD_WIDTH);
       const offCol = coords[i] - offRow * BOARD_WIDTH;
       const c = baseCol0 + offCol;
@@ -211,7 +222,7 @@ class TetrisAI {
       const posRow = Math.floor(pos / BOARD_WIDTH);
       const posCol = pos - posRow * BOARD_WIDTH;
       let canDrop = true;
-
+      
       for (let i = 0; i < coords.length; i++) {
         const offRow = Math.floor(coords[i] / BOARD_WIDTH);
         const offCol = coords[i] - offRow * BOARD_WIDTH;
@@ -225,7 +236,7 @@ class TetrisAI {
         // If inside the board, check collision
         if (rBelow >= 0 && matrix[rBelow][c] !== null) { canDrop = false; break; }
       }
-
+      
       if (!canDrop) break;
       pos += BOARD_WIDTH;
     }
@@ -239,7 +250,7 @@ class TetrisAI {
 
       const posRow = Math.floor(pos / BOARD_WIDTH);
       const posCol = pos - posRow * BOARD_WIDTH;
-
+      
       for (let i = 0; i < coords.length; i++) {
         const offRow = Math.floor(coords[i] / BOARD_WIDTH);
         const offCol = coords[i] - offRow * BOARD_WIDTH;
@@ -491,9 +502,9 @@ export default function Tetris() {
     setLevel(1);
     setAiSuggestion(null);
     setGameStarted(true);
-    
+
     // Spawn the first piece automatically
-    const pieceName = PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)];
+      const pieceName = PIECE_NAMES[Math.floor(Math.random() * PIECE_NAMES.length)];
     setCurrentPiece(pieceName);
     
     // Generate next piece
@@ -529,23 +540,23 @@ export default function Tetris() {
           
           // Bounds check before accessing board
           if (row >= 0 && row < BOARD_HEIGHT && col >= 0 && col < BOARD_WIDTH) {
-            // Mark the T cell where it lands
+          // Mark the T cell where it lands
             newBoard[row][col] = currentPiece;
           
-            // Fall vertically filling until hitting occupied or ground
-            let dropPos = cellIdx;
+          // Fall vertically filling until hitting occupied or ground
+          let dropPos = cellIdx;
             while (dropPos + BOARD_WIDTH < CELL_COUNT) {
               const nextRow = Math.floor((dropPos + BOARD_WIDTH) / BOARD_WIDTH);
               const nextCol = (dropPos + BOARD_WIDTH) - nextRow * BOARD_WIDTH;
               if (newBoard[nextRow][nextCol] !== null) break;
-              dropPos += BOARD_WIDTH;
+            dropPos += BOARD_WIDTH;
               const dropRow = Math.floor(dropPos / BOARD_WIDTH);
               const dropCol = dropPos - dropRow * BOARD_WIDTH;
               newBoard[dropRow][dropCol] = currentPiece;
-            }
-            
-            const finalRow = Math.floor(dropPos / BOARD_WIDTH);
-            if (finalRow < highestRow) highestRow = finalRow;
+          }
+          
+          const finalRow = Math.floor(dropPos / BOARD_WIDTH);
+          if (finalRow < highestRow) highestRow = finalRow;
           }
         }
         
@@ -585,7 +596,7 @@ export default function Tetris() {
           // Bounds check before accessing board
           if (row >= 0 && row < BOARD_HEIGHT && col >= 0 && col < BOARD_WIDTH) {
             newBoard[row][col] = currentPiece;
-            if (row < highestRow) highestRow = row;
+          if (row < highestRow) highestRow = row;
           }
         }
         
@@ -629,15 +640,15 @@ export default function Tetris() {
         
         // After blinking, remove lines and update score
         setTimeout(() => {
-          setScore(prev => prev + rowsToDelete.length * 100);
-          setLines(prev => prev + rowsToDelete.length);
-          setLevel(prev => Math.floor((lines + rowsToDelete.length) / 10) + 1);
-          
-          // Remove completed rows
-          rowsToDelete.forEach(rowIdx => {
-            newBoard.splice(rowIdx, 1);
+        setScore(prev => prev + rowsToDelete.length * 100);
+        setLines(prev => prev + rowsToDelete.length);
+        setLevel(prev => Math.floor((lines + rowsToDelete.length) / 10) + 1);
+        
+        // Remove completed rows
+        rowsToDelete.forEach(rowIdx => {
+          newBoard.splice(rowIdx, 1);
             newBoard.unshift(Array(BOARD_WIDTH).fill(null));
-          });
+        });
           
           setBoard(newBoard);
           setBlinkingLines([]);
@@ -846,7 +857,7 @@ export default function Tetris() {
         setBlinkingLines(completedRows);
         setIsBlinking(true);
 
-        setTimeout(() => {
+    setTimeout(() => {
           setBoard(finalBoard);
           setBlinkingLines([]);
           setIsBlinking(false);
@@ -1038,7 +1049,7 @@ export default function Tetris() {
       <audio ref={audioRef} loop preload="auto">
         <source src="/assets/ttris/TetrisStrings.mp3" type="audio/mpeg" />
       </audio>
-
+      
       {/* Game Over Modal */}
       {gameOver && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -1067,16 +1078,18 @@ export default function Tetris() {
             <div className="flex gap-3 justify-center">
               <button
                 onClick={initializeGame}
-                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition-colors"
+                className="px-6 py-3 rounded-lg font-bold transition-transform active:scale-95"
+                style={gradientButtonStyle('rgba(99,102,241,0.95)', 'rgba(59,130,246,0.95)')}
               >
                 Play Again
               </button>
-              <button
-                onClick={() => navigate('/ai')}
-                className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-bold transition-colors"
-              >
+            <button
+              onClick={() => navigate('/ai')}
+                className="px-6 py-3 rounded-lg font-bold transition-transform active:scale-95"
+                style={gradientButtonStyle('rgba(107,114,128,0.95)', 'rgba(55,65,81,0.95)')}
+            >
                 Back to AI Lab
-              </button>
+            </button>
             </div>
           </div>
         </div>
@@ -1093,7 +1106,8 @@ export default function Tetris() {
             />
             <button
               onClick={() => navigate('/ai')}
-              className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm sm:text-base"
+              className="px-4 py-2 rounded-lg transition-transform text-sm sm:text-base active:scale-95"
+              style={gradientButtonStyle('rgba(107,114,128,0.95)', 'rgba(55,65,81,0.95)')}
             >
               {t('aiLab.games.tetris.backToAI')}
             </button>
@@ -1109,26 +1123,26 @@ export default function Tetris() {
           <div className="lg:col-span-2">
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 shadow-lg">
                  <div className="flex flex-wrap justify-center gap-2 mb-4">
-                   <button
-                     onClick={() => setAiEnabled(!aiEnabled)}
-                     className={`px-3 py-2 rounded-lg font-medium transition-colors text-sm ${
-                       aiEnabled
-                         ? 'bg-green-600 hover:bg-green-700 text-white'
-                         : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300'
-                     }`}
-                   >
-                     {aiEnabled ? t('aiLab.games.tetris.aiOn') : t('aiLab.games.tetris.aiOff')}
-                   </button>
-                   <button
-                     onClick={toggleMagicT}
-                     className={`px-3 py-2 rounded-lg font-medium transition-colors text-sm ${
-                       magicTEnabled
-                         ? 'bg-purple-600 hover:bg-purple-700 text-white'
-                         : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300'
-                     }`}
-                   >
-                     {magicTEnabled ? t('aiLab.games.tetris.magicTOn') : t('aiLab.games.tetris.magicTOff')}
-                   </button>
+                    <button
+                      onClick={() => setAiEnabled(!aiEnabled)}
+                      className={`px-3 py-2 rounded-lg font-medium transition-colors text-sm ${
+                        aiEnabled
+                          ? 'bg-green-600 hover:bg-green-700 text-white'
+                          : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300'
+                      }`}
+                    >
+                      {aiEnabled ? t('aiLab.games.tetris.aiOn') : t('aiLab.games.tetris.aiOff')}
+                    </button>
+                    <button
+                      onClick={toggleMagicT}
+                      className={`px-3 py-2 rounded-lg font-medium transition-colors text-sm ${
+                        magicTEnabled
+                          ? 'bg-purple-600 hover:bg-purple-700 text-white'
+                          : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300'
+                      }`}
+                    >
+                      {magicTEnabled ? t('aiLab.games.tetris.magicTOn') : t('aiLab.games.tetris.magicTOff')}
+                    </button>
                    <button
                      onClick={toggleMute}
                      className={`px-3 py-2 rounded-lg font-medium transition-colors text-sm ${
@@ -1139,8 +1153,8 @@ export default function Tetris() {
                    >
                      {isMuted ? '🔇 Mute' : '🔊 Music'}
                    </button>
-                 </div>
- 
+                </div>
+
                 {/* Next Piece (mobile only, shown above the board) */}
                 {nextPiece && (
                   <div className="sm:hidden bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 shadow-lg mb-4">
@@ -1150,8 +1164,8 @@ export default function Tetris() {
                     <div className="flex justify-center">
                       <div
                         className="bg-gray-900 rounded-lg p-3 border-2 border-gray-700"
-                        style={{
-                          display: 'grid',
+                    style={{
+                      display: 'grid',
                           gridTemplateColumns: 'repeat(5, 20px)',
                           gridTemplateRows: 'repeat(5, 20px)',
                           gap: '1px'
@@ -1164,7 +1178,7 @@ export default function Tetris() {
                           return (
                             <div
                               key={i}
-                              style={{
+                          style={{
                                 width: 20,
                                 height: 20,
                                 ...(filled
@@ -1232,36 +1246,41 @@ export default function Tetris() {
                 <div className="mt-6 flex flex-wrap justify-center gap-3 sm:gap-4">
                   <button
                     onClick={() => movePiece('left')}
-                    className="px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95"
+                    className="px-4 py-3 rounded-lg font-bold transition-transform active:scale-95"
+                    style={gradientButtonStyle('rgba(64, 108, 201, 0.95)', 'rgba(30,64,175,0.95)')}
                   >
                     ←
                   </button>
                   <button
                     onClick={() => movePiece('rotate')}
-                    className="px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95"
+                    className="px-4 py-3 rounded-lg font-bold transition-transform active:scale-95"
+                    style={gradientButtonStyle('rgba(57, 190, 106, 0.95)', 'rgba(8, 112, 79, 0.95)')}
                   >
                     ↻
                   </button>
                   <button
                     onClick={() => movePiece('right')}
-                    className="px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95"
+                    className="px-4 py-3 rounded-lg font-bold transition-transform active:scale-95"
+                    style={gradientButtonStyle('rgba(64, 108, 201, 0.95)', 'rgba(30,64,175,0.95)')}
                   >
                     →
                   </button>
                   <button
                     onClick={dropPiece}
-                    className="px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95"
+                    className="px-4 py-3 rounded-lg font-bold transition-transform active:scale-95"
+                    style={gradientButtonStyle('rgba(241, 55, 55, 0.95)', 'rgba(124, 21, 21, 0.95)')}
                   >
                     ↓
                   </button>
-                  {aiEnabled && aiSuggestion && (
+                {aiEnabled && aiSuggestion && (
                     <button
                       onClick={makeAIMove}
-                      className="px-4 py-3 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white rounded-lg font-bold transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95 border-2 border-yellow-400"
+                      className="px-4 py-3 rounded-lg font-bold transition-transform active:scale-95"
+                      style={gradientButtonStyle('rgba(0,168,255,0.98)', 'rgba(7, 79, 187, 0.98)')}
                     >
                       🤖 AI
                     </button>
-                  )}
+                )}
                 </div>
 
                 {/* Mobile Controls Info removed per request */}
@@ -1298,7 +1317,7 @@ export default function Tetris() {
                     Next Piece
                   </h3>
                   <div className="flex justify-center">
-                    <div
+                    <div 
                       className="bg-gray-900 rounded-lg p-3 border-2 border-gray-700"
                       style={{
                         display: 'grid',
@@ -1360,26 +1379,26 @@ export default function Tetris() {
 
               {/* Start Game */}
               {!gameStarted && (
-                <div className="text-center">
-                  <button
-                    onClick={initializeGame}
+              <div className="text-center">
+                <button
+                  onClick={initializeGame}
                     className="w-full px-4 py-3 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white rounded-lg font-medium transition-all duration-200 text-sm sm:text-base"
-                  >
+                >
                     {t('aiLab.games.tetris.startGame') || 'Start Game'}
-                  </button>
-                </div>
+                </button>
+              </div>
               )}
 
               {/* New Game */}
               <div className="text-center">
-                <button
-                  onClick={initializeGame}
+              <button
+                onClick={initializeGame}
                   className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-medium transition-all duration-200 text-sm sm:text-base"
-                >
+              >
                   {t('aiLab.games.tetris.newGame')}
-                </button>
-              </div>
+              </button>
             </div>
+          </div>
           </div>
 
       </div>
