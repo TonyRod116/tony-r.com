@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Github, Linkedin, Mail, Star, Zap, Users, Code, ChevronDown, ChevronUp, Brain } from 'lucide-react'
-import tttIcon from '../assets/tictactoe.svg'
+import { ArrowRight, Github, Linkedin, Mail, Star, Users, ChevronDown, ChevronUp, Brain } from 'lucide-react'
+import tttIcon from '../assets/tictactoe.png'
+import msIcon from '../assets/buscaminas.png'
+import nimIcon from '../assets/nim.png'
+import tetrisIcon from '../assets/ttris.png'
 import { profile } from '../data/profile'
 import { projects } from '../data/projects'
 import { useLanguage } from '../hooks/useLanguage.jsx'
@@ -753,8 +756,8 @@ export default function Home() {
                 className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
               >
                 <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <img src={tttIcon} alt="Tic-Tac-Toe" className="h-6 w-6" />
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <img src={tttIcon} alt="Tic-Tac-Toe" className="h-14 w-14" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                     Tic-Tac-Toe AI
@@ -779,8 +782,8 @@ export default function Home() {
                 className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
               >
                 <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Zap className="h-6 w-6 text-white" />
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <img src={msIcon} alt="Minesweeper" className="h-14 w-14" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                     Minesweeper AI
@@ -805,8 +808,8 @@ export default function Home() {
                 className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
               >
                 <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Brain className="h-6 w-6 text-white" />
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <img src={nimIcon} alt="Nim" className="h-14 w-14" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                     Nim Q-Learning
@@ -831,14 +834,14 @@ export default function Home() {
                 className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
               >
                 <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Code className="h-6 w-6 text-white" />
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <img src={tetrisIcon} alt="Tetris" className="h-14 w-14" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                     Tetris AI
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                    Heuristic bot with custom physics
+                    Heuristic bot
                   </p>
                   <div className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium">
                     <span>Play Now</span>

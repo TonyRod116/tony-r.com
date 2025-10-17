@@ -1,18 +1,38 @@
 import { motion } from 'framer-motion'
-import { ExternalLink, Github, Play, Brain, Zap, Target, Network, Gamepad2 } from 'lucide-react'
-import tttIcon from '../assets/tictactoe.svg'
+import { ExternalLink, Github, Play, Brain } from 'lucide-react'
+import tttIcon from '../assets/tictactoe.png'
+import msIcon from '../assets/buscaminas.png'
+import nimIcon from '../assets/nim.png'
+import tetrisIcon from '../assets/ttris.png'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../hooks/useLanguage.jsx'
 
 export default function AiLab() {
   const { t } = useLanguage()
 
+  // Local neon helpers for buttons
+  const neonSolidButtonStyle = (from, to, border) => ({
+    backgroundImage: `linear-gradient(135deg, ${from} 0%, ${to} 100%)`,
+    border: `1px solid ${border}`,
+    boxShadow: '0 0 6px rgba(59,130,246,0.22), 0 0 10px rgba(99,102,241,0.14), inset 0 0 4px rgba(255,255,255,0.06)',
+    filter: 'none',
+    color: '#fff',
+    textShadow: '0 0 2px rgba(255,255,255,0.16)'
+  })
+
+  const neonOutlineButtonStyle = (border, glow) => ({
+    backgroundImage: 'linear-gradient(135deg, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.32) 100%)',
+    border: `2px solid ${border}`,
+    boxShadow: `0 0 6px ${glow.replace('0.35', '0.22')}, inset 0 0 4px rgba(255,255,255,0.06)`,
+    color: 'rgba(229,231,235,0.92)'
+  })
+
   const aiProjects = [
     {
       id: 'ttt',
       title: t('aiLab.projects.ttt.title'),
       description: t('aiLab.projects.ttt.description'),
-      icon: Target,
+      icon: null,
       demoUrl: '/ai/tictactoe',
       githubUrl: 'https://github.com/TonyRod116/Ai-Tic-Tac-Toe',
       status: 'completed',
@@ -22,7 +42,7 @@ export default function AiLab() {
       id: 'minesweeper',
       title: t('aiLab.projects.minesweeper.title'),
       description: t('aiLab.projects.minesweeper.description'),
-      icon: Zap,
+      icon: null,
       demoUrl: '/ai/minesweeper',
       githubUrl: 'https://github.com/TonyRod116/Ai-Minesweeper',
       status: 'completed',
@@ -32,7 +52,7 @@ export default function AiLab() {
       id: 'nim',
       title: t('aiLab.projects.nim.title'),
       description: t('aiLab.projects.nim.description'),
-      icon: Brain,
+      icon: null,
       demoUrl: '/ai/nim',
       githubUrl: 'https://github.com/TonyRod116/AI-Nim',
       status: 'completed',
@@ -42,7 +62,7 @@ export default function AiLab() {
       id: 'tetris',
       title: t('aiLab.projects.tetris.title'),
       description: t('aiLab.projects.tetris.description'),
-      icon: Gamepad2,
+      icon: null,
       demoUrl: '/ai/tetris',
       githubUrl: 'https://github.com/TonyRod116/T-Tetris',
       status: 'completed',
@@ -113,12 +133,19 @@ export default function AiLab() {
                 className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
               >
                 {/* Icon */}
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg mb-6">
-                  {project.id === 'ttt' ? (
-                    <img src={tttIcon} alt="Tic-Tac-Toe" className="h-6 w-6" />
-                  ) : (
-                    <IconComponent className="h-6 w-6 text-white" />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl mb-6">
+                  {project.id === 'ttt' && (
+                    <img src={tttIcon} alt="Tic-Tac-Toe" className="h-14 w-14" />
                   )}
+                  {project.id === 'minesweeper' && (
+                    <img src={msIcon} alt="Minesweeper" className="h-14 w-14" />
+                  )}
+                  {project.id === 'nim' && (
+                    <img src={nimIcon} alt="Nim" className="h-14 w-14" />
+                  )}
+    {project.id === 'tetris' && (
+      <img src={tetrisIcon} alt="Tetris" className="h-14 w-14" />
+    )}
                 </div>
 
                 {/* Title */}
@@ -147,8 +174,18 @@ export default function AiLab() {
                 <div className="flex gap-3">
                   <Link
                     to={project.demoUrl}
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-2"
+                    className="flex-1 px-4 py-2 rounded-lg font-medium transition-transform duration-200 flex items-center justify-center gap-2 active:scale-95 relative overflow-hidden group"
+                    style={neonSolidButtonStyle('rgba(11, 60, 219, 0.95)', 'rgba(81, 12, 134, 0.95)', 'rgba(88,28,135,0.5)')}
                   >
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute inset-y-0 -left-[120%] w-[200%] skew-x-12 transition-transform duration-500 ease-out group-hover:translate-x-[140%]"
+                      style={{
+                        backgroundImage: 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.28) 50%, rgba(255,255,255,0) 100%)',
+                        clipPath: 'polygon(0 0, 85% 0, 100% 50%, 85% 100%, 0 100%)',
+                        filter: 'blur(0.6px)'
+                      }}
+                    />
                     <Play className="h-4 w-4" />
                     {t('aiLab.playDemo')}
                   </Link>
@@ -156,8 +193,18 @@ export default function AiLab() {
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-all duration-200 flex items-center justify-center"
+                    className="px-4 py-2 rounded-lg transition-transform duration-200 flex items-center justify-center active:scale-95 relative overflow-hidden group"
+                    style={neonOutlineButtonStyle('rgba(99,102,241,0.55)', 'rgba(59,130,246,0.35)')}
                   >
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute inset-y-0 -left-[120%] w-[200%] skew-x-12 transition-transform duration-500 ease-out group-hover:translate-x-[140%]"
+                      style={{
+                        backgroundImage: 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0) 100%)',
+                        clipPath: 'polygon(0 0, 85% 0, 100% 50%, 85% 100%, 0 100%)',
+                        filter: 'blur(0.6px)'
+                      }}
+                    />
                     <Github className="h-4 w-4" />
                   </a>
                 </div>
