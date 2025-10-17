@@ -733,8 +733,8 @@ export default function Home() {
             className="text-center mb-12"
             delay={0.1}
           >
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-6">
-              <Brain className="h-8 w-8 text-white" />
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-6" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
+              <Brain className="h-8 w-8 text-white" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
             </div>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{t('home.aiLab.title')}</h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-4">
@@ -756,8 +756,8 @@ export default function Home() {
                 className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
               >
                 <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <img src={tttIcon} alt="Tic-Tac-Toe" className="h-14 w-14" />
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
+                    <img src={tttIcon} alt="Tic-Tac-Toe" className="h-14 w-14" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                     Tic-Tac-Toe AI
@@ -782,8 +782,8 @@ export default function Home() {
                 className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
               >
                 <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <img src={msIcon} alt="Minesweeper" className="h-14 w-14" />
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
+                    <img src={msIcon} alt="Minesweeper" className="h-14 w-14" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                     Minesweeper AI
@@ -808,8 +808,8 @@ export default function Home() {
                 className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
               >
                 <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <img src={nimIcon} alt="Nim" className="h-14 w-14" />
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
+                    <img src={nimIcon} alt="Nim" className="h-14 w-14" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                     Nim Q-Learning
@@ -834,8 +834,8 @@ export default function Home() {
                 className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
               >
                 <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <img src={tetrisIcon} alt="Tetris" className="h-14 w-14" />
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
+                    <img src={tetrisIcon} alt="Tetris" className="h-14 w-14" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                     Tetris AI
@@ -856,9 +856,11 @@ export default function Home() {
             className="text-center"
             delay={0.5}
           >
-            <Link to="/ai" className="btn-primary inline-flex items-center">
-              {t('home.aiLab.cta')}
-              <ArrowRight className="ml-2 h-4 w-4" />
+            <Link to="/ai" className="btn-primary inline-flex items-center" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
+              <span style={{textShadow: '0 0 8px rgba(255, 255, 255, 0.8)'}}>
+                {t('home.aiLab.cta')}
+              </span>
+              <ArrowRight className="ml-2 h-4 w-4" style={{filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.8))'}} />
             </Link>
           </ScrollAnimatedProjectCenter>
         </div>
