@@ -53,35 +53,16 @@ function AnimatedNumber({ value, suffix = '', duration = 2000, delay = 0 }) {
   )
 }
 
-// Component for cards with scroll and zoom effect (entry only)
+// Component for cards with smooth entry animation
 function ScrollAnimatedCard({ children, delay = 0, className = "" }) {
-  const ref = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  })
-  
-  // Zoom effect from background (entry only) - optimized for mobile
-  const scale = useTransform(scrollYProgress, [0, 0.3, 1], [0.5, 1, 1])
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
-  const y = useTransform(scrollYProgress, [0, 0.3, 1], [50, 0, 0])
-  
-  // Subtle rotation reduced for mobile
-  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [8, 0, 0])
-
   return (
     <motion.div
-      ref={ref}
+      initial={{ opacity: 0, y: 24, scale: 0.98, rotateX: 0 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
-      style={{ 
-        scale, 
-        opacity, 
-        y,
-        rotateX,
-        transformOrigin: "center center",
-        transformStyle: "preserve-3d"
-      }}
-      transition={{ delay }}
+      style={{ willChange: 'transform, opacity', transform: 'translateZ(0)' }}
     >
       {children}
     </motion.div>
@@ -290,33 +271,38 @@ export default function Home() {
 
   // Scroll effect that "eats" the photo synchronized with content
   useEffect(() => {
+    let ticking = false
+    const photoElement = document.getElementById('background-photo')
+
     const handleScroll = () => {
-      const scrollY = window.pageYOffset || document.documentElement.scrollTop
-      const windowHeight = window.innerHeight
+      if (!photoElement) return
+      if (ticking) return
       
-      // Calculate progress based on window height
-      // Make the background photo move much slower than scroll (parallax effect)
-      const isMobile = window.innerWidth <= 768
-      const parallaxMultiplier = 0.5 // Your photo moves at 30% of scroll speed
-      const clipMultiplier = 4 // Clip effect moves at normal speed
-      
-      const parallaxProgress = Math.min(scrollY / (windowHeight * clipMultiplier), 1)
-      const clipProgress = Math.min(scrollY / (windowHeight * clipMultiplier), 1)
-      
-      // Apply parallax effect and clip-path to photo
-      const photoElement = document.getElementById('background-photo')
-      if (photoElement) {
-        // Parallax effect: photo moves slower than scroll
-        const translateY = scrollY * parallaxMultiplier
-        photoElement.style.transform = `translateY(${translateY}px)`
+      ticking = true
+      requestAnimationFrame(() => {
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop
+        const windowHeight = window.innerHeight
         
-        // Create "bite" effect from bottom to top
+        const parallaxMultiplier = 0.5
+        const clipMultiplier = 4
+        
+        const clipProgress = Math.min(scrollY / (windowHeight * clipMultiplier), 1)
+        
+        // If animation is complete, stop the expensive operations
+        if (clipProgress >= 1) {
+          window.removeEventListener('scroll', handleScroll)
+          return
+        }
+        
+        const translateY = scrollY * parallaxMultiplier
+        photoElement.style.transform = `translateY(${translateY}px) translateZ(0)`
+        
         const clipBottom = 100 - (clipProgress * 100)
         photoElement.style.clipPath = `polygon(0 0, 100% 0, 100% ${clipBottom}%, 0 ${clipBottom}%)`
+        photoElement.style.opacity = String(Math.max(0.1, 1 - (clipProgress * 0.9)))
         
-        // Also reduce opacity gradually
-        photoElement.style.opacity = Math.max(0.1, 1 - (clipProgress * 0.9))
-      }
+        ticking = false
+      })
     }
 
     window.addEventListener('scroll', handleScroll)
@@ -547,8 +533,8 @@ export default function Home() {
                 className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 hover:scale-105"
                 delay={0.1}
               >
-                <div className="text-3xl font-bold text-white">
-                  <AnimatedNumber value="35" suffix="+" duration={2000} delay={200} />
+                <div className="text-3xl font-bold text-white tabular-nums" style={{ minWidth: '3ch' }}>
+                  <AnimatedNumber value="40" suffix="+" duration={1200} delay={200} />
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.repositories')}</div>
               </ScrollAnimatedCard>
