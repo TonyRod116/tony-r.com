@@ -537,8 +537,8 @@ class TetrisAI {
       bumpiness: -5,
       wells: -10,
       height: -5,
-      sideWalls: -80,   // Further reduced penalty
-      centerBalance: 25  // center really matters
+      sideWalls: 0,   // No penalty for side walls
+      centerBalance: 0  // No preference for center
     };
 
     let score = linesCleared * weights.lines +
@@ -549,107 +549,21 @@ class TetrisAI {
                 features.sideWalls * weights.sideWalls +
                 features.centerBalance * weights.centerBalance;
 
-    // Additional penalty if extreme columns end up higher than center
-    {
-      const heights = Array.from({length: BOARD_WIDTH}, (_, c) => {
-        for (let r = 0; r < BOARD_HEIGHT; r++) if (matrix[r][c]) return BOARD_HEIGHT - r;
-        return 0;
-      });
-      const extremeCols = [0,1,8,9].map(c => heights[c]);
-      const centerCols  = [3,4,5,6].map(c => heights[c]);
-      const diff = (extremeCols.reduce((a,b)=>a+b,0)/4) - (centerCols.reduce((a,b)=>a+b,0)/4);
-      if (diff > 0) score -= diff * 25; // Reduced proportional penalty
-    }
+    // No additional penalties for horizontal position
+    // Removed: Additional penalty if extreme columns end up higher than center
+    // Removed: Penalty if center ends up significantly lower than sides
 
-    // Penalty if center (3..6) ends up significantly lower than sides (pit)
-    {
-      const heights = Array.from({length: BOARD_WIDTH}, (_, c) => {
-        for (let r = 0; r < BOARD_HEIGHT; r++) if (matrix[r][c]) return BOARD_HEIGHT - r;
-        return 0;
-      });
-      const center = [3,4,5,6].map(c => heights[c]);
-      const sides  = [0,1,2,7,8,9].map(c => heights[c]);
-      const avgCenter = center.reduce((a,b)=>a+b,0)/center.length;
-      const avgSides  = sides.reduce((a,b)=>a+b,0)/sides.length;
-      const gap = Math.max(0, avgSides - avgCenter); // sides > center
-      score -= gap * 40; // Reduced penalty for center being lower
-    }
-
-    // Generic penalty for placements near walls
-    if (placementCol != null) {
-      if (placementCol <= 1 || placementCol >= BOARD_WIDTH-2) score -= 150; // Reduced edge penalty
-      if (placementCol === 0 || placementCol === BOARD_WIDTH-1) score -= 250; // Reduced pure wall penalty
-    }
+    // No generic penalties for horizontal position
+    // Removed: Generic penalty for placements near walls
 
     // Moderate penalty for Magic T placement in wall columns
-    if (this.magicT && shapeName === 'T' && placementCol !== null) {
-      // Moderate penalty: Magic T in wall columns (0, 9)
-      if (placementCol === 0 || placementCol === 9) {
-        score -= 500; // Reduced penalty
-      }
-      // Light penalty for placing Magic T in near-wall columns (1, 8)
-      else if (placementCol === 1 || placementCol === 8) {
-        score -= 300; // Reduced penalty
-      }
-      // Moderate penalty for placing Magic T in outer columns (2, 7)
-      else if (placementCol === 2 || placementCol === 7) {
-        score -= 200; // Moderate penalty for outer Magic T placement
-      }
-      // Moderate bonus for placing Magic T in center columns (3, 4, 5, 6)
-      else if (placementCol >= 3 && placementCol <= 6) {
-        score += 100; // Reduced bonus for center Magic T placement
-      }
-      
-      // Additional penalty if Magic T would create side walls after dissolution
-      const magicTEffect = this.evaluateMagicTEffect(matrix, placementCol);
-      score += magicTEffect; // This will be negative if it creates side walls
-      
-      // MASSIVE bonus if Magic T could complete lines in center
-      const linePotential = this.evaluateMagicTLinePotential(matrix, placementCol);
-      score += linePotential; // This will be positive if it could complete lines
-    }
+    // No penalties for Magic T based on horizontal position
+    // Removed: All Magic T position-based penalties and bonuses
 
     return score;
   }
 
-  // Evaluate the effect of Magic T placement on side walls
-  evaluateMagicTEffect(matrix, placementCol) {
-    // Simulate Magic T dissolution effect
-    const heights = Array(BOARD_WIDTH).fill(0);
-    for (let col = 0; col < BOARD_WIDTH; col++) {
-      for (let row = 0; row < BOARD_HEIGHT; row++) {
-        if (matrix[row][col]) {
-          heights[col] = BOARD_HEIGHT - row;
-          break;
-        }
-      }
-    }
-    
-    // Estimate the effect of Magic T dissolution
-    // Magic T tends to fill columns more evenly, so we check if it would help balance
-    const centerColumns = [3, 4, 5, 6];
-    const sideColumns = [0, 1, 2, 7, 8, 9];
-    
-    const avgCenterHeight = centerColumns.reduce((sum, col) => sum + heights[col], 0) / centerColumns.length;
-    const avgSideHeight = sideColumns.reduce((sum, col) => sum + heights[col], 0) / sideColumns.length;
-    
-    // If placing Magic T in center would help balance (reduce side wall effect)
-    if (placementCol >= 3 && placementCol <= 6) {
-      return 25; // Moderate bonus for center placement
-    }
-    
-    // If placing Magic T in sides would worsen the imbalance
-    if (placementCol <= 1 || placementCol >= 8) {
-      return -75; // Moderate penalty for side placement
-    }
-    
-    // Light penalty for near-sides
-    if (placementCol === 2 || placementCol === 7) {
-      return -25; // Light penalty for near-side placement
-    }
-    
-    return 0; // Neutral for other positions
-  }
+  // Removed: evaluateMagicTEffect - no longer needed since we don't penalize Magic T position
 
   // Evaluate how well a piece fits in a position (avoids holes, fills gaps)
   evaluatePieceFit(matrix, shapeName, placementCol) {
@@ -708,37 +622,7 @@ class TetrisAI {
     return bestFit;
   }
 
-  // Special evaluation for Magic T - check if it would create completed lines
-  evaluateMagicTLinePotential(matrix, placementCol) {
-    if (!this.magicT || placementCol === null) return 0;
-    
-    // Calculate current heights
-    const heights = Array(BOARD_WIDTH).fill(0);
-    for (let col = 0; col < BOARD_WIDTH; col++) {
-      for (let row = 0; row < BOARD_HEIGHT; row++) {
-        if (matrix[row][col]) {
-          heights[col] = BOARD_HEIGHT - row;
-          break;
-        }
-      }
-    }
-    
-    // Check if Magic T in center would help complete lines
-    if (placementCol >= 3 && placementCol <= 6) {
-      // Check if center columns are close to completing lines
-      const centerColumns = [3, 4, 5, 6];
-      const centerHeights = centerColumns.map(col => heights[col]);
-      const minCenterHeight = Math.min(...centerHeights);
-      const maxCenterHeight = Math.max(...centerHeights);
-      
-      // If center columns are close in height, Magic T could complete a line
-      if (maxCenterHeight - minCenterHeight <= 2 && minCenterHeight > 5) {
-        return 500; // MASSIVE bonus for potential line completion
-      }
-    }
-    
-    return 0;
-  }
+  // Removed: evaluateMagicTLinePotential - no longer needed since we don't penalize Magic T position
 
   // Suggest best move
   suggestBestMove(matrix, currentPiece, nextPiece = null) {
