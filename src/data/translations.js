@@ -62,6 +62,25 @@ export const translations = {
           minesweeper: 'Minesweeper AI',
           algorithms: 'Original Algorithm Implementations'
         },
+        games: {
+          tictactoe: {
+            title: 'Tic-Tac-Toe AI',
+            description: 'Unbeatable Minimax algorithm'
+          },
+          minesweeper: {
+            title: 'Minesweeper AI',
+            description: 'Logical deduction system'
+          },
+          nim: {
+            title: 'Nim Q-Learning',
+            description: 'Reinforcement learning agent'
+          },
+          tetris: {
+            title: 'Tetris AI',
+            description: 'Heuristic bot'
+          }
+        },
+        playNow: 'Play Now',
         cta: 'Explore AI Lab'
       },
       cta: {
@@ -545,6 +564,25 @@ export const translations = {
           minesweeper: 'IA de Buscaminas',
           algorithms: 'Implementaciones de Algoritmos Originales'
         },
+        games: {
+          tictactoe: {
+            title: 'IA Tres en Raya',
+            description: 'Algoritmo Minimax imbatible'
+          },
+          minesweeper: {
+            title: 'IA Buscaminas',
+            description: 'Sistema de deducción lógica'
+          },
+          nim: {
+            title: 'Nim Q-Learning',
+            description: 'Aprendizaje por refuerzo'
+          },
+          tetris: {
+            title: 'IA Tetris',
+            description: 'Bot heurístico'
+          }
+        },
+        playNow: 'Jugar Ahora',
         cta: 'Explorar Lab de IA'
       },
       cta: {
@@ -1055,6 +1093,25 @@ export const translations = {
           minesweeper: 'IA de Buscamines',
           algorithms: 'Implementacions d\'Algoritmes Originals'
         },
+        games: {
+          tictactoe: {
+            title: 'IA Tres en Ratlla',
+            description: 'Algoritme Minimax imbatible'
+          },
+          minesweeper: {
+            title: 'IA Buscamines',
+            description: 'Sistema de deducció lògica'
+          },
+          nim: {
+            title: 'Nim Q-Learning',
+            description: 'Aprenentatge per reforç'
+          },
+          tetris: {
+            title: 'IA Tetris',
+            description: 'Bot heurístic'
+          }
+        },
+        playNow: 'Jugar Ara',
         cta: 'Explorar Lab d\'IA'
       },
       cta: {

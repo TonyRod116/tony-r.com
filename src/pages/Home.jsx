@@ -788,17 +788,17 @@ export default function Home() {
                 className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
               >
                 <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
-                    <img src={tttIcon} alt="Tic-Tac-Toe" className="h-14 w-14" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
+                  <div className="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
+                    <img src={tttIcon} alt="Tic-Tac-Toe" className="h-30 w-30" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                    Tic-Tac-Toe AI
+                    {t('home.aiLab.games.tictactoe.title')}
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                    Unbeatable Minimax algorithm
+                    {t('home.aiLab.games.tictactoe.description')}
                   </p>
                   <div className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium">
-                    <span>Play Now</span>
+                    <span>{t('home.aiLab.playNow')}</span>
                     <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
@@ -815,17 +815,17 @@ export default function Home() {
                 className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
               >
                 <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
-                    <img src={msIcon} alt="Minesweeper" className="h-14 w-14" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
+                  <div className="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
+                    <img src={msIcon} alt="Minesweeper" className="h-30 w-30" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                    Minesweeper AI
+                    {t('home.aiLab.games.minesweeper.title')}
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                    Logical deduction system
+                    {t('home.aiLab.games.minesweeper.description')}
                   </p>
                   <div className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium">
-                    <span>Play Now</span>
+                    <span>{t('home.aiLab.playNow')}</span>
                     <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
@@ -842,17 +842,17 @@ export default function Home() {
                 className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
               >
                 <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
-                    <img src={nimIcon} alt="Nim" className="h-14 w-14" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
+                  <div className="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
+                    <img src={nimIcon} alt="Nim" className="h-30 w-30" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                    Nim Q-Learning
+                    {t('home.aiLab.games.nim.title')}
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                    Reinforcement learning agent
+                    {t('home.aiLab.games.nim.description')}
                   </p>
                   <div className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium">
-                    <span>Play Now</span>
+                    <span>{t('home.aiLab.playNow')}</span>
                     <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
@@ -869,17 +869,17 @@ export default function Home() {
                 className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
               >
                 <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
-                    <img src={tetrisIcon} alt="Tetris" className="h-14 w-14" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
+                  <div className="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
+                    <img src={tetrisIcon} alt="Tetris" className="h-34 w-34" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                    Tetris AI
+                    {t('home.aiLab.games.tetris.title')}
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                    Heuristic bot
+                    {t('home.aiLab.games.tetris.description')}
                   </p>
                   <div className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium">
-                    <span>Play Now</span>
+                    <span>{t('home.aiLab.playNow')}</span>
                     <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
