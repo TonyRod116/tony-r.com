@@ -247,7 +247,7 @@ export const translations = {
         tictactoe: {
           title: 'Tic-Tac-Toe AI',
           subtitle: 'Challenge the AI\'s unbeatable Minimax algorithm',
-          description: 'This Tic-Tac-Toe AI was built from my Minimax implementation (originally in Python, then ported to JavaScript) as part of Harvard\'s CS50 Introduction to Artificial Intelligence.\nIt performs adversarial search over the full game tree (up to 9 plies) with exact Minimax evaluation, guaranteeing optimal play: the agent will never lose and will force a draw against any optimal opponent.\n(Note: ~255,168 is the number of possible game sequences, not distinct board positions.)\n\n"This isn\'t just a game — it\'s proof that I understand adversarial search and optimal decision-making, not just how to wire up an API."',
+          description: 'This Tic-Tac-Toe AI was built from my Minimax implementation (originally in Python, then ported to JavaScript) as part of Harvard\'s CS50 Introduction to Artificial Intelligence.\nIt performs adversarial search over the full game tree (up to 9 plies) with exact Minimax evaluation, guaranteeing optimal play: it will never lose against any opponent.\nThe AI scans all 255,168 possible game sequences to ensure, at minimum, a draw.\n\n"This isn\'t just a game — it\'s proof that I understand adversarial search and optimal decision-making, not just how to wire up an API."',
           howToPlay: 'How to Play: Take turns placing X\'s and O\'s on a 3×3 grid. Get three in a row (horizontally, vertically, or diagonally) to win! You play as X, the AI plays as O.',
           newGame: 'New Game',
           easyMode: 'Easy Mode',
@@ -536,7 +536,7 @@ export const translations = {
       },
       about: {
         title: 'De emprendedor de construcción a Software Engineer',
-        description: 'En General Assembly, me destacé por ir consistentemente más allá de los requisitos del proyecto, añadiendo características creativas, funcionales y orientadas al producto que elevaron cada construcción. Mi proyecto final, TradeLab, fue públicamente reconocido por mi instructor como uno de los mejores proyectos que había visto en sus años de enseñanza en GA.',
+        description: 'En General Assembly, me destaqué por ir consistentemente más allá de los requisitos del proyecto, añadiendo características creativas, funcionales y orientadas al producto que elevaron cada construcción. Mi proyecto final, TradeLab, fue públicamente reconocido por mi instructor como uno de los mejores proyectos que había visto en sus años de enseñanza en GA.',
         moreAboutMe: 'Más sobre mí'
       },
       skills: {
@@ -749,7 +749,7 @@ export const translations = {
         tictactoe: {
           title: 'IA Tres en Raya',
           subtitle: 'Desafía el algoritmo Minimax imbatible de la IA',
-          description: 'Esta IA de Tres en Raya parte de mi implementación de Minimax (primero en Python, luego portada a JavaScript) dentro del curso CS50 de IA de Harvard.\nRealiza búsqueda adversaria en el árbol completo del juego (hasta 9 niveles) con evaluación Minimax exacta, lo que garantiza juego óptimo: la IA no pierde nunca y forzará el empate frente a un rival óptimo.\n(Nota: ~255,168 es el número de secuencias de partida posibles, no de "posiciones" distintas.)\n\n«Esto no es solo un juego — es la prueba de que entiendo la búsqueda adversaria y la decisión óptima, no solo cómo usar una API.»',
+          description: 'Esta IA de Tres en Raya parte de mi implementación de Minimax (primero en Python, luego portada a JavaScript) dentro del curso CS50 de IA de Harvard.\nRealiza búsqueda adversaria en el árbol completo del juego (hasta 9 niveles) con evaluación Minimax exacta, lo que garantiza juego óptimo: nunca perderá contra cualquier oponente.\nLa IA escanea las 255,168 secuencias de juego posibles para asegurar, como mínimo, un empate.\n\n«Esto no es solo un juego — es la prueba de que entiendo la búsqueda adversaria y la decisión óptima, no solo cómo usar una API.»',
           howToPlay: 'Cómo Jugar: Tomen turnos colocando X\'s y O\'s en una cuadrícula de 3×3. ¡Consigue tres en línea (horizontal, vertical o diagonal) para ganar! Tú juegas como X, la IA juega como O.',
           newGame: 'Nuevo Juego',
           easyMode: 'Modo Fácil',
@@ -1278,7 +1278,7 @@ export const translations = {
         tictactoe: {
           title: 'IA Tres en Ratlla',
           subtitle: 'Desafia l\'algoritme Minimax imbatible de Tony',
-          description: 'Aquesta IA de Tres en Ratlla sorgeix de la meva implementació de Minimax (primer en Python i després portada a JavaScript) dins del curs CS50 d\'IA de Harvard.\nFa cerca adversària sobre l\'arbre complet (fins a 9 jugades) amb Minimax exacte i assegura joc òptim: la IA no perd i força l\'empat contra qualsevol oponent òptim.\n(Nota: ~255.168 és el nombre de seqüències de partida possibles, no de "posicions" úniques.)\n\n«Això no és només un joc — és la prova que entenc la cerca adversària i la decisió òptima, no només com fer servir una API.»',
+          description: 'Aquesta IA de Tres en Ratlla sorgeix de la meva implementació de Minimax (primer en Python i després portada a JavaScript) dins del curs CS50 d\'IA de Harvard.\nFa cerca adversària sobre l\'arbre complet (fins a 9 jugades) amb Minimax exacte i assegura joc òptim: mai perdrà contra qualsevol oponent.\nL\'IA escaneja les 255,168 seqüències de joc possibles per assegurar, com a mínim, un empat.\n\n«Això no és només un joc — és la prova que entenc la cerca adversària i la decisió òptima, no només com fer servir una API.»',
           howToPlay: 'Com Jugar: Prenen torns col·locant X\'s i O\'s en una graella de 3×3. ¡Consegueix tres en ratlla (horitzontal, vertical o diagonal) per guanyar! Tu jugues com X, l\'IA juga com O.',
           newGame: 'Nou Joc',
           easyMode: 'Mode Fàcil',
