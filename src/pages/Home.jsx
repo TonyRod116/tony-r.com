@@ -534,7 +534,7 @@ export default function Home() {
                 delay={0.1}
               >
                 <div className="text-3xl font-bold text-white tabular-nums" style={{ minWidth: '3ch' }}>
-                  <AnimatedNumber value="40" suffix="+" duration={1200} delay={200} />
+                  <AnimatedNumber value="50" suffix="+" duration={1200} delay={200} />
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.repositories')}</div>
               </ScrollAnimatedCard>

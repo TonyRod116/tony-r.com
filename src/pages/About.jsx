@@ -160,13 +160,13 @@ export default function About() {
               className="space-y-6"
             >
               <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
-                <Typewriter text={t('about.hero.title')} speed={1} delay={10} />
+                <Typewriter text={t('about.hero.title')} speed={0.3} delay={3} />
               </h1>
               <div className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed space-y-4 text-justify">
                 <Typewriter 
                   text={`${t('about.hero.description1')}\n\n${t('about.hero.description2')}\n\n${t('about.hero.description3')}\n\n${t('about.hero.description4')}`} 
-                  speed={0.01} 
-                  delay={2} 
+                  speed={0.002} 
+                  delay={1} 
                 />
               </div>
             </motion.div>

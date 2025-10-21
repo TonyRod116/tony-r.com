@@ -5,18 +5,41 @@ import { useLanguage } from '../hooks/useLanguage.jsx'
 import cvPdfEn from '../assets/CV Tony Rodriguez EN.pdf'
 import cvPdfEs from '../assets/_CV Tony Rodriguez ES.pdf'
 import cvThumbnail from '../assets/CVthmb.png'
+import cvThumbnailEs from '../assets/CVthmb_ES.png'
+import harvardAIPdf from '../assets/CS50_Harvard_AI.pdf'
+import harvardAIThumbnail from '../assets/Harvard_AI.png'
+import gaPdf from '../assets/General_Assembly.pdf'
+import gaThumbnail from '../assets/GA.png'
 
 export default function Resume() {
   const { t, language } = useLanguage()
   
-  const handleDownloadPDF = () => {
-    // Select CV based on language
-    const cvPdf = (language === 'es' || language === 'ca') ? cvPdfEs : cvPdfEn
-    const fileName = (language === 'es' || language === 'ca') ? 'Tony_Rodriguez_CV_ES.pdf' : 'Tony_Rodriguez_CV_EN.pdf'
+  const handleDownloadPDF = (type) => {
+    let pdf, fileName, thumbnail
+    
+    switch(type) {
+      case 'resume':
+        pdf = (language === 'es' || language === 'ca') ? cvPdfEs : cvPdfEn
+        fileName = (language === 'es' || language === 'ca') ? 'Tony_Rodriguez_CV_ES.pdf' : 'Tony_Rodriguez_CV_EN.pdf'
+        thumbnail = (language === 'es' || language === 'ca') ? cvThumbnailEs : cvThumbnail
+        break
+      case 'harvard':
+        pdf = harvardAIPdf
+        fileName = 'Tony_Rodriguez_Harvard_AI_Certificate.pdf'
+        thumbnail = harvardAIThumbnail
+        break
+      case 'ga':
+        pdf = gaPdf
+        fileName = 'Tony_Rodriguez_General_Assembly_Certificate.pdf'
+        thumbnail = gaThumbnail
+        break
+      default:
+        return
+    }
     
     // Create a temporary link to download the PDF
     const link = document.createElement('a')
-    link.href = cvPdf
+    link.href = pdf
     link.download = fileName
     document.body.appendChild(link)
     link.click()
@@ -235,25 +258,31 @@ export default function Resume() {
                   <li className="flex items-start">
                     <span className="text-primary-600 mr-2 mt-1">•</span>
                     <span className="text-gray-600 dark:text-gray-300">
-                      {getText('resume.achievement1', 'Built 4 complete applications during intensive bootcamp, including TradeLab project highlighted by instructor')}
+                      {getText('resume.achievement1', 'Completed Harvard CS50 Introduction to Artificial Intelligence with Python, developing practical AI models for real-world applications')}
                     </span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-primary-600 mr-2 mt-1">•</span>
                     <span className="text-gray-600 dark:text-gray-300">
-                      {getText('resume.achievement2', 'Founded and managed construction company, delivering high-quality residential projects')}
+                      {getText('resume.achievement2', 'Final project TradeLab recognized as one of the best by General Assembly instructor')}
                     </span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-primary-600 mr-2 mt-1">•</span>
                     <span className="text-gray-600 dark:text-gray-300">
-                      {getText('resume.achievement3', 'Led cross-functional teams and managed budgets from concept to delivery')}
+                      {getText('resume.achievement3', '3 out of 4 projects highlighted during Software Engineering bootcamp')}
                     </span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-primary-600 mr-2 mt-1">•</span>
                     <span className="text-gray-600 dark:text-gray-300">
-                      {getText('resume.achievement4', 'Developed digital workflows to improve transparency and efficiency in projects')}
+                      {getText('resume.achievement4', '6 years of experience leading teams and managing complex projects at TotalHomes')}
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-primary-600 mr-2 mt-1">•</span>
+                    <span className="text-gray-600 dark:text-gray-300">
+                      {getText('resume.achievement5', 'Successful founder with exceptional reputation in the construction sector')}
                     </span>
                   </li>
                 </ul>
@@ -293,7 +322,7 @@ export default function Resume() {
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-lg">
                   {getText('resume.languages', 'Languages')}
                 </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 grid-cols-2 gap-2">
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-4 sm:gap-0">
                   <div>
                     <p className="font-medium text-sm text-gray-900 dark:text-white">
                       {getText('resume.spanish', 'Spanish')}
@@ -310,6 +339,14 @@ export default function Resume() {
                       {getText('resume.advanced', 'Fluent')}
                     </p>
                   </div>
+                  <div>
+                    <p className="font-medium text-sm text-gray-900 dark:text-white">
+                      {getText('resume.catalan', 'Catalan')}
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm text-xs">
+                      {getText('resume.native', 'Native')}
+                    </p>
+                  </div>
                 </div>
               </div>
 
@@ -323,30 +360,78 @@ export default function Resume() {
                 </p>
               </div>
 
-              {/* PDF Download Section */}
-              <div className="mb-8 mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-lg">
-                  {getText('resume.download', 'Download CV')}
+              {/* Downloads Section */}
+              <div className="mb-8">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 text-lg">
+                  {getText('resume.downloads', 'Downloads')}
                 </h2>
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="relative group cursor-pointer" onClick={handleDownloadPDF}>
-                    <div className="relative overflow-hidden rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-700 group-hover:border-primary-500 transition-all duration-300 group-hover:shadow-xl">
-                      <img 
-                        src={cvThumbnail} 
-                        alt="Tony Rodriguez CV Preview" 
-                        className="w-48 h-auto object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white dark:bg-gray-800 rounded-full p-3 shadow-lg">
-                          <Download className="h-6 w-6 text-primary-600" />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Resume */}
+                  <div className="flex flex-col items-center">
+                    <div className="relative group cursor-pointer" onClick={() => handleDownloadPDF('resume')}>
+                      <div className="relative overflow-hidden rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-700 group-hover:border-primary-500 transition-all duration-300 group-hover:shadow-xl">
+                        <img 
+                          src={(language === 'es' || language === 'ca') ? cvThumbnailEs : cvThumbnail} 
+                          alt="Tony Rodriguez CV Preview" 
+                          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white dark:bg-gray-800 rounded-full p-3 shadow-lg">
+                            <Download className="h-6 w-6 text-primary-600" />
+                          </div>
                         </div>
                       </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 text-center font-medium">
+                        {getText('resume.downloadResume', 'Download Resume')}
+                      </p>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 text-center">
-                      {getText('resume.downloadText', 'Click to download PDF version')}
-                    </p>
+                  </div>
+
+                  {/* General Assembly Certificate */}
+                  <div className="flex flex-col items-center">
+                    <div className="relative group cursor-pointer" onClick={() => handleDownloadPDF('ga')}>
+                      <div className="relative overflow-hidden rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-700 group-hover:border-primary-500 transition-all duration-300 group-hover:shadow-xl">
+                        <img 
+                          src={gaThumbnail} 
+                          alt="General Assembly Certificate Preview" 
+                          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white dark:bg-gray-800 rounded-full p-3 shadow-lg">
+                            <Download className="h-6 w-6 text-primary-600" />
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 text-center font-medium">
+                        {getText('resume.downloadGA', 'Download General Assembly Certificate')}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Harvard AI Certificate */}
+                  <div className="flex flex-col items-center">
+                    <div className="relative group cursor-pointer" onClick={() => handleDownloadPDF('harvard')}>
+                      <div className="relative overflow-hidden rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-700 group-hover:border-primary-500 transition-all duration-300 group-hover:shadow-xl">
+                        <img 
+                          src={harvardAIThumbnail} 
+                          alt="Harvard AI Certificate Preview" 
+                          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white dark:bg-gray-800 rounded-full p-3 shadow-lg">
+                            <Download className="h-6 w-6 text-primary-600" />
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 text-center font-medium">
+                        {getText('resume.downloadHarvardAI', 'Download Harvard AI Certificate')}
+                      </p>
+                    </div>
                   </div>
                 </div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-4 text-center">
+                  {getText('resume.downloadText', 'Click to download PDF')}
+                </p>
               </div>
 
             </div>

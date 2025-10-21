@@ -15,8 +15,8 @@ export const profile = {
   currentBio: "I'm a full stack software engineer who recently graduated from General Assembly, after several years leading projects and running client-centered businesses in real estate and construction. At GA I built four complete applications: my final project, TradeLab, was highlighted by my instructor as one of the best he had seen, and I found that what drives me most is using code creatively to solve problems. I enjoy looking beyond the obvious, understanding what people really need, and turning that into innovative, practical solutions. I bring curiosity, creativity, and a collaborative spirit to every project, and I'm excited to keep growing as an engineer while building products that genuinely improve the way people live and work.",
   skills: {
     languages: ['JavaScript', 'Python', 'SQL'],
-    frameworks: ['React', 'Node.js', 'Express', 'Django', 'MongoDB', 'PostgreSQL'],
-    tools: ['Git', 'GitHub', 'REST APIs', 'Postman', 'Netlify', 'Heroku', 'Neon.tech', 'Agile/Scrum'],
+    frameworks: ['React', 'Node.js', 'Express', 'Django', 'MongoDB', 'PostgreSQL', 'TensorFlow', 'scikit-learn', 'pandas', 'numpy'],
+    tools: ['Git', 'GitHub', 'REST APIs', 'Postman', 'Netlify', 'Heroku', 'Neon.tech', 'Agile/Scrum', 'OpenCV', 'NLTK'],
     soft: ['creativity', 'problemSolving', 'projectManagement', 'leadership', 'clientRelations']
   },
   experience: [
@@ -25,8 +25,8 @@ export const profile = {
       company: 'General Assembly (generalassemb.ly)',
       position: 'Software Engineering Bootcamp',
       period: 'Jun 2025 – Sep 2025',
-      description: 'Built 4 projects (solo and group) applying agile workflows, Git version control, and modern stacks. Strengthened problem-solving, debugging, and collaboration skills through daily coding challenges and peer programming.',
-      stack: ['JavaScript', 'React', 'Node.js', 'Python', 'Django', 'MongoDB'],
+      description: 'Comprehensive Software Engineering Bootcamp covering full-stack development with modern technologies. Front-end: Built responsive UIs using React with components, state management (useState), interactive forms, and server communication (useEffect). Structured semantic HTML and responsive CSS ensuring accessibility and SEO. Created dynamic experiences with JavaScript and DOM events. Back-end: Developed secure server-side applications using Node.js, Express, and Django following RESTful principles. Implemented CRUD operations and relationships using PostgreSQL and MongoDB with data optimization and ERDs. Enabled API communication and token-based authentication. Development practices: UNIX command-line, Git/GitHub version control, MVC architecture, asynchronous programming, TDD, debugging, and technical documentation. Gained foundational CS knowledge in algorithms, data structures, and Big O Notation analysis.',
+      stack: ['JavaScript', 'React', 'Node.js', 'Express', 'Python', 'Django', 'PostgreSQL', 'MongoDB', 'REST APIs', 'Git/GitHub', 'UNIX', 'TDD'],
       url: 'https://generalassemb.ly/'
     },
     {
@@ -49,6 +49,13 @@ export const profile = {
     }
   ],
   education: [
+    {
+      id: 'harvard',
+      institution: 'Harvard University (CS50)',
+      degree: 'Introduction to Artificial Intelligence with Python',
+      period: '2025',
+      description: 'Comprehensive program covering search algorithms, machine learning, neural networks, and natural language processing using Python.'
+    },
     {
       id: 'generalassembly',
       institution: 'General Assembly',

@@ -34,7 +34,7 @@ export const translations = {
       },
       about: {
         title: 'From construction entrepreneur to Software Engineer',
-        description: "At General Assembly, I stood out for consistently going beyond project requirements, adding creative, functional, and product-oriented features that elevated each build. My final project, TradeLab, was publicly recognized by my instructor as one of the best projects he had ever seen in his years of teaching at GA.",
+        description: "At General Assembly, I stood out for consistently going beyond project requirements, adding creative, functional, and product-oriented features that elevated each build. My final project, TradeLab, was publicly recognized by my instructor as one of the best projects he had ever seen in his years of teaching at GA. I continue to expand my knowledge through ongoing study, with a particular passion for Artificial Intelligence and its potential to transform how we solve complex problems.",
         moreAboutMe: 'More about me'
       },
       skills: {
@@ -95,10 +95,10 @@ export const translations = {
     about: {
       hero: {
         title: 'About Me',
-        description1: "I'm a Software Engineer with a strong foundation in JavaScript, React, Node.js, Python, Django, MongoDB, and PostgreSQL, and experience deploying applications on Netlify, Heroku, and Render. My journey into tech came after years of running client-centered businesses in real estate and construction, where I learned how to turn ideas into practical solutions that people actually use.",
-        description2: "At General Assembly's immersive Software Engineering Bootcamp, I delivered four complete applications. In each project, I went beyond the requirements, adding creative and product-oriented features. My final project, TradeLab, a trading strategy backtesting platform, was recognized by my instructor as one of the best projects he had ever seen in his years of teaching.",
-        description3: "What drives me most is solving problems with creativity and precision. I bring an entrepreneurial mindset, a product-driven perspective, and resilience built through real-world challenges. Whether working solo or in teams, I focus on creating scalable, user-friendly products that deliver real value.",
-        description4: "I'm excited to keep growing as an engineer while contributing to projects that improve the way people live and work."
+        description1: "I'm a Software Engineer with a strong foundation in JavaScript, React, Node.js, Python, Django, MongoDB, and PostgreSQL — experienced in deploying applications on Netlify, Heroku, and Render. My path into tech came after years leading client-focused businesses in real estate and construction, where I learned how to transform complex needs into intuitive, high-impact solutions.",
+        description2: "After graduating from General Assembly's immersive Software Engineering Bootcamp, I built four complete applications that combined clean code with product thinking. My final project, TradeLab, a trading strategy backtesting platform, was highlighted by my instructor as one of the best he had ever seen.",
+        description3: "Recently, I deepened my technical scope by completing Harvard's CS50 Introduction to Artificial Intelligence with Python, exploring algorithms for search, learning, and decision-making. This opened a new layer of curiosity for how AI can enhance human creativity, optimize systems, and make technology feel more intelligent and human-centered.",
+        description4: "What drives me most is solving problems through clarity, creativity, and precision. I bring an entrepreneurial mindset, a product-driven perspective, and resilience built through real-world challenges. Whether working solo or in teams, I focus on creating scalable, user-friendly products that genuinely improve the way people live and work."
       },
       technical: {
         title: 'Technical Expertise',
@@ -380,11 +380,11 @@ export const translations = {
       title: 'Resume',
       subtitle: 'A comprehensive overview of my experience, skills and professional achievements.',
       aboutMe: 'About Me',
-      aboutMeContent: "I'm a full stack software engineer who recently graduated from General Assembly, after several years leading projects and running client-centered businesses in real estate and construction. At GA I built four complete applications: my final project, TradeLab, was highlighted by my instructor as one of the best he had seen, and I found that what drives me most is using code creatively to solve problems. I enjoy looking beyond the obvious, understanding what people really need, and turning that into innovative, practical solutions. I bring curiosity, creativity, and a collaborative spirit to every project, and I'm excited to keep growing as an engineer while building products that genuinely improve the way people live and work.",
+      aboutMeContent: "I'm a full stack software engineer passionate about solving real-world problems through technology and intelligent design. Recently, I've expanded my expertise into Artificial Intelligence after completing Harvard's CS50 Introduction to AI with Python, where I built and trained algorithms for search, classification, and learning. I'm especially fascinated by how AI can enhance human creativity and decision-making. I bring curiosity, creativity, and a product-driven mindset to every project — always aiming to build tools that make people's lives easier, smarter, and more enjoyable.",
       experience: 'Professional Experience',
       experienceDetails: {
         generalassembly: {
-          description: 'Built 4 projects (solo and group) applying agile workflows, Git version control, and modern stacks. Strengthened problem-solving, debugging, and collaboration skills through daily coding challenges and peer programming.'
+          description: 'Comprehensive Software Engineering Bootcamp covering full-stack development with modern technologies. Front-end: Built responsive UIs using React with components, state management (useState), interactive forms, and server communication (useEffect). Structured semantic HTML and responsive CSS ensuring accessibility and SEO. Created dynamic experiences with JavaScript and DOM events. Back-end: Developed secure server-side applications using Node.js, Express, and Django following RESTful principles. Implemented CRUD operations and relationships using PostgreSQL and MongoDB with data optimization and ERDs. Enabled API communication and token-based authentication. Development practices: UNIX command-line, Git/GitHub version control, MVC architecture, asynchronous programming, TDD, debugging, and technical documentation. Gained foundational CS knowledge in algorithms, data structures, and Big O Notation analysis.'
         },
         totalhomes: {
           description: 'Founded and managed a boutique construction and renovation company, delivering high-quality residential projects. Led cross-functional teams, budgets, and timelines from concept to delivery. Known for creativity and client focus: translated customer needs into innovative, functional designs. Developed digital workflows to improve transparency and efficiency in projects.'
@@ -407,12 +407,18 @@ export const translations = {
       },
       keySkills: 'Key Skills',
       achievements: 'Key Achievements',
-      achievement1: 'Final project TradeLab recognized as one of the best by General Assembly instructor',
-      achievement2: '3 out of 4 projects highlighted during Software Engineering bootcamp',
-      achievement3: '6 years of experience leading teams and managing complex projects at TotalHomes',
-      achievement4: 'Successful founder with exceptional reputation in the construction sector',
+      achievement1: 'Completed Harvard CS50 Introduction to Artificial Intelligence with Python, developing practical AI models for real-world applications',
+      achievement2: 'Final project TradeLab recognized as one of the best by General Assembly instructor',
+      achievement3: '3 out of 4 projects highlighted during Software Engineering bootcamp',
+      achievement4: '6 years of experience leading teams and managing complex projects at TotalHomes',
+      achievement5: 'Successful founder with exceptional reputation in the construction sector',
       educationTitle: 'Education',
       education: {
+        harvard: {
+          degree: 'Introduction to Artificial Intelligence with Python',
+          institution: 'Harvard University (CS50)',
+          description: 'Comprehensive program covering search algorithms, machine learning, neural networks, and natural language processing using Python.'
+        },
         generalassembly: {
           degree: 'Software Engineering Bootcamp',
           institution: 'General Assembly',
@@ -438,9 +444,13 @@ export const translations = {
       interestsContent: "I am passionate about projects that put people first: whether through technology, design, or community. I enjoy exploring how digital solutions can make everyday life easier and more enjoyable, while also taking interest in wellbeing, creativity, and personal growth. My goal is always to combine innovation with a genuine desire to improve people's lives.",
       spanish: 'Spanish',
       english: 'English',
+      catalan: 'Catalan',
       native: 'Native',
       advanced: 'Fluent',
-      download: 'Download Resume',
+      downloads: 'Downloads',
+      downloadResume: 'Download Resume',
+      downloadHarvardAI: 'Download Harvard AI Certificate',
+      downloadGA: 'Download General Assembly Certificate',
       downloadText: 'Click to download PDF'
     },
 
@@ -536,7 +546,7 @@ export const translations = {
       },
       about: {
         title: 'De emprendedor de construcción a Software Engineer',
-        description: 'En General Assembly, me destaqué por ir consistentemente más allá de los requisitos del proyecto, añadiendo características creativas, funcionales y orientadas al producto que elevaron cada construcción. Mi proyecto final, TradeLab, fue públicamente reconocido por mi instructor como uno de los mejores proyectos que había visto en sus años de enseñanza en GA.',
+        description: 'En General Assembly, me destaqué por ir consistentemente más allá de los requisitos del proyecto, añadiendo características creativas, funcionales y orientadas al producto que elevaron cada construcción. Mi proyecto final, TradeLab, fue públicamente reconocido por mi instructor como uno de los mejores proyectos que había visto en sus años de enseñanza en GA. Continúo expandiendo mi conocimiento a través del estudio continuo, con una pasión particular por la Inteligencia Artificial y su potencial para transformar cómo resolvemos problemas complejos.',
         moreAboutMe: 'Más sobre mí'
       },
       skills: {
@@ -597,10 +607,10 @@ export const translations = {
     about: {
       hero: {
         title: 'Sobre Mí',
-        description1: 'Soy un Software Engineer con una sólida base en JavaScript, React, Node.js, Python, Django, MongoDB y PostgreSQL, y experiencia desplegando aplicaciones en Netlify, Heroku y Render. Mi camino hacia la tecnología comenzó después de años dirigiendo negocios centrados en el cliente en obra nueva y reformas, donde aprendí a convertir ideas en soluciones prácticas que la gente realmente usa.',
-        description2: 'En el Bootcamp inmersivo de Software Engineering de General Assembly, entregué cuatro aplicaciones completas. En cada proyecto, fui más allá de los requisitos, añadiendo funcionalidades creativas y orientadas al producto. Mi proyecto final, TradeLab, una plataforma de backtesting de estrategias de trading, fue reconocido por mi instructor como uno de los mejores proyectos que había visto en sus años de enseñanza.',
-        description3: 'Lo que más me motiva es resolver problemas con creatividad y precisión. Traigo una mentalidad emprendedora, una perspectiva orientada al producto y resiliencia construida a través de desafíos del mundo real. Ya sea trabajando solo o en equipos, me enfoco en crear productos escalables y fáciles de usar que aporten valor real.',
-        description4: 'Estoy emocionado de seguir creciendo como ingeniero mientras contribuyo a proyectos que mejoran la forma en que las personas viven y trabajan.'
+        description1: 'Soy un Software Engineer con una sólida base en JavaScript, React, Node.js, Python, Django, MongoDB y PostgreSQL — con experiencia desplegando aplicaciones en Netlify, Heroku y Render. Mi camino hacia la tecnología comenzó después de años dirigiendo negocios centrados en el cliente en bienes raíces y construcción, donde aprendí a transformar necesidades complejas en soluciones intuitivas y de alto impacto.',
+        description2: 'Después de graduarme del Bootcamp inmersivo de Software Engineering de General Assembly, construí cuatro aplicaciones completas que combinaron código limpio con pensamiento de producto. Mi proyecto final, TradeLab, una plataforma de backtesting de estrategias de trading, fue destacado por mi instructor como uno de los mejores que había visto.',
+        description3: 'Recientemente, profundicé mi alcance técnico completando la Introducción a la Inteligencia Artificial con Python de Harvard CS50, explorando algoritmos para búsqueda, aprendizaje y toma de decisiones. Esto abrió una nueva capa de curiosidad sobre cómo la IA puede mejorar la creatividad humana, optimizar sistemas y hacer que la tecnología se sienta más inteligente y centrada en el ser humano.',
+        description4: 'Lo que más me motiva es resolver problemas a través de claridad, creatividad y precisión. Traigo una mentalidad emprendedora, una perspectiva orientada al producto y resiliencia construida a través de desafíos del mundo real. Ya sea trabajando solo o en equipos, me enfoco en crear productos escalables y fáciles de usar que genuinamente mejoren la forma en que las personas viven y trabajan.'
       },
       technical: {
         title: 'Experiencia Técnica',
@@ -909,11 +919,11 @@ export const translations = {
       title: 'CV',
       subtitle: 'Una visión integral de mi experiencia, habilidades y logros profesionales.',
       aboutMe: 'Sobre Mí',
-      aboutMeContent: 'Soy un ingeniero de software full stack que recientemente se graduó de General Assembly, después de varios años liderando proyectos y dirigiendo negocios centrados en el cliente en bienes raíces y construcción. En GA construí cuatro aplicaciones completas: mi proyecto final, TradeLab, fue destacado por mi instructor como uno de los mejores que había visto, y descubrí que lo que más me motiva es usar el código de manera creativa para resolver problemas. Disfruto mirar más allá de lo obvio, entender lo que la gente realmente necesita, y convertir eso en soluciones innovadoras y prácticas. Aporto curiosidad, creatividad y un espíritu colaborativo a cada proyecto, y estoy emocionado de seguir creciendo como ingeniero mientras construyo productos que genuinamente mejoran la forma en que las personas viven y trabajan.',
+      aboutMeContent: 'Soy un ingeniero de software full stack apasionado por resolver problemas del mundo real a través de la tecnología y el diseño inteligente. Recientemente, he expandido mi experiencia hacia la Inteligencia Artificial después de completar la Introducción a la IA con Python de Harvard CS50, donde construí y entrené algoritmos para búsqueda, clasificación y aprendizaje. Me fascina especialmente cómo la IA puede mejorar la creatividad y la toma de decisiones humanas. Aporto curiosidad, creatividad y una mentalidad orientada al producto a cada proyecto — siempre buscando construir herramientas que hagan la vida de las personas más fácil, inteligente y agradable.',
       experience: 'Experiencia Profesional',
       experienceDetails: {
         generalassembly: {
-          description: 'Construí 4 proyectos (individuales y grupales) aplicando flujos de trabajo ágiles, control de versiones Git y stacks modernos. Fortalecí habilidades de resolución de problemas, depuración y colaboración a través de desafíos de codificación diarios y programación en pareja.'
+          description: 'Bootcamp integral de Ingeniería de Software cubriendo desarrollo full-stack con tecnologías modernas. Front-end: Construí interfaces de usuario responsivas usando React con componentes, gestión de estado (useState), formularios interactivos y comunicación con servidor (useEffect). Estructuré HTML semántico y CSS responsivo asegurando accesibilidad y SEO. Creé experiencias dinámicas con JavaScript y eventos DOM. Back-end: Desarrollé aplicaciones seguras del lado del servidor usando Node.js, Express y Django siguiendo principios RESTful. Implementé operaciones CRUD y relaciones usando PostgreSQL y MongoDB con optimización de datos y ERDs. Habilitó comunicación API y autenticación basada en tokens. Prácticas de desarrollo: línea de comandos UNIX, control de versiones Git/GitHub, arquitectura MVC, programación asíncrona, TDD, debugging y documentación técnica. Adquirí conocimientos fundamentales de CS en algoritmos, estructuras de datos y análisis de Big O Notation.'
         },
         totalhomes: {
           description: 'Fundé y gestioné una empresa boutique de construcción y renovación, entregando proyectos residenciales de alta calidad. Lideré equipos multifuncionales, presupuestos y cronogramas desde el concepto hasta la entrega. Conocido por la creatividad y el enfoque en el cliente: traduje las necesidades del cliente en diseños innovadores y funcionales. Desarrollé flujos de trabajo digitales para mejorar la transparencia y eficiencia en los proyectos.'
@@ -936,12 +946,18 @@ export const translations = {
       },
       keySkills: 'Habilidades Clave',
       achievements: 'Logros Clave',
-      achievement1: 'Proyecto final TradeLab reconocido como uno de los mejores por el instructor de General Assembly',
-      achievement2: '3 de 4 proyectos destacados durante el bootcamp de Software Engineering',
-      achievement3: '6 años de experiencia liderando equipos y gestionando proyectos complejos en TotalHomes',
-      achievement4: 'Fundador exitoso con reputación excepcional en el sector de la construcción',
+      achievement1: 'Completé la Introducción a la Inteligencia Artificial con Python de Harvard CS50, desarrollando modelos de IA prácticos para aplicaciones del mundo real',
+      achievement2: 'Proyecto final TradeLab reconocido como uno de los mejores por el instructor de General Assembly',
+      achievement3: '3 de 4 proyectos destacados durante el bootcamp de Software Engineering',
+      achievement4: '6 años de experiencia liderando equipos y gestionando proyectos complejos en TotalHomes',
+      achievement5: 'Fundador exitoso con reputación excepcional en el sector de la construcción',
       educationTitle: 'Educación',
       education: {
+        harvard: {
+          degree: 'Introducción a la Inteligencia Artificial con Python',
+          institution: 'Universidad de Harvard (CS50)',
+          description: 'Programa integral que cubre algoritmos de búsqueda, machine learning, redes neuronales y procesamiento del lenguaje natural usando Python.'
+        },
         generalassembly: {
           degree: 'Bootcamp de Ingeniería de Software',
           institution: 'General Assembly',
@@ -967,9 +983,13 @@ export const translations = {
       interestsContent: 'Me apasionan los proyectos que ponen a las personas primero: ya sea a través de la tecnología, el diseño o la comunidad. Disfruto explorando cómo las soluciones digitales pueden hacer la vida cotidiana más fácil y agradable, mientras también me intereso en el bienestar, la creatividad y el crecimiento personal. Mi objetivo es siempre combinar la innovación con un deseo genuino de mejorar la vida de las personas.',
       spanish: 'Español',
       english: 'Inglés',
+      catalan: 'Catalán',
       native: 'Nativo',
       advanced: 'Fluido',
-      download: 'Descargar CV',
+      downloads: 'Descargas',
+      downloadResume: 'Descargar CV',
+      downloadHarvardAI: 'Descargar Certificado Harvard IA',
+      downloadGA: 'Descargar Certificado General Assembly',
       downloadText: 'Haz clic para descargar PDF'
     },
 
@@ -1065,7 +1085,7 @@ export const translations = {
       },
       about: {
         title: 'D\'emprenedor de construcció a Software Engineer',
-        description: 'A General Assembly, em vaig destacar per anar consistentment més enllà dels requisits de cada projecte, afegint característiques creatives, funcionals i orientades al producte que van elevar cada construcció. El meu projecte final, TradeLab, va ser públicament reconegut pel meu instructor com un dels millors projectes que havia vist en els seus anys d\'ensenyament a GA.',
+        description: 'A General Assembly, em vaig destacar per anar consistentment més enllà dels requisits de cada projecte, afegint característiques creatives, funcionals i orientades al producte que van elevar cada construcció. El meu projecte final, TradeLab, va ser públicament reconegut pel meu instructor com un dels millors projectes que havia vist en els seus anys d\'ensenyament a GA. Continúo expandint el meu coneixement a través de l\'estudi continu, amb una passió particular per la Intel·ligència Artificial i el seu potencial per transformar com resolem problemes complexos.',
         moreAboutMe: 'Més sobre mí'
       },
       skills: {
@@ -1126,10 +1146,10 @@ export const translations = {
     about: {
       hero: {
         title: 'Sobre Mi',
-        description1: 'Soc un Software Engineer amb una base sòlida en JavaScript, React, Node.js, Python, Django, MongoDB i PostgreSQL, i experiència desplegant aplicacions a Netlify, Heroku i Render. El meu camí cap a la tecnologia va començar després d\'anys dirigint negocis centrats en el client en béns immobles i construcció, on vaig aprendre a convertir idees en solucions pràctiques que la gent realment usa.',
-        description2: 'Al Bootcamp immersiu de Software Engineering de General Assembly, vaig lliurar quatre aplicacions completes. En cada projecte, vaig anar més enllà dels requisits, afegint funcionalitats creatives i orientades al producte. El meu projecte final, TradeLab, una plataforma de backtesting d\'estratègies de trading, va ser reconegut pel meu instructor com un dels millors projectes que havia vist en els seus anys d\'ensenyament.',
-        description3: 'El que més em motiva és resoldre problemes amb creativitat i precisió. Porto una mentalitat emprenedora, una perspectiva orientada al producte i resiliència construïda a través de desafiaments del món real. Ja sigui treballant sol o en equips, em centro en crear productes escalables i fàcils d\'usar que aportin valor real.',
-        description4: 'Estic emocionat de seguir creixent com a enginyer mentre contribueixo a projectes que milloren la forma en què les persones viuen i treballen.'
+        description1: 'Soc un Software Engineer amb una base sòlida en JavaScript, React, Node.js, Python, Django, MongoDB i PostgreSQL — amb experiència desplegant aplicacions a Netlify, Heroku i Render. El meu camí cap a la tecnologia va començar després d\'anys dirigint negocis centrats en el client en béns immobles i construcció, on vaig aprendre a transformar necessitats complexes en solucions intuïtives i d\'alt impacte.',
+        description2: 'Després de graduar-me del Bootcamp immersiu de Software Engineering de General Assembly, vaig construir quatre aplicacions completes que van combinar codi net amb pensament de producte. El meu projecte final, TradeLab, una plataforma de backtesting d\'estratègies de trading, va ser destacat pel meu instructor com un dels millors que havia vist.',
+        description3: 'Recentment, vaig aprofundir el meu abast tècnic completant la Introducció a la Intel·ligència Artificial amb Python de Harvard CS50, explorant algoritmes per a cerca, aprenentatge i presa de decisions. Això va obrir una nova capa de curiositat sobre com la IA pot millorar la creativitat humana, optimitzar sistemes i fer que la tecnologia es senti més intel·ligent i centrada en l\'ésser humà.',
+        description4: 'El que més em motiva és resoldre problemes a través de claredat, creativitat i precisió. Porto una mentalitat emprenedora, una perspectiva orientada al producte i resiliència construïda a través de desafiaments del món real. Ja sigui treballant sol o en equips, em centro en crear productes escalables i fàcils d\'usar que genuïnament millorin la forma en què les persones viuen i treballen.'
       },
       technical: {
         title: 'Experiència Tècnica',
@@ -1403,11 +1423,11 @@ export const translations = {
       title: 'CV',
       subtitle: 'Una visió integral de la meva experiència, habilitats i assoliments professionals.',
       aboutMe: 'Sobre Mi',
-      aboutMeContent: 'Soc un enginyer de programari full stack que recentment es va graduar de General Assembly, després de diversos anys liderant projectes i dirigint negocis centrats en el client en béns immobles i construcció. A GA vaig construir quatre aplicacions completes: el meu projecte final, TradeLab, va ser destacat pel meu instructor com un dels millors que havia vist, i vaig descobrir que el que més em motiva és usar el codi de manera creativa per resoldre problemes. Gaudeixo mirant més enllà de l\'obvi, entendre el que la gent realment necessita, i convertir això en solucions innovadores i pràctiques. Aporto curiositat, creativitat i un esperit col·laboratiu a cada projecte, i estic emocionat de seguir creixent com a enginyer mentre construeixo productes que genuïnament milloren la forma en què les persones viuen i treballen.',
+      aboutMeContent: 'Soc un enginyer de programari full stack apassionat per resoldre problemes del món real a través de la tecnologia i el disseny intel·ligent. Recentment, he expandit la meva experiència cap a la Intel·ligència Artificial després de completar la Introducció a la IA amb Python de Harvard CS50, on vaig construir i entrenar algoritmes per a cerca, classificació i aprenentatge. M\'apassiona especialment com la IA pot millorar la creativitat i la presa de decisions humanes. Aporto curiositat, creativitat i una mentalitat orientada al producte a cada projecte — sempre buscant construir eines que facin la vida de les persones més fàcil, intel·ligent i agradable.',
       experience: 'Experiència Professional',
       experienceDetails: {
         generalassembly: {
-          description: 'Vaig construir 4 projectes (individuals i grupals) aplicant fluxos de treball àgils, control de versions Git i stacks moderns. Vaig enfortir habilitats de resolució de problemes, depuració i col·laboració a través de desafiaments de codificació diaris i programació en parella.'
+          description: 'Bootcamp integral d\'Enginyeria de Programari cobrint desenvolupament full-stack amb tecnologies modernes. Front-end: Vaig construir interfícies d\'usuari responsives usant React amb components, gestió d\'estat (useState), formularis interactius i comunicació amb servidor (useEffect). Vaig estructurar HTML semàntic i CSS responsiu assegurant accessibilitat i SEO. Vaig crear experiències dinàmiques amb JavaScript i esdeveniments DOM. Back-end: Vaig desenvolupar aplicacions segures del costat del servidor usant Node.js, Express i Django seguint principis RESTful. Vaig implementar operacions CRUD i relacions usant PostgreSQL i MongoDB amb optimització de dades i ERDs. Vaig habilitar comunicació API i autenticació basada en tokens. Pràctiques de desenvolupament: línia de comandes UNIX, control de versions Git/GitHub, arquitectura MVC, programació asíncrona, TDD, debugging i documentació tècnica. Vaig adquirir coneixements fonamentals de CS en algoritmes, estructures de dades i anàlisi de Big O Notation.'
         },
         totalhomes: {
           description: 'Vaig fundar i gestionar una empresa boutique de construcció i renovació, lliurant projectes residencials d\'alta qualitat. Vaig liderar equips multifuncionals, pressupostos i cronogrames des del concepte fins a la lliura. Conegut per la creativitat i l\'enfocament en el client: vaig traduir les necessitats del client en dissenys innovadors i funcionals. Vaig desenvolupar fluxos de treball digitals per millorar la transparència i eficiència en els projectes.'
@@ -1430,12 +1450,18 @@ export const translations = {
       },
       keySkills: 'Habilitats Clau',
       achievements: 'Assoliments Clau',
-      achievement1: 'Projecte final TradeLab reconegut com un dels millors pel instructor de General Assembly',
-      achievement2: '3 de 4 projectes destacats durant el bootcamp de Software Engineering',
-      achievement3: '6 anys d\'experiència liderant equips i gestionant projectes complexos a TotalHomes',
-      achievement4: 'Fundador exitós amb reputació excepcional en el sector de la construcció',
+      achievement1: 'Vaig completar la Introducció a la Intel·ligència Artificial amb Python de Harvard CS50, desenvolupant models d\'IA pràctics per a aplicacions del món real',
+      achievement2: 'Projecte final TradeLab reconegut com un dels millors pel instructor de General Assembly',
+      achievement3: '3 de 4 projectes destacats durant el bootcamp de Software Engineering',
+      achievement4: '6 anys d\'experiència liderant equips i gestionant projectes complexos a TotalHomes',
+      achievement5: 'Fundador exitós amb reputació excepcional en el sector de la construcció',
       educationTitle: 'Educació',
       education: {
+        harvard: {
+          degree: 'Introducció a la Intel·ligència Artificial amb Python',
+          institution: 'Universitat de Harvard (CS50)',
+          description: 'Programa integral que cobreix algoritmes de cerca, machine learning, xarxes neuronals i processament del llenguatge natural usant Python.'
+        },
         generalassembly: {
           degree: 'Bootcamp d\'Enginyeria de Programari',
           institution: 'General Assembly',
@@ -1461,9 +1487,13 @@ export const translations = {
       interestsContent: 'M\'apassiona els projectes que posen les persones primer: ja sigui a través de la tecnologia, el disseny o la comunitat. Gaudeixo explorant com les solucions digitals poden fer la vida quotidiana més fàcil i agradable, mentre també m\'interesso en el benestar, la creativitat i el creixement personal. El meu objectiu és sempre combinar la innovació amb un desig genuí de millorar la vida de les persones.',
       spanish: 'Espanyol',
       english: 'Anglès',
+      catalan: 'Català',
       native: 'Natiu',
       advanced: 'Fluït',
-      download: 'Descarregar CV',
+      downloads: 'Descàrregues',
+      downloadResume: 'Descarregar CV',
+      downloadHarvardAI: 'Descarregar Certificat Harvard IA',
+      downloadGA: 'Descarregar Certificat General Assembly',
       downloadText: 'Fes clic per descarregar PDF'
     },
 
