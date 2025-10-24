@@ -1,15 +1,20 @@
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { ExternalLink, Github, Play, Brain } from 'lucide-react'
 import tttIcon from '../assets/tictactoe.png'
 import msIcon from '../assets/buscaminas.png'
 import nimIcon from '../assets/nim.png'
 import tetrisIcon from '../assets/ttris.png'
+import parallaxBg from '../assets/04.png'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../hooks/useLanguage.jsx'
 
 export default function AiLab() {
   const { t } = useLanguage()
-
+  
+  // Parallax effect setup
+  const { scrollYProgress } = useScroll()
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '25%'])
+  
   // Local neon helpers for buttons
   const neonSolidButtonStyle = (from, to, border) => ({
     backgroundImage: `linear-gradient(135deg, ${from} 0%, ${to} 100%)`,
@@ -96,8 +101,25 @@ export default function AiLab() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 pt-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="min-h-screen relative pt-20 overflow-hidden">
+      {/* Parallax Background */}
+      <motion.div
+        style={{ y }}
+        className="absolute inset-0 w-full h-[120%] z-0"
+      >
+        <img 
+          src={parallaxBg}
+          alt="Background"
+          className="w-full h-full object-cover"
+          style={{
+            filter: 'brightness(0.3) blur(2px)'
+          }}
+        />
+      </motion.div>
+      
+      {/* Content */}
+      <div className="relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -130,7 +152,7 @@ export default function AiLab() {
                 key={project.id}
                 variants={itemVariants}
                 whileHover={{ y: -5 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
               >
                 {/* Icon */}
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl mb-6">
@@ -220,7 +242,7 @@ export default function AiLab() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-16 text-center"
         >
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
+          <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
               {t('aiLab.comingSoon.title')}
             </h2>
@@ -263,6 +285,7 @@ export default function AiLab() {
             </a>
           </div>
         </motion.div>
+        </div>
       </div>
     </div>
   )
