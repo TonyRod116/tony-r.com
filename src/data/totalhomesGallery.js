@@ -113,9 +113,9 @@ export const totalhomesGallery = [
   },
   {
     id: 'th-photo-17',
-    title: 'Stone vanity suite',
-    description: 'Double vanity carved from travertine with arched mirrors.',
-    image: 'https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996541/298211443_384911460253807_1672654646303517379_n_18242791342117740_qomupl.jpg',
+    title: 'Contemporary living vignette',
+    description: 'Staged open-plan living room with layered textiles and soft lighting.',
+    image: 'https://www.totalhomes.es/wp-content/uploads/2021/07/Imagen1-1536x1215.jpg',
     year: '2023'
   },
   {
