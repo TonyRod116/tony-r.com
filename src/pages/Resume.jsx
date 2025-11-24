@@ -13,11 +13,32 @@ import gaPdf from '../assets/General_Assembly.pdf'
 import gaThumbnail from '../assets/GA.png'
 import { totalhomesGallery } from '../data/totalhomesGallery'
 
+const skillFallbackLabels = {
+  strategicPlanning: 'Strategic Planning',
+  budgetManagement: 'Budget Management',
+  operationalEfficiency: 'Operational Efficiency',
+  endToEndDelivery: 'End-to-End Project Delivery',
+  riskManagement: 'Risk Management',
+  qualityAssurance: 'Quality Assurance & Standards Compliance',
+  vendorCoordination: 'Vendor & Supplier Coordination',
+  stakeholderManagement: 'Stakeholder Management',
+  negotiationConflictResolution: 'Negotiation & Conflict Resolution',
+  clientDiscovery: 'Client Discovery & Needs Analysis',
+  crossFunctionalLeadership: 'Cross-Functional Team Leadership',
+  digitalWorkflow: 'Digital Workflow Implementation',
+  ambiguousNeedsToSolutions: 'Turning Ambiguous Needs into Concrete Solutions'
+}
+
 export default function Resume() {
   const { t, language } = useLanguage()
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null)
 
   const totalGalleryItems = totalhomesGallery.length
+  const galleryMidpoint = Math.ceil(totalGalleryItems / 2)
+  const galleryRows = [
+    totalhomesGallery.slice(0, galleryMidpoint),
+    totalhomesGallery.slice(galleryMidpoint)
+  ]
   const currentPhoto = selectedPhotoIndex !== null ? totalhomesGallery[selectedPhotoIndex] : null
 
   const openPhoto = (index) => setSelectedPhotoIndex(index)
@@ -181,8 +202,32 @@ export default function Resume() {
                   {getText('resume.experience', 'Experience')}
                 </h2>
                 <div className="space-y-6 space-y-4">
-                  {profile.experience.map((exp, index) => (
-                    <div key={exp.company} className="border-l-2 border-primary-200 dark:border-primary-800 pl-4 pl-3">
+                  {profile.experience.map((exp) => {
+                    const hasStack = Array.isArray(exp.stack) && exp.stack.length > 0
+                    const keySkillsBlock = hasStack && (
+                      <div>
+                        <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">
+                          {getText('resume.keySkills', 'Key Skills')}:
+                        </h4>
+                        <div className="flex flex-wrap gap-1">
+                          {exp.stack.map((skill) => {
+                            const fallbackSkillLabel = skillFallbackLabels[skill] || skill
+                            const label = getText(`resume.skillsMap.${skill}`, fallbackSkillLabel)
+                            return (
+                              <span
+                                key={skill}
+                                className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 text-xs"
+                              >
+                                {label}
+                              </span>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )
+
+                    return (
+                      <div key={exp.company} className="border-l-2 border-primary-200 dark:border-primary-800 pl-4 pl-3">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
                         <div>
                           <h3 className="font-semibold text-lg text-base text-gray-900 dark:text-white">{exp.position}</h3>
@@ -227,23 +272,6 @@ export default function Resume() {
                       </p>
                       {exp.id === 'totalhomes' && (
                         <div className="space-y-5 mb-4">
-                          {exp.signatureSkills && (
-                            <div>
-                              <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">
-                                Signature Skills
-                              </h4>
-                              <div className="flex flex-wrap gap-2">
-                                {exp.signatureSkills.map((skill) => (
-                                  <span
-                                    key={skill}
-                                    className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
-                                  >
-                                    {skill}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                          )}
                           <div>
                             <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">
                               Selected Total Homes Builds
@@ -264,32 +292,23 @@ export default function Resume() {
                                     <p className="text-sm font-semibold text-gray-900 dark:text-white">
                                       {project.title}
                                     </p>
-                                    <p className="text-xs text-gray-600 dark:text-gray-300">
-                                      {project.description}
-                                    </p>
+                                    {(project.scope || project.description) && (
+                                      <p className="text-xs text-gray-600 dark:text-gray-300">
+                                        {project.scope || project.description}
+                                      </p>
+                                    )}
                                   </figcaption>
                                 </figure>
                               ))}
                             </div>
                           </div>
+                          {keySkillsBlock}
                         </div>
                       )}
-                      {exp.stack && exp.stack.length > 0 && (
-                        <div>
-                          <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">
-                            {getText('resume.keySkills', 'Key Skills')}:
-                          </h4>
-                          <div className="flex flex-wrap gap-1">
-                            {exp.stack.map((tech) => (
-                              <span key={tech} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 text-xs">
-                                {tech}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
+                      {exp.id !== 'totalhomes' && keySkillsBlock}
                     </div>
-                  ))}
+                    )
+                  })}
                 </div>
               </div>
 
@@ -409,26 +428,31 @@ export default function Resume() {
                     </span>
                   </div>
 
-                  <div className="overflow-x-auto pb-2 [-webkit-overflow-scrolling:touch]">
-                    <div className="flex gap-3 min-w-full">
-                      {totalhomesGallery.map((project, index) => (
-                        <button
-                          type="button"
-                          key={project.id}
-                          onClick={() => openPhoto(index)}
-                          className="group relative h-24 w-32 flex-shrink-0 overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
-                          aria-label={`${project.title} (${project.year})`}
-                        >
-                          <img
-                            src={project.image}
-                            alt={project.description || project.title}
-                            loading="lazy"
-                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                          />
-                          <span className="sr-only">{project.description}</span>
-                        </button>
-                      ))}
-                    </div>
+                  <div className="space-y-3">
+                    {galleryRows.map((row, rowIndex) => (
+                      <div key={`gallery-row-${rowIndex}`} className="flex gap-2">
+                        {row.map((project, index) => {
+                          const absoluteIndex = rowIndex === 0 ? index : galleryMidpoint + index
+                          return (
+                            <button
+                              type="button"
+                              key={project.id}
+                              onClick={() => openPhoto(absoluteIndex)}
+                              className="group relative flex-1 h-24 overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
+                              aria-label={`${project.title} (${project.year})`}
+                            >
+                              <img
+                                src={project.image}
+                                alt={project.description || project.title}
+                                loading="lazy"
+                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                              />
+                              <span className="sr-only">{project.description}</span>
+                            </button>
+                          )
+                        })}
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
