@@ -14,9 +14,9 @@ export const translations = {
     // Home Page
     home: {
       hero: {
-        titlePart1: 'Software Engineer',
-        titlePart2: 'with product vision',
-        subtitle: 'From construction entrepreneur to creating innovative digital solutions.',
+        titlePart1: 'Full Stack & AI',
+        titlePart2: 'Engineer',
+        subtitle: 'From Founder to Digital Product Builder',
         cta: {
           viewProjects: 'View Projects',
           viewResume: 'View Resume',
@@ -378,16 +378,16 @@ export const translations = {
     // Resume Page
     resume: {
       title: 'Resume',
-      subtitle: 'A comprehensive overview of my experience, skills and professional achievements.',
+      subtitle: 'Software Engineer with Product Vision | AI + Full Stack | Founder-Minded Problem Solver',
       aboutMe: 'About Me',
-      aboutMeContent: "I'm a full stack software engineer passionate about solving real-world problems through technology and intelligent design. Recently, I've expanded my expertise into Artificial Intelligence after completing Harvard's CS50 Introduction to AI with Python, where I built and trained algorithms for search, classification, and learning. I'm especially fascinated by how AI can enhance human creativity and decision-making. I bring curiosity, creativity, and a product-driven mindset to every project — always aiming to build tools that make people's lives easier, smarter, and more enjoyable.",
+      aboutMeContent: "I'm a full stack Software Engineer with one clear vision: build digital solutions that truly solve problems. After more than a decade leading teams, clients, and projects as Founder & CEO in the construction sector, I honed the ability that is now my biggest advantage in tech: anticipating needs before the client even says them. After graduating from General Assembly's Software Engineering Immersive and earning Harvard's CS50 AI with Python certificate, I've built full stack applications, product-driven digital experiences, and systems with applied AI. I'm driven to create tools that make life easier, smarter, and more efficient. I blend technology, design, and business—always with a product mindset.",
       experience: 'Professional Experience',
       experienceDetails: {
         generalassembly: {
           description: 'Comprehensive Software Engineering Bootcamp covering full-stack development with modern technologies. Front-end: Built responsive UIs using React with components, state management (useState), interactive forms, and server communication (useEffect). Structured semantic HTML and responsive CSS ensuring accessibility and SEO. Created dynamic experiences with JavaScript and DOM events. Back-end: Developed secure server-side applications using Node.js, Express, and Django following RESTful principles. Implemented CRUD operations and relationships using PostgreSQL and MongoDB with data optimization and ERDs. Enabled API communication and token-based authentication. Development practices: UNIX command-line, Git/GitHub version control, MVC architecture, asynchronous programming, TDD, debugging, and technical documentation. Gained foundational CS knowledge in algorithms, data structures, and Big O Notation analysis.'
         },
         totalhomes: {
-          description: 'Founded and managed a boutique construction and renovation company, delivering high-quality residential projects. Led cross-functional teams, budgets, and timelines from concept to delivery. Known for creativity and client focus: translated customer needs into innovative, functional designs. Developed digital workflows to improve transparency and efficiency in projects.'
+          description: 'Founded and led a boutique construction and renovation company focused on premium residential projects. Directed multidisciplinary teams, managed budgets, and oversaw the full lifecycle from concept to delivery. Key achievements: translated ambiguous client needs into clear, functional solutions (same logic I apply in software); introduced digital workflows that increased transparency and operational efficiency; managed complex projects with demanding clients, making critical decisions under pressure; built a strong reputation supported by documented premium work. Transferable skills to product development: product leadership, communication, problem solving, business vision.'
         },
         casex: {
           description: 'Managed residential projects, budgets, and client relationships. Oversaw sales strategies, market studies, and new client acquisition.'
@@ -404,6 +404,21 @@ export const translations = {
         projectManagement: 'Project management',
         leadership: 'Leadership',
         clientRelations: 'Client Relations'
+      },
+      skillsMap: {
+        strategicPlanning: 'Strategic Planning',
+        budgetManagement: 'Budget Management',
+        operationalEfficiency: 'Operational Efficiency',
+        endToEndDelivery: 'End-to-End Project Delivery',
+        riskManagement: 'Risk Management',
+        qualityAssurance: 'Quality Assurance & Standards Compliance',
+        vendorCoordination: 'Vendor & Supplier Coordination',
+        stakeholderManagement: 'Stakeholder Management',
+        negotiationConflictResolution: 'Negotiation & Conflict Resolution',
+        clientDiscovery: 'Client Discovery & Needs Analysis',
+        crossFunctionalLeadership: 'Cross-Functional Team Leadership',
+        digitalWorkflow: 'Digital Workflow Implementation',
+        ambiguousNeedsToSolutions: 'Turning Ambiguous Needs into Concrete Solutions'
       },
       keySkills: 'Key Skills',
       achievements: 'Key Achievements',
@@ -442,6 +457,10 @@ export const translations = {
       },
       interests: 'Interests',
       interestsContent: "I am passionate about projects that put people first: whether through technology, design, or community. I enjoy exploring how digital solutions can make everyday life easier and more enjoyable, while also taking interest in wellbeing, creativity, and personal growth. My goal is always to combine innovation with a genuine desire to improve people's lives.",
+      totalhomes: {
+        title: 'Some of the Projects We\'ve Done',
+        subtitle: 'Tap any thumbnail to view it full-screen and navigate through the gallery.'
+      },
       spanish: 'Spanish',
       english: 'English',
       catalan: 'Catalan',
@@ -526,9 +545,9 @@ export const translations = {
     // Home Page
     home: {
       hero: {
-        titlePart1: 'Ingeniero de Software',
-        titlePart2: 'con visión de producto',
-        subtitle: 'De emprendedor de construcción a crear soluciones digitales innovadoras.',
+        titlePart1: 'Full Stack & AI',
+        titlePart2: 'Engineer',
+        subtitle: 'From Founder to Digital Product Builder',
         cta: {
           viewProjects: 'Ver Proyectos',
           viewResume: 'Ver CV',
@@ -917,16 +936,16 @@ export const translations = {
     // Resume Page
     resume: {
       title: 'CV',
-      subtitle: 'Una visión integral de mi experiencia, habilidades y logros profesionales.',
+      subtitle: 'Software Engineer con Product Vision | IA + Full Stack | Founder-Minded Problem Solver',
       aboutMe: 'Sobre Mí',
-      aboutMeContent: 'Soy un ingeniero de software full stack apasionado por resolver problemas del mundo real a través de la tecnología y el diseño inteligente. Recientemente, he expandido mi experiencia hacia la Inteligencia Artificial después de completar la Introducción a la IA con Python de Harvard CS50, donde construí y entrené algoritmos para búsqueda, clasificación y aprendizaje. Me fascina especialmente cómo la IA puede mejorar la creatividad y la toma de decisiones humanas. Aporto curiosidad, creatividad y una mentalidad orientada al producto a cada proyecto — siempre buscando construir herramientas que hagan la vida de las personas más fácil, inteligente y agradable.',
+      aboutMeContent: 'Soy un Software Engineer full stack con una visión muy clara: construir soluciones digitales que realmente resuelvan problemas. Después de más de diez años liderando equipos, clientes y proyectos como Fundador y CEO en el sector de la construcción, desarrollé una habilidad que hoy es mi mayor ventaja en tecnología: anticipar necesidades incluso antes de que el cliente las exprese. Tras completar el bootcamp intensivo de Ingeniería de Software de General Assembly y certificarme en IA con Python en Harvard (CS50), he creado aplicaciones full stack, productos digitales con visión y sistemas con inteligencia artificial aplicada. Me mueve construir herramientas que hagan la vida de las personas más fácil, más inteligente y más eficiente. Combino tecnología, diseño y negocio. Siempre con una mentalidad de producto.',
       experience: 'Experiencia Profesional',
       experienceDetails: {
         generalassembly: {
           description: 'Bootcamp integral de Ingeniería de Software cubriendo desarrollo full-stack con tecnologías modernas. Front-end: Construí interfaces de usuario responsivas usando React con componentes, gestión de estado (useState), formularios interactivos y comunicación con servidor (useEffect). Estructuré HTML semántico y CSS responsivo asegurando accesibilidad y SEO. Creé experiencias dinámicas con JavaScript y eventos DOM. Back-end: Desarrollé aplicaciones seguras del lado del servidor usando Node.js, Express y Django siguiendo principios RESTful. Implementé operaciones CRUD y relaciones usando PostgreSQL y MongoDB con optimización de datos y ERDs. Habilitó comunicación API y autenticación basada en tokens. Prácticas de desarrollo: línea de comandos UNIX, control de versiones Git/GitHub, arquitectura MVC, programación asíncrona, TDD, debugging y documentación técnica. Adquirí conocimientos fundamentales de CS en algoritmos, estructuras de datos y análisis de Big O Notation.'
         },
         totalhomes: {
-          description: 'Fundé y gestioné una empresa boutique de construcción y renovación, entregando proyectos residenciales de alta calidad. Lideré equipos multifuncionales, presupuestos y cronogramas desde el concepto hasta la entrega. Conocido por la creatividad y el enfoque en el cliente: traduje las necesidades del cliente en diseños innovadores y funcionales. Desarrollé flujos de trabajo digitales para mejorar la transparencia y eficiencia en los proyectos.'
+          description: 'Fundé y dirigí una empresa boutique de construcción y reformas enfocada en proyectos residenciales de alta calidad. Lideré equipos multidisciplinares, gestioné presupuestos y supervisé todo el ciclo de vida del proyecto, desde idea hasta entrega. Logros clave: transformé necesidades ambiguas de clientes en soluciones claras y funcionales (misma lógica que desarrollo de software); introduje flujos digitales que aumentaron la transparencia y eficiencia operativa; gestioné proyectos complejos con clientes exigentes, tomando decisiones críticas bajo presión; reputación sólida y proyectos premium documentados con fotografías y procesos reales. Skills ligados al desarrollo: gestión de producto, liderazgo, comunicación, resolución de problemas, visión de negocio.'
         },
         casex: {
           description: 'Gestioné proyectos residenciales, presupuestos y relaciones con clientes. Supervisé estrategias de ventas, estudios de mercado y adquisición de nuevos clientes.'
@@ -943,6 +962,21 @@ export const translations = {
         projectManagement: 'Gestión de Proyectos',
         leadership: 'Liderazgo',
         clientRelations: 'Relaciones con Clientes'
+      },
+      skillsMap: {
+        strategicPlanning: 'Planificación estratégica',
+        budgetManagement: 'Gestión de presupuestos',
+        operationalEfficiency: 'Eficiencia operativa',
+        endToEndDelivery: 'Entrega de proyectos de extremo a extremo',
+        riskManagement: 'Gestión de riesgos',
+        qualityAssurance: 'Garantía de calidad y cumplimiento de estándares',
+        vendorCoordination: 'Coordinación de proveedores y suministradores',
+        stakeholderManagement: 'Gestión de stakeholders',
+        negotiationConflictResolution: 'Negociación y resolución de conflictos',
+        clientDiscovery: 'Descubrimiento de clientes y análisis de necesidades',
+        crossFunctionalLeadership: 'Liderazgo de equipos multifuncionales',
+        digitalWorkflow: 'Implementación de flujos de trabajo digitales',
+        ambiguousNeedsToSolutions: 'Convertir necesidades ambiguas en soluciones concretas'
       },
       keySkills: 'Habilidades Clave',
       achievements: 'Logros Clave',
@@ -981,6 +1015,10 @@ export const translations = {
       },
       interests: 'Intereses',
       interestsContent: 'Me apasionan los proyectos que ponen a las personas primero: ya sea a través de la tecnología, el diseño o la comunidad. Disfruto explorando cómo las soluciones digitales pueden hacer la vida cotidiana más fácil y agradable, mientras también me intereso en el bienestar, la creatividad y el crecimiento personal. Mi objetivo es siempre combinar la innovación con un deseo genuino de mejorar la vida de las personas.',
+      totalhomes: {
+        title: 'Algunos de los Proyectos que Hemos Realizado',
+        subtitle: 'Toca cualquier miniatura para verla en pantalla completa y navegar por la galería.'
+      },
       spanish: 'Español',
       english: 'Inglés',
       catalan: 'Catalán',
@@ -1065,9 +1103,9 @@ export const translations = {
     // Home Page
     home: {
       hero: {
-        titlePart1: 'Enginyer de Software',
-        titlePart2: 'amb visió de producte',
-        subtitle: 'D\'emprenedor de construcció a crear solucions digitals innovadores.',
+        titlePart1: 'Full Stack & AI',
+        titlePart2: 'Engineer',
+        subtitle: 'From Founder to Digital Product Builder',
         cta: {
           viewProjects: 'Veure Projectes',
           viewResume: 'Veure CV',
@@ -1421,16 +1459,16 @@ export const translations = {
     // Resume Page
     resume: {
       title: 'CV',
-      subtitle: 'Una visió integral de la meva experiència, habilitats i assoliments professionals.',
+      subtitle: 'Software Engineer amb Product Vision | IA + Full Stack | Founder-Minded Problem Solver',
       aboutMe: 'Sobre Mi',
-      aboutMeContent: 'Soc un enginyer de programari full stack apassionat per resoldre problemes del món real a través de la tecnologia i el disseny intel·ligent. Recentment, he expandit la meva experiència cap a la Intel·ligència Artificial després de completar la Introducció a la IA amb Python de Harvard CS50, on vaig construir i entrenar algoritmes per a cerca, classificació i aprenentatge. M\'apassiona especialment com la IA pot millorar la creativitat i la presa de decisions humanes. Aporto curiositat, creativitat i una mentalitat orientada al producte a cada projecte — sempre buscant construir eines que facin la vida de les persones més fàcil, intel·ligent i agradable.',
+      aboutMeContent: 'Soc un Software Engineer full stack amb una visió molt clara: construir solucions digitals que realment resolguin problemes. Després de més de deu anys liderant equips, clients i projectes com a fundador i CEO en el sector de la construcció, vaig desenvolupar l\'habilitat que avui és el meu major avantatge en tecnologia: anticipar necessitats abans fins i tot que el client les expressi. Després de completar el bootcamp intensiu d\'Enginyeria de Programari de General Assembly i certificar-me en IA amb Python a Harvard (CS50), he creat aplicacions full stack, productes digitals amb visió i sistemes amb intel·ligència artificial aplicada. Em mou construir eines que facin la vida de les persones més fàcil, més intel·ligent i més eficient. Combino tecnologia, disseny i negoci, sempre amb mentalitat de producte.',
       experience: 'Experiència Professional',
       experienceDetails: {
         generalassembly: {
           description: 'Bootcamp integral d\'Enginyeria de Programari cobrint desenvolupament full-stack amb tecnologies modernes. Front-end: Vaig construir interfícies d\'usuari responsives usant React amb components, gestió d\'estat (useState), formularis interactius i comunicació amb servidor (useEffect). Vaig estructurar HTML semàntic i CSS responsiu assegurant accessibilitat i SEO. Vaig crear experiències dinàmiques amb JavaScript i esdeveniments DOM. Back-end: Vaig desenvolupar aplicacions segures del costat del servidor usant Node.js, Express i Django seguint principis RESTful. Vaig implementar operacions CRUD i relacions usant PostgreSQL i MongoDB amb optimització de dades i ERDs. Vaig habilitar comunicació API i autenticació basada en tokens. Pràctiques de desenvolupament: línia de comandes UNIX, control de versions Git/GitHub, arquitectura MVC, programació asíncrona, TDD, debugging i documentació tècnica. Vaig adquirir coneixements fonamentals de CS en algoritmes, estructures de dades i anàlisi de Big O Notation.'
         },
         totalhomes: {
-          description: 'Vaig fundar i gestionar una empresa boutique de construcció i renovació, lliurant projectes residencials d\'alta qualitat. Vaig liderar equips multifuncionals, pressupostos i cronogrames des del concepte fins a la lliura. Conegut per la creativitat i l\'enfocament en el client: vaig traduir les necessitats del client en dissenys innovadors i funcionals. Vaig desenvolupar fluxos de treball digitals per millorar la transparència i eficiència en els projectes.'
+          description: 'Vaig fundar i dirigir una empresa boutique de construcció i reformes centrada en projectes residencials d\'alta qualitat. Vaig liderar equips multidisciplinaris, vaig gestionar pressupostos i vaig supervisar tot el cicle de vida del projecte, des de la idea fins al lliurament. Fites clau: vaig convertir necessitats ambigües dels clients en solucions clares i funcionals (la mateixa lògica que aplico al desenvolupament de programari); vaig introduir fluxos digitals que van augmentar la transparència i l\'eficiència operativa; vaig gestionar projectes complexos amb clients exigents prenent decisions crítiques sota pressió; vaig construir una reputació sòlida amb projectes premium documentats amb fotografies i processos reals. Skills transferibles al desenvolupament: gestió de producte, lideratge, comunicació, resolució de problemes, visió de negoci.'
         },
         casex: {
           description: 'Vaig gestionar projectes residencials, pressupostos i relacions amb clients. Vaig supervisar estratègies de vendes, estudis de mercat i adquisició de nous clients.'
@@ -1447,6 +1485,21 @@ export const translations = {
         projectManagement: 'Gestió de Projectes',
         leadership: 'Lideratge',
         clientRelations: 'Relacions amb Clients'
+      },
+      skillsMap: {
+        strategicPlanning: 'Planificació estratègica',
+        budgetManagement: 'Gestió de pressupostos',
+        operationalEfficiency: 'Eficiència operativa',
+        endToEndDelivery: 'Lliurament de projectes end-to-end',
+        riskManagement: 'Gestió de riscos',
+        qualityAssurance: 'Assegurament de la qualitat i compliment d’estàndards',
+        vendorCoordination: 'Coordinació de proveïdors i subministradors',
+        stakeholderManagement: 'Gestió de stakeholders',
+        negotiationConflictResolution: 'Negociació i resolució de conflictes',
+        clientDiscovery: 'Descobriment de clients i anàlisi de necessitats',
+        crossFunctionalLeadership: 'Lideratge d’equips multifuncionals',
+        digitalWorkflow: 'Implementació de fluxos digitals',
+        ambiguousNeedsToSolutions: 'Convertir necessitats ambigües en solucions concretes'
       },
       keySkills: 'Habilitats Clau',
       achievements: 'Assoliments Clau',
@@ -1485,6 +1538,10 @@ export const translations = {
       },
       interests: 'Interessos',
       interestsContent: 'M\'apassiona els projectes que posen les persones primer: ja sigui a través de la tecnologia, el disseny o la comunitat. Gaudeixo explorant com les solucions digitals poden fer la vida quotidiana més fàcil i agradable, mentre també m\'interesso en el benestar, la creativitat i el creixement personal. El meu objectiu és sempre combinar la innovació amb un desig genuí de millorar la vida de les persones.',
+      totalhomes: {
+        title: 'Alguns dels Projectes que Hem Realitzat',
+        subtitle: 'Toca qualsevol miniatura per veure-la en pantalla completa i navegar per la galeria.'
+      },
       spanish: 'Espanyol',
       english: 'Anglès',
       catalan: 'Català',

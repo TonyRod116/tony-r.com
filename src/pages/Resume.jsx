@@ -271,6 +271,48 @@ export default function Resume() {
                         {getText(`resume.experienceDetails.${exp.id}.description`, exp.description)}
                       </p>
                       {keySkillsBlock}
+                      {exp.id === 'totalhomes' && totalhomesGallery.length > 0 && (
+                        <div className="mt-5">
+                          <div className="mb-3">
+                            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+                              {getText('resume.totalhomes.title', 'TotalHomes Signature Builds')}
+                            </h4>
+                            <p className="text-xs text-gray-600 dark:text-gray-300">
+                              {getText(
+                                'resume.totalhomes.subtitle',
+                                'Tap any thumbnail to view it full-screen and navigate through the gallery.'
+                              )}
+                            </p>
+                          </div>
+
+                          <div className="space-y-2">
+                            {galleryRows.map((row, rowIndex) => (
+                              <div key={`gallery-row-${rowIndex}`} className="flex gap-2">
+                                {row.map((project, index) => {
+                                  const absoluteIndex = rowIndex === 0 ? index : galleryMidpoint + index
+                                  return (
+                                    <button
+                                      type="button"
+                                      key={project.id}
+                                      onClick={() => openPhoto(absoluteIndex)}
+                                      className="group relative flex-1 aspect-square min-w-0 overflow-hidden rounded-sm border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 transition-all duration-300 hover:border-primary-400 dark:hover:border-primary-500 hover:shadow-lg"
+                                      aria-label={`${project.title} (${project.year})`}
+                                    >
+                                      <img
+                                        src={project.image}
+                                        alt={project.description || project.title}
+                                        loading="lazy"
+                                        className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-125"
+                                      />
+                                      <span className="sr-only">{project.description}</span>
+                                    </button>
+                                  )
+                                })}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                     )
                   })}
@@ -372,55 +414,6 @@ export default function Resume() {
                   </li>
                 </ul>
               </div>
-
-              {/* TotalHomes Highlights */}
-              {totalhomesGallery.length > 0 && (
-                <div className="mb-10">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-                    <div>
-                      <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                        {getText('resume.totalhomes.title', 'TotalHomes Signature Builds')}
-                      </h2>
-                      <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                        {getText(
-                          'resume.totalhomes.subtitle',
-                          'Tap any thumbnail to view it full-screen and navigate through the gallery.'
-                        )}
-                      </p>
-                    </div>
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-200 border border-primary-100 dark:border-primary-800">
-                      {totalhomesGallery.length} photos
-                    </span>
-                  </div>
-
-                  <div className="space-y-3">
-                    {galleryRows.map((row, rowIndex) => (
-                      <div key={`gallery-row-${rowIndex}`} className="flex gap-2">
-                        {row.map((project, index) => {
-                          const absoluteIndex = rowIndex === 0 ? index : galleryMidpoint + index
-                          return (
-                            <button
-                              type="button"
-                              key={project.id}
-                              onClick={() => openPhoto(absoluteIndex)}
-                              className="group relative flex-1 h-24 overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
-                              aria-label={`${project.title} (${project.year})`}
-                            >
-                              <img
-                                src={project.image}
-                                alt={project.description || project.title}
-                                loading="lazy"
-                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                              />
-                              <span className="sr-only">{project.description}</span>
-                            </button>
-                          )
-                        })}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* Education */}
               <div className="mb-8 mb-6">
