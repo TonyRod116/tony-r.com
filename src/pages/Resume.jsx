@@ -10,6 +10,7 @@ import harvardAIPdf from '../assets/CS50_Harvard_AI.pdf'
 import harvardAIThumbnail from '../assets/Harvard_AI.png'
 import gaPdf from '../assets/General_Assembly.pdf'
 import gaThumbnail from '../assets/GA.png'
+import { totalhomesGallery } from '../data/totalhomesGallery'
 
 export default function Resume() {
   const { t, language } = useLanguage()
@@ -152,7 +153,25 @@ export default function Resume() {
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
                         <div>
                           <h3 className="font-semibold text-lg text-base text-gray-900 dark:text-white">{exp.position}</h3>
-                          {exp.url ? (
+                          {exp.links && exp.links.length > 0 ? (
+                            <div className="space-y-1">
+                              <p className="text-primary-600 font-medium">{exp.company}</p>
+                              <div className="flex flex-wrap gap-2">
+                                {exp.links.map((link) => (
+                                  <a
+                                    key={link.url}
+                                    href={link.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700 transition-colors group"
+                                  >
+                                    {link.label || link.url}
+                                    <ExternalLink className="h-3 w-3 opacity-70 group-hover:opacity-100 transition-opacity" />
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
+                          ) : exp.url ? (
                             <a 
                               href={exp.url} 
                               target="_blank" 
@@ -173,6 +192,55 @@ export default function Resume() {
                       <p className="text-gray-600 dark:text-gray-300 mb-3 text-sm">
                         {getText(`resume.experienceDetails.${exp.id}.description`, exp.description)}
                       </p>
+                      {exp.id === 'totalhomes' && (
+                        <div className="space-y-5 mb-4">
+                          {exp.signatureSkills && (
+                            <div>
+                              <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">
+                                Signature Capabilities
+                              </h4>
+                              <div className="flex flex-wrap gap-2">
+                                {exp.signatureSkills.map((skill) => (
+                                  <span
+                                    key={skill}
+                                    className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary-50 text-primary-900 dark:bg-primary-900/30 dark:text-primary-100"
+                                  >
+                                    {skill}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          <div>
+                            <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">
+                              Selected Total Homes Builds
+                            </h4>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              {totalhomesGallery.map((project) => (
+                                <figure
+                                  key={project.id}
+                                  className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/30"
+                                >
+                                  <img
+                                    src={project.image}
+                                    alt={project.title}
+                                    className="w-full h-40 object-cover"
+                                    loading="lazy"
+                                  />
+                                  <figcaption className="p-3">
+                                    <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                                      {project.title}
+                                    </p>
+                                    <p className="text-xs text-gray-600 dark:text-gray-300">
+                                      {project.description}
+                                    </p>
+                                  </figcaption>
+                                </figure>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
                       {exp.stack && exp.stack.length > 0 && (
                         <div>
                           <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">
@@ -287,6 +355,56 @@ export default function Resume() {
                   </li>
                 </ul>
               </div>
+
+              {/* TotalHomes Highlights */}
+              {totalhomesGallery.length > 0 && (
+                <div className="mb-8">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+                    <div>
+                      <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                        {getText('resume.totalhomes.title', 'TotalHomes Signature Builds')}
+                      </h2>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                        {getText(
+                          'resume.totalhomes.subtitle',
+                          'Curated residential projects delivered between 2021 and 2025.'
+                        )}
+                      </p>
+                    </div>
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-200 border border-primary-100 dark:border-primary-800">
+                      {totalhomesGallery.length} builds featured
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-4 justify-between">
+                    {totalhomesGallery.map((project) => (
+                      <div
+                        key={project.id}
+                        className="flex-1 min-w-[140px] max-w-[220px] bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow duration-300"
+                      >
+                        <div className="aspect-[4/3] overflow-hidden rounded-md">
+                          <img
+                            src={project.image}
+                            alt={project.title}
+                            loading="lazy"
+                            className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                          />
+                        </div>
+                        <div className="mt-3 space-y-1">
+                          <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                            {project.title}
+                          </p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            {project.location} · {project.year}
+                          </p>
+                          <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-2">
+                            {project.scope}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Education */}
               <div className="mb-8 mb-6">
