@@ -95,10 +95,10 @@ export const translations = {
     about: {
       hero: {
         title: 'About Me',
-        description1: "I'm a Software Engineer with a strong foundation in JavaScript, React, Node.js, Python, Django, MongoDB, and PostgreSQL — experienced in deploying applications on Netlify, Heroku, and Render. My path into tech came after years leading client-focused businesses in real estate and construction, where I learned how to transform complex needs into intuitive, high-impact solutions.",
-        description2: "After graduating from General Assembly's immersive Software Engineering Bootcamp, I built four complete applications that combined clean code with product thinking. My final project, TradeLab, a trading strategy backtesting platform, was highlighted by my instructor as one of the best he had ever seen.",
-        description3: "Recently, I deepened my technical scope by completing Harvard's CS50 Introduction to Artificial Intelligence with Python, exploring algorithms for search, learning, and decision-making. This opened a new layer of curiosity for how AI can enhance human creativity, optimize systems, and make technology feel more intelligent and human-centered.",
-        description4: "What drives me most is solving problems through clarity, creativity, and precision. I bring an entrepreneurial mindset, a product-driven perspective, and resilience built through real-world challenges. Whether working solo or in teams, I focus on creating scalable, user-friendly products that genuinely improve the way people live and work."
+        description1: "I'm a Software Engineer who builds intuitive, scalable, and meaningful digital products, combining a strong full-stack foundation with real-world experience leading client-focused businesses. Before transitioning into tech, I spent years managing high-value projects in real estate and construction as a founder — a journey that taught me how to deeply understand what clients need, often even before they express it, and turn ambiguity into clear, functional solutions.",
+        description2: "After graduating from General Assembly's immersive 420+ hour Software Engineering Bootcamp, I built four complete applications applying clean architecture, strong problem-solving, and product-driven thinking. My final project, TradeLab, a trading strategy backtesting platform, was highlighted by my instructor as \"one of the best projects ever seen at GA.\"",
+        description3: "I then expanded my technical scope by completing Harvard's CS50 Introduction to Artificial Intelligence with Python, where I applied algorithms for search, optimization, machine learning, neural networks, and decision-making. This opened a new layer of curiosity for how AI can enhance human creativity, simplify complexity, and make technology feel more intelligent and human-centered.",
+        description4: "What drives me most is solving real problems through clarity, creativity, and precision. I bring a founder mindset, a strong understanding of users, and resilience built through real-life execution. Whether working independently or in teams, I focus on delivering products that work—clean code, thoughtful design, and solutions that genuinely improve the way people live and work."
       },
       technical: {
         title: 'Technical Expertise',
@@ -406,19 +406,49 @@ export const translations = {
         clientRelations: 'Client Relations'
       },
       skillsMap: {
-        strategicPlanning: 'Strategic Planning',
-        budgetManagement: 'Budget Management',
-        operationalEfficiency: 'Operational Efficiency',
-        endToEndDelivery: 'End-to-End Project Delivery',
-        riskManagement: 'Risk Management',
-        qualityAssurance: 'Quality Assurance & Standards Compliance',
-        vendorCoordination: 'Vendor & Supplier Coordination',
-        stakeholderManagement: 'Stakeholder Management',
-        negotiationConflictResolution: 'Negotiation & Conflict Resolution',
-        clientDiscovery: 'Client Discovery & Needs Analysis',
-        crossFunctionalLeadership: 'Cross-Functional Team Leadership',
-        digitalWorkflow: 'Digital Workflow Implementation',
-        ambiguousNeedsToSolutions: 'Turning Ambiguous Needs into Concrete Solutions'
+        // TotalHomes skills
+        'Project & Operations Management': 'Project & Operations Management',
+        'Cross-Functional Team Leadership': 'Cross-Functional Team Leadership',
+        'Client Discovery & Needs Analysis': 'Client Discovery & Needs Analysis',
+        'High-Stakes Decision Making': 'High-Stakes Decision Making',
+        'Scope Definition & Requirements Gathering': 'Scope Definition & Requirements Gathering',
+        'Negotiation & Conflict Resolution': 'Negotiation & Conflict Resolution',
+        'Process Optimization & Digital Workflow Design': 'Process Optimization & Digital Workflow Design',
+        'Turning Ambiguous Needs into Clear Execution Plans': 'Turning Ambiguous Needs into Clear Execution Plans',
+        // Casex skills
+        'Project Management': 'Project Management',
+        'Client Relations': 'Client Relations',
+        'Sales Strategy': 'Sales Strategy',
+        // General Assembly skills
+        'JavaScript': 'JavaScript',
+        'React': 'React',
+        'Node.js': 'Node.js',
+        'Express': 'Express',
+        'Python': 'Python',
+        'Django': 'Django',
+        'PostgreSQL': 'PostgreSQL',
+        'MongoDB': 'MongoDB',
+        'REST APIs': 'REST APIs',
+        'Git/GitHub': 'Git/GitHub',
+        'UNIX': 'UNIX',
+        'TDD': 'TDD',
+        // Languages
+        'SQL': 'SQL',
+        // Frameworks
+        'TensorFlow': 'TensorFlow',
+        'scikit-learn': 'scikit-learn',
+        'pandas': 'pandas',
+        'numpy': 'numpy',
+        // Tools
+        'Git': 'Git',
+        'GitHub': 'GitHub',
+        'Postman': 'Postman',
+        'Netlify': 'Netlify',
+        'Heroku': 'Heroku',
+        'Neon.tech': 'Neon.tech',
+        'Agile/Scrum': 'Agile/Scrum',
+        'OpenCV': 'OpenCV',
+        'NLTK': 'NLTK'
       },
       keySkills: 'Key Skills',
       achievements: 'Key Achievements',
@@ -626,10 +656,10 @@ export const translations = {
     about: {
       hero: {
         title: 'Sobre Mí',
-        description1: 'Soy un Software Engineer con una sólida base en JavaScript, React, Node.js, Python, Django, MongoDB y PostgreSQL — con experiencia desplegando aplicaciones en Netlify, Heroku y Render. Mi camino hacia la tecnología comenzó después de años dirigiendo negocios centrados en el cliente en bienes raíces y construcción, donde aprendí a transformar necesidades complejas en soluciones intuitivas y de alto impacto.',
-        description2: 'Después de graduarme del Bootcamp inmersivo de Software Engineering de General Assembly, construí cuatro aplicaciones completas que combinaron código limpio con pensamiento de producto. Mi proyecto final, TradeLab, una plataforma de backtesting de estrategias de trading, fue destacado por mi instructor como uno de los mejores que había visto.',
-        description3: 'Recientemente, profundicé mi alcance técnico completando la Introducción a la Inteligencia Artificial con Python de Harvard CS50, explorando algoritmos para búsqueda, aprendizaje y toma de decisiones. Esto abrió una nueva capa de curiosidad sobre cómo la IA puede mejorar la creatividad humana, optimizar sistemas y hacer que la tecnología se sienta más inteligente y centrada en el ser humano.',
-        description4: 'Lo que más me motiva es resolver problemas a través de claridad, creatividad y precisión. Traigo una mentalidad emprendedora, una perspectiva orientada al producto y resiliencia construida a través de desafíos del mundo real. Ya sea trabajando solo o en equipos, me enfoco en crear productos escalables y fáciles de usar que genuinamente mejoren la forma en que las personas viven y trabajan.'
+        description1: 'Soy un Software Engineer que construye productos digitales intuitivos, escalables y significativos, combinando una sólida base full-stack con experiencia real liderando negocios centrados en el cliente. Antes de hacer la transición a la tecnología, pasé años gestionando proyectos de alto valor en bienes raíces y construcción como fundador — un viaje que me enseñó a entender profundamente lo que los clientes necesitan, a menudo incluso antes de que lo expresen, y convertir la ambigüedad en soluciones claras y funcionales.',
+        description2: 'Después de graduarme del Bootcamp inmersivo de Software Engineering de General Assembly de más de 420 horas, construí cuatro aplicaciones completas aplicando arquitectura limpia, resolución sólida de problemas y pensamiento orientado al producto. Mi proyecto final, TradeLab, una plataforma de backtesting de estrategias de trading, fue destacado por mi instructor como "uno de los mejores proyectos jamás vistos en GA".',
+        description3: 'Luego expandí mi alcance técnico completando la Introducción a la Inteligencia Artificial con Python de Harvard CS50, donde apliqué algoritmos para búsqueda, optimización, aprendizaje automático, redes neuronales y toma de decisiones. Esto abrió una nueva capa de curiosidad sobre cómo la IA puede mejorar la creatividad humana, simplificar la complejidad y hacer que la tecnología se sienta más inteligente y centrada en el ser humano.',
+        description4: 'Lo que más me motiva es resolver problemas reales a través de claridad, creatividad y precisión. Traigo una mentalidad de fundador, una comprensión sólida de los usuarios y resiliencia construida a través de la ejecución en la vida real. Ya sea trabajando de forma independiente o en equipos, me enfoco en entregar productos que funcionen—código limpio, diseño reflexivo y soluciones que genuinamente mejoren la forma en que las personas viven y trabajan.'
       },
       technical: {
         title: 'Experiencia Técnica',
@@ -964,19 +994,49 @@ export const translations = {
         clientRelations: 'Relaciones con Clientes'
       },
       skillsMap: {
-        strategicPlanning: 'Planificación estratégica',
-        budgetManagement: 'Gestión de presupuestos',
-        operationalEfficiency: 'Eficiencia operativa',
-        endToEndDelivery: 'Entrega de proyectos de extremo a extremo',
-        riskManagement: 'Gestión de riesgos',
-        qualityAssurance: 'Garantía de calidad y cumplimiento de estándares',
-        vendorCoordination: 'Coordinación de proveedores y suministradores',
-        stakeholderManagement: 'Gestión de stakeholders',
-        negotiationConflictResolution: 'Negociación y resolución de conflictos',
-        clientDiscovery: 'Descubrimiento de clientes y análisis de necesidades',
-        crossFunctionalLeadership: 'Liderazgo de equipos multifuncionales',
-        digitalWorkflow: 'Implementación de flujos de trabajo digitales',
-        ambiguousNeedsToSolutions: 'Convertir necesidades ambiguas en soluciones concretas'
+        // TotalHomes skills
+        'Project & Operations Management': 'Gestión de Proyectos y Operaciones',
+        'Cross-Functional Team Leadership': 'Liderazgo de Equipos Multifuncionales',
+        'Client Discovery & Needs Analysis': 'Descubrimiento de Clientes y Análisis de Necesidades',
+        'High-Stakes Decision Making': 'Toma de Decisiones de Alto Impacto',
+        'Scope Definition & Requirements Gathering': 'Definición de Alcance y Recopilación de Requisitos',
+        'Negotiation & Conflict Resolution': 'Negociación y Resolución de Conflictos',
+        'Process Optimization & Digital Workflow Design': 'Optimización de Procesos y Diseño de Flujos Digitales',
+        'Turning Ambiguous Needs into Clear Execution Plans': 'Convertir Necesidades Ambiguas en Planes de Ejecución Claros',
+        // Casex skills
+        'Project Management': 'Gestión de Proyectos',
+        'Client Relations': 'Relaciones con Clientes',
+        'Sales Strategy': 'Estrategia de Ventas',
+        // General Assembly skills (technologies - keep as is)
+        'JavaScript': 'JavaScript',
+        'React': 'React',
+        'Node.js': 'Node.js',
+        'Express': 'Express',
+        'Python': 'Python',
+        'Django': 'Django',
+        'PostgreSQL': 'PostgreSQL',
+        'MongoDB': 'MongoDB',
+        'REST APIs': 'REST APIs',
+        'Git/GitHub': 'Git/GitHub',
+        'UNIX': 'UNIX',
+        'TDD': 'TDD',
+        // Languages
+        'SQL': 'SQL',
+        // Frameworks
+        'TensorFlow': 'TensorFlow',
+        'scikit-learn': 'scikit-learn',
+        'pandas': 'pandas',
+        'numpy': 'numpy',
+        // Tools
+        'Git': 'Git',
+        'GitHub': 'GitHub',
+        'Postman': 'Postman',
+        'Netlify': 'Netlify',
+        'Heroku': 'Heroku',
+        'Neon.tech': 'Neon.tech',
+        'Agile/Scrum': 'Agile/Scrum',
+        'OpenCV': 'OpenCV',
+        'NLTK': 'NLTK'
       },
       keySkills: 'Habilidades Clave',
       achievements: 'Logros Clave',
@@ -1184,10 +1244,10 @@ export const translations = {
     about: {
       hero: {
         title: 'Sobre Mi',
-        description1: 'Soc un Software Engineer amb una base sòlida en JavaScript, React, Node.js, Python, Django, MongoDB i PostgreSQL — amb experiència desplegant aplicacions a Netlify, Heroku i Render. El meu camí cap a la tecnologia va començar després d\'anys dirigint negocis centrats en el client en béns immobles i construcció, on vaig aprendre a transformar necessitats complexes en solucions intuïtives i d\'alt impacte.',
-        description2: 'Després de graduar-me del Bootcamp immersiu de Software Engineering de General Assembly, vaig construir quatre aplicacions completes que van combinar codi net amb pensament de producte. El meu projecte final, TradeLab, una plataforma de backtesting d\'estratègies de trading, va ser destacat pel meu instructor com un dels millors que havia vist.',
-        description3: 'Recentment, vaig aprofundir el meu abast tècnic completant la Introducció a la Intel·ligència Artificial amb Python de Harvard CS50, explorant algoritmes per a cerca, aprenentatge i presa de decisions. Això va obrir una nova capa de curiositat sobre com la IA pot millorar la creativitat humana, optimitzar sistemes i fer que la tecnologia es senti més intel·ligent i centrada en l\'ésser humà.',
-        description4: 'El que més em motiva és resoldre problemes a través de claredat, creativitat i precisió. Porto una mentalitat emprenedora, una perspectiva orientada al producte i resiliència construïda a través de desafiaments del món real. Ja sigui treballant sol o en equips, em centro en crear productes escalables i fàcils d\'usar que genuïnament millorin la forma en què les persones viuen i treballen.'
+        description1: 'Soc un Software Engineer que construeix productes digitals intuïtius, escalables i significatius, combinant una base sòlida full-stack amb experiència real liderant negocis centrats en el client. Abans de fer la transició a la tecnologia, vaig passar anys gestionant projectes d\'alt valor en béns immobles i construcció com a fundador — un viatge que em va ensenyar a entendre profundament el que els clients necessiten, sovint fins i tot abans que ho expressin, i convertir l\'ambigüitat en solucions clares i funcionals.',
+        description2: 'Després de graduar-me del Bootcamp immersiu de Software Engineering de General Assembly de més de 420 hores, vaig construir quatre aplicacions completes aplicant arquitectura neta, resolució sòlida de problemes i pensament orientat al producte. El meu projecte final, TradeLab, una plataforma de backtesting d\'estratègies de trading, va ser destacat pel meu instructor com "un dels millors projectes mai vistos a GA".',
+        description3: 'Després vaig expandir el meu abast tècnic completant la Introducció a la Intel·ligència Artificial amb Python de Harvard CS50, on vaig aplicar algoritmes per a cerca, optimització, aprenentatge automàtic, xarxes neuronals i presa de decisions. Això va obrir una nova capa de curiositat sobre com la IA pot millorar la creativitat humana, simplificar la complexitat i fer que la tecnologia es senti més intel·ligent i centrada en l\'ésser humà.',
+        description4: 'El que més em motiva és resoldre problemes reals a través de claredat, creativitat i precisió. Porto una mentalitat de fundador, una comprensió sòlida dels usuaris i resiliència construïda a través de l\'execució en la vida real. Ja sigui treballant de forma independent o en equips, em centro en lliurar productes que funcionen—codi net, disseny reflexiu i solucions que genuïnament millorin la forma en què les persones viuen i treballen.'
       },
       technical: {
         title: 'Experiència Tècnica',
@@ -1487,19 +1547,49 @@ export const translations = {
         clientRelations: 'Relacions amb Clients'
       },
       skillsMap: {
-        strategicPlanning: 'Planificació estratègica',
-        budgetManagement: 'Gestió de pressupostos',
-        operationalEfficiency: 'Eficiència operativa',
-        endToEndDelivery: 'Lliurament de projectes end-to-end',
-        riskManagement: 'Gestió de riscos',
-        qualityAssurance: 'Assegurament de la qualitat i compliment d’estàndards',
-        vendorCoordination: 'Coordinació de proveïdors i subministradors',
-        stakeholderManagement: 'Gestió de stakeholders',
-        negotiationConflictResolution: 'Negociació i resolució de conflictes',
-        clientDiscovery: 'Descobriment de clients i anàlisi de necessitats',
-        crossFunctionalLeadership: 'Lideratge d’equips multifuncionals',
-        digitalWorkflow: 'Implementació de fluxos digitals',
-        ambiguousNeedsToSolutions: 'Convertir necessitats ambigües en solucions concretes'
+        // TotalHomes skills
+        'Project & Operations Management': 'Gestió de Projectes i Operacions',
+        'Cross-Functional Team Leadership': 'Lideratge d\'Equips Multifuncionals',
+        'Client Discovery & Needs Analysis': 'Descobriment de Clients i Anàlisi de Necessitats',
+        'High-Stakes Decision Making': 'Presa de Decisions d\'Alt Impacte',
+        'Scope Definition & Requirements Gathering': 'Definició d\'Abast i Recopilació de Requisits',
+        'Negotiation & Conflict Resolution': 'Negociació i Resolució de Conflictes',
+        'Process Optimization & Digital Workflow Design': 'Optimització de Processos i Disseny de Fluxos Digitals',
+        'Turning Ambiguous Needs into Clear Execution Plans': 'Convertir Necessitats Ambígües en Plans d\'Execució Clars',
+        // Casex skills
+        'Project Management': 'Gestió de Projectes',
+        'Client Relations': 'Relacions amb Clients',
+        'Sales Strategy': 'Estratègia de Vendes',
+        // General Assembly skills (technologies - keep as is)
+        'JavaScript': 'JavaScript',
+        'React': 'React',
+        'Node.js': 'Node.js',
+        'Express': 'Express',
+        'Python': 'Python',
+        'Django': 'Django',
+        'PostgreSQL': 'PostgreSQL',
+        'MongoDB': 'MongoDB',
+        'REST APIs': 'REST APIs',
+        'Git/GitHub': 'Git/GitHub',
+        'UNIX': 'UNIX',
+        'TDD': 'TDD',
+        // Languages
+        'SQL': 'SQL',
+        // Frameworks
+        'TensorFlow': 'TensorFlow',
+        'scikit-learn': 'scikit-learn',
+        'pandas': 'pandas',
+        'numpy': 'numpy',
+        // Tools
+        'Git': 'Git',
+        'GitHub': 'GitHub',
+        'Postman': 'Postman',
+        'Netlify': 'Netlify',
+        'Heroku': 'Heroku',
+        'Neon.tech': 'Neon.tech',
+        'Agile/Scrum': 'Agile/Scrum',
+        'OpenCV': 'OpenCV',
+        'NLTK': 'NLTK'
       },
       keySkills: 'Habilitats Clau',
       achievements: 'Assoliments Clau',
