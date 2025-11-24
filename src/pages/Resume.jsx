@@ -631,7 +631,7 @@ export default function Resume() {
             <img
               src={currentPhoto.image}
               alt={currentPhoto.description || currentPhoto.title}
-              className="w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+              className="w-full max-h-[80vh] object-contain shadow-2xl"
             />
             <span className="sr-only">{currentPhoto.description}</span>
           </div>
