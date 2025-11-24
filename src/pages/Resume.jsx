@@ -1,5 +1,6 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Download, Mail, MapPin, Github, Linkedin, ExternalLink } from 'lucide-react'
+import { Download, Mail, MapPin, Github, Linkedin, ExternalLink, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { profile } from '../data/profile'
 import { useLanguage } from '../hooks/useLanguage.jsx'
 import cvPdfEn from '../assets/CV Tony Rodriguez EN.pdf'
@@ -14,6 +15,38 @@ import { totalhomesGallery } from '../data/totalhomesGallery'
 
 export default function Resume() {
   const { t, language } = useLanguage()
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null)
+
+  const totalGalleryItems = totalhomesGallery.length
+  const currentPhoto = selectedPhotoIndex !== null ? totalhomesGallery[selectedPhotoIndex] : null
+
+  const openPhoto = (index) => setSelectedPhotoIndex(index)
+  const closePhoto = () => setSelectedPhotoIndex(null)
+  const goToPreviousPhoto = () => {
+    if (!totalGalleryItems) return
+    setSelectedPhotoIndex((prev) => (prev === null ? 0 : (prev - 1 + totalGalleryItems) % totalGalleryItems))
+  }
+  const goToNextPhoto = () => {
+    if (!totalGalleryItems) return
+    setSelectedPhotoIndex((prev) => (prev === null ? 0 : (prev + 1) % totalGalleryItems))
+  }
+
+  useEffect(() => {
+    if (selectedPhotoIndex === null) return
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setSelectedPhotoIndex(null)
+      } else if (event.key === 'ArrowLeft') {
+        setSelectedPhotoIndex((prev) => (prev === null ? 0 : (prev - 1 + totalGalleryItems) % totalGalleryItems))
+      } else if (event.key === 'ArrowRight') {
+        setSelectedPhotoIndex((prev) => (prev === null ? 0 : (prev + 1) % totalGalleryItems))
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [selectedPhotoIndex, totalGalleryItems])
   
   const handleDownloadPDF = (type) => {
     let pdf, fileName, thumbnail
@@ -197,13 +230,13 @@ export default function Resume() {
                           {exp.signatureSkills && (
                             <div>
                               <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">
-                                Signature Capabilities
+                                Signature Skills
                               </h4>
                               <div className="flex flex-wrap gap-2">
                                 {exp.signatureSkills.map((skill) => (
                                   <span
                                     key={skill}
-                                    className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary-50 text-primary-900 dark:bg-primary-900/30 dark:text-primary-100"
+                                    className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
                                   >
                                     {skill}
                                   </span>
@@ -358,7 +391,7 @@ export default function Resume() {
 
               {/* TotalHomes Highlights */}
               {totalhomesGallery.length > 0 && (
-                <div className="mb-8">
+                <div className="mb-10">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
                     <div>
                       <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -367,41 +400,35 @@ export default function Resume() {
                       <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
                         {getText(
                           'resume.totalhomes.subtitle',
-                          'Curated residential projects delivered between 2021 and 2025.'
+                          'Tap any thumbnail to view it full-screen and navigate through the gallery.'
                         )}
                       </p>
                     </div>
                     <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-200 border border-primary-100 dark:border-primary-800">
-                      {totalhomesGallery.length} builds featured
+                      {totalhomesGallery.length} photos
                     </span>
                   </div>
-                  <div className="flex flex-wrap gap-4 justify-between">
-                    {totalhomesGallery.map((project) => (
-                      <div
-                        key={project.id}
-                        className="flex-1 min-w-[140px] max-w-[220px] bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow duration-300"
-                      >
-                        <div className="aspect-[4/3] overflow-hidden rounded-md">
+
+                  <div className="overflow-x-auto pb-2 [-webkit-overflow-scrolling:touch]">
+                    <div className="flex gap-3 min-w-full">
+                      {totalhomesGallery.map((project, index) => (
+                        <button
+                          type="button"
+                          key={project.id}
+                          onClick={() => openPhoto(index)}
+                          className="group relative h-24 w-32 flex-shrink-0 overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
+                          aria-label={`${project.title} (${project.year})`}
+                        >
                           <img
                             src={project.image}
-                            alt={project.title}
+                            alt={project.description || project.title}
                             loading="lazy"
-                            className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                           />
-                        </div>
-                        <div className="mt-3 space-y-1">
-                          <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                            {project.title}
-                          </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {project.location} · {project.year}
-                          </p>
-                          <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-2">
-                            {project.scope}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                          <span className="sr-only">{project.description}</span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
@@ -556,6 +583,45 @@ export default function Resume() {
           </motion.div>
         </div>
       </section>
+      {currentPhoto && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <button
+            type="button"
+            onClick={closePhoto}
+            className="absolute top-6 right-6 rounded-full border border-white/40 bg-black/40 p-2 text-white transition hover:bg-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
+            aria-label={getText('resume.totalhomes.close', 'Close gallery')}
+          >
+            <X className="h-5 w-5" />
+          </button>
+
+          <button
+            type="button"
+            onClick={goToPreviousPhoto}
+            className="mr-4 rounded-full border border-white/30 bg-black/40 p-3 text-white transition hover:bg-black/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
+            aria-label={getText('resume.totalhomes.previous', 'Previous photo')}
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+
+          <div className="max-w-5xl w-full">
+            <img
+              src={currentPhoto.image}
+              alt={currentPhoto.description || currentPhoto.title}
+              className="w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+            />
+            <span className="sr-only">{currentPhoto.description}</span>
+          </div>
+
+          <button
+            type="button"
+            onClick={goToNextPhoto}
+            className="ml-4 rounded-full border border-white/30 bg-black/40 p-3 text-white transition hover:bg-black/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
+            aria-label={getText('resume.totalhomes.next', 'Next photo')}
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+        </div>
+      )}
     </div>
   )
 }
