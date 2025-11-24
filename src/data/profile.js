@@ -31,12 +31,24 @@ export const profile = {
     },
     {
       id: 'totalhomes',
-      company: 'Total Homes (@totalhomes.es)',
+      company: 'Total Homes',
       position: 'Founder & CEO',
       period: '2019-2025',
       description: 'Founded and managed a boutique construction and renovation company, delivering high-quality residential projects. Led cross-functional teams, budgets, and timelines from concept to delivery. Known for creativity and client focus: translated customer needs into innovative, functional designs. Developed digital workflows to improve transparency and efficiency in projects.',
-      stack: ['Project Management', 'Team Leadership', 'Client Relations'],
-      url: 'https://instagram.com/totalhomes.es'
+      stack: [
+        'Project & Operations Management',
+        'Cross-Functional Team Leadership',
+        'Client Discovery & Needs Analysis',
+        'High-Stakes Decision Making',
+        'Scope Definition & Requirements Gathering',
+        'Negotiation & Conflict Resolution',
+        'Process Optimization & Digital Workflow Design',
+        'Turning Ambiguous Needs into Clear Execution Plans'
+      ],
+      links: [
+        { label: 'totalhomes.es', url: 'https://www.totalhomes.es/' },
+        { label: '@totalhomes.es', url: 'https://instagram.com/totalhomes.es' }
+      ]
     },
     {
       id: 'casex',
