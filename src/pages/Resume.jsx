@@ -14,19 +14,49 @@ import gaThumbnail from '../assets/GA.png'
 import { totalhomesGallery } from '../data/totalhomesGallery'
 
 const skillFallbackLabels = {
-  strategicPlanning: 'Strategic Planning',
-  budgetManagement: 'Budget Management',
-  operationalEfficiency: 'Operational Efficiency',
-  endToEndDelivery: 'End-to-End Project Delivery',
-  riskManagement: 'Risk Management',
-  qualityAssurance: 'Quality Assurance & Standards Compliance',
-  vendorCoordination: 'Vendor & Supplier Coordination',
-  stakeholderManagement: 'Stakeholder Management',
-  negotiationConflictResolution: 'Negotiation & Conflict Resolution',
-  clientDiscovery: 'Client Discovery & Needs Analysis',
-  crossFunctionalLeadership: 'Cross-Functional Team Leadership',
-  digitalWorkflow: 'Digital Workflow Implementation',
-  ambiguousNeedsToSolutions: 'Turning Ambiguous Needs into Concrete Solutions'
+  // TotalHomes skills
+  'Project & Operations Management': 'Project & Operations Management',
+  'Cross-Functional Team Leadership': 'Cross-Functional Team Leadership',
+  'Client Discovery & Needs Analysis': 'Client Discovery & Needs Analysis',
+  'High-Stakes Decision Making': 'High-Stakes Decision Making',
+  'Scope Definition & Requirements Gathering': 'Scope Definition & Requirements Gathering',
+  'Negotiation & Conflict Resolution': 'Negotiation & Conflict Resolution',
+  'Process Optimization & Digital Workflow Design': 'Process Optimization & Digital Workflow Design',
+  'Turning Ambiguous Needs into Clear Execution Plans': 'Turning Ambiguous Needs into Clear Execution Plans',
+  // Casex skills
+  'Project Management': 'Project Management',
+  'Client Relations': 'Client Relations',
+  'Sales Strategy': 'Sales Strategy',
+  // General Assembly skills (technologies - keep as is)
+  'JavaScript': 'JavaScript',
+  'React': 'React',
+  'Node.js': 'Node.js',
+  'Express': 'Express',
+  'Python': 'Python',
+  'Django': 'Django',
+  'PostgreSQL': 'PostgreSQL',
+  'MongoDB': 'MongoDB',
+  'REST APIs': 'REST APIs',
+  'Git/GitHub': 'Git/GitHub',
+  'UNIX': 'UNIX',
+  'TDD': 'TDD',
+  // Languages
+  'SQL': 'SQL',
+  // Frameworks
+  'TensorFlow': 'TensorFlow',
+  'scikit-learn': 'scikit-learn',
+  'pandas': 'pandas',
+  'numpy': 'numpy',
+  // Tools
+  'Git': 'Git',
+  'GitHub': 'GitHub',
+  'Postman': 'Postman',
+  'Netlify': 'Netlify',
+  'Heroku': 'Heroku',
+  'Neon.tech': 'Neon.tech',
+  'Agile/Scrum': 'Agile/Scrum',
+  'OpenCV': 'OpenCV',
+  'NLTK': 'NLTK'
 }
 
 export default function Resume() {
@@ -302,7 +332,7 @@ export default function Resume() {
                                         src={project.image}
                                         alt={project.description || project.title}
                                         loading="lazy"
-                                        className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-125"
+                                        className="h-full w-full object-cover transition-transform duration-500 ease-out scale-125 group-hover:scale-100"
                                       />
                                       <span className="sr-only">{project.description}</span>
                                     </button>
@@ -330,11 +360,15 @@ export default function Resume() {
                       {getText('resume.languages', 'Languages')}
                     </h3>
                     <div className="flex flex-wrap gap-1">
-                      {profile.skills.languages.map((skill) => (
-                        <span key={skill} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 text-xs">
-                          {skill}
-                        </span>
-                      ))}
+                      {profile.skills.languages.map((skill) => {
+                        const fallbackSkillLabel = skillFallbackLabels[skill] || skill
+                        const label = getText(`resume.skillsMap.${skill}`, fallbackSkillLabel)
+                        return (
+                          <span key={skill} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 text-xs">
+                            {label}
+                          </span>
+                        )
+                      })}
                     </div>
                   </div>
                   <div>
@@ -342,11 +376,15 @@ export default function Resume() {
                       {getText('resume.frameworks', 'Frameworks')}
                     </h3>
                     <div className="flex flex-wrap gap-1">
-                      {profile.skills.frameworks.map((skill) => (
-                        <span key={skill} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 text-xs">
-                          {skill}
-                        </span>
-                      ))}
+                      {profile.skills.frameworks.map((skill) => {
+                        const fallbackSkillLabel = skillFallbackLabels[skill] || skill
+                        const label = getText(`resume.skillsMap.${skill}`, fallbackSkillLabel)
+                        return (
+                          <span key={skill} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 text-xs">
+                            {label}
+                          </span>
+                        )
+                      })}
                     </div>
                   </div>
                   <div>
@@ -354,11 +392,15 @@ export default function Resume() {
                       {getText('resume.tools', 'Tools')}
                     </h3>
                     <div className="flex flex-wrap gap-1">
-                      {profile.skills.tools.map((skill) => (
-                        <span key={skill} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 text-xs">
-                          {skill}
-                        </span>
-                      ))}
+                      {profile.skills.tools.map((skill) => {
+                        const fallbackSkillLabel = skillFallbackLabels[skill] || skill
+                        const label = getText(`resume.skillsMap.${skill}`, fallbackSkillLabel)
+                        return (
+                          <span key={skill} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 text-xs">
+                            {label}
+                          </span>
+                        )
+                      })}
                     </div>
                   </div>
                   <div>
