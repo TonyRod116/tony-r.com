@@ -99,10 +99,10 @@ export const totalhomesGallery = [
   },
   {
     id: 'th-photo-15',
-    title: 'Gallery of arches',
-    description: 'Open corridor framed by arches and sculptural furniture.',
-    image: 'https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996540/301401184_5829721340371899_5648525972573694396_n_17968681849823225_drkx2k.jpg',
-    year: '2022'
+    title: 'Modern living space',
+    description: 'Contemporary living area with natural light and minimalist design.',
+    image: 'https://www.totalhomes.es/wp-content/uploads/2021/12/019_MGL9176-scaled.jpg',
+    year: '2021'
   },
   {
     id: 'th-photo-16',
