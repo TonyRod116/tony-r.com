@@ -270,42 +270,7 @@ export default function Resume() {
                       <p className="text-gray-600 dark:text-gray-300 mb-3 text-sm">
                         {getText(`resume.experienceDetails.${exp.id}.description`, exp.description)}
                       </p>
-                      {exp.id === 'totalhomes' && (
-                        <div className="space-y-5 mb-4">
-                          <div>
-                            <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">
-                              Selected Total Homes Builds
-                            </h4>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                              {totalhomesGallery.map((project) => (
-                                <figure
-                                  key={project.id}
-                                  className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/30"
-                                >
-                                  <img
-                                    src={project.image}
-                                    alt={project.title}
-                                    className="w-full h-40 object-cover"
-                                    loading="lazy"
-                                  />
-                                  <figcaption className="p-3">
-                                    <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                                      {project.title}
-                                    </p>
-                                    {(project.scope || project.description) && (
-                                      <p className="text-xs text-gray-600 dark:text-gray-300">
-                                        {project.scope || project.description}
-                                      </p>
-                                    )}
-                                  </figcaption>
-                                </figure>
-                              ))}
-                            </div>
-                          </div>
-                          {keySkillsBlock}
-                        </div>
-                      )}
-                      {exp.id !== 'totalhomes' && keySkillsBlock}
+                      {keySkillsBlock}
                     </div>
                     )
                   })}
