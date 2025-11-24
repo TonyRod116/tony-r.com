@@ -155,10 +155,10 @@ export const totalhomesGallery = [
   },
   {
     id: 'th-photo-23',
-    title: 'Marble-clad ensuite',
-    description: 'Bright bathroom with large-format marble slabs and freestanding tub.',
-    image: 'https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996541/20250127_090811218_iOS_p613rx.jpg',
-    year: '2025'
+    title: 'Mediterranean hillside concept',
+    description: 'Architectural visualization of stepped villa volumes with terraced landscaping.',
+    image: 'https://www.totalhomes.es/wp-content/uploads/2021/07/Vista-1-scaled.jpg',
+    year: '2021'
   },
   {
     id: 'th-photo-24',
