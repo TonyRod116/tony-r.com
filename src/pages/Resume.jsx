@@ -227,7 +227,7 @@ export default function Resume() {
               </div>
 
               {/* Experience */}
-              <div className="mb-8">
+              <div className="mb-10">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
                   {getText('resume.experience', 'Experience')}
                 </h2>
@@ -325,7 +325,7 @@ export default function Resume() {
                                       type="button"
                                       key={project.id}
                                       onClick={() => openPhoto(absoluteIndex)}
-                                      className="group relative flex-1 aspect-square min-w-0 overflow-hidden rounded-sm border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 transition-all duration-300 hover:border-primary-400 dark:hover:border-primary-500 hover:shadow-lg"
+                                      className="group relative flex-1 aspect-square min-w-0 overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 transition-all duration-300 hover:border-primary-400 dark:hover:border-primary-500 hover:shadow-lg"
                                       aria-label={`${project.title} (${project.year})`}
                                     >
                                       <img
@@ -631,7 +631,7 @@ export default function Resume() {
             <img
               src={currentPhoto.image}
               alt={currentPhoto.description || currentPhoto.title}
-              className="w-full max-h-[80vh] object-contain shadow-2xl"
+              className="w-full max-h-[80vh] object-contain shadow-2xl rounded-none"
             />
             <span className="sr-only">{currentPhoto.description}</span>
           </div>
