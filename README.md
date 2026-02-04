@@ -45,6 +45,79 @@ A collection of AI-powered games implemented in JavaScript, converted from origi
    npm run build
    ```
 
+---
+
+## Demo: Presupuestos Reformas
+
+Demo para empresas de reformas (Barcelona): captura de lead → borrador de presupuesto con IA en 2 minutos (checklist de visita, preguntas faltantes, partidas min/max, mensaje WhatsApp).
+
+### Requisitos
+
+- Node.js 18+
+- Clave de API de OpenAI
+
+### Pasos
+
+1. **Frontend (Vite)** – en la raíz del proyecto:
+   ```bash
+   npm install
+   npm run dev
+   ```
+   Abre `http://localhost:5173` y en el menú ve a **Demos** → **Presupuestos Reformas**.
+
+2. **Backend (API)** – en otra terminal, desde la raíz:
+   ```bash
+   cd server
+   npm install
+   ```
+   Crea el fichero de variables de entorno:
+   ```bash
+   # server/.env
+   OPENAI_API_KEY=sk-...tu_clave_de_openai...
+   ```
+   Arranca el servidor:
+   ```bash
+   npm start
+   ```
+   O en modo desarrollo con recarga automática:
+   ```bash
+   npm run dev
+   ```
+   La API escucha en `http://localhost:3001`. El frontend en desarrollo usa el proxy de Vite (`/api` → `localhost:3001`).
+
+3. **Probar la demo**  
+   En la página **Demos → Presupuestos Reformas** rellena al menos el nombre, opcionalmente tipo de reforma, m², presupuesto objetivo y notas. Pulsa **Generar borrador**. Revisa las pestañas (Checklist, Preguntas, Presupuesto, WhatsApp) y usa **Copiar** para el mensaje de WhatsApp. El histórico guarda los últimos 10 en `server/data/leads.json`.
+
+### Variables de entorno (servidor)
+
+| Variable         | Descripción                    |
+|------------------|--------------------------------|
+| `OPENAI_API_KEY` | Clave de API de OpenAI (obligatoria para generar borradores) |
+| `PORT`           | Puerto del servidor (por defecto `3001`) |
+
+### Estructura del backend
+
+```
+server/
+├── index.js    # Express, rutas /api/generate-quote, /api/leads
+├── schema.js   # Validación Zod del borrador
+├── package.json
+├── .env        # OPENAI_API_KEY (no subir a git)
+└── data/
+    └── leads.json   # Persistencia (se crea al guardar)
+```
+
+### Inspírate con IA (render + presupuesto)
+
+En la misma demo hay una sección **“Inspírate con IA”** que usa el backend público de BuildApp:
+
+- **Endpoint:** `POST https://buildapp-v1-backend.onrender.com/api/v1/get-inspired/process`
+- **Body:** `{ image: "data:image/...;base64,...", prompt: string, locale: "es-ES" }`
+- **Respuesta:** `budget`, `originalImageUrl`, `editedImageUrl`, `editPrompt`
+
+En frontend se validan: imagen ≤ 10 MB, formatos JPEG/PNG/WebP, dimensión máx. 8192 px.  
+Para que funcione desde **https://tony-r.com**, hay que añadir ese origen a `CORS_ORIGINS` en el backend de BuildApp (variables de entorno en Render).
+
 ## 🧠 AI Algorithms
 
 ### Minimax Algorithm (Tic-Tac-Toe)

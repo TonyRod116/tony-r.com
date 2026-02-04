@@ -39,21 +39,13 @@ export default function GoogleAnalytics() {
   const location = useLocation()
 
   useEffect(() => {
-    // Check if user has consented to cookies
-    const hasConsented = localStorage.getItem('cookie-consent') === 'accepted'
-    
-    if (hasConsented) {
-      initGA()
-    }
+    // Initialize Google Analytics for all visitors
+    initGA()
   }, [])
 
   useEffect(() => {
-    // Track page views when route changes
-    const hasConsented = localStorage.getItem('cookie-consent') === 'accepted'
-    
-    if (hasConsented) {
-      trackPageView(location.pathname + location.search)
-    }
+    // Track page views when route changes for all visitors
+    trackPageView(location.pathname + location.search)
   }, [location])
 
   return null // This component doesn't render anything

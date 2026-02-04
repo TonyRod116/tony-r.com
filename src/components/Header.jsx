@@ -11,6 +11,7 @@ const navigation = [
   { name: 'about', href: '/about' },
   { name: 'projects', href: '/projects' },
   { name: 'aiLab', href: '/ai' },
+  { name: 'demos', href: '/demos' },
   { name: 'resume', href: '/resume' },
   { name: 'contact', href: '/contact' },
 ]
@@ -52,11 +53,11 @@ export default function Header() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className="font-bold text-xl text-gray-900 dark:text-white drop-shadow-sm">Tony Rodríguez</span>
+            <span className="font-bold text-sm md:text-sm lg:text-sm text-gray-900 dark:text-white drop-shadow-sm">Tony Rodríguez</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
             {translatedNavigation.map((item) => (
               <Link
                 key={item.name}
@@ -74,14 +75,8 @@ export default function Header() {
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center">
             <LanguageSelector />
-            <Link
-              to="/contact"
-              className="btn-primary"
-            >
-              {t('nav.hireMe')}
-            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -95,24 +90,38 @@ export default function Header() {
             </button>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Navigation */}
-        <AnimatePresence>
-          {isOpen && (
+      {/* Mobile Navigation - Outside container for proper positioning */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Overlay */}
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden border-t border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[9998] md:hidden"
+              style={{ top: '80px' }}
+            />
+            {/* Side Panel */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'tween', duration: 0.3, ease: 'easeOut' }}
+              className="fixed top-20 right-0 w-64 max-w-[70vw] bg-white dark:bg-gray-900 backdrop-blur-md border-l border-gray-200 dark:border-gray-700 shadow-2xl z-[9999] md:hidden max-h-[calc(100vh-5rem)] flex flex-col"
             >
-              <nav className="py-4 space-y-2">
+              {/* Navigation */}
+              <nav className="flex-1 py-4 space-y-2 overflow-y-auto min-h-0">
                 {translatedNavigation.map((item) => (
                   <Link
                     key={item.name}
                     to={item.href}
                     onClick={() => setIsOpen(false)}
                     className={cn(
-                      'block px-4 py-2 text-sm font-medium rounded-md transition-colors',
+                      'block px-4 py-2 text-sm font-medium rounded-md transition-colors mx-2',
                       location.pathname === item.href
                         ? 'text-primary-600 bg-primary-50 dark:bg-primary-900/20'
                         : 'text-gray-600 dark:text-gray-300 hover:text-primary-600 hover:bg-gray-50 dark:hover:bg-gray-800'
@@ -121,21 +130,14 @@ export default function Header() {
                     {item.name}
                   </Link>
                 ))}
-                <div className="px-4 pt-4 space-y-4">
+                <div className="px-4 pt-4 pb-4 flex-shrink-0">
                   <LanguageSelector onLanguageChange={() => setIsOpen(false)} />
-                  <Link
-                    to="/contact"
-                    onClick={() => setIsOpen(false)}
-                    className="btn-primary w-full text-center block"
-                  >
-                    {t('nav.hireMe')}
-                  </Link>
                 </div>
               </nav>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+          </>
+        )}
+      </AnimatePresence>
     </motion.header>
   )
 }

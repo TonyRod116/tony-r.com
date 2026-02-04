@@ -73,6 +73,16 @@ export default function AiLab() {
       status: 'completed',
       tech: ['JavaScript', 'Custom Physics', 'AI Simulation']
     },
+    {
+      id: 'neural-network',
+      title: t('aiLab.projects.neuralNetwork.title') || 'Neural Network Visualization',
+      description: t('aiLab.projects.neuralNetwork.description') || 'Interactive 3D visualization of a neural network trained on MNIST. Draw digits and watch activations propagate through layers in real-time.',
+      icon: null,
+      demoUrl: '/ai/neural-network',
+      githubUrl: 'https://github.com/TonyRod116',
+      status: 'completed',
+      tech: ['JavaScript', 'Three.js', 'Neural Networks', 'MNIST']
+    },
     // {
     //   id: 'six-degrees',
     //   title: t('aiLab.projects.sixDegrees.title'),
