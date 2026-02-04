@@ -11,7 +11,10 @@ const routes = [
   'ai/minesweeper',
   'ai/sixdegrees',
   'ai/nim',
-  'ai/tetris'
+  'ai/tetris',
+  'demos',
+  'demos/presupuesto-orientativo',
+  'demos/render-presupuesto'
 ]
 
 async function ensureStaticRoutes() {

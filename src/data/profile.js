@@ -1,6 +1,6 @@
 export const profile = {
   name: 'Tony Rodríguez',
-  title: 'Software Engineer with product vision',
+  title: 'Solutions Engineer focused on AI, automation, and business impact',
   email: 'tony.rod.bcn@gmail.com',
   location: 'Barcelona, Spain',
   github: 'https://github.com/TonyRod116',
@@ -26,7 +26,14 @@ export const profile = {
       position: 'Software Engineering Bootcamp',
       period: 'Jun 2025 – Sep 2025',
       description: 'Comprehensive Software Engineering Bootcamp covering full-stack development with modern technologies. Front-end: Built responsive UIs using React with components, state management (useState), interactive forms, and server communication (useEffect). Structured semantic HTML and responsive CSS ensuring accessibility and SEO. Created dynamic experiences with JavaScript and DOM events. Back-end: Developed secure server-side applications using Node.js, Express, and Django following RESTful principles. Implemented CRUD operations and relationships using PostgreSQL and MongoDB with data optimization and ERDs. Enabled API communication and token-based authentication. Development practices: UNIX command-line, Git/GitHub version control, MVC architecture, asynchronous programming, TDD, debugging, and technical documentation. Gained foundational CS knowledge in algorithms, data structures, and Big O Notation analysis.',
-      stack: ['JavaScript', 'React', 'Node.js', 'Express', 'Python', 'Django', 'PostgreSQL', 'MongoDB', 'REST APIs', 'Git/GitHub', 'UNIX', 'TDD'],
+      stack: [
+        'End-to-End Solution Design',
+        'API Design & Integration',
+        'Data Modeling & System Architecture',
+        'Product-Oriented Development',
+        'Technical Problem Solving',
+        'Stakeholder & Requirement Alignment'
+      ],
       url: 'https://generalassemb.ly/'
     },
     {
@@ -36,14 +43,13 @@ export const profile = {
       period: '2019-2025',
       description: 'Founded and managed a boutique construction and renovation company, delivering high-quality residential projects. Led cross-functional teams, budgets, and timelines from concept to delivery. Known for creativity and client focus: translated customer needs into innovative, functional designs. Developed digital workflows to improve transparency and efficiency in projects.',
       stack: [
-        'Project & Operations Management',
-        'Cross-Functional Team Leadership',
-        'Client Discovery & Needs Analysis',
-        'High-Stakes Decision Making',
-        'Scope Definition & Requirements Gathering',
-        'Negotiation & Conflict Resolution',
+        'Client Discovery & Requirement Definition',
+        'Solution Design in Ambiguous Contexts',
+        'Business & Technical Alignment',
         'Process Optimization & Digital Workflow Design',
-        'Turning Ambiguous Needs into Clear Execution Plans'
+        'Stakeholder Management (Clients, Teams, Vendors)',
+        'High-Stakes Decision Making',
+        'End-to-End Ownership from Problem to Delivery'
       ],
       links: [
         { label: 'totalhomes.es', url: 'https://www.totalhomes.es/' },
@@ -61,6 +67,13 @@ export const profile = {
     }
   ],
   education: [
+    {
+      id: 'stanford-ml-specialization',
+      institution: 'Stanford University / DeepLearning.AI',
+      degree: 'Machine Learning Specialization (3 courses completed)',
+      period: '2026',
+      description: 'Completed the full specialization: (1) Supervised Machine Learning: Regression and Classification, (2) Advanced Learning Algorithms — neural networks, decision trees, tree ensembles, (3) Unsupervised Learning, Recommenders, Reinforcement Learning — clustering, anomaly detection, recommender systems, reinforcement learning.'
+    },
     {
       id: 'harvard',
       institution: 'Harvard University (CS50)',

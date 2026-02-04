@@ -34,30 +34,10 @@
     @apply bg-background text-foreground font-sans;
   }
   
-  /* Escalado gradual para pantallas grandes - empezamos pequeño */
+  /* Escalado gradual para pantallas grandes - el header mantiene siempre el mismo tamaño (text-sm) */
   @media (min-width: 1536px) {
     html {
       font-size: 16px;
-    }
-    
-    /* Todo el header más grande - selectores específicos */
-    header nav a.text-sm.font-medium {
-      font-size: 18px;
-    }
-    
-    /* Logo del header más grande */
-    header .font-bold.text-xl {
-      font-size: 22px;
-    }
-    
-    /* Botón Hire Me más grande */
-    header .btn-primary {
-      font-size: 18px;
-    }
-    
-    /* Selector de idioma más grande */
-    header .text-sm.font-medium {
-      font-size: 18px;
     }
   }
   
@@ -65,49 +45,11 @@
     html {
       font-size: 17px;
     }
-    
-    /* Todo el header más grande - selectores específicos */
-    header nav a.text-sm.font-medium {
-      font-size: 20px;
-    }
-    
-    /* Logo del header más grande */
-    header .font-bold.text-xl {
-      font-size: 24px;
-    }
-    
-    /* Botón Hire Me más grande */
-    header .btn-primary {
-      font-size: 20px;
-    }
-    
-    /* Selector de idioma más grande */
-    header .text-sm.font-medium {
-      font-size: 20px;
-    }
   }
   
   @media (min-width: 2000px) {
-    /* Pantallas muy grandes - más ancho y escala */
     html {
       font-size: 20px;
-    }
-    
-    /* Todo el header más grande para pantallas muy grandes */
-    header nav a.text-sm.font-medium {
-      font-size: 26px;
-    }
-    
-    header .font-bold.text-xl {
-      font-size: 30px;
-    }
-    
-    header .btn-primary {
-      font-size: 26px;
-    }
-    
-    header .text-sm.font-medium {
-      font-size: 26px;
     }
   }
   
@@ -115,51 +57,11 @@
     html {
       font-size: 18px;
     }
-    
-    /* Todo el header más grande - selectores específicos */
-    header nav a.text-sm.font-medium {
-      font-size: 22px;
-    }
-    
-    /* Logo del header más grande */
-    header .font-bold.text-xl {
-      font-size: 26px;
-    }
-    
-    /* Botón Hire Me más grande */
-    header .btn-primary {
-      font-size: 22px;
-    }
-    
-    /* Selector de idioma más grande */
-    header .text-sm.font-medium {
-      font-size: 22px;
-    }
   }
   
   @media (min-width: 3440px) {
     html {
       font-size: 19px;
-    }
-    
-    /* Todo el header más grande - selectores específicos */
-    header nav a.text-sm.font-medium {
-      font-size: 24px;
-    }
-    
-    /* Logo del header más grande */
-    header .font-bold.text-xl {
-      font-size: 28px;
-    }
-    
-    /* Botón Hire Me más grande */
-    header .btn-primary {
-      font-size: 24px;
-    }
-    
-    /* Selector de idioma más grande */
-    header .text-sm.font-medium {
-      font-size: 24px;
     }
   }
 }
@@ -242,4 +144,29 @@
 @keyframes slideUp {
   from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+/* Progress bar shimmer animation - visible left to right sweep */
+.progress-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 30%,
+    rgba(255, 255, 255, 0.4) 45%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0.4) 55%,
+    transparent 70%,
+    transparent 100%
+  );
+  width: 100%;
+  height: 100%;
+  animation: shimmer-sweep 1.5s ease-in-out infinite;
+  left: 0;
+  top: 0;
+  will-change: transform;
+}
+
+@keyframes shimmer-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
 }

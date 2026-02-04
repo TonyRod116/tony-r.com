@@ -317,7 +317,7 @@ export default function Home() {
       {/* Main Content */}
       <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-20 min-h-screen">
+      <section className="relative overflow-hidden pt-32 sm:pt-36 lg:pt-20 min-h-screen">
         
         {/* Background photo that gets "eaten" on scroll */}
         <div 
@@ -356,9 +356,10 @@ export default function Home() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.1 }}
-                  className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-gray-900 dark:text-white drop-shadow-sm"
+                  className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tight text-gray-900 dark:text-white drop-shadow-sm"
                 >
-                  {t('home.hero.titlePart1')}{' '}
+                  {t('home.hero.titlePart1')}
+                  <br />
                   <span className="gradient-text">{t('home.hero.titlePart2')}</span>
                 </motion.h1>
                 <motion.p
@@ -385,12 +386,12 @@ export default function Home() {
                   {t('home.hero.cta.viewProjects')}
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <a
-                  href={`mailto:${profile.email}?subject=Hiring Inquiry - ${profile.name}`}
+                <Link
+                  to="/contact"
                   className="btn-secondary inline-flex items-center justify-center"
                 >
-                  {t('nav.hireMe')}
-                </a>
+                  {t('nav.contact')}
+                </Link>
               </motion.div>
 
               <motion.div

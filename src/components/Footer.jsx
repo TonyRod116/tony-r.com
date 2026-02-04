@@ -52,6 +52,12 @@ export default function Footer() {
                 {t('nav.aiLab')}
               </Link>
               <Link
+                to="/demos"
+                className="block text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 transition-colors"
+              >
+                {t('nav.demos')}
+              </Link>
+              <Link
                 to="/resume"
                 className="block text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 transition-colors"
               >

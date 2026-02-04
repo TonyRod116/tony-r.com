@@ -8,15 +8,16 @@ export const translations = {
       resume: 'Resume',
       contact: 'Contact',
       hireMe: 'Hire Me',
-      aiLab: 'AI Lab'
+      aiLab: 'AI Lab',
+      demos: 'Demos'
     },
     
     // Home Page
     home: {
       hero: {
-        titlePart1: 'Full Stack & AI',
-        titlePart2: 'Engineer',
-        subtitle: 'From Founder to Digital Product Builder',
+        titlePart1: 'Solutions Engineer',
+        titlePart2: 'AI & Automation for Business Growth',
+        subtitle: 'From founder with real operational experience to designing AI-driven solutions that save time and drive revenue.',
         cta: {
           viewProjects: 'View Projects',
           viewResume: 'View Resume',
@@ -95,10 +96,10 @@ export const translations = {
     about: {
       hero: {
         title: 'About Me',
-        description1: "I'm a Software Engineer who builds intuitive, scalable, and meaningful digital products, combining a strong full-stack foundation with real-world experience leading client-focused businesses. Before transitioning into tech, I spent years managing high-value projects in real estate and construction as a founder — a journey that taught me how to deeply understand what clients need, often even before they express it, and turn ambiguity into clear, functional solutions.",
-        description2: "After graduating from General Assembly's immersive 420+ hour Software Engineering Bootcamp, I built four complete applications applying clean architecture, strong problem-solving, and product-driven thinking. My final project, TradeLab, a trading strategy backtesting platform, was highlighted by my instructor as \"one of the best projects ever seen at GA.\"",
-        description3: "I then expanded my technical scope by completing Harvard's CS50 Introduction to Artificial Intelligence with Python, where I applied algorithms for search, optimization, machine learning, neural networks, and decision-making. This opened a new layer of curiosity for how AI can enhance human creativity, simplify complexity, and make technology feel more intelligent and human-centered.",
-        description4: "What drives me most is solving real problems through clarity, creativity, and precision. I bring a founder mindset, a strong understanding of users, and resilience built through real-life execution. Whether working independently or in teams, I focus on delivering products that work—clean code, thoughtful design, and solutions that genuinely improve the way people live and work."
+        description1: "I am a Solutions Engineer focused on designing AI and automation solutions that help companies save time, improve lead quality, and increase revenue.",
+        description2: "Before moving into tech, I spent over 20 years in real estate and construction as a founder and operator, leading client-facing, high-value projects. That experience taught me how to understand business problems deeply, often before they are clearly defined, and translate ambiguity into clear, effective solutions.",
+        description3: "After completing General Assembly's 420+ hour Software Engineering bootcamp, I built multiple end-to-end applications with a strong product and architecture mindset. My final project, TradeLab, was publicly recognized by my instructor as one of the best projects he had seen at GA. I later expanded my focus into applied AI through Harvard's CS50 AI and Stanford / DeepLearning.AI's Machine Learning specialization, applying AI to real operational use cases such as automation, data extraction, lead qualification, and decision support.",
+        description4: "What drives me is impact. I enjoy working at the intersection of business, customers, and technology—designing solutions that reduce friction, automate repetitive work, and deliver measurable results. I bring a founder mindset, strong communication skills, and real-world execution experience to every problem I work on."
       },
       technical: {
         title: 'Technical Expertise',
@@ -359,6 +360,88 @@ export const translations = {
       }
     },
 
+    // Demos Page
+    demos: {
+      title: 'Demos',
+      subtitle: 'Practical demos for businesses: from lead capture to AI-powered drafts.',
+      presupuestoOrientativo: {
+        title: 'Orientation Budget',
+        description: 'Fill out the form with your project details and get a detailed professional budget breakdown with line items, assumptions, and exclusions.',
+        pageTitle: 'Orientation Budget',
+        pageSubtitle: 'Get a detailed professional budget estimate for your renovation project.',
+        form: {
+          projectType: 'Project Type',
+          sqm: 'm² (approx.)',
+          city: 'City',
+          targetBudget: 'Target Budget (€)',
+          notes: 'Additional Details',
+          notesPlaceholder: 'Desired finishes, current condition, special requirements...',
+          generate: 'Generate Budget',
+          generating: 'Generating...',
+          projectTypeRequired: 'Project type is required.',
+          sqmPlaceholder: 'e.g. 45',
+          cityPlaceholder: 'Barcelona',
+          errorGenerating: 'Error generating budget.',
+          errorValidation: 'Validation error',
+          field: 'field',
+          autoDescription: 'Renovation of {type}{sqm}{city}'
+        },
+        result: {
+          title: 'Budget Estimate',
+          assumptions: 'Assumptions',
+          exclusions: 'Exclusions',
+          lineItems: 'Line Items',
+          total: 'Total',
+          category: 'Category',
+          item: 'Item',
+          qty: 'Qty',
+          unit: 'Unit',
+          min: 'Min (€)',
+          max: 'Max (€)',
+          notes: 'Notes'
+        }
+      },
+      renderPresupuesto: {
+        title: 'Render & Budget',
+        description: 'Upload a photo and describe your renovation. Get an AI-generated render and budget estimate in minutes.',
+        pageTitle: 'Render & Budget',
+        pageSubtitle: 'Upload a photo and describe your renovation to get an AI-generated render and budget estimate.',
+        upload: {
+          selectImage: 'Select Image',
+          changeImage: 'Change Image',
+          maxSize: 'Max. 10 MB · JPEG, PNG or WebP · max. 8192 px',
+          promptLabel: 'Describe the renovation (e.g., Complete Mediterranean-style renovation, white kitchen with island)',
+          promptPlaceholder: 'Complete Mediterranean-style renovation...',
+          generate: 'Generate Render & Budget',
+          generating: 'Generating render and budget...',
+          imageTooLarge: 'Image cannot exceed {size} MB.',
+          invalidFormat: 'Invalid format. Use JPEG, PNG or WebP.',
+          imageTooBig: 'Image cannot exceed {size}px in width or height.',
+          imageReadError: 'Could not read image.',
+          imageAndPromptRequired: 'You need an image and descriptive text (e.g., Mediterranean-style renovation).',
+          serverError: 'Server error ({status})',
+          errorGenerating: 'Error generating render. Please try again later.',
+          previewAlt: 'Preview'
+        },
+        result: {
+          budget: 'Estimated Budget',
+          originalImage: 'Original Image',
+          render: 'Generated Render',
+          promptUsed: 'Prompt used for render'
+        }
+      },
+      openDemo: 'Open Demo',
+      cancel: 'Cancel',
+      projectTypes: {
+        baño: 'Bathroom',
+        cocina: 'Kitchen',
+        integral: 'Complete renovation',
+        pintura: 'Painting',
+        suelo: 'Flooring',
+        otros: 'Other'
+      }
+    },
+
     // Footer
     footer: {
       description: 'I build products that are understood and used. Software engineer and founder with real construction experience.',
@@ -378,19 +461,20 @@ export const translations = {
     // Resume Page
     resume: {
       title: 'Resume',
-      subtitle: 'Software Engineer with Product Vision | AI + Full Stack | Founder-Minded Problem Solver',
+      subtitle: 'Solutions Engineer | AI & Automation | Turning Business Problems into Scalable Solutions',
+      nameTitle: 'Solutions Engineer focused on AI, automation, and business impact',
       aboutMe: 'About Me',
-      aboutMeContent: "I'm a full stack Software Engineer with one clear vision: build digital solutions that truly solve problems. After more than a decade leading teams, clients, and projects as Founder & CEO in the construction sector, I honed the ability that is now my biggest advantage in tech: anticipating needs before the client even says them. After graduating from General Assembly's Software Engineering Immersive and earning Harvard's CS50 AI with Python certificate, I've built full stack applications, product-driven digital experiences, and systems with applied AI. I'm driven to create tools that make life easier, smarter, and more efficient. I blend technology, design, and business—always with a product mindset.",
+      aboutMeContent: "I am a Solutions Engineer focused on using software, AI, and automation to solve real business problems and drive measurable outcomes.\n\nBefore transitioning into tech, I spent over a decade as Founder & CEO in the construction sector, leading client-facing, high-stakes projects. That experience shaped my strongest advantage today: understanding business and user needs deeply, often before they are clearly articulated, and turning ambiguity into clear, effective solutions.\n\nAfter graduating from General Assembly's 420+ hour Software Engineering Immersive, I built multiple end-to-end applications with a strong product and architecture mindset. My final project, TradeLab, a trading strategy backtesting platform, was publicly recognized by my instructor as one of the best projects he had seen at GA.\n\nI later expanded my technical scope through Harvard's CS50 AI and Stanford / DeepLearning.AI's Machine Learning specialization, applying AI to practical use cases such as automation, data extraction, lead qualification, and decision support.\n\nWhat drives me is impact. I enjoy working at the intersection of business, customers, and technology—designing solutions that save time, reduce friction, and help companies grow. I bring a founder mindset, strong communication skills, and real-world execution experience to every project.",
       experience: 'Professional Experience',
       experienceDetails: {
         generalassembly: {
-          description: 'Comprehensive Software Engineering Bootcamp covering full-stack development with modern technologies. Front-end: Built responsive UIs using React with components, state management (useState), interactive forms, and server communication (useEffect). Structured semantic HTML and responsive CSS ensuring accessibility and SEO. Created dynamic experiences with JavaScript and DOM events. Back-end: Developed secure server-side applications using Node.js, Express, and Django following RESTful principles. Implemented CRUD operations and relationships using PostgreSQL and MongoDB with data optimization and ERDs. Enabled API communication and token-based authentication. Development practices: UNIX command-line, Git/GitHub version control, MVC architecture, asynchronous programming, TDD, debugging, and technical documentation. Gained foundational CS knowledge in algorithms, data structures, and Big O Notation analysis.'
+          description: 'Completed an intensive 420+ hour Software Engineering bootcamp with a strong focus on end-to-end product development and real-world problem solving.\n\nBuilt multiple full-stack applications applying clean architecture, API design, data modeling, authentication, and applied AI. Worked across the full lifecycle from discovery and solution design to implementation and iteration, with a strong emphasis on product thinking and usability.\n\nMy final project, TradeLab, a trading strategy backtesting platform, was publicly recognized by my instructor as one of the best projects he had seen in his years teaching at General Assembly.'
         },
         totalhomes: {
-          description: 'Founded and led a boutique construction and renovation company focused on premium residential projects. Directed multidisciplinary teams, managed budgets, and oversaw the full lifecycle from concept to delivery. Key achievements: translated ambiguous client needs into clear, functional solutions (same logic I apply in software); introduced digital workflows that increased transparency and operational efficiency; managed complex projects with demanding clients, making critical decisions under pressure; built a strong reputation supported by documented premium work. Transferable skills to product development: product leadership, communication, problem solving, business vision.'
+          description: 'Founded and led a boutique construction and renovation company delivering premium residential projects. Managed the full business lifecycle, from client discovery and requirements definition to execution, delivery, and post-project follow-up.\n\nWorked closely with clients to translate ambiguous needs into clear, executable solutions—an approach directly transferable to solution design in technology. Led multidisciplinary teams, managed budgets and timelines, and made high-stakes decisions in complex, real-world environments.\n\nIntroduced digital workflows and process improvements that increased transparency, efficiency, and operational control. This role shaped a strong business, product, and customer mindset that I now apply when designing technical and AI-driven solutions.'
         },
         casex: {
-          description: 'Managed residential projects, budgets, and client relationships. Oversaw sales strategies, market studies, and new client acquisition.'
+          description: 'Managed residential real estate projects across their full lifecycle, combining technical coordination, client management, budgeting, and commercial decision-making.\n\nWorked closely with clients to define requirements, align expectations, and translate needs into clear execution plans. Supported sales strategy, market analysis, and new client acquisition, contributing to business growth in a highly competitive environment.\n\nThis role strengthened my ability to operate at the intersection of business, customers, and technical constraints—skills that now directly support my work in solution design, discovery, and stakeholder alignment as a Solutions Engineer.'
         }
       },
       skills: 'Technical Skills',
@@ -398,6 +482,18 @@ export const translations = {
       frameworks: 'Frameworks & Libraries',
       tools: 'Tools',
       soft: 'Soft Skills',
+      skillsCore: 'Core',
+      coreSolutionsEngineering: 'Solutions Engineering',
+      corePreSales: 'Pre-Sales / Sales Engineering',
+      coreProductDiscovery: 'Product Discovery',
+      coreBusinessAlignment: 'Business & Technical Alignment',
+      coreAutomationAI: 'Automation & AI',
+      skillsTechnical: 'Technical',
+      technicalPython: 'Python',
+      technicalJavaScript: 'JavaScript',
+      technicalSQL: 'SQL',
+      technicalML: 'TensorFlow, scikit-learn',
+      technicalAPIs: 'APIs, Automation (Zapier, n8n)',
       softSkills: {
         creativity: 'Creativity',
         problemSolving: 'Problem-Solving',
@@ -407,31 +503,24 @@ export const translations = {
       },
       skillsMap: {
         // TotalHomes skills
-        'Project & Operations Management': 'Project & Operations Management',
-        'Cross-Functional Team Leadership': 'Cross-Functional Team Leadership',
-        'Client Discovery & Needs Analysis': 'Client Discovery & Needs Analysis',
-        'High-Stakes Decision Making': 'High-Stakes Decision Making',
-        'Scope Definition & Requirements Gathering': 'Scope Definition & Requirements Gathering',
-        'Negotiation & Conflict Resolution': 'Negotiation & Conflict Resolution',
+        'Client Discovery & Requirement Definition': 'Client Discovery & Requirement Definition',
+        'Solution Design in Ambiguous Contexts': 'Solution Design in Ambiguous Contexts',
+        'Business & Technical Alignment': 'Business & Technical Alignment',
         'Process Optimization & Digital Workflow Design': 'Process Optimization & Digital Workflow Design',
-        'Turning Ambiguous Needs into Clear Execution Plans': 'Turning Ambiguous Needs into Clear Execution Plans',
+        'Stakeholder Management (Clients, Teams, Vendors)': 'Stakeholder Management (Clients, Teams, Vendors)',
+        'High-Stakes Decision Making': 'High-Stakes Decision Making',
+        'End-to-End Ownership from Problem to Delivery': 'End-to-End Ownership from Problem to Delivery',
         // Casex skills
         'Project Management': 'Project Management',
         'Client Relations': 'Client Relations',
         'Sales Strategy': 'Sales Strategy',
         // General Assembly skills
-        'JavaScript': 'JavaScript',
-        'React': 'React',
-        'Node.js': 'Node.js',
-        'Express': 'Express',
-        'Python': 'Python',
-        'Django': 'Django',
-        'PostgreSQL': 'PostgreSQL',
-        'MongoDB': 'MongoDB',
-        'REST APIs': 'REST APIs',
-        'Git/GitHub': 'Git/GitHub',
-        'UNIX': 'UNIX',
-        'TDD': 'TDD',
+        'End-to-End Solution Design': 'End-to-End Solution Design',
+        'API Design & Integration': 'API Design & Integration',
+        'Data Modeling & System Architecture': 'Data Modeling & System Architecture',
+        'Product-Oriented Development': 'Product-Oriented Development',
+        'Technical Problem Solving': 'Technical Problem Solving',
+        'Stakeholder & Requirement Alignment': 'Stakeholder & Requirement Alignment',
         // Languages
         'SQL': 'SQL',
         // Frameworks
@@ -452,13 +541,19 @@ export const translations = {
       },
       keySkills: 'Key Skills',
       achievements: 'Key Achievements',
-      achievement1: 'Completed Harvard CS50 Introduction to Artificial Intelligence with Python, developing practical AI models for real-world applications',
-      achievement2: 'Final project TradeLab recognized as one of the best by General Assembly instructor',
-      achievement3: '3 out of 4 projects highlighted during Software Engineering bootcamp',
-      achievement4: '6 years of experience leading teams and managing complex projects at TotalHomes',
-      achievement5: 'Successful founder with exceptional reputation in the construction sector',
+      achievement1: 'Designed and implemented an AI-driven system to generate construction cost estimates instantly, with the ability to review, adjust, and refine budgets manually—reducing turnaround time and improving decision-making.',
+      achievement2: 'Designed and delivered AI- and automation-driven solutions applied to real operational use cases, including lead qualification, data extraction, and process optimization.',
+      achievement3: 'Completed Harvard CS50 Introduction to Artificial Intelligence with Python, applying search, machine learning, and decision-making algorithms to practical problems.',
+      achievement4: 'Across all four projects developed during the Software Engineering bootcamp, consistently exceeded project requirements by delivering additional functionality, depth, and polish, leading to repeated instructor recognition for quality and execution.',
+      achievement5: 'Final project TradeLab was singled out by a General Assembly instructor as one of the strongest projects he had seen during the program.',
+      achievement6: 'Founded and led a profitable company for 6+ years, managing teams, clients, budgets, and high-stakes decisions in complex environments.',
       educationTitle: 'Education',
       education: {
+        'stanford-ml-specialization': {
+          degree: 'Machine Learning Specialization (3 courses completed)',
+          institution: 'Stanford University / DeepLearning.AI',
+          description: 'Completed the full specialization: (1) Supervised Machine Learning: Regression and Classification, (2) Advanced Learning Algorithms — neural networks, decision trees, tree ensembles, (3) Unsupervised Learning, Recommenders, Reinforcement Learning — clustering, anomaly detection, recommender systems, reinforcement learning.'
+        },
         harvard: {
           degree: 'Introduction to Artificial Intelligence with Python',
           institution: 'Harvard University (CS50)',
@@ -488,8 +583,9 @@ export const translations = {
       interests: 'Interests',
       interestsContent: "I am passionate about projects that put people first: whether through technology, design, or community. I enjoy exploring how digital solutions can make everyday life easier and more enjoyable, while also taking interest in wellbeing, creativity, and personal growth. My goal is always to combine innovation with a genuine desire to improve people's lives.",
       totalhomes: {
-        title: 'Some of the Projects We\'ve Done',
-        subtitle: 'Tap any thumbnail to view it full-screen and navigate through the gallery.'
+        title: 'Complex, real-world projects that shaped my execution mindset',
+        subtitle: 'Tap any thumbnail to view it full-screen and navigate through the gallery.',
+        moreImagesLabel: 'images'
       },
       spanish: 'Spanish',
       english: 'English',
@@ -500,6 +596,10 @@ export const translations = {
       downloadResume: 'Download Resume',
       downloadHarvardAI: 'Download Harvard AI Certificate',
       downloadGA: 'Download General Assembly Certificate',
+      downloadStanfordAdvancedAlgos: 'Download Stanford ML Advanced Algorithms Certificate',
+      downloadStanfordSupervisedLearning: 'Download Stanford ML Supervised Learning Certificate',
+      downloadStanfordUnsupervisedLearning: 'Download Stanford ML Unsupervised Learning Certificate',
+      downloadMLSpecialization: 'Download Stanford Machine Learning Specialization Certificate',
       downloadText: 'Click to download PDF'
     },
 
@@ -551,6 +651,64 @@ export const translations = {
       }
     },
 
+    // Demos Page
+    demos: {
+      title: 'Demos',
+      subtitle: 'Demos prácticas para empresas: desde captura de leads hasta borradores con IA.',
+      presupuestoOrientativo: {
+        title: 'Presupuesto Orientativo',
+        description: 'Completa el formulario con los detalles de tu proyecto y obtén un presupuesto profesional detallado con partidas, supuestos y exclusiones.',
+        pageTitle: 'Presupuesto Orientativo',
+        pageSubtitle: 'Obtén un presupuesto profesional detallado para tu proyecto de reforma.',
+        form: {
+          projectType: 'Tipo de Proyecto',
+          sqm: 'm² (aprox.)',
+          city: 'Ciudad',
+          targetBudget: 'Presupuesto Objetivo (€)',
+          notes: 'Detalles Adicionales',
+          notesPlaceholder: 'Acabados deseados, estado actual, requisitos especiales...',
+          generate: 'Generar Presupuesto',
+          generating: 'Generando...'
+        },
+        result: {
+          title: 'Presupuesto Estimado',
+          assumptions: 'Supuestos',
+          exclusions: 'Exclusiones',
+          lineItems: 'Partidas',
+          total: 'Total',
+          category: 'Categoría',
+          item: 'Partida',
+          qty: 'Cant.',
+          unit: 'Unidad',
+          min: 'Min (€)',
+          max: 'Max (€)',
+          notes: 'Notas'
+        }
+      },
+      renderPresupuesto: {
+        title: 'Render y Presupuesto',
+        description: 'Sube una foto y describe tu reforma. Obtén un render generado por IA y presupuesto estimado en minutos.',
+        pageTitle: 'Render y Presupuesto',
+        pageSubtitle: 'Sube una foto y describe tu reforma para obtener un render generado por IA y presupuesto estimado.',
+        upload: {
+          selectImage: 'Elegir Imagen',
+          changeImage: 'Cambiar Imagen',
+          maxSize: 'Máx. 10 MB · JPEG, PNG o WebP · máx. 8192 px',
+          promptLabel: 'Describe la reforma (ej. Reforma completa estilo mediterráneo, cocina blanca con isla)',
+          promptPlaceholder: 'Reforma completa estilo mediterráneo...',
+          generate: 'Generar Render y Presupuesto',
+          generating: 'Generando render y presupuesto...'
+        },
+        result: {
+          budget: 'Presupuesto Estimado',
+          originalImage: 'Imagen Original',
+          render: 'Render Generado',
+          promptUsed: 'Prompt usado para el render'
+        }
+      },
+      openDemo: 'Abrir Demo'
+    },
+
     // Footer
     footer: {
       description: 'I build products that are understood and used. Software engineer and founder with real construction experience.',
@@ -569,15 +727,16 @@ export const translations = {
       resume: 'CV',
       contact: 'Contacto',
       hireMe: 'Contrátame',
-      aiLab: 'Lab de IA'
+      aiLab: 'Lab de IA',
+      demos: 'Demos'
     },
     
     // Home Page
     home: {
       hero: {
-        titlePart1: 'Full Stack & AI',
-        titlePart2: 'Engineer',
-        subtitle: 'From Founder to Digital Product Builder',
+        titlePart1: 'Ingeniero de Soluciones',
+        titlePart2: 'IA y Automatización para el Crecimiento Empresarial',
+        subtitle: 'De fundador con experiencia operativa real a diseñar soluciones impulsadas por IA que ahorran tiempo e impulsan ingresos.',
         cta: {
           viewProjects: 'Ver Proyectos',
           viewResume: 'Ver CV',
@@ -656,10 +815,10 @@ export const translations = {
     about: {
       hero: {
         title: 'Sobre Mí',
-        description1: 'Soy un Software Engineer que construye productos digitales intuitivos, escalables y significativos, combinando una sólida base full-stack con experiencia real liderando negocios centrados en el cliente. Antes de hacer la transición a la tecnología, pasé años gestionando proyectos de alto valor en bienes raíces y construcción como fundador — un viaje que me enseñó a entender profundamente lo que los clientes necesitan, a menudo incluso antes de que lo expresen, y convertir la ambigüedad en soluciones claras y funcionales.',
-        description2: 'Después de graduarme del Bootcamp inmersivo de Software Engineering de General Assembly de más de 420 horas, construí cuatro aplicaciones completas aplicando arquitectura limpia, resolución sólida de problemas y pensamiento orientado al producto. Mi proyecto final, TradeLab, una plataforma de backtesting de estrategias de trading, fue destacado por mi instructor como "uno de los mejores proyectos jamás vistos en GA".',
-        description3: 'Luego expandí mi alcance técnico completando la Introducción a la Inteligencia Artificial con Python de Harvard CS50, donde apliqué algoritmos para búsqueda, optimización, aprendizaje automático, redes neuronales y toma de decisiones. Esto abrió una nueva capa de curiosidad sobre cómo la IA puede mejorar la creatividad humana, simplificar la complejidad y hacer que la tecnología se sienta más inteligente y centrada en el ser humano.',
-        description4: 'Lo que más me motiva es resolver problemas reales a través de claridad, creatividad y precisión. Traigo una mentalidad de fundador, una comprensión sólida de los usuarios y resiliencia construida a través de la ejecución en la vida real. Ya sea trabajando de forma independiente o en equipos, me enfoco en entregar productos que funcionen—código limpio, diseño reflexivo y soluciones que genuinamente mejoren la forma en que las personas viven y trabajan.'
+        description1: 'Soy un Ingeniero de Soluciones enfocado en diseñar soluciones de IA y automatización que ayudan a las empresas a ahorrar tiempo, mejorar la calidad de los leads e incrementar los ingresos.',
+        description2: 'Antes de entrar en tecnología, pasé más de 20 años en bienes raíces y construcción como fundador y operador, liderando proyectos de alto valor orientados al cliente. Esa experiencia me enseñó a entender profundamente los problemas empresariales, a menudo antes de que estén claramente definidos, y a traducir la ambigüedad en soluciones claras y efectivas.',
+        description3: 'Después de completar el bootcamp de Software Engineering de General Assembly de más de 420 horas, construí múltiples aplicaciones de extremo a extremo con una mentalidad sólida de producto y arquitectura. Mi proyecto final, TradeLab, fue reconocido públicamente por mi instructor como uno de los mejores proyectos que había visto en GA. Más tarde expandí mi enfoque hacia la IA aplicada a través de CS50 AI de Harvard y la especialización en Machine Learning de Stanford / DeepLearning.AI, aplicando IA a casos de uso operativos reales como automatización, extracción de datos, calificación de leads y soporte para la toma de decisiones.',
+        description4: 'Lo que me impulsa es el impacto. Disfruto trabajando en la intersección de negocios, clientes y tecnología—diseñando soluciones que reducen la fricción, automatizan el trabajo repetitivo y ofrecen resultados medibles. Traigo una mentalidad de fundador, fuertes habilidades de comunicación y experiencia de ejecución en el mundo real a cada problema en el que trabajo.'
       },
       technical: {
         title: 'Experiencia Técnica',
@@ -966,19 +1125,20 @@ export const translations = {
     // Resume Page
     resume: {
       title: 'CV',
-      subtitle: 'Software Engineer con Product Vision | IA + Full Stack | Founder-Minded Problem Solver',
+      subtitle: 'Ingeniero de Soluciones | IA y Automatización | Convirtiendo Problemas Empresariales en Soluciones Escalables',
+      nameTitle: 'Ingeniero de Soluciones enfocado en IA, automatización e impacto empresarial',
       aboutMe: 'Sobre Mí',
-      aboutMeContent: 'Soy un Software Engineer full stack con una visión muy clara: construir soluciones digitales que realmente resuelvan problemas. Después de más de diez años liderando equipos, clientes y proyectos como Fundador y CEO en el sector de la construcción, desarrollé una habilidad que hoy es mi mayor ventaja en tecnología: anticipar necesidades incluso antes de que el cliente las exprese. Tras completar el bootcamp intensivo de Ingeniería de Software de General Assembly y certificarme en IA con Python en Harvard (CS50), he creado aplicaciones full stack, productos digitales con visión y sistemas con inteligencia artificial aplicada. Me mueve construir herramientas que hagan la vida de las personas más fácil, más inteligente y más eficiente. Combino tecnología, diseño y negocio. Siempre con una mentalidad de producto.',
+      aboutMeContent: 'Soy un Ingeniero de Soluciones enfocado en usar software, IA y automatización para resolver problemas empresariales reales e impulsar resultados medibles.\n\nAntes de hacer la transición a la tecnología, pasé más de una década como Fundador y CEO en el sector de la construcción, liderando proyectos de alto riesgo orientados al cliente. Esa experiencia moldeó mi mayor ventaja hoy: entender profundamente las necesidades empresariales y de los usuarios, a menudo antes de que estén claramente articuladas, y convertir la ambigüedad en soluciones claras y efectivas.\n\nDespués de graduarme del programa inmersivo de Software Engineering de General Assembly de más de 420 horas, construí múltiples aplicaciones de extremo a extremo con una mentalidad sólida de producto y arquitectura. Mi proyecto final, TradeLab, una plataforma de backtesting de estrategias de trading, fue reconocido públicamente por mi instructor como uno de los mejores proyectos que había visto en GA.\n\nMás tarde expandí mi alcance técnico a través de CS50 AI de Harvard y la especialización en Machine Learning de Stanford / DeepLearning.AI, aplicando IA a casos de uso prácticos como automatización, extracción de datos, calificación de leads y soporte para la toma de decisiones.\n\nLo que me impulsa es el impacto. Disfruto trabajando en la intersección de negocios, clientes y tecnología—diseñando soluciones que ahorran tiempo, reducen la fricción y ayudan a las empresas a crecer. Traigo una mentalidad de fundador, fuertes habilidades de comunicación y experiencia de ejecución en el mundo real a cada proyecto.',
       experience: 'Experiencia Profesional',
       experienceDetails: {
         generalassembly: {
-          description: 'Bootcamp integral de Ingeniería de Software cubriendo desarrollo full-stack con tecnologías modernas. Front-end: Construí interfaces de usuario responsivas usando React con componentes, gestión de estado (useState), formularios interactivos y comunicación con servidor (useEffect). Estructuré HTML semántico y CSS responsivo asegurando accesibilidad y SEO. Creé experiencias dinámicas con JavaScript y eventos DOM. Back-end: Desarrollé aplicaciones seguras del lado del servidor usando Node.js, Express y Django siguiendo principios RESTful. Implementé operaciones CRUD y relaciones usando PostgreSQL y MongoDB con optimización de datos y ERDs. Habilitó comunicación API y autenticación basada en tokens. Prácticas de desarrollo: línea de comandos UNIX, control de versiones Git/GitHub, arquitectura MVC, programación asíncrona, TDD, debugging y documentación técnica. Adquirí conocimientos fundamentales de CS en algoritmos, estructuras de datos y análisis de Big O Notation.'
+          description: 'Completé un bootcamp intensivo de Ingeniería de Software de más de 420 horas con un fuerte enfoque en desarrollo de productos de extremo a extremo y resolución de problemas del mundo real.\n\nConstruí múltiples aplicaciones full-stack aplicando arquitectura limpia, diseño de APIs, modelado de datos, autenticación e IA aplicada. Trabajé en todo el ciclo de vida desde el descubrimiento y diseño de soluciones hasta la implementación e iteración, con un fuerte énfasis en pensamiento de producto y usabilidad.\n\nMi proyecto final, TradeLab, una plataforma de backtesting de estrategias de trading, fue reconocido públicamente por mi instructor como uno de los mejores proyectos que había visto en sus años enseñando en General Assembly.'
         },
         totalhomes: {
-          description: 'Fundé y dirigí una empresa boutique de construcción y reformas enfocada en proyectos residenciales de alta calidad. Lideré equipos multidisciplinares, gestioné presupuestos y supervisé todo el ciclo de vida del proyecto, desde idea hasta entrega. Logros clave: transformé necesidades ambiguas de clientes en soluciones claras y funcionales (misma lógica que desarrollo de software); introduje flujos digitales que aumentaron la transparencia y eficiencia operativa; gestioné proyectos complejos con clientes exigentes, tomando decisiones críticas bajo presión; reputación sólida y proyectos premium documentados con fotografías y procesos reales. Skills ligados al desarrollo: gestión de producto, liderazgo, comunicación, resolución de problemas, visión de negocio.'
+          description: 'Fundé y dirigí una empresa boutique de construcción y reformas entregando proyectos residenciales premium. Gestioné todo el ciclo de vida del negocio, desde el descubrimiento de clientes y definición de requisitos hasta la ejecución, entrega y seguimiento post-proyecto.\n\nTrabajé estrechamente con clientes para traducir necesidades ambiguas en soluciones claras y ejecutables—un enfoque directamente transferible al diseño de soluciones en tecnología. Lideré equipos multidisciplinares, gestioné presupuestos y cronogramas, y tomé decisiones de alto riesgo en entornos complejos del mundo real.\n\nIntroduje flujos digitales y mejoras de procesos que aumentaron la transparencia, eficiencia y control operativo. Este rol moldeó una mentalidad sólida de negocio, producto y cliente que ahora aplico al diseñar soluciones técnicas e impulsadas por IA.'
         },
         casex: {
-          description: 'Gestioné proyectos residenciales, presupuestos y relaciones con clientes. Supervisé estrategias de ventas, estudios de mercado y adquisición de nuevos clientes.'
+          description: 'Gestioné proyectos inmobiliarios residenciales en todo su ciclo de vida, combinando coordinación técnica, gestión de clientes, presupuestos y toma de decisiones comerciales.\n\nTrabajé estrechamente con clientes para definir requisitos, alinear expectativas y traducir necesidades en planes de ejecución claros. Apoyé la estrategia de ventas, análisis de mercado y adquisición de nuevos clientes, contribuyendo al crecimiento del negocio en un entorno altamente competitivo.\n\nEste rol fortaleció mi capacidad para operar en la intersección de negocio, clientes y restricciones técnicas—habilidades que ahora apoyan directamente mi trabajo en diseño de soluciones, descubrimiento y alineación de stakeholders como Ingeniero de Soluciones.'
         }
       },
       skills: 'Habilidades Técnicas',
@@ -986,6 +1146,18 @@ export const translations = {
       frameworks: 'Frameworks y Librerías',
       tools: 'Herramientas',
       soft: 'Habilidades Blandas',
+      skillsCore: 'Core',
+      coreSolutionsEngineering: 'Ingeniería de Soluciones',
+      corePreSales: 'Pre-Venta / Ingeniería de Ventas',
+      coreProductDiscovery: 'Descubrimiento de Producto',
+      coreBusinessAlignment: 'Alineación Empresarial y Técnica',
+      coreAutomationAI: 'Automatización e IA',
+      skillsTechnical: 'Técnico',
+      technicalPython: 'Python',
+      technicalJavaScript: 'JavaScript',
+      technicalSQL: 'SQL',
+      technicalML: 'TensorFlow, scikit-learn',
+      technicalAPIs: 'APIs, Automatización (Zapier, n8n)',
       softSkills: {
         creativity: 'Creatividad',
         problemSolving: 'Resolución de Problemas',
@@ -995,31 +1167,24 @@ export const translations = {
       },
       skillsMap: {
         // TotalHomes skills
-        'Project & Operations Management': 'Gestión de Proyectos y Operaciones',
-        'Cross-Functional Team Leadership': 'Liderazgo de Equipos Multifuncionales',
-        'Client Discovery & Needs Analysis': 'Descubrimiento de Clientes y Análisis de Necesidades',
-        'High-Stakes Decision Making': 'Toma de Decisiones de Alto Impacto',
-        'Scope Definition & Requirements Gathering': 'Definición de Alcance y Recopilación de Requisitos',
-        'Negotiation & Conflict Resolution': 'Negociación y Resolución de Conflictos',
+        'Client Discovery & Requirement Definition': 'Descubrimiento de Clientes y Definición de Requisitos',
+        'Solution Design in Ambiguous Contexts': 'Diseño de Soluciones en Contextos Ambiguos',
+        'Business & Technical Alignment': 'Alineación Empresarial y Técnica',
         'Process Optimization & Digital Workflow Design': 'Optimización de Procesos y Diseño de Flujos Digitales',
-        'Turning Ambiguous Needs into Clear Execution Plans': 'Convertir Necesidades Ambiguas en Planes de Ejecución Claros',
+        'Stakeholder Management (Clients, Teams, Vendors)': 'Gestión de Stakeholders (Clientes, Equipos, Proveedores)',
+        'High-Stakes Decision Making': 'Toma de Decisiones de Alto Impacto',
+        'End-to-End Ownership from Problem to Delivery': 'Propiedad de Extremo a Extremo desde Problema hasta Entrega',
         // Casex skills
         'Project Management': 'Gestión de Proyectos',
         'Client Relations': 'Relaciones con Clientes',
         'Sales Strategy': 'Estrategia de Ventas',
-        // General Assembly skills (technologies - keep as is)
-        'JavaScript': 'JavaScript',
-        'React': 'React',
-        'Node.js': 'Node.js',
-        'Express': 'Express',
-        'Python': 'Python',
-        'Django': 'Django',
-        'PostgreSQL': 'PostgreSQL',
-        'MongoDB': 'MongoDB',
-        'REST APIs': 'REST APIs',
-        'Git/GitHub': 'Git/GitHub',
-        'UNIX': 'UNIX',
-        'TDD': 'TDD',
+        // General Assembly skills
+        'End-to-End Solution Design': 'Diseño de Soluciones de Extremo a Extremo',
+        'API Design & Integration': 'Diseño e Integración de APIs',
+        'Data Modeling & System Architecture': 'Modelado de Datos y Arquitectura de Sistemas',
+        'Product-Oriented Development': 'Desarrollo Orientado al Producto',
+        'Technical Problem Solving': 'Resolución de Problemas Técnicos',
+        'Stakeholder & Requirement Alignment': 'Alineación de Stakeholders y Requisitos',
         // Languages
         'SQL': 'SQL',
         // Frameworks
@@ -1040,13 +1205,19 @@ export const translations = {
       },
       keySkills: 'Habilidades Clave',
       achievements: 'Logros Clave',
-      achievement1: 'Completé la Introducción a la Inteligencia Artificial con Python de Harvard CS50, desarrollando modelos de IA prácticos para aplicaciones del mundo real',
-      achievement2: 'Proyecto final TradeLab reconocido como uno de los mejores por el instructor de General Assembly',
-      achievement3: '3 de 4 proyectos destacados durante el bootcamp de Software Engineering',
-      achievement4: '6 años de experiencia liderando equipos y gestionando proyectos complejos en TotalHomes',
-      achievement5: 'Fundador exitoso con reputación excepcional en el sector de la construcción',
+      achievement1: 'Diseñé e implementé un sistema impulsado por IA para generar estimaciones de costos de construcción instantáneamente, con la capacidad de revisar, ajustar y refinar presupuestos manualmente—reduciendo el tiempo de respuesta y mejorando la toma de decisiones.',
+      achievement2: 'Diseñé y entregué soluciones impulsadas por IA y automatización aplicadas a casos de uso operativos reales, incluyendo calificación de leads, extracción de datos y optimización de procesos.',
+      achievement3: 'Completé la Introducción a la Inteligencia Artificial con Python de Harvard CS50, aplicando algoritmos de búsqueda, machine learning y toma de decisiones a problemas prácticos.',
+      achievement4: 'En los cuatro proyectos desarrollados durante el bootcamp de Software Engineering, superé consistentemente los requisitos del proyecto entregando funcionalidad adicional, profundidad y pulido, lo que llevó a un reconocimiento repetido del instructor por calidad y ejecución.',
+      achievement5: 'El proyecto final TradeLab fue destacado por un instructor de General Assembly como uno de los proyectos más sólidos que había visto durante el programa.',
+      achievement6: 'Fundé y lideré una empresa rentable durante más de 6 años, gestionando equipos, clientes, presupuestos y decisiones de alto riesgo en entornos complejos.',
       educationTitle: 'Educación',
       education: {
+        'stanford-ml-specialization': {
+          degree: 'Especialización en Machine Learning (3 cursos completados)',
+          institution: 'Universidad de Stanford / DeepLearning.AI',
+          description: 'Completada la especialización completa: (1) Aprendizaje Supervisado: Regresión y Clasificación, (2) Algoritmos de Aprendizaje Avanzados — redes neuronales, árboles de decisión, ensembles, (3) Aprendizaje No Supervisado, Sistemas de Recomendación, Aprendizaje por Refuerzo — clustering, detección de anomalías, sistemas de recomendación, reinforcement learning.'
+        },
         harvard: {
           degree: 'Introducción a la Inteligencia Artificial con Python',
           institution: 'Universidad de Harvard (CS50)',
@@ -1076,8 +1247,9 @@ export const translations = {
       interests: 'Intereses',
       interestsContent: 'Me apasionan los proyectos que ponen a las personas primero: ya sea a través de la tecnología, el diseño o la comunidad. Disfruto explorando cómo las soluciones digitales pueden hacer la vida cotidiana más fácil y agradable, mientras también me intereso en el bienestar, la creatividad y el crecimiento personal. Mi objetivo es siempre combinar la innovación con un deseo genuino de mejorar la vida de las personas.',
       totalhomes: {
-        title: 'Algunos de los Proyectos que Hemos Realizado',
-        subtitle: 'Toca cualquier miniatura para verla en pantalla completa y navegar por la galería.'
+        title: 'Proyectos complejos del mundo real que moldearon mi mentalidad de ejecución',
+        subtitle: 'Toca cualquier miniatura para verla en pantalla completa y navegar por la galería.',
+        moreImagesLabel: 'imágenes'
       },
       spanish: 'Español',
       english: 'Inglés',
@@ -1088,6 +1260,10 @@ export const translations = {
       downloadResume: 'Descargar CV',
       downloadHarvardAI: 'Descargar Certificado Harvard IA',
       downloadGA: 'Descargar Certificado General Assembly',
+      downloadStanfordAdvancedAlgos: 'Descargar Certificado Stanford ML Algoritmos Avanzados',
+      downloadStanfordSupervisedLearning: 'Descargar Certificado Stanford ML Aprendizaje Supervisado',
+      downloadStanfordUnsupervisedLearning: 'Descargar Certificado Stanford ML Aprendizaje No Supervisado',
+      downloadMLSpecialization: 'Descargar Certificado Stanford Especialización en Machine Learning',
       downloadText: 'Haz clic para descargar PDF'
     },
 
@@ -1139,6 +1315,81 @@ export const translations = {
       }
     },
 
+    // Demos Page
+    demos: {
+      title: 'Demos',
+      subtitle: 'Demos prácticas para empresas: desde captura de leads hasta borradores con IA.',
+      presupuestoOrientativo: {
+        title: 'Presupuesto Orientativo',
+        description: 'Completa el formulario con los detalles de tu proyecto y obtén un presupuesto profesional detallado con partidas, supuestos y exclusiones.',
+        pageTitle: 'Presupuesto Orientativo',
+        pageSubtitle: 'Obtén un presupuesto profesional detallado para tu proyecto de reforma.',
+        form: {
+          projectType: 'Tipo de Proyecto',
+          sqm: 'm² (aprox.)',
+          city: 'Ciudad',
+          targetBudget: 'Presupuesto Objetivo (€)',
+          notes: 'Detalles Adicionales',
+          notesPlaceholder: 'Acabados deseados, estado actual, requisitos especiales...',
+          generate: 'Generar Presupuesto',
+          generating: 'Generando...'
+        },
+        result: {
+          title: 'Presupuesto Estimado',
+          assumptions: 'Supuestos',
+          exclusions: 'Exclusiones',
+          lineItems: 'Partidas',
+          total: 'Total',
+          category: 'Categoría',
+          item: 'Partida',
+          qty: 'Cant.',
+          unit: 'Unidad',
+          min: 'Min (€)',
+          max: 'Max (€)',
+          notes: 'Notas'
+        }
+      },
+      renderPresupuesto: {
+        title: 'Render y Presupuesto',
+        description: 'Sube una foto y describe tu reforma. Obtén un render generado por IA y presupuesto estimado en minutos.',
+        pageTitle: 'Render y Presupuesto',
+        pageSubtitle: 'Sube una foto y describe tu reforma para obtener un render generado por IA y presupuesto estimado.',
+        upload: {
+          selectImage: 'Elegir Imagen',
+          changeImage: 'Cambiar Imagen',
+          maxSize: 'Máx. 10 MB · JPEG, PNG o WebP · máx. 8192 px',
+          promptLabel: 'Describe la reforma (ej. Reforma completa estilo mediterráneo, cocina blanca con isla)',
+          promptPlaceholder: 'Reforma completa estilo mediterráneo...',
+          generate: 'Generar Render y Presupuesto',
+          generating: 'Generando render y presupuesto...',
+          imageTooLarge: 'La imagen no puede superar {size} MB.',
+          invalidFormat: 'Formato no válido. Usa JPEG, PNG o WebP.',
+          imageTooBig: 'La imagen no puede superar {size}px de ancho o alto.',
+          imageReadError: 'No se pudo leer la imagen.',
+          imageAndPromptRequired: 'Necesitas una imagen y un texto descriptivo (ej. reforma estilo mediterráneo).',
+          serverError: 'Error del servidor ({status})',
+          errorGenerating: 'Error al generar render. Por favor, intenta de nuevo más tarde.',
+          previewAlt: 'Vista previa'
+        },
+        result: {
+          budget: 'Presupuesto Estimado',
+          originalImage: 'Imagen Original',
+          render: 'Render Generado',
+          promptUsed: 'Prompt usado para el render'
+        }
+      },
+      openDemo: 'Abrir Demo',
+      cancel: 'Cancelar',
+      projectTypes: {
+        baño: 'Baño',
+        cocina: 'Cocina',
+        integral: 'Reforma integral',
+        pintura: 'Pintura',
+        suelo: 'Suelo',
+        otros: 'Otros'
+      }
+    },
+
     // Footer
     footer: {
       description: 'Construyo productos que se entienden y se usan. Ingeniero de software y fundador con experiencia real en construcción.',
@@ -1157,15 +1408,16 @@ export const translations = {
       resume: 'CV',
       contact: 'Contacte',
       hireMe: 'Contracta\'m',
-      aiLab: 'Lab d\'IA'
+      aiLab: 'Lab d\'IA',
+      demos: 'Demos'
     },
     
     // Home Page
     home: {
       hero: {
-        titlePart1: 'Full Stack & AI',
-        titlePart2: 'Engineer',
-        subtitle: 'From Founder to Digital Product Builder',
+        titlePart1: 'Enginyer de Solucions',
+        titlePart2: 'IA i Automatització per al Creixement Empresarial',
+        subtitle: 'De fundador amb experiència operativa real a dissenyar solucions impulsades per IA que estalvien temps i impulsen ingressos.',
         cta: {
           viewProjects: 'Veure Projectes',
           viewResume: 'Veure CV',
@@ -1244,10 +1496,10 @@ export const translations = {
     about: {
       hero: {
         title: 'Sobre Mi',
-        description1: 'Soc un Software Engineer que construeix productes digitals intuïtius, escalables i significatius, combinant una base sòlida full-stack amb experiència real liderant negocis centrats en el client. Abans de fer la transició a la tecnologia, vaig passar anys gestionant projectes d\'alt valor en béns immobles i construcció com a fundador — un viatge que em va ensenyar a entendre profundament el que els clients necessiten, sovint fins i tot abans que ho expressin, i convertir l\'ambigüitat en solucions clares i funcionals.',
-        description2: 'Després de graduar-me del Bootcamp immersiu de Software Engineering de General Assembly de més de 420 hores, vaig construir quatre aplicacions completes aplicant arquitectura neta, resolució sòlida de problemes i pensament orientat al producte. El meu projecte final, TradeLab, una plataforma de backtesting d\'estratègies de trading, va ser destacat pel meu instructor com "un dels millors projectes mai vistos a GA".',
-        description3: 'Després vaig expandir el meu abast tècnic completant la Introducció a la Intel·ligència Artificial amb Python de Harvard CS50, on vaig aplicar algoritmes per a cerca, optimització, aprenentatge automàtic, xarxes neuronals i presa de decisions. Això va obrir una nova capa de curiositat sobre com la IA pot millorar la creativitat humana, simplificar la complexitat i fer que la tecnologia es senti més intel·ligent i centrada en l\'ésser humà.',
-        description4: 'El que més em motiva és resoldre problemes reals a través de claredat, creativitat i precisió. Porto una mentalitat de fundador, una comprensió sòlida dels usuaris i resiliència construïda a través de l\'execució en la vida real. Ja sigui treballant de forma independent o en equips, em centro en lliurar productes que funcionen—codi net, disseny reflexiu i solucions que genuïnament millorin la forma en què les persones viuen i treballen.'
+        description1: 'Soc un Enginyer de Solucions enfocat en dissenyar solucions d\'IA i automatització que ajuden a les empreses a estalviar temps, millorar la qualitat dels leads i incrementar els ingressos.',
+        description2: 'Abans d\'entrar en tecnologia, vaig passar més de 20 anys en béns immobles i construcció com a fundador i operador, liderant projectes d\'alt valor orientats al client. Aquesta experiència em va ensenyar a entendre profundament els problemes empresarials, sovint abans que estiguin clarament definits, i a traduir l\'ambigüitat en solucions clares i efectives.',
+        description3: 'Després de completar el bootcamp de Software Engineering de General Assembly de més de 420 hores, vaig construir múltiples aplicacions d\'extrem a extrem amb una mentalitat sòlida de producte i arquitectura. El meu projecte final, TradeLab, va ser reconegut públicament pel meu instructor com un dels millors projectes que havia vist a GA. Més tard vaig expandir el meu enfocament cap a la IA aplicada a través de CS50 AI de Harvard i l\'especialització en Machine Learning de Stanford / DeepLearning.AI, aplicant IA a casos d\'ús operatius reals com automatització, extracció de dades, qualificació de leads i suport per a la presa de decisions.',
+        description4: 'El que em impulsa és l\'impacte. Gaudeixo treballant en la intersecció de negocis, clients i tecnologia—dissenyant solucions que redueixen la fricció, automatitzen la feina repetitiva i ofereixen resultats mesurables. Porto una mentalitat de fundador, forts habilitats de comunicació i experiència d\'execució en el món real a cada problema en què treballo.'
       },
       technical: {
         title: 'Experiència Tècnica',
@@ -1519,19 +1771,20 @@ export const translations = {
     // Resume Page
     resume: {
       title: 'CV',
-      subtitle: 'Software Engineer amb Product Vision | IA + Full Stack | Founder-Minded Problem Solver',
+      subtitle: 'Enginyer de Solucions | IA i Automatització | Convertint Problemes Empresarials en Solucions Escalables',
+      nameTitle: 'Enginyer de Solucions enfocat en IA, automatització i impacte empresarial',
       aboutMe: 'Sobre Mi',
-      aboutMeContent: 'Soc un Software Engineer full stack amb una visió molt clara: construir solucions digitals que realment resolguin problemes. Després de més de deu anys liderant equips, clients i projectes com a fundador i CEO en el sector de la construcció, vaig desenvolupar l\'habilitat que avui és el meu major avantatge en tecnologia: anticipar necessitats abans fins i tot que el client les expressi. Després de completar el bootcamp intensiu d\'Enginyeria de Programari de General Assembly i certificar-me en IA amb Python a Harvard (CS50), he creat aplicacions full stack, productes digitals amb visió i sistemes amb intel·ligència artificial aplicada. Em mou construir eines que facin la vida de les persones més fàcil, més intel·ligent i més eficient. Combino tecnologia, disseny i negoci, sempre amb mentalitat de producte.',
+      aboutMeContent: 'Soc un Enginyer de Solucions enfocat en usar programari, IA i automatització per resoldre problemes empresarials reals i impulsar resultats mesurables.\n\nAbans de fer la transició a la tecnologia, vaig passar més d\'una dècada com a Fundador i CEO en el sector de la construcció, liderant projectes d\'alt risc orientats al client. Aquesta experiència va modelar el meu major avantatge avui: entendre profundament les necessitats empresarials i dels usuaris, sovint abans que estiguin clarament articulades, i convertir l\'ambigüitat en solucions clares i efectives.\n\nDesprés de graduar-me del programa immersiu d\'Enginyeria de Programari de General Assembly de més de 420 hores, vaig construir múltiples aplicacions d\'extrem a extrem amb una mentalitat sòlida de producte i arquitectura. El meu projecte final, TradeLab, una plataforma de backtesting d\'estratègies de trading, va ser reconegut públicament pel meu instructor com un dels millors projectes que havia vist a GA.\n\nMés tard vaig expandir el meu abast tècnic a través de CS50 AI de Harvard i l\'especialització en Machine Learning de Stanford / DeepLearning.AI, aplicant IA a casos d\'ús pràctics com automatització, extracció de dades, qualificació de leads i suport per a la presa de decisions.\n\nEl que em impulsa és l\'impacte. Gaudeixo treballant en la intersecció de negocis, clients i tecnologia—dissenyant solucions que estalvien temps, redueixen la fricció i ajuden a les empreses a créixer. Porto una mentalitat de fundador, forts habilitats de comunicació i experiència d\'execució en el món real a cada projecte.',
       experience: 'Experiència Professional',
       experienceDetails: {
         generalassembly: {
-          description: 'Bootcamp integral d\'Enginyeria de Programari cobrint desenvolupament full-stack amb tecnologies modernes. Front-end: Vaig construir interfícies d\'usuari responsives usant React amb components, gestió d\'estat (useState), formularis interactius i comunicació amb servidor (useEffect). Vaig estructurar HTML semàntic i CSS responsiu assegurant accessibilitat i SEO. Vaig crear experiències dinàmiques amb JavaScript i esdeveniments DOM. Back-end: Vaig desenvolupar aplicacions segures del costat del servidor usant Node.js, Express i Django seguint principis RESTful. Vaig implementar operacions CRUD i relacions usant PostgreSQL i MongoDB amb optimització de dades i ERDs. Vaig habilitar comunicació API i autenticació basada en tokens. Pràctiques de desenvolupament: línia de comandes UNIX, control de versions Git/GitHub, arquitectura MVC, programació asíncrona, TDD, debugging i documentació tècnica. Vaig adquirir coneixements fonamentals de CS en algoritmes, estructures de dades i anàlisi de Big O Notation.'
+          description: 'Vaig completar un bootcamp intensiu d\'Enginyeria de Programari de més de 420 hores amb un fort enfocament en desenvolupament de productes d\'extrem a extrem i resolució de problemes del món real.\n\nVaig construir múltiples aplicacions full-stack aplicant arquitectura neta, disseny d\'APIs, modelatge de dades, autenticació i IA aplicada. Vaig treballar en tot el cicle de vida des del descobriment i disseny de solucions fins a la implementació i iteració, amb un fort èmfasi en pensament de producte i usabilitat.\n\nEl meu projecte final, TradeLab, una plataforma de backtesting d\'estratègies de trading, va ser reconegut públicament pel meu instructor com un dels millors projectes que havia vist en els seus anys ensenyant a General Assembly.'
         },
         totalhomes: {
-          description: 'Vaig fundar i dirigir una empresa boutique de construcció i reformes centrada en projectes residencials d\'alta qualitat. Vaig liderar equips multidisciplinaris, vaig gestionar pressupostos i vaig supervisar tot el cicle de vida del projecte, des de la idea fins al lliurament. Fites clau: vaig convertir necessitats ambigües dels clients en solucions clares i funcionals (la mateixa lògica que aplico al desenvolupament de programari); vaig introduir fluxos digitals que van augmentar la transparència i l\'eficiència operativa; vaig gestionar projectes complexos amb clients exigents prenent decisions crítiques sota pressió; vaig construir una reputació sòlida amb projectes premium documentats amb fotografies i processos reals. Skills transferibles al desenvolupament: gestió de producte, lideratge, comunicació, resolució de problemes, visió de negoci.'
+          description: 'Vaig fundar i dirigir una empresa boutique de construcció i reformes lliurant projectes residencials premium. Vaig gestionar tot el cicle de vida del negoci, des del descobriment de clients i definició de requisits fins a l\'execució, lliurament i seguiment post-projecte.\n\nVaig treballar estretament amb clients per traduir necessitats ambigües en solucions clares i executables—un enfocament directament transferible al disseny de solucions en tecnologia. Vaig liderar equips multidisciplinaris, vaig gestionar pressupostos i cronogrames, i vaig prendre decisions d\'alt risc en entorns complexos del món real.\n\nVaig introduir fluxos digitals i millores de processos que van augmentar la transparència, eficiència i control operatiu. Aquest rol va modelar una mentalitat sòlida de negoci, producte i client que ara aplico al dissenyar solucions tècniques i impulsades per IA.'
         },
         casex: {
-          description: 'Vaig gestionar projectes residencials, pressupostos i relacions amb clients. Vaig supervisar estratègies de vendes, estudis de mercat i adquisició de nous clients.'
+          description: 'Vaig gestionar projectes immobiliaris residencials en tot el seu cicle de vida, combinant coordinació tècnica, gestió de clients, pressupostos i presa de decisions comercials.\n\nVaig treballar estretament amb clients per definir requisits, alinear expectatives i traduir necessitats en plans d\'execució clars. Vaig donar suport a l\'estratègia de vendes, anàlisi de mercat i adquisició de nous clients, contribuint al creixement del negoci en un entorn altament competitiu.\n\nAquest rol va enfortir la meva capacitat per operar en la intersecció de negoci, clients i restriccions tècniques—habilitats que ara donen suport directament al meu treball en disseny de solucions, descobriment i alineació de stakeholders com a Enginyer de Solucions.'
         }
       },
       skills: 'Habilitats Tècniques',
@@ -1539,6 +1792,18 @@ export const translations = {
       frameworks: 'Frameworks i Llibreries',
       tools: 'Eines',
       soft: 'Habilitats Suaus',
+      skillsCore: 'Core',
+      coreSolutionsEngineering: 'Enginyeria de Solucions',
+      corePreSales: 'Pre-Venda / Enginyeria de Vendes',
+      coreProductDiscovery: 'Descobriment de Producte',
+      coreBusinessAlignment: 'Alineació Empresarial i Tècnica',
+      coreAutomationAI: 'Automatització i IA',
+      skillsTechnical: 'Tècnic',
+      technicalPython: 'Python',
+      technicalJavaScript: 'JavaScript',
+      technicalSQL: 'SQL',
+      technicalML: 'TensorFlow, scikit-learn',
+      technicalAPIs: 'APIs, Automatització (Zapier, n8n)',
       softSkills: {
         creativity: 'Creativitat',
         problemSolving: 'Resolució de Problemes',
@@ -1548,31 +1813,24 @@ export const translations = {
       },
       skillsMap: {
         // TotalHomes skills
-        'Project & Operations Management': 'Gestió de Projectes i Operacions',
-        'Cross-Functional Team Leadership': 'Lideratge d\'Equips Multifuncionals',
-        'Client Discovery & Needs Analysis': 'Descobriment de Clients i Anàlisi de Necessitats',
-        'High-Stakes Decision Making': 'Presa de Decisions d\'Alt Impacte',
-        'Scope Definition & Requirements Gathering': 'Definició d\'Abast i Recopilació de Requisits',
-        'Negotiation & Conflict Resolution': 'Negociació i Resolució de Conflictes',
+        'Client Discovery & Requirement Definition': 'Descobriment de Clients i Definició de Requisits',
+        'Solution Design in Ambiguous Contexts': 'Disseny de Solucions en Contextos Ambigus',
+        'Business & Technical Alignment': 'Alineació Empresarial i Tècnica',
         'Process Optimization & Digital Workflow Design': 'Optimització de Processos i Disseny de Fluxos Digitals',
-        'Turning Ambiguous Needs into Clear Execution Plans': 'Convertir Necessitats Ambígües en Plans d\'Execució Clars',
+        'Stakeholder Management (Clients, Teams, Vendors)': 'Gestió de Stakeholders (Clients, Equips, Proveïdors)',
+        'High-Stakes Decision Making': 'Presa de Decisions d\'Alt Impacte',
+        'End-to-End Ownership from Problem to Delivery': 'Propietat d\'Extrem a Extrem des de Problema fins a Lliurament',
         // Casex skills
         'Project Management': 'Gestió de Projectes',
         'Client Relations': 'Relacions amb Clients',
         'Sales Strategy': 'Estratègia de Vendes',
-        // General Assembly skills (technologies - keep as is)
-        'JavaScript': 'JavaScript',
-        'React': 'React',
-        'Node.js': 'Node.js',
-        'Express': 'Express',
-        'Python': 'Python',
-        'Django': 'Django',
-        'PostgreSQL': 'PostgreSQL',
-        'MongoDB': 'MongoDB',
-        'REST APIs': 'REST APIs',
-        'Git/GitHub': 'Git/GitHub',
-        'UNIX': 'UNIX',
-        'TDD': 'TDD',
+        // General Assembly skills
+        'End-to-End Solution Design': 'Disseny de Solucions d\'Extrem a Extrem',
+        'API Design & Integration': 'Disseny i Integració d\'APIs',
+        'Data Modeling & System Architecture': 'Modelatge de Dades i Arquitectura de Sistemes',
+        'Product-Oriented Development': 'Desenvolupament Orientat al Producte',
+        'Technical Problem Solving': 'Resolució de Problemes Tècnics',
+        'Stakeholder & Requirement Alignment': 'Alineació de Stakeholders i Requisits',
         // Languages
         'SQL': 'SQL',
         // Frameworks
@@ -1593,13 +1851,19 @@ export const translations = {
       },
       keySkills: 'Habilitats Clau',
       achievements: 'Assoliments Clau',
-      achievement1: 'Vaig completar la Introducció a la Intel·ligència Artificial amb Python de Harvard CS50, desenvolupant models d\'IA pràctics per a aplicacions del món real',
-      achievement2: 'Projecte final TradeLab reconegut com un dels millors pel instructor de General Assembly',
-      achievement3: '3 de 4 projectes destacats durant el bootcamp de Software Engineering',
-      achievement4: '6 anys d\'experiència liderant equips i gestionant projectes complexos a TotalHomes',
-      achievement5: 'Fundador exitós amb reputació excepcional en el sector de la construcció',
+      achievement1: 'Vaig dissenyar i implementar un sistema impulsat per IA per generar estimacions de costos de construcció instantàniament, amb la capacitat de revisar, ajustar i refinar pressupostos manualment—reduint el temps de resposta i millorant la presa de decisions.',
+      achievement2: 'Vaig dissenyar i lliurar solucions impulsades per IA i automatització aplicades a casos d\'ús operatius reals, incloent qualificació de leads, extracció de dades i optimització de processos.',
+      achievement3: 'Vaig completar la Introducció a la Intel·ligència Artificial amb Python de Harvard CS50, aplicant algoritmes de cerca, machine learning i presa de decisions a problemes pràctics.',
+      achievement4: 'En els quatre projectes desenvolupats durant el bootcamp de Software Engineering, vaig superar consistentment els requisits del projecte lliurant funcionalitat addicional, profunditat i poliment, el que va portar a un reconeixement repetit de l\'instructor per qualitat i execució.',
+      achievement5: 'El projecte final TradeLab va ser destacat per un instructor de General Assembly com un dels projectes més sòlids que havia vist durant el programa.',
+      achievement6: 'Vaig fundar i liderar una empresa rendible durant més de 6 anys, gestionant equips, clients, pressupostos i decisions d\'alt risc en entorns complexos.',
       educationTitle: 'Educació',
       education: {
+        'stanford-ml-specialization': {
+          degree: 'Especialització en Machine Learning (3 cursos completats)',
+          institution: 'Universitat de Stanford / DeepLearning.AI',
+          description: 'Completada l\'especialització completa: (1) Aprenentatge Supervisat: Regressió i Classificació, (2) Algoritmes d\'Aprenentatge Avançats — xarxes neuronals, arbres de decisió, ensembles, (3) Aprenentatge No Supervisat, Sistemes de Recomanació, Aprenentatge per Reforç — clustering, detecció d\'anomalies, sistemes de recomanació, reinforcement learning.'
+        },
         harvard: {
           degree: 'Introducció a la Intel·ligència Artificial amb Python',
           institution: 'Universitat de Harvard (CS50)',
@@ -1629,8 +1893,9 @@ export const translations = {
       interests: 'Interessos',
       interestsContent: 'M\'apassiona els projectes que posen les persones primer: ja sigui a través de la tecnologia, el disseny o la comunitat. Gaudeixo explorant com les solucions digitals poden fer la vida quotidiana més fàcil i agradable, mentre també m\'interesso en el benestar, la creativitat i el creixement personal. El meu objectiu és sempre combinar la innovació amb un desig genuí de millorar la vida de les persones.',
       totalhomes: {
-        title: 'Alguns dels Projectes que Hem Realitzat',
-        subtitle: 'Toca qualsevol miniatura per veure-la en pantalla completa i navegar per la galeria.'
+        title: 'Projectes complexos del món real que van modelar la meva mentalitat d\'execució',
+        subtitle: 'Toca qualsevol miniatura per veure-la en pantalla completa i navegar per la galeria.',
+        moreImagesLabel: 'imatges'
       },
       spanish: 'Espanyol',
       english: 'Anglès',
@@ -1641,6 +1906,10 @@ export const translations = {
       downloadResume: 'Descarregar CV',
       downloadHarvardAI: 'Descarregar Certificat Harvard IA',
       downloadGA: 'Descarregar Certificat General Assembly',
+      downloadStanfordAdvancedAlgos: 'Descarregar Certificat Stanford ML Algoritmes Avançats',
+      downloadStanfordSupervisedLearning: 'Descarregar Certificat Stanford ML Aprenentatge Supervisat',
+      downloadStanfordUnsupervisedLearning: 'Descarregar Certificat Stanford ML Aprenentatge No Supervisat',
+      downloadMLSpecialization: 'Descarregar Certificat Stanford Especialització en Machine Learning',
       downloadText: 'Fes clic per descarregar PDF'
     },
 
@@ -1689,6 +1958,88 @@ export const translations = {
         '1month': 'En 1 mes',
         '3months': 'En 3 mesos',
         flexible: 'Flexible'
+      }
+    },
+
+    // Demos Page
+    demos: {
+      title: 'Demos',
+      subtitle: 'Demos pràctiques per a empreses: des de captura de leads fins a esborranys amb IA.',
+      presupuestoOrientativo: {
+        title: 'Pressupost Orientatiu',
+        description: 'Completa el formulari amb els detalls del teu projecte i obtén un pressupost professional detallat amb partides, supòsits i exclusiones.',
+        pageTitle: 'Pressupost Orientatiu',
+        pageSubtitle: 'Obtén un pressupost professional detallat per al teu projecte de reforma.',
+        form: {
+          projectType: 'Tipus de Projecte',
+          sqm: 'm² (aprox.)',
+          city: 'Ciutat',
+          targetBudget: 'Pressupost Objectiu (€)',
+          notes: 'Detalls Addicionals',
+          notesPlaceholder: 'Acabats desitjats, estat actual, requisits especials...',
+          generate: 'Generar Pressupost',
+          generating: 'Generant...',
+          projectTypeRequired: 'Tipus de projecte obligatori.',
+          sqmPlaceholder: 'Ex. 45',
+          cityPlaceholder: 'Barcelona',
+          errorGenerating: 'Error al generar el pressupost.',
+          errorValidation: 'Error de validació',
+          field: 'camp',
+          autoDescription: 'Reforma de {type}{sqm}{city}'
+        },
+        result: {
+          title: 'Pressupost Estimat',
+          assumptions: 'Supòsits',
+          exclusions: 'Exclusiones',
+          lineItems: 'Partides',
+          total: 'Total',
+          category: 'Categoria',
+          item: 'Partida',
+          qty: 'Quant.',
+          unit: 'Unitat',
+          min: 'Min (€)',
+          max: 'Max (€)',
+          notes: 'Notes'
+        }
+      },
+      renderPresupuesto: {
+        title: 'Render i Pressupost',
+        description: 'Puja una foto i descriu la teva reforma. Obtén un render generat per IA i pressupost estimat en minuts.',
+        pageTitle: 'Render i Pressupost',
+        pageSubtitle: 'Puja una foto i descriu la teva reforma per obtenir un render generat per IA i pressupost estimat.',
+        upload: {
+          selectImage: 'Triar Imatge',
+          changeImage: 'Canviar Imatge',
+          maxSize: 'Màx. 10 MB · JPEG, PNG o WebP · màx. 8192 px',
+          promptLabel: 'Descriu la reforma (ex. Reforma completa estil mediterrani, cuina blanca amb illa)',
+          promptPlaceholder: 'Reforma completa estil mediterrani...',
+          generate: 'Generar Render i Pressupost',
+          generating: 'Generant render i pressupost...',
+          imageTooLarge: 'La imatge no pot superar {size} MB.',
+          invalidFormat: 'Format no vàlid. Utilitza JPEG, PNG o WebP.',
+          imageTooBig: 'La imatge no pot superar {size}px d\'amplada o alçada.',
+          imageReadError: 'No s\'ha pogut llegir la imatge.',
+          imageAndPromptRequired: 'Necessites una imatge i un text descriptiu (ex. reforma estil mediterrani).',
+          serverError: 'Error del servidor ({status})',
+          errorGenerating: 'Error al generar render. Si us plau, torna-ho a intentar més tard.',
+          previewAlt: 'Vista prèvia'
+        },
+        result: {
+          budget: 'Pressupost Estimat',
+          originalImage: 'Imatge Original',
+          render: 'Render Generat',
+          promptUsed: 'Prompt usat per al render'
+        }
+      },
+      openDemo: 'Obrir Demo',
+      cancel: 'Cancel·lar',
+      projectTypes: {
+        baño: 'Bany',
+        cocina: 'Cuina',
+        integral: 'Reforma integral',
+        pintura: 'Pintura',
+        suelo: 'Sòl',
+        otros: 'Altres'
       }
     },
 
