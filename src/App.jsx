@@ -19,9 +19,7 @@ import Minesweeper from './components/games/Minesweeper'
 import SixDegrees from './components/games/SixDegrees'
 import Nim from './components/games/Nim'
 import Tetris from './components/games/Tetris'
-import { lazy, Suspense } from 'react'
-
-const NeuralNetworkVisualization = lazy(() => import('./components/games/NeuralNetworkVisualization'))
+import NeuralNetworkRedirect from './components/games/NeuralNetworkRedirect'
 
 function App() {
   // Prevenir overflow horizontal globalmente y forzar modo oscuro
@@ -64,11 +62,7 @@ function App() {
               <Route path="/ai/tetris" element={<Tetris />} />
               <Route 
                 path="/ai/neural-network" 
-                element={
-                  <Suspense fallback={<div className="min-h-screen bg-gray-900 flex items-center justify-center text-white">Loading...</div>}>
-                    <NeuralNetworkVisualization />
-                  </Suspense>
-                } 
+                element={<NeuralNetworkRedirect />} 
               />
             </Routes>
           </main>
