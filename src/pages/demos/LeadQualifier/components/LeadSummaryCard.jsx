@@ -10,23 +10,31 @@ import {
   User, 
   Phone,
   Mail,
-  Star
+  Star,
+  Clock,
+  Key,
+  AlertCircle
 } from 'lucide-react'
 
+const dispositionColors = {
+  hot: 'bg-green-500',
+  warm: 'bg-amber-500',
+  cold: 'bg-blue-500',
+}
+
+const dispositionLabels = {
+  hot: 'Buen encaje',
+  warm: 'En proceso',
+  cold: 'Seguimiento',
+}
+
+// Legacy tier colors for backwards compatibility
 const tierColors = {
   1: 'bg-green-500',
   2: 'bg-blue-500',
   3: 'bg-yellow-500',
   4: 'bg-orange-500',
   5: 'bg-red-500',
-}
-
-const tierLabels = {
-  1: 'Premium',
-  2: 'Calificado',
-  3: 'Tibio',
-  4: 'Frío',
-  5: 'No calificado',
 }
 
 function FieldRow({ icon: Icon, label, value, highlight }) {
@@ -55,21 +63,27 @@ export default function LeadSummaryCard({ leadData }) {
         animate={{ opacity: 1, x: 0 }}
         className="rounded-2xl border border-gray-700 bg-gray-800/50 p-6"
       >
-        <h3 className="text-lg font-semibold text-white mb-4">Resumen del Lead</h3>
+        <h3 className="text-lg font-semibold text-white mb-4">Resumen del Proyecto</h3>
         <p className="text-gray-400 text-sm">
-          La información del lead aparecerá aquí a medida que avance la conversación.
+          La información del proyecto aparecerá aquí a medida que avance la conversación.
         </p>
         <div className="mt-4 p-4 rounded-lg bg-gray-700/50 border border-gray-600">
           <p className="text-xs text-gray-500 text-center">
-            Esperando datos...
+            Esperando información...
           </p>
         </div>
       </motion.div>
     )
   }
 
-  const tier = leadData.tier || 5
-  const score = leadData.score || 0
+  // Determine display mode: new format (disposition) or legacy (tier)
+  const hasDisposition = leadData.rawState?.internal_disposition
+  const disposition = leadData.rawState?.internal_disposition || 'warm'
+  const tier = leadData.tier || 3
+  const score = leadData.score || 50
+
+  const headerColor = hasDisposition ? dispositionColors[disposition] : tierColors[tier]
+  const headerLabel = hasDisposition ? dispositionLabels[disposition] : `Tier ${tier}`
 
   return (
     <motion.div
@@ -77,24 +91,24 @@ export default function LeadSummaryCard({ leadData }) {
       animate={{ opacity: 1, x: 0 }}
       className="rounded-2xl border border-gray-700 bg-gray-800/50 overflow-hidden"
     >
-      {/* Header with Tier */}
-      <div className={`${tierColors[tier]} px-6 py-4`}>
+      {/* Header */}
+      <div className={`${headerColor} px-6 py-4`}>
         <div className="flex items-center justify-between">
           <div>
             <p className="text-white/80 text-xs font-medium uppercase tracking-wider">
-              Tier {tier}
+              Estado
             </p>
             <p className="text-white text-lg font-bold">
-              {tierLabels[tier]}
+              {headerLabel}
             </p>
           </div>
           <div className="text-right">
-            <p className="text-white/80 text-xs">Score</p>
-            <p className="text-white text-2xl font-bold">{score}</p>
+            <p className="text-white/80 text-xs">Completado</p>
+            <p className="text-white text-2xl font-bold">{score}%</p>
           </div>
         </div>
         
-        {/* Score bar */}
+        {/* Progress bar */}
         <div className="mt-3 h-2 bg-white/20 rounded-full overflow-hidden">
           <motion.div
             initial={{ width: 0 }}
@@ -120,10 +134,17 @@ export default function LeadSummaryCard({ leadData }) {
           />
           <FieldRow 
             icon={MapPin} 
-            label="Ciudad" 
+            label="Ubicación" 
             value={leadData.city} 
             highlight 
           />
+          {leadData.postalCode && (
+            <FieldRow 
+              icon={MapPin} 
+              label="C.P." 
+              value={leadData.postalCode} 
+            />
+          )}
           <FieldRow 
             icon={Ruler} 
             label="Superficie" 
@@ -132,12 +153,13 @@ export default function LeadSummaryCard({ leadData }) {
           <FieldRow 
             icon={Banknote} 
             label="Presupuesto" 
-            value={leadData.budget ? `${leadData.budget.toLocaleString('es-ES')} €` : null} 
+            value={leadData.budget ? `Hasta ${leadData.budget.toLocaleString('es-ES')} €` : 
+                   leadData.budgetRange ? leadData.budgetRange : null} 
             highlight 
           />
           <FieldRow 
             icon={Calendar} 
-            label="Plazo" 
+            label="Inicio" 
             value={leadData.timeline} 
           />
           <FieldRow 
@@ -146,11 +168,35 @@ export default function LeadSummaryCard({ leadData }) {
             value={leadData.isOwner} 
           />
           <FieldRow 
+            icon={Key} 
+            label="Acceso" 
+            value={leadData.accessStatus} 
+          />
+          <FieldRow 
             icon={FileText} 
             label="Documentación" 
             value={leadData.hasDocs} 
           />
+          {leadData.constraints && (
+            <FieldRow 
+              icon={AlertCircle} 
+              label="Restricciones" 
+              value={leadData.constraints} 
+            />
+          )}
         </div>
+
+        {/* Scope description if available */}
+        {leadData.scopeDescription && (
+          <>
+            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-3">
+              Descripción
+            </h3>
+            <p className="text-sm text-gray-300 bg-gray-700/30 rounded-lg p-3">
+              {leadData.scopeDescription}
+            </p>
+          </>
+        )}
 
         {/* Contact section */}
         {(leadData.contactName || leadData.contactPhone || leadData.contactEmail) && (
@@ -178,11 +224,11 @@ export default function LeadSummaryCard({ leadData }) {
           </>
         )}
 
-        {/* Reasons */}
+        {/* Reasons / Notes */}
         {leadData.reasons && leadData.reasons.length > 0 && (
           <>
             <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-3">
-              Razones de Calificación
+              Información Recopilada
             </h3>
             <ul className="space-y-2">
               {leadData.reasons.map((reason, i) => (
