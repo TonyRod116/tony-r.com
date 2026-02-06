@@ -28,6 +28,12 @@ export default function LeadQualifier() {
   const inputRef = useRef(null)
   const userScrolledUp = useRef(false)
   const prevIsLoading = useRef(false)
+  const messagesRef = useRef(messages) // Keep a ref to current messages
+  
+  // Keep messagesRef in sync
+  useEffect(() => {
+    messagesRef.current = messages
+  }, [messages])
   
   const { 
     sendMessage, 
@@ -87,21 +93,24 @@ export default function LeadQualifier() {
   const handleSend = useCallback(async () => {
     if (!input.trim() || isLoading) return
     
+    const messageContent = input.trim()
+    setInput('') // Clear input immediately
     userScrolledUp.current = false
     
     const userMessage = {
       id: `user-${Date.now()}`,
       role: 'user',
-      content: input.trim(),
+      content: messageContent,
       timestamp: new Date().toISOString(),
     }
     
-    setMessages(prev => [...prev, userMessage])
-    setInput('')
+    // Use ref to get current messages to avoid stale closure
+    const currentMessages = [...messagesRef.current, userMessage]
+    setMessages(currentMessages)
     clearError()
     
     try {
-      const response = await sendMessage([...messages, userMessage])
+      const response = await sendMessage(currentMessages)
       
       const assistantMessage = {
         id: `assistant-${Date.now()}`,
@@ -114,10 +123,15 @@ export default function LeadQualifier() {
       setMessages(prev => [...prev, assistantMessage])
       
       // Update lead data progressively
+      console.log('[LeadQualifier INDEX] response.structured:', response.structured)
       if (response.structured) {
+        console.log('[LeadQualifier INDEX] leadFields from structured:', response.structured.leadFields)
         setLeadData(prev => {
           const newFields = response.structured.leadFields || {}
           const merged = { ...prev }
+          
+          console.log('[LeadQualifier INDEX] prev leadData:', prev)
+          console.log('[LeadQualifier INDEX] newFields to merge:', newFields)
           
           // Only update fields with actual values
           Object.entries(newFields).forEach(([key, value]) => {
@@ -132,6 +146,7 @@ export default function LeadQualifier() {
           if (response.structured.reasons) merged.reasons = response.structured.reasons
           if (response.structured.rawState) merged.rawState = response.structured.rawState
           
+          console.log('[LeadQualifier INDEX] merged leadData:', merged)
           return merged
         })
         
@@ -144,7 +159,7 @@ export default function LeadQualifier() {
     } catch (err) {
       console.error('Error sending message:', err)
     }
-  }, [input, isLoading, messages, sendMessage, clearError])
+  }, [input, isLoading, sendMessage, clearError])
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -307,7 +322,7 @@ export default function LeadQualifier() {
 
           {/* Lead Summary Sidebar */}
           <div className="lg:col-span-1">
-            <LeadSummaryCard leadData={leadData} />
+            <LeadSummaryCard leadData={leadData} config={config} />
           </div>
         </div>
       </div>

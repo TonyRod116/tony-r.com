@@ -1,27 +1,30 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Loader2, AlertCircle, ImagePlus } from 'lucide-react'
 import { useLanguage } from '../../hooks/useLanguage.jsx'
-import LoadingProgressBar from '../../components/LoadingProgressBar.jsx'
 import BeforeAfterSlider from '../../components/BeforeAfterSlider.jsx'
 
-// BuildApp API: foto + prompt → render + presupuesto
+// BuildApp API: foto + prompt → render + presupuesto (spec: 5 min timeout recommended)
 const BUILDAPP_GET_INSPIRED_URL = 'https://buildapp-v1-backend.onrender.com/api/v1/get-inspired/process'
+const BUILDAPP_FETCH_TIMEOUT_MS = 5 * 60 * 1000 // 5 minutes
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024 // 10MB
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 const MAX_IMAGE_DIMENSION = 8192
 
+function localeFromLanguage(lang) {
+  if (lang === 'en') return 'en-US'
+  if (lang === 'ca') return 'ca-ES'
+  return 'es-ES'
+}
+
 export default function RenderPresupuesto() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [renderImageDataUrl, setRenderImageDataUrl] = useState(null)
   const [renderPrompt, setRenderPrompt] = useState('')
   const [renderLoading, setRenderLoading] = useState(false)
-  const [loadingStage, setLoadingStage] = useState(0)
   const [renderResult, setRenderResult] = useState(null)
   const [renderError, setRenderError] = useState(null)
   const renderFileInputRef = useRef(null)
-  const progressTimeoutsRef = useRef([])
-  const abortControllerRef = useRef(null)
 
   // Validar imagen para BuildApp: tamaño ≤10MB, tipo jpeg/png/webp, dimensión máx 8192px
   const validateRenderImage = (file) => {
@@ -73,100 +76,133 @@ export default function RenderPresupuesto() {
   }
 
   const generateRenderAndBudget = async () => {
+    console.log('🚀 [DEBUG] generateRenderAndBudget called')
+    console.log('🚀 [DEBUG] renderImageDataUrl exists:', !!renderImageDataUrl)
+    console.log('🚀 [DEBUG] renderPrompt:', renderPrompt)
+    console.log('🚀 [DEBUG] renderPrompt.trim():', renderPrompt.trim())
+    console.log('🚀 [DEBUG] language:', language)
+    
     if (!renderImageDataUrl || !renderPrompt.trim()) {
+      console.error('❌ [DEBUG] Validation failed - missing image or prompt')
       setRenderError(t('demos.renderPresupuesto.upload.imageAndPromptRequired'))
       return
     }
     
-    // Clear any existing timeouts
-    progressTimeoutsRef.current.forEach((timeout) => clearTimeout(timeout))
-    progressTimeoutsRef.current = []
+    // Validate image data URL format
+    if (!renderImageDataUrl.startsWith('data:image/')) {
+      console.error('❌ [DEBUG] Invalid image format:', renderImageDataUrl.substring(0, 100))
+      setRenderError('Invalid image format')
+      return
+    }
+    
+    // Extract image info
+    const imageType = renderImageDataUrl.match(/data:image\/([^;]+)/)?.[1] || 'unknown'
+    const base64Data = renderImageDataUrl.split(',')[1] || ''
+    const base64Length = base64Data.length
+    const estimatedSizeMB = (base64Length * 3) / 4 / 1024 / 1024
+    
+    console.log('📸 [DEBUG] Image info:', {
+      type: imageType,
+      dataUrlLength: renderImageDataUrl.length,
+      base64Length: base64Length,
+      estimatedSizeMB: estimatedSizeMB.toFixed(2),
+      dataUrlPrefix: renderImageDataUrl.substring(0, 50),
+    })
+    
+    const requestBody = {
+      image: renderImageDataUrl,
+      prompt: renderPrompt.trim(),
+      locale: localeFromLanguage(language),
+    }
+    
+    const requestBodyString = JSON.stringify(requestBody)
+    const requestBodySizeKB = requestBodyString.length / 1024
+    
+    console.log('📤 [DEBUG] Request details:', {
+      url: BUILDAPP_GET_INSPIRED_URL,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      bodySizeKB: requestBodySizeKB.toFixed(2),
+      imageLength: renderImageDataUrl.length,
+      promptLength: requestBody.prompt.length,
+      locale: requestBody.locale,
+      promptPreview: requestBody.prompt.substring(0, 50),
+    })
+    
+    console.log('📤 [DEBUG] Full request body (first 200 chars):', requestBodyString.substring(0, 200))
     
     setRenderLoading(true)
-    setLoadingStage(0)
     setRenderError(null)
     setRenderResult(null)
     
-    // Create abort controller
-    abortControllerRef.current = new AbortController()
-
-    // Simulate progress stages
-    const stages = [1000, 2000, 3000, 4000]
-    stages.forEach((delay, index) => {
-      const timeout = setTimeout(() => {
-        setLoadingStage(index + 1)
-      }, delay)
-      progressTimeoutsRef.current.push(timeout)
-    })
-    
     try {
+      console.log('🌐 [DEBUG] Starting fetch request...')
+      const startTime = Date.now()
+      
       const res = await fetch(BUILDAPP_GET_INSPIRED_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          image: renderImageDataUrl,
-          prompt: renderPrompt.trim(),
-          locale: 'es-ES',
-        }),
-        signal: abortControllerRef.current.signal,
+        body: requestBodyString,
       })
       
-      // Check if response is ok before trying to parse JSON
-      if (!res.ok) {
-        let errorMessage = t('demos.renderPresupuesto.upload.serverError').replace('{status}', res.status)
-        try {
-          const errorData = await res.json()
-          errorMessage = errorData.detail || errorData.message || errorData.error || errorMessage
-          console.error('🔍 DEBUG - Error Response:', JSON.stringify(errorData, null, 2))
-        } catch (parseError) {
-          // If JSON parsing fails, try to get text
-          try {
-            const errorText = await res.text()
-            console.error('🔍 DEBUG - Error Response (text):', errorText)
-            errorMessage = errorText || errorMessage
-          } catch (textError) {
-            console.error('🔍 DEBUG - Could not parse error response')
-          }
-        }
-        throw new Error(errorMessage)
+      const fetchDuration = Date.now() - startTime
+      console.log('🌐 [DEBUG] Fetch completed:', {
+        status: res.status,
+        statusText: res.statusText,
+        ok: res.ok,
+        durationMs: fetchDuration,
+        headers: Object.fromEntries(res.headers.entries()),
+      })
+      
+      console.log('📥 [DEBUG] Reading response...')
+      const responseText = await res.text()
+      console.log('📥 [DEBUG] Response text (first 500 chars):', responseText.substring(0, 500))
+      console.log('📥 [DEBUG] Response text length:', responseText.length)
+      
+      let data
+      try {
+        data = JSON.parse(responseText)
+        console.log('✅ [DEBUG] Response parsed as JSON:', {
+          keys: Object.keys(data),
+          budget: data.budget,
+          originalImageUrl: data.originalImageUrl ? data.originalImageUrl.substring(0, 100) : null,
+          editedImageUrl: data.editedImageUrl ? data.editedImageUrl.substring(0, 100) : null,
+        })
+      } catch (parseError) {
+        console.error('❌ [DEBUG] Failed to parse response as JSON:', parseError)
+        console.error('❌ [DEBUG] Response was:', responseText)
+        throw new Error(`Invalid JSON response: ${parseError.message}`)
       }
       
-      const data = await res.json()
+      if (!res.ok) {
+        console.error('❌ [DEBUG] Response not OK:', {
+          status: res.status,
+          statusText: res.statusText,
+          data: data,
+          error: data.detail || data.message || data.error,
+        })
+        throw new Error(data.detail || data.message || data.error || `Error ${res.status}`)
+      }
       
-      // Clear progress timeouts
-      progressTimeoutsRef.current.forEach((timeout) => clearTimeout(timeout))
-      progressTimeoutsRef.current = []
+      console.log('✅ [DEBUG] Success! Setting result:', {
+        hasBudget: !!data.budget,
+        hasOriginalImageUrl: !!data.originalImageUrl,
+        hasEditedImageUrl: !!data.editedImageUrl,
+      })
       
-      setLoadingStage(4)
-      console.log('🔍 DEBUG - Render Result:', JSON.stringify(data, null, 2))
-      console.log('🔍 DEBUG - originalImageUrl:', data.originalImageUrl)
-      console.log('🔍 DEBUG - editedImageUrl:', data.editedImageUrl)
       setRenderResult(data)
     } catch (err) {
-      if (err.name === 'AbortError') {
-        return
-      }
-      console.error('🔍 DEBUG - Error generating render:', err)
-      const errorMessage = err.message || t('demos.renderPresupuesto.upload.errorGenerating')
-      setRenderError(errorMessage)
+      console.error('❌ [DEBUG] Error caught:', {
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+      })
+      setRenderError(err.message || t('demos.renderPresupuesto.upload.errorGenerating'))
     } finally {
-      // Clear progress timeouts
-      progressTimeoutsRef.current.forEach((timeout) => clearTimeout(timeout))
-      progressTimeoutsRef.current = []
+      console.log('🏁 [DEBUG] Finally block - setting loading to false')
       setRenderLoading(false)
-      setLoadingStage(0)
     }
   }
-  
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      progressTimeoutsRef.current.forEach((timeout) => clearTimeout(timeout))
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort()
-      }
-    }
-  }, [])
 
   return (
     <div className="pt-16 min-h-screen">
@@ -229,9 +265,13 @@ export default function RenderPresupuesto() {
             />
           </div>
           {renderError && (
-            <div className="mb-4 flex items-center gap-2 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 px-3 py-2 text-sm">
-              <AlertCircle className="h-4 w-4 flex-shrink-0" />
-              {renderError}
+            <div className="mb-4 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 px-4 py-3 text-sm">
+              <div className="flex items-start gap-2">
+                <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <p className="font-medium mb-1">{renderError}</p>
+                </div>
+              </div>
             </div>
           )}
           <button
@@ -290,11 +330,28 @@ export default function RenderPresupuesto() {
                       <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
                         {t('demos.renderPresupuesto.result.originalImage')}
                       </h3>
-                      <img
-                        src={renderResult.originalImageUrl}
-                        alt="Original"
-                        className="w-full rounded-lg border border-gray-200 dark:border-gray-600 max-h-96 object-contain bg-gray-50 dark:bg-gray-800"
-                      />
+                      <div className="relative rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 max-h-96 overflow-hidden">
+                        <img
+                          src={renderResult.originalImageUrl}
+                          alt={t('demos.renderPresupuesto.result.originalImageAlt')}
+                          className="w-full h-auto object-contain"
+                          onError={(e) => {
+                            console.error('❌ Error loading original image:', renderResult.originalImageUrl)
+                            e.target.style.display = 'none'
+                            const parent = e.target.parentElement
+                            if (parent) {
+                              parent.innerHTML = `
+                                <div class="flex items-center justify-center h-64 text-gray-500 dark:text-gray-400">
+                                  <p class="text-sm">Error loading image</p>
+                                </div>
+                              `
+                            }
+                          }}
+                          onLoad={() => {
+                            console.log('✅ Original image loaded:', renderResult.originalImageUrl)
+                          }}
+                        />
+                      </div>
                     </div>
                   )}
                   {renderResult.editedImageUrl && (
@@ -302,11 +359,33 @@ export default function RenderPresupuesto() {
                       <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
                         {t('demos.renderPresupuesto.result.render')}
                       </h3>
-                      <img
-                        src={renderResult.editedImageUrl}
-                        alt="Render"
-                        className="w-full rounded-lg border border-gray-200 dark:border-gray-600 max-h-96 object-contain bg-gray-50 dark:bg-gray-800"
-                      />
+                      <div className="relative rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 max-h-96 overflow-hidden">
+                        <img
+                          src={renderResult.editedImageUrl}
+                          alt={t('demos.renderPresupuesto.result.renderAlt')}
+                          className="w-full h-auto object-contain"
+                          onError={(e) => {
+                            console.error('❌ Error loading edited image:', renderResult.editedImageUrl)
+                            e.target.style.display = 'none'
+                            const parent = e.target.parentElement
+                            if (parent) {
+                              parent.innerHTML = `
+                                <div class="flex items-center justify-center h-64 text-gray-500 dark:text-gray-400">
+                                  <p class="text-sm">Error loading image</p>
+                                </div>
+                              `
+                            }
+                          }}
+                          onLoad={() => {
+                            console.log('✅ Edited image loaded:', renderResult.editedImageUrl)
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                  {!renderResult.originalImageUrl && !renderResult.editedImageUrl && (
+                    <div className="col-span-2 text-center py-8 text-gray-500 dark:text-gray-400">
+                      <p className="text-sm">No images available in response</p>
                     </div>
                   )}
                 </div>
@@ -320,27 +399,11 @@ export default function RenderPresupuesto() {
       {renderLoading && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 mx-4 max-w-md w-full shadow-2xl">
-            <LoadingProgressBar stage={loadingStage} t={t} />
-            <div className="mt-6 flex justify-center">
-              <button
-                type="button"
-                onClick={() => {
-                  // Cancel the operation
-                  if (abortControllerRef.current) {
-                    abortControllerRef.current.abort()
-                  }
-                  // Clear all progress timeouts
-                  progressTimeoutsRef.current.forEach((timeout) => clearTimeout(timeout))
-                  progressTimeoutsRef.current = []
-                  // Reset state
-                  setLoadingStage(0)
-                  setRenderLoading(false)
-                  setRenderError(null)
-                }}
-                className="px-6 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium transition-colors"
-              >
-                {t('demos.cancel')}
-              </button>
+            <div className="flex items-center justify-center gap-3">
+              <Loader2 className="h-6 w-6 animate-spin text-primary-600" />
+              <p className="text-gray-900 dark:text-white font-medium">
+                {t('demos.renderPresupuesto.upload.generating')}
+              </p>
             </div>
           </div>
         </div>

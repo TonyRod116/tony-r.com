@@ -6,6 +6,7 @@ import DrawingCanvas from './NeuralNetwork/DrawingCanvas'
 import Network3D from './NeuralNetwork/Network3D'
 import PredictionChart from './NeuralNetwork/PredictionChart'
 import { MLP } from './NeuralNetwork/mlp'
+import NeuralNetworkEducational from './NeuralNetwork/NeuralNetworkEducational'
 
 export default function NeuralNetworkVisualization() {
   const { t } = useLanguage()
@@ -21,12 +22,21 @@ export default function NeuralNetworkVisualization() {
   
   const mlpRef = useRef(null)
   const sceneContainerRef = useRef(null)
+  const canvasRef = useRef(null)
   const [mlpWeights, setMlpWeights] = useState(null)
+  const [mlpArchitecture, setMlpArchitecture] = useState(null)
 
   // Initialize MLP
   useEffect(() => {
     mlpRef.current = new MLP()
     setMlpWeights(mlpRef.current.getWeights())
+    setMlpArchitecture(mlpRef.current.layers.map(l => l.size))
+    mlpRef.current.loadPretrainedWeights().then(() => {
+      setMlpWeights(mlpRef.current.getWeights())
+      setMlpArchitecture(mlpRef.current.layers.map(l => l.size))
+    }).catch(() => {
+      // Keep random weights if fetch fails
+    })
   }, [])
 
   const handleDrawingChange = (imageData) => {
@@ -50,6 +60,7 @@ export default function NeuralNetworkVisualization() {
   }
 
   const handleClear = () => {
+    canvasRef.current?.clear()
     setDrawing(null)
     setActivations(null)
     setPredictions(null)
@@ -94,6 +105,7 @@ export default function NeuralNetworkVisualization() {
                 {t('neuralNetwork.drawing') || 'Drawing'}
               </h2>
               <DrawingCanvas
+                ref={canvasRef}
                 width={280}
                 height={280}
                 strokeWidth={strokeWidth}
@@ -140,6 +152,7 @@ export default function NeuralNetworkVisualization() {
                 containerRef={sceneContainerRef}
                 activations={activations}
                 weights={mlpWeights}
+                architecture={mlpArchitecture}
                 maxConnections={maxConnections}
                 hideWeakConnections={hideWeakConnections}
                 connectionThickness={connectionThickness}
@@ -150,6 +163,9 @@ export default function NeuralNetworkVisualization() {
             </div>
           </div>
         </div>
+
+        {/* Educational Content */}
+        <NeuralNetworkEducational />
 
         {/* Settings Panel */}
         {showSettings && (
