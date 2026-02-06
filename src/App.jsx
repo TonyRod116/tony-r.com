@@ -14,6 +14,9 @@ import AiLab from './pages/AiLab'
 import Demos from './pages/Demos'
 import PresupuestoOrientativo from './pages/demos/PresupuestoOrientativo'
 import RenderPresupuesto from './pages/demos/RenderPresupuesto'
+import LeadQualifier from './pages/demos/LeadQualifier'
+import LeadQualifierAdmin from './pages/demos/LeadQualifier/admin'
+import LeadDetail from './pages/demos/LeadQualifier/admin/LeadDetail'
 import TicTacToe from './components/games/TicTacToe'
 import Minesweeper from './components/games/Minesweeper'
 import SixDegrees from './components/games/SixDegrees'
@@ -55,6 +58,9 @@ function App() {
               <Route path="/demos" element={<Demos />} />
               <Route path="/demos/presupuesto-orientativo" element={<PresupuestoOrientativo />} />
               <Route path="/demos/render-presupuesto" element={<RenderPresupuesto />} />
+              <Route path="/demos/lead-qualifier" element={<LeadQualifier />} />
+              <Route path="/demos/lead-qualifier/admin" element={<LeadQualifierAdmin />} />
+              <Route path="/demos/lead-qualifier/admin/lead/:id" element={<LeadDetail />} />
               <Route path="/ai/tictactoe" element={<TicTacToe />} />
               <Route path="/ai/minesweeper" element={<Minesweeper />} />
               <Route path="/ai/sixdegrees" element={<SixDegrees />} />

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { FileText, ImagePlus, ArrowRight } from 'lucide-react'
+import { FileText, ImagePlus, ArrowRight, MessageSquare } from 'lucide-react'
 import { useLanguage } from '../hooks/useLanguage.jsx'
 
 export default function Demos() {
@@ -22,6 +22,14 @@ export default function Demos() {
       description: t('demos.renderPresupuesto.description'),
       href: '/demos/render-presupuesto',
       icon: ImagePlus,
+    },
+    {
+      id: 'lead-qualifier',
+      slug: 'lead-qualifier',
+      title: t('demos.leadQualifier.title'),
+      description: t('demos.leadQualifier.description'),
+      href: '/demos/lead-qualifier',
+      icon: MessageSquare,
     },
   ]
 

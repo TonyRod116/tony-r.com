@@ -233,6 +233,10 @@ export const translations = {
         tetris: {
           title: 'Tetris AI',
           description: 'Heuristic + lookahead bot that also simulates my custom "dissolving T" physics; scores holes, bumpiness, wells, height, lines.'
+        },
+        neuralNetwork: {
+          title: 'Neural Network Visualization',
+          description: 'Interactive 3D visualization of a neural network trained on MNIST. Draw digits and watch activations propagate in real time.'
         }
       },
       comingSoon: {
@@ -360,6 +364,68 @@ export const translations = {
       }
     },
 
+    // Neural Network Page
+    neuralNetwork: {
+      title: 'MNIST Neural Network Visualization',
+      subtitle: 'Draw a digit from 0 to 9 and watch how activations propagate through the network',
+      drawing: 'Drawing',
+      clear: 'Clear',
+      drawingHint: 'Click and drag to draw (right-click to erase)',
+      prediction: 'Prediction',
+      network: 'Network Architecture',
+      controls: 'Left click + drag: rotate | Right click + drag: pan | Scroll: zoom',
+      settings: 'Settings',
+      maxConnections: 'Max Connections per Neuron',
+      hideWeak: 'Hide Weak Connections',
+      connectionThickness: 'Connection Thickness',
+      strokeWidth: 'Stroke Width',
+      strokeIntensity: 'Stroke Intensity',
+      close: 'Close',
+      education: {
+        learnMore: 'Learn More',
+        howTrained: {
+          title: 'How This Network Was Trained',
+          subtitle: 'The actual TensorFlow / Keras code used to build and train the model',
+        },
+        ann1: { title: 'Input Layer', text: 'Each 28×28 pixel drawing is flattened into a vector of 784 numbers. This is the entry point of the network.' },
+        ann2: { title: 'Dense(64, relu)', text: 'A Dense (fully connected) layer: every one of the 64 neurons receives input from ALL 784 pixels. "Dense" means every possible connection exists. ReLU activation: if the value is negative → 0, if positive → passes through unchanged.' },
+        ann3: { title: 'Dense(32, relu)', text: 'Second hidden layer with 32 neurons, each connected to all 64 neurons from the previous layer. The network learns progressively more abstract patterns at each layer.' },
+        ann4: { title: 'Dense(10, softmax)', text: '10 output neurons — one for each digit (0–9). Softmax converts raw scores into probabilities that sum to 1.0, so the network effectively "votes" on which digit it sees.' },
+        ann5: { title: 'Compile', text: 'Configures how the model learns. The loss function (SparseCategoricalCrossentropy) measures how wrong predictions are. Adam is an optimizer that adjusts weights to minimize that error.' },
+        ann6: { title: 'Train', text: 'The model sees the entire dataset 40 times (epochs). Each pass: it makes predictions, measures the error, and updates its weights to improve.' },
+        architecture: {
+          title: 'Understanding the Architecture',
+          subtitle: 'A 4-layer neural network that recognizes handwritten digits',
+        },
+        arch: { input: 'Input', hidden1: 'Hidden 1', hidden2: 'Hidden 2', output: 'Output' },
+        concepts: {
+          dense: { title: 'What is Dense?', text: 'In a Dense layer every neuron is connected to every neuron in the previous layer. With 784 inputs and 64 neurons, that means 50,176 individual connections — each with its own trainable weight.' },
+          relu: { title: 'What is ReLU?', text: 'ReLU (Rectified Linear Unit) is a simple activation function: if the input is negative it outputs 0, otherwise it passes the value unchanged. This introduces non-linearity, allowing the network to learn complex patterns.' },
+          softmax: { title: 'What is Softmax?', text: 'Softmax converts a vector of raw scores into probabilities. If the output is [2.1, 0.5, 8.3, …], softmax ensures all values are positive and sum to exactly 1.0 — a proper probability distribution.' },
+        },
+        pipeline: {
+          title: 'What Happens When You Draw',
+          subtitle: 'From pixels to prediction in 6 steps',
+        },
+        step1: { title: 'Draw', text: 'You draw on a 28×28 canvas. Each cell is a brightness from 0 to 255.' },
+        step2: { title: 'Flatten', text: 'The 28×28 grid is reshaped into a single array of 784 values.' },
+        step3: { title: 'Normalize', text: 'Each pixel is normalized: (pixel − 0.13) / 0.31, matching training preprocessing.' },
+        step4: { title: 'Forward Pass', text: 'Data flows through each layer: multiply by weights, add bias, apply activation.' },
+        step5: { title: 'Softmax', text: 'The 10 raw scores are converted into probabilities that sum to 1.' },
+        step6: { title: 'Prediction', text: 'The digit with the highest probability is the network\'s answer.' },
+        keyConcepts: {
+          title: 'Key Concepts',
+          subtitle: 'Dive deeper into the building blocks',
+        },
+        expandable: {
+          weights: { title: 'Weights & Biases', text: 'Weights are the learnable numbers on every connection between neurons. Each weight controls how much influence one neuron has on the next. Biases give each neuron an adjustable threshold — they shift the activation function left or right. Together, weights and biases are the "knowledge" the network acquires during training.' },
+          loss: { title: 'Loss Function', text: 'Sparse Categorical Crossentropy measures how far the predicted probabilities are from the true label. If the correct digit is 7 and the model gives 90% confidence to 7, the loss is low. If it gives 10%, the loss is high. The goal of training is to minimize this number across all examples.' },
+          adam: { title: 'Adam Optimizer', text: 'Adam (Adaptive Moment Estimation) is a smart version of gradient descent. It maintains a moving average of both the gradients and their squared values, adapting the learning rate for each weight individually. This makes training faster and more stable than basic gradient descent.' },
+          epochs: { title: 'Epochs', text: 'One epoch means the model has seen every training example once. Training for 40 epochs means the model passes over the full dataset 40 times. With each pass, it refines its weights — but too many epochs can lead to overfitting, where the model memorizes training data instead of learning general patterns.' },
+        },
+      },
+    },
+
     // Demos Page
     demos: {
       title: 'Demos',
@@ -396,9 +462,15 @@ export const translations = {
           item: 'Item',
           qty: 'Qty',
           unit: 'Unit',
+          unitPrice: 'Unit price',
           min: 'Min (€)',
           max: 'Max (€)',
-          notes: 'Notes'
+          notes: 'Notes',
+          materials: 'Materials',
+          labor: 'Labor',
+          other: 'Other',
+          estimatedDuration: 'Estimated duration',
+          timeline: 'Timeline'
         }
       },
       renderPresupuesto: {
@@ -418,17 +490,37 @@ export const translations = {
           invalidFormat: 'Invalid format. Use JPEG, PNG or WebP.',
           imageTooBig: 'Image cannot exceed {size}px in width or height.',
           imageReadError: 'Could not read image.',
+          invalidImageFormat: 'Invalid image format. Please select another image.',
           imageAndPromptRequired: 'You need an image and descriptive text (e.g., Mediterranean-style renovation).',
           serverError: 'Server error ({status})',
-          errorGenerating: 'Error generating render. Please try again later.',
+          errorGenerating: 'Error generating render. Please try again later. If the problem persists, try with another image.',
+          serverErrorHelp: 'This may be due to a temporary server issue. Please try again in a few moments or try with another image.',
+          timeout: 'The request took too long. Please try again.',
+          noImagesInResponse: 'Server did not return images. Please try again.',
           previewAlt: 'Preview'
         },
         result: {
           budget: 'Estimated Budget',
           originalImage: 'Original Image',
           render: 'Generated Render',
-          promptUsed: 'Prompt used for render'
+          promptUsed: 'Prompt used for render',
+          comparison: 'Comparison',
+          sliderHint: 'Drag the handle over the image to compare with the original photo.',
+          originalImageAlt: 'Original',
+          renderAlt: 'Generated render'
         }
+      },
+      leadQualifier: {
+        title: 'Lead Qualifier IA',
+        description: 'WhatsApp-style chat that qualifies renovation leads using AI. Score and tier assignment in real-time.',
+      },
+      loading: {
+        analyzing: 'Analyzing your request...',
+        processing: 'Processing information...',
+        generating: 'Generating content...',
+        preparing: 'Preparing results...',
+        finalizing: 'Finalizing...',
+        finalizingMessage: 'This may take a moment...'
       },
       openDemo: 'Open Demo',
       cancel: 'Cancel',
@@ -651,70 +743,31 @@ export const translations = {
       }
     },
 
-    // Demos Page
-    demos: {
-      title: 'Demos',
-      subtitle: 'Demos prácticas para empresas: desde captura de leads hasta borradores con IA.',
-      presupuestoOrientativo: {
-        title: 'Presupuesto Orientativo',
-        description: 'Completa el formulario con los detalles de tu proyecto y obtén un presupuesto profesional detallado con partidas, supuestos y exclusiones.',
-        pageTitle: 'Presupuesto Orientativo',
-        pageSubtitle: 'Obtén un presupuesto profesional detallado para tu proyecto de reforma.',
-        form: {
-          projectType: 'Tipo de Proyecto',
-          sqm: 'm² (aprox.)',
-          city: 'Ciudad',
-          targetBudget: 'Presupuesto Objetivo (€)',
-          notes: 'Detalles Adicionales',
-          notesPlaceholder: 'Acabados deseados, estado actual, requisitos especiales...',
-          generate: 'Generar Presupuesto',
-          generating: 'Generando...'
-        },
-        result: {
-          title: 'Presupuesto Estimado',
-          assumptions: 'Supuestos',
-          exclusions: 'Exclusiones',
-          lineItems: 'Partidas',
-          total: 'Total',
-          category: 'Categoría',
-          item: 'Partida',
-          qty: 'Cant.',
-          unit: 'Unidad',
-          min: 'Min (€)',
-          max: 'Max (€)',
-          notes: 'Notas'
-        }
-      },
-      renderPresupuesto: {
-        title: 'Render y Presupuesto',
-        description: 'Sube una foto y describe tu reforma. Obtén un render generado por IA y presupuesto estimado en minutos.',
-        pageTitle: 'Render y Presupuesto',
-        pageSubtitle: 'Sube una foto y describe tu reforma para obtener un render generado por IA y presupuesto estimado.',
-        upload: {
-          selectImage: 'Elegir Imagen',
-          changeImage: 'Cambiar Imagen',
-          maxSize: 'Máx. 10 MB · JPEG, PNG o WebP · máx. 8192 px',
-          promptLabel: 'Describe la reforma (ej. Reforma completa estilo mediterráneo, cocina blanca con isla)',
-          promptPlaceholder: 'Reforma completa estilo mediterráneo...',
-          generate: 'Generar Render y Presupuesto',
-          generating: 'Generando render y presupuesto...'
-        },
-        result: {
-          budget: 'Presupuesto Estimado',
-          originalImage: 'Imagen Original',
-          render: 'Render Generado',
-          promptUsed: 'Prompt usado para el render'
-        }
-      },
-      openDemo: 'Abrir Demo'
-    },
-
     // Footer
     footer: {
       description: 'I build products that are understood and used. Software engineer and founder with real construction experience.',
       quickLinks: 'Quick Links',
       connect: 'Connect with me',
       copyright: '© 2025 Tony Rodríguez. All rights reserved.'
+    },
+
+    // Cookies
+    cookies: {
+      title: 'Cookies & Privacy',
+      description: 'We use cookies to improve your experience and analyze website traffic. You can accept or decline cookies.',
+      accept: 'Accept',
+      decline: 'Decline'
+    },
+
+    // Resume Page
+    resume: {
+      title: 'Resume',
+      subtitle: 'Solutions Engineer | AI & Automation | Turning Business Problems into Scalable Solutions',
+      nameTitle: 'Solutions Engineer focused on AI, automation, and business impact',
+      aboutMe: 'About Me',
+      aboutMeContent: "I am a Solutions Engineer focused on using software, AI, and automation to solve real business problems and drive measurable outcomes.",
+      experience: 'Professional Experience',
+      skills: 'Technical Skills'
     }
   },
 
@@ -952,6 +1005,10 @@ export const translations = {
         tetris: {
           title: 'IA Tetris',
           description: 'Bot heurístico + lookahead que también simula mi física custom de "T disolvente"; puntúa agujeros, irregularidad, pozos, altura, líneas.'
+        },
+        neuralNetwork: {
+          title: 'Visualización de Red Neuronal',
+          description: 'Visualización 3D interactiva de una red entrenada en MNIST. Dibuja dígitos y observa cómo se propagan las activaciones en tiempo real.'
         }
       },
       comingSoon: {
@@ -1104,6 +1161,68 @@ export const translations = {
           longDescription: 'Tetris con IA — re-edición de mi primer proyecto en General Assembly. Cuando empecé a programar, mi primer juego fue un Tetris en JavaScript puro. Esta versión es una actualización con física personalizada y cerebro de IA. Una pieza — la T\' — tiene una mecánica especial: al tocar el suelo se "disuelve" y cada bloque cae en vertical hasta encontrar apoyo, rellenando huecos como arena. Puedes jugar tú o activar el Modo IA: evalúa todas las posiciones posibles con una heurística + lookahead y elige el movimiento más estable (menos huecos, menos irregularidad, más líneas). Controles: ← → mover | ↑ girar | ↓ = dejar caer. Activa AI para ver el botón AI Move que elige la mejor colocación — ¡prueba hacer clic repetidamente para puntuar rápido!'
         }
       }
+    },
+
+    // Neural Network Page
+    neuralNetwork: {
+      title: 'Visualización de Red Neuronal MNIST',
+      subtitle: 'Dibuja un número del 0 al 9 y observa cómo las activaciones se propagan por la red',
+      drawing: 'Dibujo',
+      clear: 'Borrar',
+      drawingHint: 'Haz clic y arrastra para dibujar (clic derecho para borrar)',
+      prediction: 'Predicción',
+      network: 'Arquitectura de la red',
+      controls: 'Clic izquierdo + arrastrar: rotar | Clic derecho + arrastrar: panorámica | Scroll: zoom',
+      settings: 'Ajustes',
+      maxConnections: 'Máx. conexiones por neurona',
+      hideWeak: 'Ocultar conexiones débiles',
+      connectionThickness: 'Grosor de conexiones',
+      strokeWidth: 'Grosor del trazo',
+      strokeIntensity: 'Intensidad del trazo',
+      close: 'Cerrar',
+      education: {
+        learnMore: 'Aprende más',
+        howTrained: {
+          title: 'Cómo se entrenó esta red',
+          subtitle: 'El código real de TensorFlow / Keras usado para construir y entrenar el modelo',
+        },
+        ann1: { title: 'Capa de entrada', text: 'Cada dibujo de 28×28 píxeles se aplana en un vector de 784 números. Es el punto de entrada de la red.' },
+        ann2: { title: 'Dense(64, relu)', text: 'Una capa Densa (fully connected): cada una de las 64 neuronas recibe información de TODOS los 784 píxeles. "Dense" significa que existen todas las conexiones posibles. Activación ReLU: si el valor es negativo → 0, si es positivo → pasa tal cual.' },
+        ann3: { title: 'Dense(32, relu)', text: 'Segunda capa oculta con 32 neuronas, cada una conectada a las 64 de la capa anterior. La red aprende patrones progresivamente más abstractos en cada capa.' },
+        ann4: { title: 'Dense(10, softmax)', text: '10 neuronas de salida — una por dígito (0–9). Softmax convierte las puntuaciones en probabilidades que suman 1.0, así la red "vota" qué dígito ve.' },
+        ann5: { title: 'Compile', text: 'Configura cómo aprende el modelo. La función de pérdida (SparseCategoricalCrossentropy) mide cuánto se equivocan las predicciones. Adam es un optimizador que ajusta los pesos para minimizar ese error.' },
+        ann6: { title: 'Entrenar', text: 'El modelo ve todo el dataset 40 veces (epochs). En cada pasada: hace predicciones, mide el error y actualiza sus pesos para mejorar.' },
+        architecture: {
+          title: 'Entendiendo la arquitectura',
+          subtitle: 'Una red neuronal de 4 capas que reconoce dígitos escritos a mano',
+        },
+        arch: { input: 'Entrada', hidden1: 'Oculta 1', hidden2: 'Oculta 2', output: 'Salida' },
+        concepts: {
+          dense: { title: '¿Qué es Dense?', text: 'En una capa Dense cada neurona está conectada a todas las neuronas de la capa anterior. Con 784 entradas y 64 neuronas, eso son 50.176 conexiones individuales — cada una con su propio peso entrenable.' },
+          relu: { title: '¿Qué es ReLU?', text: 'ReLU (Rectified Linear Unit) es una función de activación simple: si la entrada es negativa devuelve 0, si no, deja pasar el valor sin cambios. Esto introduce no-linealidad, permitiendo a la red aprender patrones complejos.' },
+          softmax: { title: '¿Qué es Softmax?', text: 'Softmax convierte un vector de puntuaciones brutas en probabilidades. Si la salida es [2.1, 0.5, 8.3, …], softmax asegura que todos los valores sean positivos y sumen exactamente 1.0 — una distribución de probabilidad.' },
+        },
+        pipeline: {
+          title: 'Qué pasa cuando dibujas',
+          subtitle: 'De píxeles a predicción en 6 pasos',
+        },
+        step1: { title: 'Dibujar', text: 'Dibujas en un canvas de 28×28. Cada celda tiene un brillo de 0 a 255.' },
+        step2: { title: 'Aplanar', text: 'La cuadrícula de 28×28 se transforma en un array de 784 valores.' },
+        step3: { title: 'Normalizar', text: 'Cada píxel se normaliza: (píxel − 0.13) / 0.31, igual que en el preprocesamiento del entrenamiento.' },
+        step4: { title: 'Forward Pass', text: 'Los datos fluyen por cada capa: multiplicar por pesos, sumar bias, aplicar activación.' },
+        step5: { title: 'Softmax', text: 'Las 10 puntuaciones se convierten en probabilidades que suman 1.' },
+        step6: { title: 'Predicción', text: 'El dígito con la probabilidad más alta es la respuesta de la red.' },
+        keyConcepts: {
+          title: 'Conceptos clave',
+          subtitle: 'Profundiza en los fundamentos',
+        },
+        expandable: {
+          weights: { title: 'Pesos y Biases', text: 'Los pesos son los números entrenables en cada conexión entre neuronas. Cada peso controla cuánta influencia tiene una neurona sobre la siguiente. Los biases dan a cada neurona un umbral ajustable — desplazan la función de activación. Juntos, pesos y biases son el "conocimiento" que la red adquiere durante el entrenamiento.' },
+          loss: { title: 'Función de pérdida', text: 'Sparse Categorical Crossentropy mide cuánto se alejan las probabilidades predichas de la etiqueta real. Si el dígito correcto es 7 y el modelo da 90% de confianza al 7, la pérdida es baja. Si da 10%, la pérdida es alta. El objetivo del entrenamiento es minimizar este número.' },
+          adam: { title: 'Optimizador Adam', text: 'Adam (Adaptive Moment Estimation) es una versión inteligente del descenso de gradiente. Mantiene una media móvil de los gradientes y sus valores al cuadrado, adaptando la tasa de aprendizaje para cada peso individualmente. Esto hace el entrenamiento más rápido y estable.' },
+          epochs: { title: 'Épocas', text: 'Una época significa que el modelo ha visto todos los ejemplos de entrenamiento una vez. Entrenar durante 40 épocas significa que el modelo recorre el dataset completo 40 veces. Con cada pasada refina sus pesos — pero demasiadas épocas pueden causar sobreajuste, donde el modelo memoriza los datos en vez de aprender patrones generales.' },
+        },
+      },
     },
 
     // Footer
@@ -1332,7 +1451,14 @@ export const translations = {
           notes: 'Detalles Adicionales',
           notesPlaceholder: 'Acabados deseados, estado actual, requisitos especiales...',
           generate: 'Generar Presupuesto',
-          generating: 'Generando...'
+          generating: 'Generando...',
+          projectTypeRequired: 'El tipo de proyecto es obligatorio.',
+          sqmPlaceholder: 'ej. 45',
+          cityPlaceholder: 'Barcelona',
+          errorGenerating: 'Error al generar el presupuesto.',
+          errorValidation: 'Error de validación',
+          field: 'campo',
+          autoDescription: 'Reforma de {type}{sqm}{city}'
         },
         result: {
           title: 'Presupuesto Estimado',
@@ -1344,9 +1470,15 @@ export const translations = {
           item: 'Partida',
           qty: 'Cant.',
           unit: 'Unidad',
+          unitPrice: 'P. unit.',
           min: 'Min (€)',
           max: 'Max (€)',
-          notes: 'Notas'
+          notes: 'Notas',
+          materials: 'Materiales',
+          labor: 'Mano de obra',
+          other: 'Otros',
+          estimatedDuration: 'Duración estimada',
+          timeline: 'Fases'
         }
       },
       renderPresupuesto: {
@@ -1366,17 +1498,37 @@ export const translations = {
           invalidFormat: 'Formato no válido. Usa JPEG, PNG o WebP.',
           imageTooBig: 'La imagen no puede superar {size}px de ancho o alto.',
           imageReadError: 'No se pudo leer la imagen.',
+          invalidImageFormat: 'Formato de imagen inválido. Por favor, selecciona otra imagen.',
           imageAndPromptRequired: 'Necesitas una imagen y un texto descriptivo (ej. reforma estilo mediterráneo).',
           serverError: 'Error del servidor ({status})',
-          errorGenerating: 'Error al generar render. Por favor, intenta de nuevo más tarde.',
+          errorGenerating: 'Error al generar render. Por favor, intenta de nuevo más tarde. Si el problema persiste, prueba con otra imagen.',
+          serverErrorHelp: 'Esto puede deberse a un problema temporal del servidor. Por favor, intenta de nuevo en unos momentos o prueba con otra imagen.',
+          timeout: 'La petición ha tardado demasiado. Por favor, inténtalo de nuevo.',
+          noImagesInResponse: 'El servidor no devolvió imágenes. Por favor, intenta de nuevo.',
           previewAlt: 'Vista previa'
         },
         result: {
           budget: 'Presupuesto Estimado',
           originalImage: 'Imagen Original',
           render: 'Render Generado',
-          promptUsed: 'Prompt usado para el render'
+          promptUsed: 'Prompt usado para el render',
+          comparison: 'Comparación',
+          sliderHint: 'Desliza el control sobre la imagen para comparar con la foto original.',
+          originalImageAlt: 'Original',
+          renderAlt: 'Render generado'
         }
+      },
+      leadQualifier: {
+        title: 'Calificador de Leads IA',
+        description: 'Chat estilo WhatsApp que califica leads de reformas usando IA. Puntuación y asignación de tier en tiempo real.',
+      },
+      loading: {
+        analyzing: 'Analizando tu solicitud...',
+        processing: 'Procesando información...',
+        generating: 'Generando contenido...',
+        preparing: 'Preparando resultados...',
+        finalizing: 'Finalizando...',
+        finalizingMessage: 'Esto puede tardar unos momentos...'
       },
       openDemo: 'Abrir Demo',
       cancel: 'Cancelar',
@@ -1633,6 +1785,10 @@ export const translations = {
         tetris: {
           title: 'IA Tetris',
           description: 'Bot heurístic + lookahead que també simula la meva física custom de "T dissolvent"; puntua forats, irregularitat, pous, alçada, línies.'
+        },
+        neuralNetwork: {
+          title: 'Visualització de Xarxa Neuronal',
+          description: 'Visualització 3D interactiva d\'una xarxa entrenada en MNIST. Dibuixa dígits i mira com es propaguen les activacions en temps real.'
         }
       },
       comingSoon: {
@@ -1758,6 +1914,68 @@ export const translations = {
           longDescription: 'Tetris amb IA — re-edició del meu primer projecte a General Assembly. Quan vaig començar a programar, el meu primer joc va ser un Tetris en JavaScript pur. Aquesta versió és una actualització amb física personalitzada i cervell d\'IA. Una peça — la T\' — té una mecànica especial: quan toca el terra es "dissol" i cada bloc cau verticalment fins trobar suport, omplint forats com sorra. Pots jugar tu o activar el Mode IA: avalua totes les posicions possibles amb una heurística + lookahead i tria el moviment més estable (menys forats, menys irregularitat, més línies). Controls: ← → moure | ↑ girar | ↓ = deixar caure. Activa AI per veure el botó AI Move que tria la millor col·locació — prova fer clic repetidament per puntuar ràpid!'
         }
       }
+    },
+
+    // Neural Network Page
+    neuralNetwork: {
+      title: 'Visualització de Xarxa Neuronal MNIST',
+      subtitle: 'Dibuixa un número del 0 al 9 i mira com les activacions es propaguen per la xarxa',
+      drawing: 'Dibuix',
+      clear: 'Esborrar',
+      drawingHint: 'Fes clic i arrossega per dibuixar (clic dret per esborrar)',
+      prediction: 'Predicció',
+      network: 'Arquitectura de la xarxa',
+      controls: 'Clic esquerre + arrossega: rotar | Clic dret + arrossega: panoràmica | Scroll: zoom',
+      settings: 'Configuració',
+      maxConnections: 'Màx. connexions per neurona',
+      hideWeak: 'Amagar connexions febles',
+      connectionThickness: 'Gruix de connexions',
+      strokeWidth: 'Gruix del traç',
+      strokeIntensity: 'Intensitat del traç',
+      close: 'Tancar',
+      education: {
+        learnMore: 'Aprèn més',
+        howTrained: {
+          title: 'Com es va entrenar aquesta xarxa',
+          subtitle: 'El codi real de TensorFlow / Keras usat per construir i entrenar el model',
+        },
+        ann1: { title: 'Capa d\'entrada', text: 'Cada dibuix de 28×28 píxels s\'aplana en un vector de 784 números. És el punt d\'entrada de la xarxa.' },
+        ann2: { title: 'Dense(64, relu)', text: 'Una capa Densa (fully connected): cadascuna de les 64 neurones rep informació de TOTS els 784 píxels. "Dense" significa que existeixen totes les connexions possibles. Activació ReLU: si el valor és negatiu → 0, si és positiu → passa tal qual.' },
+        ann3: { title: 'Dense(32, relu)', text: 'Segona capa oculta amb 32 neurones, cadascuna connectada a les 64 de la capa anterior. La xarxa aprèn patrons progressivament més abstractes a cada capa.' },
+        ann4: { title: 'Dense(10, softmax)', text: '10 neurones de sortida — una per dígit (0–9). Softmax converteix les puntuacions en probabilitats que sumen 1.0, així la xarxa "vota" quin dígit veu.' },
+        ann5: { title: 'Compile', text: 'Configura com aprèn el model. La funció de pèrdua (SparseCategoricalCrossentropy) mesura com de malament prediu. Adam és un optimitzador que ajusta els pesos per minimitzar l\'error.' },
+        ann6: { title: 'Entrenar', text: 'El model veu tot el dataset 40 vegades (epochs). A cada passada: fa prediccions, mesura l\'error i actualitza els seus pesos per millorar.' },
+        architecture: {
+          title: 'Entenent l\'arquitectura',
+          subtitle: 'Una xarxa neuronal de 4 capes que reconeix dígits escrits a mà',
+        },
+        arch: { input: 'Entrada', hidden1: 'Oculta 1', hidden2: 'Oculta 2', output: 'Sortida' },
+        concepts: {
+          dense: { title: 'Què és Dense?', text: 'En una capa Dense cada neurona està connectada a totes les neurones de la capa anterior. Amb 784 entrades i 64 neurones, això són 50.176 connexions individuals — cadascuna amb el seu propi pes entrenable.' },
+          relu: { title: 'Què és ReLU?', text: 'ReLU (Rectified Linear Unit) és una funció d\'activació simple: si l\'entrada és negativa retorna 0, si no, deixa passar el valor sense canvis. Això introdueix no-linealitat, permetent a la xarxa aprendre patrons complexos.' },
+          softmax: { title: 'Què és Softmax?', text: 'Softmax converteix un vector de puntuacions brutes en probabilitats. Si la sortida és [2.1, 0.5, 8.3, …], softmax assegura que tots els valors siguin positius i sumin exactament 1.0 — una distribució de probabilitat.' },
+        },
+        pipeline: {
+          title: 'Què passa quan dibuixes',
+          subtitle: 'De píxels a predicció en 6 passos',
+        },
+        step1: { title: 'Dibuixar', text: 'Dibuixes en un canvas de 28×28. Cada cel·la té una lluminositat de 0 a 255.' },
+        step2: { title: 'Aplanar', text: 'La quadrícula de 28×28 es transforma en un array de 784 valors.' },
+        step3: { title: 'Normalitzar', text: 'Cada píxel es normalitza: (píxel − 0.13) / 0.31, igual que en el preprocessament de l\'entrenament.' },
+        step4: { title: 'Forward Pass', text: 'Les dades flueixen per cada capa: multiplicar per pesos, sumar bias, aplicar activació.' },
+        step5: { title: 'Softmax', text: 'Les 10 puntuacions es converteixen en probabilitats que sumen 1.' },
+        step6: { title: 'Predicció', text: 'El dígit amb la probabilitat més alta és la resposta de la xarxa.' },
+        keyConcepts: {
+          title: 'Conceptes clau',
+          subtitle: 'Aprofundeix en els fonaments',
+        },
+        expandable: {
+          weights: { title: 'Pesos i Biases', text: 'Els pesos són els números entrenables a cada connexió entre neurones. Cada pes controla quanta influència té una neurona sobre la següent. Els biases donen a cada neurona un llindar ajustable — desplacen la funció d\'activació. Junts, pesos i biases són el "coneixement" que la xarxa adquireix durant l\'entrenament.' },
+          loss: { title: 'Funció de pèrdua', text: 'Sparse Categorical Crossentropy mesura com de lluny estan les probabilitats predites de l\'etiqueta real. Si el dígit correcte és 7 i el model dona 90% de confiança al 7, la pèrdua és baixa. Si dona 10%, la pèrdua és alta. L\'objectiu de l\'entrenament és minimitzar aquest número.' },
+          adam: { title: 'Optimitzador Adam', text: 'Adam (Adaptive Moment Estimation) és una versió intel·ligent del descens de gradient. Manté una mitjana mòbil dels gradients i els seus valors al quadrat, adaptant la taxa d\'aprenentatge per a cada pes individualment. Això fa l\'entrenament més ràpid i estable.' },
+          epochs: { title: 'Èpoques', text: 'Una època significa que el model ha vist tots els exemples d\'entrenament un cop. Entrenar durant 40 èpoques significa que el model recorre el dataset complet 40 vegades. A cada passada refina els seus pesos — però massa èpoques poden causar sobreajust, on el model memoritza les dades en comptes d\'aprendre patrons generals.' },
+        },
+      },
     },
 
     // Footer
@@ -1997,9 +2215,15 @@ export const translations = {
           item: 'Partida',
           qty: 'Quant.',
           unit: 'Unitat',
+          unitPrice: 'P. unit.',
           min: 'Min (€)',
           max: 'Max (€)',
-          notes: 'Notes'
+          notes: 'Notes',
+          materials: 'Materials',
+          labor: 'Mà d\'obra',
+          other: 'Altres',
+          estimatedDuration: 'Durada estimada',
+          timeline: 'Fases'
         }
       },
       renderPresupuesto: {
@@ -2019,17 +2243,37 @@ export const translations = {
           invalidFormat: 'Format no vàlid. Utilitza JPEG, PNG o WebP.',
           imageTooBig: 'La imatge no pot superar {size}px d\'amplada o alçada.',
           imageReadError: 'No s\'ha pogut llegir la imatge.',
+          invalidImageFormat: 'Format d\'imatge invàlid. Si us plau, selecciona una altra imatge.',
           imageAndPromptRequired: 'Necessites una imatge i un text descriptiu (ex. reforma estil mediterrani).',
           serverError: 'Error del servidor ({status})',
-          errorGenerating: 'Error al generar render. Si us plau, torna-ho a intentar més tard.',
+          errorGenerating: 'Error al generar render. Si us plau, torna-ho a intentar més tard. Si el problema persisteix, prova amb una altra imatge.',
+          serverErrorHelp: 'Això pot deure\'s a un problema temporal del servidor. Si us plau, torna-ho a intentar en uns moments o prova amb una altra imatge.',
+          timeout: 'La petició ha trigat massa. Si us plau, torna-ho a provar.',
+          noImagesInResponse: 'El servidor no ha retornat imatges. Si us plau, torna-ho a provar.',
           previewAlt: 'Vista prèvia'
         },
         result: {
           budget: 'Pressupost Estimat',
           originalImage: 'Imatge Original',
           render: 'Render Generat',
-          promptUsed: 'Prompt usat per al render'
+          promptUsed: 'Prompt usat per al render',
+          comparison: 'Comparació',
+          sliderHint: 'Arrossega el control sobre la imatge per comparar amb la foto original.',
+          originalImageAlt: 'Original',
+          renderAlt: 'Render generat'
         }
+      },
+      leadQualifier: {
+        title: 'Qualificador de Leads IA',
+        description: 'Xat estil WhatsApp que qualifica leads de reformes usant IA. Puntuació i assignació de tier en temps real.',
+      },
+      loading: {
+        analyzing: 'Analitzant la teva sol·licitud...',
+        processing: 'Processant informació...',
+        generating: 'Generant contingut...',
+        preparing: 'Preparant resultats...',
+        finalizing: 'Finalitzant...',
+        finalizingMessage: 'Això pot trigar uns moments...'
       },
       openDemo: 'Obrir Demo',
       cancel: 'Cancel·lar',
