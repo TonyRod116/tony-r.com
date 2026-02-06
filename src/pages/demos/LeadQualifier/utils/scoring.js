@@ -36,20 +36,132 @@ export function parseStructuredResponse(response) {
 function validateStructuredResponse(parsed) {
   if (!parsed.displayText) return null
   
+  // Handle new format with "state" object
+  const state = parsed.state || parsed.leadFields || {}
+  
+  // Map internal_disposition to tier/score for UI compatibility
+  const disposition = state.internal_disposition || 'warm'
+  const { score, tier } = dispositionToScoreTier(disposition, state)
+  
+  // Map state fields to leadFields for UI
+  const leadFields = {
+    projectType: state.project_type || null,
+    city: state.city || null,
+    sqm: state.approx_sqm ? parseInt(state.approx_sqm, 10) : null,
+    budget: state.budget_max ? parseBudget(state.budget_max) : null,
+    budgetRange: state.budget_range || null,
+    timeline: state.timeline_start || null,
+    isOwner: state.ownership_status === 'propietario' ? true : 
+             state.ownership_status === 'alquiler' ? false : null,
+    hasDocs: state.docs_available && state.docs_available !== 'ninguno' ? true :
+             state.docs_available === 'ninguno' ? false : null,
+    contactName: state.contact_name || null,
+    contactPhone: state.contact_phone || null,
+    contactEmail: state.contact_email || null,
+    // Additional fields from new format
+    postalCode: state.postal_code || null,
+    scopeDescription: state.scope_description || null,
+    accessStatus: state.access_status || null,
+    constraints: state.constraints || null,
+  }
+
+  // Generate reasons from state
+  const reasons = generateReasons(state, disposition)
+
+  // Determine next question based on next_action
+  const nextQuestion = parsed.next_action === 'close_success' || 
+                       parsed.next_action === 'close_not_fit' ? null : 
+                       'Continuar conversación'
+
   return {
     displayText: parsed.displayText,
-    leadFields: parsed.leadFields || {},
-    score: Math.max(0, Math.min(100, parsed.score || 0)),
-    tier: Math.max(1, Math.min(5, parsed.tier || 5)),
-    reasons: Array.isArray(parsed.reasons) ? parsed.reasons : [],
-    nextQuestion: parsed.nextQuestion || null,
+    leadFields,
+    score,
+    tier,
+    reasons,
+    nextQuestion,
+    // Keep raw state for admin panel
+    rawState: state,
+    nextAction: parsed.next_action || 'continue',
   }
+}
+
+function parseBudget(value) {
+  if (typeof value === 'number') return value
+  if (typeof value === 'string') {
+    // Extract number from string like "15000" or "15.000€" or "15000-20000"
+    const match = value.replace(/\./g, '').match(/(\d+)/)
+    return match ? parseInt(match[1], 10) : null
+  }
+  return null
+}
+
+function dispositionToScoreTier(disposition, state) {
+  // Base score from disposition
+  let score = disposition === 'hot' ? 80 : disposition === 'warm' ? 50 : 20
+
+  // Adjust based on data completeness
+  if (state.project_type) score += 5
+  if (state.city) score += 5
+  if (state.budget_max && state.budget_max !== 'unknown') score += 10
+  if (state.timeline_start) score += 5
+  if (state.ownership_status === 'propietario') score += 5
+  if (state.contact_phone) score += 10
+
+  // Cap at 100
+  score = Math.min(100, score)
+
+  // Calculate tier
+  const tier = score >= 80 ? 1 : score >= 60 ? 2 : score >= 40 ? 3 : score >= 20 ? 4 : 5
+
+  return { score, tier }
+}
+
+function generateReasons(state, disposition) {
+  const reasons = []
+
+  if (state.project_type) {
+    reasons.push(`Proyecto: ${state.project_type}`)
+  }
+  
+  if (state.city) {
+    reasons.push(`Ubicación: ${state.city}`)
+  }
+
+  if (state.budget_max && state.budget_max !== 'unknown') {
+    reasons.push(`Presupuesto definido`)
+  } else if (state.budget_max === 'unknown') {
+    reasons.push(`Presupuesto pendiente de definir`)
+  }
+
+  if (state.timeline_start) {
+    reasons.push(`Plazo: ${state.timeline_start}`)
+  }
+
+  if (state.ownership_status === 'propietario') {
+    reasons.push(`Es propietario`)
+  } else if (state.ownership_status === 'alquiler') {
+    reasons.push(`Vivienda en alquiler`)
+  }
+
+  if (state.contact_phone) {
+    reasons.push(`Contacto facilitado`)
+  }
+
+  // Add disposition-based reason
+  if (disposition === 'hot') {
+    reasons.push('Proyecto con buen encaje')
+  } else if (disposition === 'cold') {
+    reasons.push('Proyecto requiere seguimiento')
+  }
+
+  return reasons
 }
 
 export function calculateFallbackScore(messages, config) {
   const conversation = messages.map(m => m.content.toLowerCase()).join(' ')
   
-  let score = 0
+  let score = 20
   const reasons = []
   const leadFields = {}
 
@@ -58,8 +170,8 @@ export function calculateFallbackScore(messages, config) {
     'baño': 'baño',
     'cocina': 'cocina',
     'integral': 'integral',
-    'pintura': 'pintura',
     'reforma completa': 'integral',
+    'pintura': 'pintura',
   }
   
   for (const [keyword, type] of Object.entries(projectTypes)) {
@@ -76,92 +188,37 @@ export function calculateFallbackScore(messages, config) {
   for (const city of coveredCities) {
     if (conversation.includes(city.toLowerCase())) {
       leadFields.city = city
-      score += 20
+      score += 15
       reasons.push('Ciudad cubierta')
       break
     }
   }
 
-  // Check for uncovered cities
-  const uncoveredCities = ['madrid', 'valencia', 'sevilla', 'bilbao', 'malaga']
-  for (const city of uncoveredCities) {
-    if (conversation.includes(city) && !coveredCities.includes(city)) {
-      leadFields.city = city
-      reasons.push('Ciudad fuera de cobertura')
-      score = Math.max(5, score - 30)
-      break
-    }
-  }
-
   // Check budget mentions
-  const budgetMatch = conversation.match(/(\d{4,6})\s*(?:€|euros?|eur)/i)
+  const budgetMatch = conversation.match(/(\d{4,6})\s*(?:€|euros?|eur)?/i)
   if (budgetMatch) {
     const budget = parseInt(budgetMatch[1], 10)
     leadFields.budget = budget
-    
-    const projectType = leadFields.projectType || 'baño'
-    const minBudget = config.minBudgets[projectType] || config.minBudgets.baño
-    
-    if (budget >= minBudget) {
-      score += 25
-      reasons.push('Presupuesto adecuado')
-    } else {
-      reasons.push('Presupuesto bajo')
-    }
-  }
-
-  // Check ownership
-  if (conversation.includes('propietario') || 
-      conversation.includes('es mío') || 
-      conversation.includes('es mio') ||
-      conversation.includes('soy el dueño')) {
-    leadFields.isOwner = true
     score += 15
-    reasons.push('Es propietario')
+    reasons.push('Presupuesto mencionado')
   }
 
   // Check timeline
-  const timelinePatterns = [
-    /(\d+)\s*(?:mes|meses)/i,
-    /(\d+)\s*(?:semana|semanas)/i,
-    /(primavera|verano|otoño|invierno)/i,
-    /cuanto antes/i,
-    /lo antes posible/i,
-  ]
-  
-  for (const pattern of timelinePatterns) {
-    if (pattern.test(conversation)) {
-      leadFields.timeline = 'Definido'
-      score += 10
-      reasons.push('Plazo definido')
-      break
-    }
+  if (conversation.match(/(mes|semana|pronto|cuanto antes|verano|primavera|otoño)/i)) {
+    leadFields.timeline = 'Definido'
+    score += 10
+    reasons.push('Plazo mencionado')
   }
 
-  // Check documentation
-  if (conversation.includes('plano') || conversation.includes('documentación') || conversation.includes('foto')) {
-    leadFields.hasDocs = true
-    score += 5
-    reasons.push('Tiene documentación')
-  }
-
-  // Check contact info
-  const phoneMatch = conversation.match(/(\d{9}|\+34\s*\d{9}|\d{3}[\s-]\d{3}[\s-]\d{3})/)
+  // Check contact
+  const phoneMatch = conversation.match(/(\d{9}|\+34\s*\d{9})/)
   if (phoneMatch) {
     leadFields.contactPhone = phoneMatch[1]
-    score += 10
+    score += 15
     reasons.push('Teléfono proporcionado')
   }
 
-  const emailMatch = conversation.match(/[\w.-]+@[\w.-]+\.\w+/)
-  if (emailMatch) {
-    leadFields.contactEmail = emailMatch[0]
-    score += 5
-    reasons.push('Email proporcionado')
-  }
-
-  // Calculate tier
-  const tier = scoreToTier(score)
+  const tier = score >= 80 ? 1 : score >= 60 ? 2 : score >= 40 ? 3 : score >= 20 ? 4 : 5
 
   return {
     displayText: null,
@@ -169,7 +226,7 @@ export function calculateFallbackScore(messages, config) {
     score,
     tier,
     reasons,
-    nextQuestion: getNextQuestion(leadFields),
+    nextQuestion: null,
   }
 }
 
@@ -179,15 +236,4 @@ export function scoreToTier(score) {
   if (score >= 40) return 3
   if (score >= 20) return 4
   return 5
-}
-
-function getNextQuestion(leadFields) {
-  if (!leadFields.projectType) return '¿Qué tipo de reforma necesitas?'
-  if (!leadFields.city) return '¿En qué ciudad está el inmueble?'
-  if (!leadFields.sqm) return '¿Cuántos metros cuadrados tiene el espacio?'
-  if (!leadFields.budget) return '¿Cuál es tu presupuesto aproximado?'
-  if (!leadFields.timeline) return '¿Cuándo te gustaría empezar?'
-  if (leadFields.isOwner === undefined) return '¿Eres el propietario del inmueble?'
-  if (!leadFields.contactPhone) return '¿Podrías darme un teléfono de contacto?'
-  return null
 }
