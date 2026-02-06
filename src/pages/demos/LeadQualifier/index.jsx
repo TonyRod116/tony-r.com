@@ -1,37 +1,30 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Send, RotateCcw, Settings, Users, Key, AlertCircle, CheckCircle2, Sparkles } from 'lucide-react'
+import { Send, RotateCcw, AlertCircle, CheckCircle2, Sparkles } from 'lucide-react'
 import ChatBubble from './components/ChatBubble'
 import TypingIndicator from './components/TypingIndicator'
-import TokenInput from './components/TokenInput'
 import LeadSummaryCard from './components/LeadSummaryCard'
-import ConfigPanel from './components/ConfigPanel'
 import { useChat } from './hooks/useChat'
 import { DEFAULT_CONFIG } from './utils/config'
-import { generateLeadId, saveLeadToStorage } from './utils/storage'
 import { resetMockFlow } from './utils/mockResponses'
 
 const INITIAL_MESSAGE = {
   id: 'welcome',
   role: 'assistant',
-  content: '¡Hola! Soy el asistente de Total Homes. Estoy aquí para ayudarte con tu proyecto de reforma. ¿Podrías contarme qué tipo de reforma estás considerando?',
+  content: '¡Hola! Soy el asistente de proyectos. Estoy aquí para ayudarte a definir tu reforma y resolver cualquier duda. ¿Qué tipo de proyecto tienes en mente?',
   timestamp: new Date().toISOString(),
 }
 
 export default function LeadQualifier() {
   const [messages, setMessages] = useState([INITIAL_MESSAGE])
   const [input, setInput] = useState('')
-  const [apiToken, setApiToken] = useState('')
-  const [showTokenInput, setShowTokenInput] = useState(false)
-  const [showConfig, setShowConfig] = useState(false)
-  const [config, setConfig] = useState(DEFAULT_CONFIG)
+  const [config] = useState(DEFAULT_CONFIG)
   const [leadData, setLeadData] = useState(null)
   const [isComplete, setIsComplete] = useState(false)
   
-  const messagesEndRef = useRef(null)
   const messagesContainerRef = useRef(null)
   const inputRef = useRef(null)
-  const shouldAutoScroll = useRef(true)
+  const userScrolledUp = useRef(false)
   
   const { 
     sendMessage, 
@@ -39,33 +32,36 @@ export default function LeadQualifier() {
     error, 
     clearError,
     lastCooldown,
-    isMockMode 
-  } = useChat(apiToken, config)
+  } = useChat(null, config) // null token = usa proxy en producción
 
-  // Check if user is near bottom before auto-scrolling
+  // Detect if user scrolled up manually
   const handleScroll = useCallback(() => {
     const container = messagesContainerRef.current
     if (!container) return
     
     const { scrollTop, scrollHeight, clientHeight } = container
     const distanceFromBottom = scrollHeight - scrollTop - clientHeight
-    shouldAutoScroll.current = distanceFromBottom < 100
+    userScrolledUp.current = distanceFromBottom > 100
   }, [])
 
-  // Scroll to bottom only when appropriate
-  useEffect(() => {
-    if (shouldAutoScroll.current) {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  // Scroll chat container to bottom (not the page!)
+  const scrollToBottom = useCallback(() => {
+    const container = messagesContainerRef.current
+    if (container && !userScrolledUp.current) {
+      container.scrollTop = container.scrollHeight
     }
-  }, [messages, isLoading])
-
-  // Focus input on mount
-  useEffect(() => {
-    inputRef.current?.focus()
   }, [])
+
+  // Scroll to bottom when messages change
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages, isLoading, scrollToBottom])
 
   const handleSend = useCallback(async () => {
     if (!input.trim() || isLoading) return
+    
+    // Reset scroll flag when user sends message
+    userScrolledUp.current = false
     
     const userMessage = {
       id: `user-${Date.now()}`,
@@ -145,34 +141,6 @@ export default function LeadQualifier() {
     setLeadData(null)
     setIsComplete(false)
     clearError()
-    inputRef.current?.focus()
-  }
-
-  const handleSaveLead = () => {
-    if (!leadData) return
-    
-    const lead = {
-      id: generateLeadId(),
-      createdAt: new Date().toISOString(),
-      summary: `${leadData.projectType || 'Reforma'} en ${leadData.city || 'Barcelona'}`,
-      tier: leadData.tier || 0,
-      score: leadData.score || 0,
-      reasons: leadData.reasons || [],
-      fields: leadData,
-      transcript: messages.map(m => ({
-        role: m.role,
-        content: m.content,
-        timestamp: m.timestamp,
-      })),
-    }
-    
-    saveLeadToStorage(lead)
-    alert('Lead guardado correctamente')
-  }
-
-  const handleTokenSubmit = (token) => {
-    setApiToken(token)
-    setShowTokenInput(false)
   }
 
   return (
@@ -187,44 +155,11 @@ export default function LeadQualifier() {
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-2xl font-bold text-white flex items-center gap-2">
               <Sparkles className="h-6 w-6 text-primary-400" />
-              Calificador de Leads IA
+              Asistente de Proyectos
             </h1>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setShowTokenInput(true)}
-                className={`p-2 rounded-lg transition-colors ${
-                  apiToken 
-                    ? 'bg-green-500/20 text-green-400 hover:bg-green-500/30' 
-                    : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
-                }`}
-                title={apiToken ? 'Token configurado' : 'Configurar token'}
-              >
-                <Key className="h-5 w-5" />
-              </button>
-              <button
-                onClick={() => setShowConfig(true)}
-                className="p-2 rounded-lg bg-gray-700 text-gray-400 hover:bg-gray-600 transition-colors"
-                title="Configuración"
-              >
-                <Settings className="h-5 w-5" />
-              </button>
-              <a
-                href="/demos/lead-qualifier/admin"
-                className="p-2 rounded-lg bg-gray-700 text-gray-400 hover:bg-gray-600 transition-colors"
-                title="Panel Admin"
-              >
-                <Users className="h-5 w-5" />
-              </a>
-            </div>
           </div>
           <p className="text-gray-400 text-sm">
-            Chat conversacional para calificar leads de reformas. 
-            {isMockMode && (
-              <span className="ml-2 inline-flex items-center gap-1 text-amber-400">
-                <AlertCircle className="h-4 w-4" />
-                Modo simulado (sin token)
-              </span>
-            )}
+            Chat conversacional para definir tu proyecto de reforma
           </p>
         </motion.div>
 
@@ -244,7 +179,7 @@ export default function LeadQualifier() {
                     <Sparkles className="h-5 w-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white">Total Homes</h3>
+                    <h3 className="font-semibold text-white">Tu Empresa de Reforma</h3>
                     <p className="text-xs text-white/70">
                       {isLoading ? 'Escribiendo...' : 'En línea'}
                     </p>
@@ -272,8 +207,6 @@ export default function LeadQualifier() {
                 </AnimatePresence>
                 
                 {isLoading && <TypingIndicator />}
-                
-                <div ref={messagesEndRef} />
               </div>
 
               {/* Error Display */}
@@ -303,20 +236,12 @@ export default function LeadQualifier() {
                       <CheckCircle2 className="h-4 w-4 text-green-400" />
                       Conversación completada
                     </p>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={handleSaveLead}
-                        className="px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium transition-colors"
-                      >
-                        Guardar Lead
-                      </button>
-                      <button
-                        onClick={handleReset}
-                        className="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium transition-colors"
-                      >
-                        Nueva conversación
-                      </button>
-                    </div>
+                    <button
+                      onClick={handleReset}
+                      className="px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium transition-colors"
+                    >
+                      Nueva conversación
+                    </button>
                   </div>
                 ) : (
                   <div className="flex items-end gap-2">
@@ -350,28 +275,6 @@ export default function LeadQualifier() {
           </div>
         </div>
       </div>
-
-      {/* Token Input Modal */}
-      <AnimatePresence>
-        {showTokenInput && (
-          <TokenInput
-            currentToken={apiToken}
-            onSubmit={handleTokenSubmit}
-            onClose={() => setShowTokenInput(false)}
-          />
-        )}
-      </AnimatePresence>
-
-      {/* Config Panel Modal */}
-      <AnimatePresence>
-        {showConfig && (
-          <ConfigPanel
-            config={config}
-            onSave={setConfig}
-            onClose={() => setShowConfig(false)}
-          />
-        )}
-      </AnimatePresence>
     </div>
   )
 }
