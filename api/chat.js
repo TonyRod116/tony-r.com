@@ -105,8 +105,6 @@ Mantén actualizado este estado en cada turno:
 - budget_max: presupuesto máximo que maneja el cliente (IMPORTANTE)
 - budget_range: rango si lo especifica (ej: "15000-20000")
 - timeline_start: cuándo quiere empezar
-- ownership_status: propietario | alquiler | no_seguro | null
-- access_status: tiene_llaves | pendiente | depende | null
 - docs_available: fotos | planos | mediciones | ninguno | null
 - constraints: restricciones (vivienda habitada, horarios, etc.)
 - contact_name: nombre o null
@@ -188,8 +186,6 @@ Responde SIEMPRE con este formato exacto:
     "budget_max": "valor o null",
     "budget_range": "valor o null",
     "timeline_start": "valor o null",
-    "ownership_status": "valor o null",
-    "access_status": "valor o null",
     "docs_available": "valor o null",
     "constraints": "valor o null",
     "contact_name": "valor o null",

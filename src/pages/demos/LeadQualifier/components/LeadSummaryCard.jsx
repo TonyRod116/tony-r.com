@@ -5,14 +5,11 @@ import {
   Ruler, 
   Banknote, 
   Calendar, 
-  Home, 
   FileText, 
   User, 
   Phone,
   Mail,
   Star,
-  Clock,
-  Key,
   AlertCircle
 } from 'lucide-react'
 
@@ -161,16 +158,6 @@ export default function LeadSummaryCard({ leadData }) {
             icon={Calendar} 
             label="Inicio" 
             value={leadData.timeline} 
-          />
-          <FieldRow 
-            icon={Home} 
-            label="Propietario" 
-            value={leadData.isOwner} 
-          />
-          <FieldRow 
-            icon={Key} 
-            label="Acceso" 
-            value={leadData.accessStatus} 
           />
           <FieldRow 
             icon={FileText} 
