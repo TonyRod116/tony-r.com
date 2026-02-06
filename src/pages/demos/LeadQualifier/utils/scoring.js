@@ -1,19 +1,31 @@
+// Helper to check if a value is actually set (not null, "null", undefined, empty)
+function hasValue(val) {
+  if (val === null || val === undefined) return false
+  if (val === 'null' || val === 'undefined' || val === 'unknown') return false
+  if (typeof val === 'string' && val.trim() === '') return false
+  return true
+}
+
 export function parseStructuredResponse(response) {
-  // Try to extract JSON from the response
+  console.log('[LeadQualifier] Raw response to parse:', response)
+  
+  // Try to extract JSON from markdown code block
   const jsonMatch = response.match(/```json\s*([\s\S]*?)\s*```/)
   
   if (jsonMatch) {
     try {
       const parsed = JSON.parse(jsonMatch[1])
+      console.log('[LeadQualifier] Parsed from JSON block:', parsed)
       return validateStructuredResponse(parsed)
     } catch (e) {
-      console.warn('Failed to parse JSON block:', e)
+      console.warn('[LeadQualifier] Failed to parse JSON block:', e)
     }
   }
 
   // Try parsing the entire response as JSON
   try {
     const parsed = JSON.parse(response)
+    console.log('[LeadQualifier] Parsed as direct JSON:', parsed)
     return validateStructuredResponse(parsed)
   } catch (e) {
     // Not valid JSON
@@ -24,43 +36,55 @@ export function parseStructuredResponse(response) {
   if (objectMatch) {
     try {
       const parsed = JSON.parse(objectMatch[0])
+      console.log('[LeadQualifier] Parsed from object match:', parsed)
       return validateStructuredResponse(parsed)
     } catch (e) {
-      console.warn('Failed to parse object match:', e)
+      console.warn('[LeadQualifier] Failed to parse object match:', e)
     }
   }
 
+  console.warn('[LeadQualifier] Could not parse any JSON from response')
   return null
 }
 
 function validateStructuredResponse(parsed) {
-  if (!parsed.displayText) return null
+  if (!parsed.displayText) {
+    console.warn('[LeadQualifier] No displayText in parsed response')
+    return null
+  }
   
   // Handle new format with "state" object
   const state = parsed.state || parsed.leadFields || {}
+  
+  console.log('[LeadQualifier] Extracted state:', state)
   
   // Map internal_disposition to tier/score for UI compatibility
   const disposition = state.internal_disposition || 'warm'
   const { score, tier } = dispositionToScoreTier(disposition, state)
   
-  // Map state fields to leadFields for UI
+  // Map state fields to leadFields for UI - only include fields with actual values
   const leadFields = {
-    projectType: state.project_type || null,
-    city: state.city || null,
-    sqm: state.approx_sqm ? parseInt(state.approx_sqm, 10) : null,
-    budget: state.budget_max ? parseBudget(state.budget_max) : null,
-    budgetRange: state.budget_range || null,
-    timeline: state.timeline_start || null,
-    hasDocs: state.docs_available && state.docs_available !== 'ninguno' ? true :
-             state.docs_available === 'ninguno' ? false : null,
-    contactName: state.contact_name || null,
-    contactPhone: state.contact_phone || null,
-    contactEmail: state.contact_email || null,
-    // Additional fields from new format
-    postalCode: state.postal_code || null,
-    scopeDescription: state.scope_description || null,
-    constraints: state.constraints || null,
+    projectType: hasValue(state.project_type) ? state.project_type : null,
+    city: hasValue(state.city) ? state.city : null,
+    sqm: hasValue(state.approx_sqm) ? parseInt(String(state.approx_sqm).replace(/\D/g, ''), 10) || null : null,
+    budget: hasValue(state.budget_max) ? parseBudget(state.budget_max) : null,
+    budgetRange: hasValue(state.budget_range) ? state.budget_range : null,
+    timeline: hasValue(state.timeline_start) ? state.timeline_start : null,
+    hasDocs: hasValue(state.docs_available) ? state.docs_available : null,
+    contactName: hasValue(state.contact_name) ? state.contact_name : null,
+    contactPhone: hasValue(state.contact_phone) ? state.contact_phone : null,
+    contactEmail: hasValue(state.contact_email) ? state.contact_email : null,
+    postalCode: hasValue(state.postal_code) ? state.postal_code : null,
+    scopeDescription: hasValue(state.scope_description) ? state.scope_description : null,
+    constraints: hasValue(state.constraints) ? state.constraints : null,
   }
+  
+  // Filter out null values for cleaner output
+  const cleanLeadFields = Object.fromEntries(
+    Object.entries(leadFields).filter(([_, v]) => v !== null)
+  )
+  
+  console.log('[LeadQualifier] Mapped leadFields:', cleanLeadFields)
 
   // Generate reasons from state
   const reasons = generateReasons(state, disposition)
@@ -72,12 +96,11 @@ function validateStructuredResponse(parsed) {
 
   return {
     displayText: parsed.displayText,
-    leadFields,
+    leadFields: cleanLeadFields,
     score,
     tier,
     reasons,
     nextQuestion,
-    // Keep raw state for admin panel
     rawState: state,
     nextAction: parsed.next_action || 'continue',
   }
@@ -86,8 +109,11 @@ function validateStructuredResponse(parsed) {
 function parseBudget(value) {
   if (typeof value === 'number') return value
   if (typeof value === 'string') {
+    // Handle "unknown" or similar
+    if (value.toLowerCase() === 'unknown' || value.toLowerCase() === 'null') return null
     // Extract number from string like "15000" or "15.000€" or "15000-20000"
-    const match = value.replace(/\./g, '').match(/(\d+)/)
+    const cleanValue = value.replace(/\./g, '').replace(/,/g, '')
+    const match = cleanValue.match(/(\d+)/)
     return match ? parseInt(match[1], 10) : null
   }
   return null
@@ -98,11 +124,11 @@ function dispositionToScoreTier(disposition, state) {
   let score = disposition === 'hot' ? 80 : disposition === 'warm' ? 50 : 20
 
   // Adjust based on data completeness
-  if (state.project_type) score += 5
-  if (state.city) score += 5
-  if (state.budget_max && state.budget_max !== 'unknown') score += 10
-  if (state.timeline_start) score += 5
-  if (state.contact_phone) score += 15
+  if (hasValue(state.project_type)) score += 5
+  if (hasValue(state.city)) score += 5
+  if (hasValue(state.budget_max) && state.budget_max !== 'unknown') score += 10
+  if (hasValue(state.timeline_start)) score += 5
+  if (hasValue(state.contact_phone)) score += 15
 
   // Cap at 100
   score = Math.min(100, score)
@@ -116,25 +142,25 @@ function dispositionToScoreTier(disposition, state) {
 function generateReasons(state, disposition) {
   const reasons = []
 
-  if (state.project_type) {
+  if (hasValue(state.project_type)) {
     reasons.push(`Proyecto: ${state.project_type}`)
   }
   
-  if (state.city) {
+  if (hasValue(state.city)) {
     reasons.push(`Ubicación: ${state.city}`)
   }
 
-  if (state.budget_max && state.budget_max !== 'unknown') {
+  if (hasValue(state.budget_max) && state.budget_max !== 'unknown') {
     reasons.push(`Presupuesto definido`)
   } else if (state.budget_max === 'unknown') {
     reasons.push(`Presupuesto pendiente de definir`)
   }
 
-  if (state.timeline_start) {
+  if (hasValue(state.timeline_start)) {
     reasons.push(`Plazo: ${state.timeline_start}`)
   }
 
-  if (state.contact_phone) {
+  if (hasValue(state.contact_phone)) {
     reasons.push(`Contacto facilitado`)
   }
 
@@ -174,7 +200,7 @@ export function calculateFallbackScore(messages, config) {
   }
 
   // Check city
-  const coveredCities = config.coveredCities.map(c => c.toLowerCase())
+  const coveredCities = (config.coveredCities || []).map(c => c.toLowerCase())
   for (const city of coveredCities) {
     if (conversation.includes(city.toLowerCase())) {
       leadFields.city = city
@@ -194,8 +220,12 @@ export function calculateFallbackScore(messages, config) {
   }
 
   // Check timeline
-  if (conversation.match(/(mes|semana|pronto|cuanto antes|verano|primavera|otoño)/i)) {
-    leadFields.timeline = 'Definido'
+  if (conversation.match(/(ya|urgente|inmediato|cuanto antes)/i)) {
+    leadFields.timeline = 'Inmediato'
+    score += 15
+    reasons.push('Urgencia alta')
+  } else if (conversation.match(/(mes|semana|pronto)/i)) {
+    leadFields.timeline = 'Corto plazo'
     score += 10
     reasons.push('Plazo mencionado')
   }
