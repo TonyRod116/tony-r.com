@@ -90,11 +90,15 @@
     }
     .layout {
       display: grid;
-      grid-template-columns: 320px 1fr;
+      grid-template-columns: 320px 1fr 320px;
       gap: 24px;
       margin-bottom: 24px;
       position: relative;
       z-index: 10;
+      pointer-events: none;
+    }
+    .layout > div:nth-child(2) {
+      /* Middle column - empty, 3D visualization is in background */
       pointer-events: none;
     }
     .panel {
@@ -153,6 +157,9 @@
     @media (max-width: 1024px) {
       .layout {
         grid-template-columns: 1fr;
+      }
+      .layout > div:nth-child(2) {
+        display: none;
       }
     }
     /* Educational Section Styles */
@@ -602,7 +609,7 @@
 
       <!-- Main Layout -->
       <div class="layout">
-        <!-- Left: Drawing Canvas -->
+        <!-- Left: Drawing Canvas and Prediction -->
         <div>
           <div class="panel">
             <h2>Drawing</h2>
@@ -614,12 +621,18 @@
           </div>
 
           <!-- Prediction Chart -->
-          <div id="predictionChart" class="panel">
+          <div id="predictionChart" class="panel" style="margin-top: 24px;">
             <h2>Prediction</h2>
           </div>
+        </div>
 
+        <!-- Middle: 3D Visualization (background, handled by CSS) -->
+        <div></div>
+
+        <!-- Right: Controls -->
+        <div>
           <!-- Epoch Slider -->
-          <div class="panel" style="margin-top: 24px; background: #1f2937; border-radius: 12px; padding: 16px;">
+          <div class="panel" style="background: #1f2937; border-radius: 12px; padding: 16px;">
             <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 16px; color: white;">Training Epoch</h2>
             <div style="margin-bottom: 12px;">
               <input 
@@ -673,12 +686,11 @@
           <!-- Update Visualization Button -->
           <div class="panel" style="margin-top: 24px; background: #1f2937; border-radius: 12px; padding: 16px;">
             <button id="updateVisualizationBtn" class="btn" style="background: #3b82f6; font-weight: 600;">
-              Update Visualization
+              Update and Recalculate
             </button>
-            <p class="hint" style="margin-top: 8px;">Click to update the 3D visualization with current settings</p>
+            <p class="hint" style="margin-top: 8px;">Click to update the 3D visualization and recalculate predictions</p>
           </div>
         </div>
-
       </div>
 
       <!-- Educational Content -->
@@ -1532,6 +1544,7 @@
     // NeuralVisualizer class (simplified for performance)
     class NeuralVisualizer {
       constructor(mlp, options) {
+        console.log('NeuralVisualizer constructor called with architecture:', mlp.architecture)
         this.mlp = mlp
         this.options = Object.assign({
           layerSpacing: 5.5,
@@ -1549,6 +1562,7 @@
         this.connectionGroups = []
         this.tempObject = new THREE.Object3D()
         this.tempColor = new THREE.Color()
+        this.animationFrameId = null
         this.initThreeScene()
         this.buildLayers()
         this.buildConnections()
@@ -1690,7 +1704,8 @@
               this.tempObject.position.copy(position)
               this.tempObject.updateMatrix()
               mesh.setMatrixAt(instanceIndex, this.tempObject.matrix)
-              mesh.setColorAt(instanceIndex, this.tempColor.setRGB(0.15, 0.15, 0.15))
+              // Input layer: dark red (no use initially)
+              mesh.setColorAt(instanceIndex, this.tempColor.setRGB(0.8, 0.1, 0.1))
             })
 
             mesh.instanceMatrix.needsUpdate = true
@@ -1713,7 +1728,8 @@
               this.tempObject.position.copy(position)
               this.tempObject.updateMatrix()
               mesh.setMatrixAt(instanceIndex, this.tempObject.matrix)
-              mesh.setColorAt(instanceIndex, this.tempColor.setRGB(0.15, 0.15, 0.15))
+              // All layers: dark red (no use initially)
+              mesh.setColorAt(instanceIndex, this.tempColor.setRGB(0.8, 0.1, 0.1))
             })
 
             mesh.instanceMatrix.needsUpdate = true
@@ -1725,8 +1741,11 @@
         })
       }
 
-      findImportantConnections(layer) {
-        const limit = this.options.maxConnectionsPerNeuron
+      findImportantConnections(layer, layerIndex = -1) {
+        // For input layer (layerIndex === 0), show all connections (784)
+        // For other layers, use the configured limit
+        const isInputLayer = layerIndex === 0
+        const limit = isInputLayer ? layer.weights[0]?.length || 784 : this.options.maxConnectionsPerNeuron
         const minMagnitude = Math.max(0, this.options.connectionWeightThreshold ?? 0)
         const selected = []
         let maxAbsWeight = 0
@@ -1740,16 +1759,32 @@
             candidates.push({ sourceIndex: source, targetIndex: target, weight, magnitude })
             if (magnitude > maxAbsWeight) maxAbsWeight = magnitude
           }
-          candidates.sort((a, b) => b.magnitude - a.magnitude)
-          const take = Math.min(limit, candidates.length)
-          for (let i = 0; i < take; i += 1) {
-            const candidate = candidates[i]
-            if (candidate.magnitude < minMagnitude) break
-            selected.push({
-              sourceIndex: candidate.sourceIndex,
-              targetIndex: candidate.targetIndex,
-              weight: candidate.weight,
-            })
+          
+          if (isInputLayer) {
+            // For input layer, include all connections (or all above threshold)
+            for (let i = 0; i < candidates.length; i += 1) {
+              const candidate = candidates[i]
+              if (candidate.magnitude >= minMagnitude) {
+                selected.push({
+                  sourceIndex: candidate.sourceIndex,
+                  targetIndex: candidate.targetIndex,
+                  weight: candidate.weight,
+                })
+              }
+            }
+          } else {
+            // For other layers, sort by magnitude and take top N
+            candidates.sort((a, b) => b.magnitude - a.magnitude)
+            const take = Math.min(limit, candidates.length)
+            for (let i = 0; i < take; i += 1) {
+              const candidate = candidates[i]
+              if (candidate.magnitude < minMagnitude) break
+              selected.push({
+                sourceIndex: candidate.sourceIndex,
+                targetIndex: candidate.targetIndex,
+                weight: candidate.weight,
+              })
+            }
           }
         }
         return { selected, maxAbsWeight }
@@ -1761,7 +1796,7 @@
         const material = new THREE.MeshLambertMaterial()
 
         this.mlp.layers.forEach((layer, layerIndex) => {
-          const { selected } = this.findImportantConnections(layer)
+          const { selected } = this.findImportantConnections(layer, layerIndex)
           if (!selected.length) return
 
           const mesh = new THREE.InstancedMesh(baseGeometry.clone(), material.clone(), selected.length)
@@ -1789,7 +1824,8 @@
             this.tempObject.quaternion.copy(quaternion)
             this.tempObject.updateMatrix()
             mesh.setMatrixAt(instanceIndex, this.tempObject.matrix)
-            mesh.setColorAt(instanceIndex, this.tempColor.setRGB(1, 1, 1))
+            // Initial connection color: dark red (no use initially)
+            mesh.setColorAt(instanceIndex, this.tempColor.setRGB(0.8, 0.1, 0.1))
           })
 
           mesh.instanceMatrix.needsUpdate = true
@@ -1806,9 +1842,11 @@
       applyNodeColors(layer, values, scale, layerIndex) {
         const { mesh, type } = layer
         if (type === 'input') {
+          // Input layer: Red (no use) to Green (high use)
           for (let i = 0; i < values.length; i += 1) {
             const value = clamp(values[i], 0, 1)
-            this.tempColor.setRGB(value, value, value)
+            // Red to Green gradient: red (0) to green (1)
+            this.tempColor.setRGB(1 - value * 0.8, value * 0.8 + 0.2, 0.1)
             mesh.setColorAt(i, this.tempColor)
           }
           mesh.instanceColor.needsUpdate = true
@@ -1819,7 +1857,10 @@
         for (let i = 0; i < values.length; i += 1) {
           const value = values[i]
           const normalized = clamp(value / safeScale, 0, 1)
-          this.tempColor.setRGB(normalized, normalized, normalized)
+          
+          // All layers: Red (no use) to Green (high use)
+          // Red to Green gradient: red (0) to green (1)
+          this.tempColor.setRGB(1 - normalized * 0.8, normalized * 0.8 + 0.2, 0.1)
           mesh.setColorAt(i, this.tempColor)
         }
         mesh.instanceColor.needsUpdate = true
@@ -1837,14 +1878,15 @@
         })
         const scale = maxContribution > 1e-6 ? maxContribution : 1
         group.connections.forEach((connection, index) => {
-          const normalized = clamp(contributions[index] / scale, -1, 1)
-          const magnitude = Math.abs(normalized)
-          if (magnitude < 1e-3) {
-            this.tempColor.setRGB(0, 0, 0)
-          } else if (normalized >= 0) {
-            this.tempColor.setRGB(0, magnitude, 0)
+          const magnitude = Math.abs(contributions[index] / scale)
+          const normalized = clamp(magnitude, 0, 1)
+          
+          // Red (no use) to Green (high use) based on magnitude
+          // Red to Green gradient: red (0) to green (1)
+          if (normalized < 1e-3) {
+            this.tempColor.setRGB(0.8, 0.1, 0.1) // Dark red for no use
           } else {
-            this.tempColor.setRGB(magnitude, 0, 0)
+            this.tempColor.setRGB(1 - normalized * 0.8, normalized * 0.8 + 0.2, 0.1)
           }
           group.mesh.setColorAt(index, this.tempColor)
         })
@@ -1868,9 +1910,13 @@
 
       animate() {
         const renderFrame = () => {
-          this.controls.update()
-          this.renderer.render(this.scene, this.camera)
-          requestAnimationFrame(renderFrame)
+          if (this.controls) {
+            this.controls.update()
+          }
+          if (this.renderer && this.scene && this.camera) {
+            this.renderer.render(this.scene, this.camera)
+          }
+          this.animationFrameId = requestAnimationFrame(renderFrame)
         }
         renderFrame()
       }
@@ -2061,8 +2107,44 @@
             const origWeights = originalLayer0.weights[origNodeIdx]
             const origBias = originalLayer0.biases[origNodeIdx]
             
-            // Copy weights from original node
-            layer1Weights.push([...origWeights])
+            if (!origWeights) {
+              console.error('origWeights is undefined for index', origNodeIdx, 'in layer 0')
+              continue
+            }
+            
+            // Copy weights from original node (handle both arrays and Float32Arrays)
+            let weightsCopy
+            const expectedWeightLength = 784 // Input layer has 784 features
+            try {
+              // Check if it's a typed array (Float32Array, Uint8Array, etc.)
+              if (origWeights && typeof origWeights.length === 'number' && origWeights.constructor && origWeights.constructor.name.includes('Array')) {
+                weightsCopy = Array.from(origWeights)
+              } else if (Array.isArray(origWeights)) {
+                weightsCopy = [...origWeights]
+              } else if (origWeights && typeof origWeights.length === 'number') {
+                // Handle array-like objects
+                weightsCopy = Array.from(origWeights)
+              } else {
+                console.error('origWeights is not iterable:', origWeights, 'type:', typeof origWeights, 'constructor:', origWeights?.constructor?.name)
+                weightsCopy = new Array(expectedWeightLength).fill(0)
+              }
+            } catch (e) {
+              console.error('Error copying weights:', e, 'origWeights:', origWeights)
+              weightsCopy = new Array(expectedWeightLength).fill(0)
+            }
+            
+            // Ensure the array has the correct length
+            if (weightsCopy.length !== expectedWeightLength) {
+              if (weightsCopy.length < expectedWeightLength) {
+                // Pad with zeros if too short
+                weightsCopy = [...weightsCopy, ...new Array(expectedWeightLength - weightsCopy.length).fill(0)]
+              } else {
+                // Truncate if too long
+                weightsCopy = weightsCopy.slice(0, expectedWeightLength)
+              }
+            }
+            
+            layer1Weights.push(weightsCopy)
             layer1Biases.push(origBias)
           }
           
@@ -2083,10 +2165,25 @@
             const origWeights = originalLayer1.weights[origNodeIdx]
             const origBias = originalLayer1.biases[origNodeIdx]
             
+            // Convert to array if Float32Array or other typed array
+            let origWeightsArray
+            try {
+              if (origWeights && typeof origWeights.length === 'number' && origWeights.constructor && origWeights.constructor.name.includes('Array')) {
+                origWeightsArray = Array.from(origWeights)
+              } else if (Array.isArray(origWeights)) {
+                origWeightsArray = origWeights
+              } else {
+                origWeightsArray = origWeights
+              }
+            } catch (e) {
+              console.error('Error converting origWeights to array:', e)
+              origWeightsArray = []
+            }
+            
             // Adapt weights: map from newHidden1 inputs to original 64 inputs
             for (let j = 0; j < newHidden1; j++) {
               const origInputIdx = j % originalHidden1
-              row.push(origWeights[origInputIdx])
+              row.push(origWeightsArray[origInputIdx])
             }
             
             layer2Weights.push(row)
@@ -2109,10 +2206,25 @@
             const origWeights = originalLayer2.weights[i]
             const origBias = originalLayer2.biases[i]
             
+            // Convert to array if Float32Array or other typed array
+            let origWeightsArray
+            try {
+              if (origWeights && typeof origWeights.length === 'number' && origWeights.constructor && origWeights.constructor.name.includes('Array')) {
+                origWeightsArray = Array.from(origWeights)
+              } else if (Array.isArray(origWeights)) {
+                origWeightsArray = origWeights
+              } else {
+                origWeightsArray = origWeights
+              }
+            } catch (e) {
+              console.error('Error converting origWeights to array:', e)
+              origWeightsArray = []
+            }
+            
             // Adapt weights: map from newHidden2 inputs to original 32 inputs
             for (let j = 0; j < newHidden2; j++) {
               const origInputIdx = j % originalHidden2
-              row.push(origWeights[origInputIdx])
+              row.push(origWeightsArray[origInputIdx])
             }
             
             layer3Weights.push(row)
@@ -2134,20 +2246,45 @@
         
         // Function to update model for new hidden node count
         function updateModelForHiddenNodes(hiddenNodes) {
+          console.log('Updating model for hidden nodes:', hiddenNodes)
           const newArch = getWeightsForHiddenNodes(hiddenNodes)
           
-          // Update current architecture layers to the new architecture
+          console.log('New architecture:', newArch.architecture)
+          console.log('New layers:', newArch.layers.map(l => ({ name: l.name, weights: l.weights.length, biases: l.biases.length })))
+          
+          // Update current architecture layers FIRST, before calling getWeightsForEpoch
           currentArchitectureLayers = JSON.parse(JSON.stringify(newArch.layers))
           
           // Apply epoch-based modifications using the new architecture
           const epochLayers = getWeightsForEpoch(currentEpoch)
           
+          console.log('Epoch layers count:', epochLayers.length)
+          console.log('Epoch layer sizes:', epochLayers.map(l => ({ weights: l.weights.length, biases: l.biases.length })))
+          
+          // Verify architecture matches
+          const expectedArch = newArch.architecture
+          const actualArch = [
+            epochLayers[0].weights[0].length, // input size
+            epochLayers[0].weights.length,   // hidden1 size
+            epochLayers[1].weights.length,   // hidden2 size
+            epochLayers[2].weights.length    // output size
+          ]
+          console.log('Expected architecture:', expectedArch)
+          console.log('Actual architecture from layers:', actualArch)
+          
           // Create new model with new architecture and epoch-modified weights
+          // Make sure architecture is explicitly set
           neuralModel = new FeedForwardModel({
             normalization: definition.network.normalization || NORMALIZATION,
-            architecture: newArch.architecture,
+            architecture: newArch.architecture, // Explicitly set architecture
             layers: epochLayers,
           })
+          
+          // Force architecture to match (in case FeedForwardModel recalculates it incorrectly)
+          neuralModel.architecture = newArch.architecture.slice()
+          
+          console.log('Model architecture after creation:', neuralModel.architecture)
+          console.log('Model layers:', neuralModel.layers.map(l => ({ weights: l.weights.length, biases: l.biases.length })))
           
           // Rebuild the 3D visualization with new architecture
           rebuildVisualization()
@@ -2156,34 +2293,68 @@
         // Helper function to rebuild the 3D visualization
         function rebuildVisualization() {
           const threeContainer = document.getElementById('threeContainer')
-          if (threeContainer) {
+          if (threeContainer && neuralModel) {
+            console.log('Rebuilding visualization with architecture:', neuralModel.architecture)
+            
+            // Stop any existing animation
+            if (neuralScene && neuralScene.animate) {
+              // Cancel animation frame if possible
+              if (neuralScene.animationFrameId) {
+                cancelAnimationFrame(neuralScene.animationFrameId)
+              }
+            }
+            
+            // Dispose of Three.js resources if they exist
+            if (neuralScene) {
+              if (neuralScene.scene) {
+                // Dispose of all meshes and geometries
+                neuralScene.scene.traverse((object) => {
+                  if (object.geometry) object.geometry.dispose()
+                  if (object.material) {
+                    if (Array.isArray(object.material)) {
+                      object.material.forEach(mat => mat.dispose())
+                    } else {
+                      object.material.dispose()
+                    }
+                  }
+                })
+              }
+              if (neuralScene.renderer) {
+                neuralScene.renderer.dispose()
+              }
+            }
+            
             // Clear old visualization completely
-            while (threeContainer.firstChild) {
-              threeContainer.removeChild(threeContainer.firstChild)
-            }
+            threeContainer.innerHTML = ''
             
-            // Create new visualization with current model
-            neuralScene = new NeuralVisualizer(neuralModel, {
-              container: threeContainer,
-              layerSpacing: VISUALIZER_CONFIG.layerSpacing,
-              maxConnectionsPerNeuron: VISUALIZER_CONFIG.maxConnectionsPerNeuron,
-              inputSpacing: VISUALIZER_CONFIG.inputSpacing,
-              hiddenSpacing: VISUALIZER_CONFIG.hiddenSpacing,
-              inputNodeSize: VISUALIZER_CONFIG.inputNodeSize,
-              hiddenNodeRadius: VISUALIZER_CONFIG.hiddenNodeRadius,
-              connectionRadius: VISUALIZER_CONFIG.connectionRadius,
-              connectionWeightThreshold: VISUALIZER_CONFIG.connectionWeightThreshold,
+            // Small delay to ensure cleanup is complete
+            requestAnimationFrame(() => {
+              // Create new visualization with current model
+              neuralScene = new NeuralVisualizer(neuralModel, {
+                container: threeContainer,
+                layerSpacing: VISUALIZER_CONFIG.layerSpacing,
+                maxConnectionsPerNeuron: VISUALIZER_CONFIG.maxConnectionsPerNeuron,
+                inputSpacing: VISUALIZER_CONFIG.inputSpacing,
+                hiddenSpacing: VISUALIZER_CONFIG.hiddenSpacing,
+                inputNodeSize: VISUALIZER_CONFIG.inputNodeSize,
+                hiddenNodeRadius: VISUALIZER_CONFIG.hiddenNodeRadius,
+                connectionRadius: VISUALIZER_CONFIG.connectionRadius,
+                connectionWeightThreshold: VISUALIZER_CONFIG.connectionWeightThreshold,
+              })
+              
+              console.log('Visualization created, architecture:', neuralScene.mlp?.architecture)
+              console.log('Model architecture:', neuralModel.architecture)
+              
+              // Restart animation loop
+              neuralScene.animate()
+              
+              // Immediately update with current drawing if there is one
+              const rawInput = digitCanvas.getPixels()
+              const hasDrawing = rawInput.some(val => val > 0)
+              if (hasDrawing) {
+                refreshNetworkState()
+              }
             })
-            
-            // Restart animation loop
-            neuralScene.animate()
-            
-            // Immediately update with current drawing if there is one
-            const rawInput = digitCanvas.getPixels()
-            const hasDrawing = rawInput.some(val => val > 0)
-            if (hasDrawing) {
-              refreshNetworkState()
-            }
           }
         }
 
@@ -2251,17 +2422,28 @@
         
         // Track the last applied architecture to know when to rebuild
         let lastAppliedHiddenNodes = 64
+        let lastAppliedEpoch = 40
         
         // Function to update visualization with current settings
         function updateVisualization() {
-          // Check if architecture needs to be updated
+          // Always update if architecture changed
           if (currentHiddenNodes !== lastAppliedHiddenNodes) {
             // Architecture changed - rebuild with new architecture and current epoch
             updateModelForHiddenNodes(currentHiddenNodes)
             lastAppliedHiddenNodes = currentHiddenNodes
-          } else {
-            // Architecture unchanged - just update epoch
+            lastAppliedEpoch = currentEpoch
+          } else if (currentEpoch !== lastAppliedEpoch) {
+            // Architecture unchanged but epoch changed - just update epoch
             updateModelForEpoch(currentEpoch)
+            lastAppliedEpoch = currentEpoch
+          } else {
+            // Force rebuild even if nothing changed (user clicked button)
+            // This ensures the visualization is always up to date
+            if (currentHiddenNodes !== 64) {
+              updateModelForHiddenNodes(currentHiddenNodes)
+            } else {
+              updateModelForEpoch(currentEpoch)
+            }
           }
         }
         

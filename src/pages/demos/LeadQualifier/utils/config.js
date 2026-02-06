@@ -10,15 +10,18 @@ export const DEFAULT_CONFIG = {
     'Cornellà de Llobregat',
     'Sant Boi de Llobregat',
     'Sant Cugat del Vallès',
+    'Esplugues',
+    'Gavà',
+    'Castelldefels',
+    'El Prat',
   ],
-  minBudgets: {
-    baño: 8000,
-    cocina: 12000,
-    integral: 30000,
-    pintura: 2000,
-    otro: 5000,
+  // Presupuestos mínimos - si el cliente dice menos, baja su clasificación
+  budgetRanges: {
+    baño: { min: 12000 },
+    cocina: { min: 18000 },
+    integral: { min: 50000 },
+    pintura: { min: 2500 },
   },
-  tier5CloseText: 'Gracias por tu interés. Actualmente no podemos atender tu solicitud, pero te recomendamos contactar con profesionales locales en tu zona. ¡Te deseamos mucho éxito con tu proyecto!',
 }
 
 export function validateConfig(config) {
@@ -28,19 +31,8 @@ export function validateConfig(config) {
     errors.push('Debe haber al menos una ciudad cubierta')
   }
 
-  if (!config.minBudgets || typeof config.minBudgets !== 'object') {
+  if (!config.budgetRanges || typeof config.budgetRanges !== 'object') {
     errors.push('Los presupuestos mínimos son requeridos')
-  } else {
-    const requiredTypes = ['baño', 'cocina', 'integral']
-    for (const type of requiredTypes) {
-      if (typeof config.minBudgets[type] !== 'number' || config.minBudgets[type] < 0) {
-        errors.push(`Presupuesto mínimo para ${type} debe ser un número positivo`)
-      }
-    }
-  }
-
-  if (!config.tier5CloseText || typeof config.tier5CloseText !== 'string') {
-    errors.push('El texto de cierre Tier 5 es requerido')
   }
 
   return errors

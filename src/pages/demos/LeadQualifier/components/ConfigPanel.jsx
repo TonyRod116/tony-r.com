@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { X, Save, MapPin, Banknote } from 'lucide-react'
+import { X, Save, MapPin, Banknote, AlertTriangle } from 'lucide-react'
 
 export default function ConfigPanel({ config, onSave, onClose }) {
   const [localConfig, setLocalConfig] = useState({
     coveredCities: config.coveredCities?.join(', ') || '',
     budgetRanges: {
-      baño: config.budgetRanges?.baño || { min: 8000, typical: '8.000€ - 18.000€' },
-      cocina: config.budgetRanges?.cocina || { min: 12000, typical: '12.000€ - 25.000€' },
-      integral: config.budgetRanges?.integral || { min: 30000, typical: '30.000€ - 80.000€' },
-      pintura: config.budgetRanges?.pintura || { min: 1500, typical: '1.500€ - 5.000€' },
+      baño: config.budgetRanges?.baño?.min || 12000,
+      cocina: config.budgetRanges?.cocina?.min || 18000,
+      integral: config.budgetRanges?.integral?.min || 50000,
+      pintura: config.budgetRanges?.pintura?.min || 2500,
     },
   })
 
@@ -17,23 +17,32 @@ export default function ConfigPanel({ config, onSave, onClose }) {
     const newConfig = {
       ...config,
       coveredCities: localConfig.coveredCities.split(',').map(c => c.trim()).filter(Boolean),
-      budgetRanges: localConfig.budgetRanges,
+      budgetRanges: {
+        baño: { min: localConfig.budgetRanges.baño },
+        cocina: { min: localConfig.budgetRanges.cocina },
+        integral: { min: localConfig.budgetRanges.integral },
+        pintura: { min: localConfig.budgetRanges.pintura },
+      },
     }
     onSave(newConfig)
     onClose()
   }
 
-  const updateBudgetRange = (type, field, value) => {
+  const updateBudgetMin = (type, value) => {
     setLocalConfig(prev => ({
       ...prev,
       budgetRanges: {
         ...prev.budgetRanges,
-        [type]: {
-          ...prev.budgetRanges[type],
-          [field]: field === 'min' ? parseInt(value, 10) || 0 : value,
-        },
+        [type]: parseInt(value, 10) || 0,
       },
     }))
+  }
+
+  const typeLabels = {
+    baño: 'Baño',
+    cocina: 'Cocina', 
+    integral: 'Reforma Integral',
+    pintura: 'Pintura',
   }
 
   return (
@@ -80,37 +89,29 @@ export default function ConfigPanel({ config, onSave, onClose }) {
             <p className="text-xs text-gray-500 mt-1">Separadas por comas</p>
           </div>
 
-          {/* Budget Ranges */}
+          {/* Budget Minimums */}
           <div>
-            <label className="flex items-center gap-2 text-sm font-medium text-white mb-3">
+            <label className="flex items-center gap-2 text-sm font-medium text-white mb-2">
               <Banknote className="h-4 w-4 text-primary-400" />
-              Rangos de presupuesto
+              Presupuestos mínimos
             </label>
+            <p className="text-xs text-amber-400 flex items-center gap-1 mb-3">
+              <AlertTriangle className="h-3 w-3" />
+              Si el cliente dice menos de esto, baja su clasificación
+            </p>
             
-            <div className="space-y-4">
-              {Object.entries(localConfig.budgetRanges).map(([type, range]) => (
-                <div key={type} className="bg-gray-700/50 rounded-lg p-4">
-                  <p className="text-sm font-medium text-white capitalize mb-3">{type}</p>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="text-xs text-gray-400 mb-1 block">Mínimo (€)</label>
-                      <input
-                        type="number"
-                        value={range.min}
-                        onChange={(e) => updateBudgetRange(type, 'min', e.target.value)}
-                        className="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white text-sm focus:ring-2 focus:ring-primary-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs text-gray-400 mb-1 block">Rango típico</label>
-                      <input
-                        type="text"
-                        value={range.typical}
-                        onChange={(e) => updateBudgetRange(type, 'typical', e.target.value)}
-                        className="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white text-sm focus:ring-2 focus:ring-primary-500"
-                        placeholder="8.000€ - 18.000€"
-                      />
-                    </div>
+            <div className="space-y-3">
+              {Object.entries(localConfig.budgetRanges).map(([type, minValue]) => (
+                <div key={type} className="flex items-center gap-3 bg-gray-700/50 rounded-lg p-3">
+                  <span className="text-sm text-white w-32">{typeLabels[type]}</span>
+                  <div className="flex-1 flex items-center gap-2">
+                    <input
+                      type="number"
+                      value={minValue}
+                      onChange={(e) => updateBudgetMin(type, e.target.value)}
+                      className="flex-1 px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white text-sm focus:ring-2 focus:ring-primary-500"
+                    />
+                    <span className="text-gray-400 text-sm">€</span>
                   </div>
                 </div>
               ))}

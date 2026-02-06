@@ -54,26 +54,59 @@ const clientRatings = {
 }
 
 // Calcular la clasificación basada en los datos del lead
-function calculateClientRating(leadData) {
+function calculateClientRating(leadData, config = {}) {
   if (!leadData) return { rating: 'regular', score: 0, factors: [] }
   
   let score = 50 // Empezamos en neutral
   const factors = []
   
-  // Factor: Presupuesto
+  // Obtener mínimos de config
+  const budgetMins = {
+    baño: config.budgetRanges?.baño?.min || 12000,
+    cocina: config.budgetRanges?.cocina?.min || 18000,
+    integral: config.budgetRanges?.integral?.min || 50000,
+    pintura: config.budgetRanges?.pintura?.min || 2500,
+  }
+  
+  // Detectar tipo de proyecto
+  const projectType = (leadData.projectType || '').toLowerCase()
+  let projectCategory = null
+  if (projectType.includes('integral') || projectType.includes('completa') || projectType.includes('piso')) {
+    projectCategory = 'integral'
+  } else if (projectType.includes('cocina')) {
+    projectCategory = 'cocina'
+  } else if (projectType.includes('baño')) {
+    projectCategory = 'baño'
+  } else if (projectType.includes('pintura')) {
+    projectCategory = 'pintura'
+  }
+  
+  // Factor: Presupuesto vs mínimo del tipo de proyecto
   const budget = leadData.budget || 0
-  if (budget >= 50000) {
-    score += 25
-    factors.push({ text: 'Presupuesto alto', positive: true })
-  } else if (budget >= 20000) {
-    score += 15
-    factors.push({ text: 'Presupuesto medio-alto', positive: true })
-  } else if (budget >= 10000) {
-    score += 5
-    factors.push({ text: 'Presupuesto aceptable', positive: true })
-  } else if (budget > 0 && budget < 5000) {
-    score -= 20
-    factors.push({ text: 'Presupuesto muy bajo', positive: false })
+  if (budget > 0 && projectCategory) {
+    const minRequired = budgetMins[projectCategory]
+    if (budget >= minRequired * 1.5) {
+      score += 25
+      factors.push({ text: 'Presupuesto alto', positive: true })
+    } else if (budget >= minRequired) {
+      score += 15
+      factors.push({ text: 'Presupuesto adecuado', positive: true })
+    } else if (budget >= minRequired * 0.7) {
+      score += 5
+      factors.push({ text: 'Presupuesto ajustado', positive: true })
+    } else {
+      score -= 25
+      factors.push({ text: `Presupuesto bajo (mín. ${minRequired.toLocaleString('es-ES')}€)`, positive: false })
+    }
+  } else if (budget > 0) {
+    // Si no sabemos el tipo, evaluamos de forma general
+    if (budget >= 50000) {
+      score += 20
+      factors.push({ text: 'Presupuesto alto', positive: true })
+    } else if (budget >= 20000) {
+      score += 10
+      factors.push({ text: 'Presupuesto medio', positive: true })
+    }
   }
   
   // Factor: Urgencia/Timeline
@@ -89,14 +122,16 @@ function calculateClientRating(leadData) {
     factors.push({ text: 'Sin urgencia', positive: false })
   }
   
-  // Factor: Tipo de proyecto
-  const projectType = (leadData.projectType || '').toLowerCase()
-  if (projectType.includes('integral') || projectType.includes('completa')) {
+  // Factor: Tipo de proyecto (bonus)
+  if (projectCategory === 'integral') {
     score += 15
     factors.push({ text: 'Reforma integral', positive: true })
-  } else if (projectType.includes('cocina')) {
+  } else if (projectCategory === 'cocina') {
     score += 10
     factors.push({ text: 'Reforma de cocina', positive: true })
+  } else if (projectCategory === 'baño') {
+    score += 5
+    factors.push({ text: 'Reforma de baño', positive: true })
   }
   
   // Factor: Ciudad cubierta
@@ -131,7 +166,7 @@ function calculateClientRating(leadData) {
   return { rating, score, factors }
 }
 
-// Estimar precio aproximado del proyecto
+// Estimar precio aproximado del proyecto - PRECIOS REALES BARCELONA 2024-2025
 function estimateProjectPrice(leadData) {
   if (!leadData) return null
   
@@ -148,35 +183,41 @@ function estimateProjectPrice(leadData) {
     }
   }
   
-  // Estimar basado en tipo y m²
+  // Precios REALES de Barcelona 2024-2025
   let minPrice = 0
   let maxPrice = 0
-  let pricePerSqm = 0
+  let pricePerSqmMin = 0
+  let pricePerSqmMax = 0
   
-  if (projectType.includes('integral') || projectType.includes('completa')) {
-    pricePerSqm = 600 // €/m² para reforma integral
-    minPrice = 30000
-    maxPrice = 100000
+  if (projectType.includes('integral') || projectType.includes('completa') || projectType.includes('piso')) {
+    // Reforma integral: 800-1.500€/m²
+    pricePerSqmMin = 800
+    pricePerSqmMax = 1500
+    minPrice = 50000
+    maxPrice = 180000
   } else if (projectType.includes('cocina')) {
-    minPrice = 12000
-    maxPrice = 25000
+    // Cocina completa: 18.000-60.000€
+    minPrice = 18000
+    maxPrice = 60000
   } else if (projectType.includes('baño')) {
-    minPrice = 8000
-    maxPrice = 18000
+    // Baño completo: 12.000-40.000€
+    minPrice = 12000
+    maxPrice = 40000
   } else if (projectType.includes('pintura')) {
-    pricePerSqm = 15
-    minPrice = 1500
-    maxPrice = 8000
+    // Pintura: 2.500-6.000€
+    minPrice = 2500
+    maxPrice = 6000
   }
   
-  // Ajustar por m² si se conocen
-  if (sqm > 0 && pricePerSqm > 0) {
-    const estimated = sqm * pricePerSqm
+  // Ajustar por m² si se conocen (para reforma integral)
+  if (sqm > 0 && pricePerSqmMin > 0) {
+    const minEstimate = sqm * pricePerSqmMin
+    const maxEstimate = sqm * pricePerSqmMax
     return {
       clientBudget: null,
-      estimated: Math.round(estimated / 1000) * 1000,
-      range: `${minPrice.toLocaleString('es-ES')}€ - ${maxPrice.toLocaleString('es-ES')}€`,
-      note: `Estimación basada en ${sqm}m²`
+      estimated: null,
+      range: `${minEstimate.toLocaleString('es-ES')}€ - ${maxEstimate.toLocaleString('es-ES')}€`,
+      note: `Estimación para ${sqm}m² (${pricePerSqmMin}-${pricePerSqmMax}€/m²)`
     }
   }
   
@@ -185,7 +226,7 @@ function estimateProjectPrice(leadData) {
       clientBudget: null,
       estimated: null,
       range: `${minPrice.toLocaleString('es-ES')}€ - ${maxPrice.toLocaleString('es-ES')}€`,
-      note: 'Rango típico para este tipo de proyecto'
+      note: 'Rango típico Barcelona 2024-2025'
     }
   }
   
@@ -210,8 +251,8 @@ function FieldRow({ icon: Icon, label, value, highlight, valueClass }) {
   )
 }
 
-export default function LeadSummaryCard({ leadData }) {
-  const { rating, score, factors } = calculateClientRating(leadData)
+export default function LeadSummaryCard({ leadData, config = {} }) {
+  const { rating, score, factors } = calculateClientRating(leadData, config)
   const ratingInfo = clientRatings[rating]
   const priceEstimate = estimateProjectPrice(leadData)
   

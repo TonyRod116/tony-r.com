@@ -4,12 +4,17 @@ import { useLanguage } from '../hooks/useLanguage.jsx'
 export default function BeforeAfterSlider({ originalImageUrl, renderedImageUrl, t }) {
   const [sliderPosition, setSliderPosition] = useState(50)
   const [isDragging, setIsDragging] = useState(false)
+  const [originalImageError, setOriginalImageError] = useState(false)
+  const [renderedImageError, setRenderedImageError] = useState(false)
   const sliderContainerRef = useRef(null)
   const { t: translate } = useLanguage()
 
   useEffect(() => {
     console.log('🔍 BeforeAfterSlider - originalImageUrl:', originalImageUrl)
     console.log('🔍 BeforeAfterSlider - renderedImageUrl:', renderedImageUrl)
+    // Reset error states when URLs change
+    setOriginalImageError(false)
+    setRenderedImageError(false)
   }, [originalImageUrl, renderedImageUrl])
 
   const handleMouseMove = (e) => {
@@ -37,7 +42,7 @@ export default function BeforeAfterSlider({ originalImageUrl, renderedImageUrl, 
   return (
     <div>
       <p className="text-xs font-semibold text-primary-600/60 dark:text-primary-400/60 uppercase tracking-wide mb-3">
-        {t?.('demos.renderPresupuesto.result.comparison') || translate?.('demos.renderPresupuesto.result.comparison') || 'Comparación'}
+        {(t || translate)('demos.renderPresupuesto.result.comparison')}
       </p>
       <div
         ref={sliderContainerRef}
@@ -57,34 +62,52 @@ export default function BeforeAfterSlider({ originalImageUrl, renderedImageUrl, 
       >
         {/* Rendered Image (Background) */}
         <div className="w-full">
-          <img 
-            src={renderedImageUrl} 
-            alt="AI render" 
-            className="w-full h-auto block rounded-none"
-            onError={(e) => {
-              console.error('Error loading rendered image:', renderedImageUrl)
-              e.target.style.display = 'none'
-            }}
-          />
+          {renderedImageError ? (
+            <div className="w-full min-h-[300px] flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+              <p className="text-sm">Error loading rendered image</p>
+            </div>
+          ) : (
+            <img 
+              src={renderedImageUrl} 
+              alt={(t || translate)('demos.renderPresupuesto.result.renderAlt')} 
+              className="w-full h-auto block rounded-none"
+              onError={(e) => {
+                console.error('❌ Error loading rendered image:', renderedImageUrl)
+                setRenderedImageError(true)
+                e.target.style.display = 'none'
+              }}
+              onLoad={() => {
+                console.log('✅ Rendered image loaded successfully')
+                setRenderedImageError(false)
+              }}
+            />
+          )}
         </div>
         {/* Original Image (Overlay with clip) */}
-        <div
-          className="absolute inset-0 overflow-hidden pointer-events-none"
-          style={{
-            clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
-            WebkitClipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
-          }}
-        >
-          <img 
-            src={originalImageUrl} 
-            alt="Original photo" 
-            className="w-full h-auto block rounded-none"
-            onError={(e) => {
-              console.error('Error loading original image:', originalImageUrl)
-              e.target.style.display = 'none'
+        {!originalImageError && (
+          <div
+            className="absolute inset-0 overflow-hidden pointer-events-none"
+            style={{
+              clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
+              WebkitClipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
             }}
-          />
-        </div>
+          >
+            <img 
+              src={originalImageUrl} 
+              alt={(t || translate)('demos.renderPresupuesto.result.originalImageAlt')} 
+              className="w-full h-auto block rounded-none"
+              onError={(e) => {
+                console.error('❌ Error loading original image:', originalImageUrl)
+                setOriginalImageError(true)
+                e.target.style.display = 'none'
+              }}
+              onLoad={() => {
+                console.log('✅ Original image loaded successfully')
+                setOriginalImageError(false)
+              }}
+            />
+          </div>
+        )}
         {/* Slider Handle */}
         <div
           className={`absolute top-0 bottom-0 w-0.5 bg-white shadow-lg pointer-events-none ${
@@ -102,7 +125,7 @@ export default function BeforeAfterSlider({ originalImageUrl, renderedImageUrl, 
         </div>
       </div>
       <p className="text-xs text-primary-600/50 dark:text-primary-400/50 text-center italic mt-2">
-        {t?.('demos.renderPresupuesto.sliderHint') || translate?.('demos.renderPresupuesto.sliderHint') || 'Desliza el control sobre la imagen para comparar con la foto original'}
+        {(t || translate)('demos.renderPresupuesto.sliderHint')}
       </p>
     </div>
   )

@@ -32,7 +32,14 @@ export default function PresupuestoOrientativo() {
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    // Para sqm, solo filtrar caracteres no numéricos (más rápido que regex)
+    if (name === 'sqm') {
+      // Permitir vacío o solo dígitos (sin regex para mejor rendimiento)
+      const numericValue = value === '' ? '' : value.replace(/\D/g, '')
+      setFormData((prev) => ({ ...prev, [name]: numericValue }))
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }))
+    }
     setError(null)
   }
 
@@ -192,11 +199,12 @@ export default function PresupuestoOrientativo() {
                 {t('demos.presupuestoOrientativo.form.sqm')}
               </label>
               <input
-                type="number"
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 name="sqm"
                 value={formData.sqm}
                 onChange={handleChange}
-                min="1"
                 className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder={t('demos.presupuestoOrientativo.form.sqmPlaceholder')}
               />
@@ -258,7 +266,7 @@ export default function PresupuestoOrientativo() {
           </div>
         </motion.section>
 
-        {/* Result */}
+        {/* Result - BuildApp API format: items, total, summary, timeline, notes */}
         {result && (
           <motion.section
             initial={{ opacity: 0, y: 16 }}
@@ -269,11 +277,111 @@ export default function PresupuestoOrientativo() {
               {t('demos.presupuestoOrientativo.result.title')}
             </h2>
             <div className="space-y-4 text-sm">
-              {result.assumptions?.length > 0 && (
+              {/* Total (BuildApp format) */}
+              {(result.total != null || result.items?.length > 0) && (
+                <div className="mb-4">
+                  <p className="text-xl font-semibold text-primary-600 dark:text-primary-400">
+                    {t('demos.presupuestoOrientativo.result.total')}: {result.total != null ? `${Number(result.total).toLocaleString('es-ES')} ${result.currency || '€'}` : '—'}
+                  </p>
+                </div>
+              )}
+
+              {/* Partidas: API devuelve items[] con concept, description, quantity, unit, unitPrice, total, category */}
+              {result.items?.length > 0 && (
                 <div>
                   <h3 className="font-medium text-gray-900 dark:text-white mb-2">
-                    {t('demos.presupuestoOrientativo.result.assumptions')}
+                    {t('demos.presupuestoOrientativo.result.lineItems')}
                   </h3>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                      <thead>
+                        <tr className="border-b border-gray-200 dark:border-gray-600">
+                          <th className="py-2 pr-2">{t('demos.presupuestoOrientativo.result.category')}</th>
+                          <th className="py-2 pr-2">{t('demos.presupuestoOrientativo.result.item')}</th>
+                          <th className="py-2 pr-2">{t('demos.presupuestoOrientativo.result.qty')}</th>
+                          <th className="py-2 pr-2">{t('demos.presupuestoOrientativo.result.unit')}</th>
+                          <th className="py-2 pr-2">{t('demos.presupuestoOrientativo.result.unitPrice')}</th>
+                          <th className="py-2">{t('demos.presupuestoOrientativo.result.total')}</th>
+                        </tr>
+                      </thead>
+                      <tbody className="text-gray-700 dark:text-gray-300">
+                        {result.items.map((row, i) => (
+                          <tr key={i} className="border-b border-gray-100 dark:border-gray-700">
+                            <td className="py-2 pr-2">{row.category ?? '-'}</td>
+                            <td className="py-2 pr-2">
+                              <span className="font-medium">{row.concept}</span>
+                              {row.description && <span className="block text-xs text-gray-500 dark:text-gray-400">{row.description}</span>}
+                            </td>
+                            <td className="py-2 pr-2">{row.quantity ?? '-'}</td>
+                            <td className="py-2 pr-2">{row.unit ?? '-'}</td>
+                            <td className="py-2 pr-2">{row.unitPrice != null ? `${Number(row.unitPrice).toLocaleString('es-ES')} €` : '-'}</td>
+                            <td className="py-2">{row.total != null ? `${Number(row.total).toLocaleString('es-ES')} €` : '-'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
+              {/* Resumen materiales / mano de obra / otros */}
+              {result.summary && (
+                <div className="flex flex-wrap gap-4 pt-2">
+                  {result.summary.materials != null && (
+                    <span className="text-gray-600 dark:text-gray-400">
+                      {t('demos.presupuestoOrientativo.result.materials')}: {Number(result.summary.materials).toLocaleString('es-ES')} €
+                    </span>
+                  )}
+                  {result.summary.labor != null && (
+                    <span className="text-gray-600 dark:text-gray-400">
+                      {t('demos.presupuestoOrientativo.result.labor')}: {Number(result.summary.labor).toLocaleString('es-ES')} €
+                    </span>
+                  )}
+                  {result.summary.other != null && (
+                    <span className="text-gray-600 dark:text-gray-400">
+                      {t('demos.presupuestoOrientativo.result.other')}: {Number(result.summary.other).toLocaleString('es-ES')} €
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {/* Duración estimada */}
+              {result.estimatedDuration && (
+                <p className="text-gray-600 dark:text-gray-400">
+                  <span className="font-medium text-gray-900 dark:text-white">{t('demos.presupuestoOrientativo.result.estimatedDuration')}:</span> {result.estimatedDuration}
+                </p>
+              )}
+
+              {/* Timeline */}
+              {result.timeline?.length > 0 && (
+                <div>
+                  <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('demos.presupuestoOrientativo.result.timeline')}</h3>
+                  <ul className="space-y-1 text-gray-700 dark:text-gray-300">
+                    {result.timeline.map((phase, i) => (
+                      <li key={i}>
+                        <span className="font-medium">{phase.period} {phase.periodType}</span>: {phase.description}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Notas */}
+              {result.notes?.length > 0 && (
+                <div>
+                  <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('demos.presupuestoOrientativo.result.notes')}</h3>
+                  <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-1">
+                    {result.notes.map((n, i) => (
+                      <li key={i}>{n}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Formato alternativo: assumptions, exclusions, lineItems (rangos) */}
+              {!result.items?.length && result.assumptions?.length > 0 && (
+                <div>
+                  <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('demos.presupuestoOrientativo.result.assumptions')}</h3>
                   <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-1">
                     {result.assumptions.map((a, i) => (
                       <li key={i}>{a}</li>
@@ -281,11 +389,9 @@ export default function PresupuestoOrientativo() {
                   </ul>
                 </div>
               )}
-              {result.exclusions?.length > 0 && (
+              {!result.items?.length && result.exclusions?.length > 0 && (
                 <div>
-                  <h3 className="font-medium text-gray-900 dark:text-white mb-2">
-                    {t('demos.presupuestoOrientativo.result.exclusions')}
-                  </h3>
+                  <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('demos.presupuestoOrientativo.result.exclusions')}</h3>
                   <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-1">
                     {result.exclusions.map((e, i) => (
                       <li key={i}>{e}</li>
@@ -293,11 +399,9 @@ export default function PresupuestoOrientativo() {
                   </ul>
                 </div>
               )}
-              {result.lineItems?.length > 0 && (
+              {!result.items?.length && result.lineItems?.length > 0 && (
                 <div>
-                  <h3 className="font-medium text-gray-900 dark:text-white mb-2">
-                    {t('demos.presupuestoOrientativo.result.lineItems')}
-                  </h3>
+                  <h3 className="font-medium text-gray-900 dark:text-white mb-2">{t('demos.presupuestoOrientativo.result.lineItems')}</h3>
                   <div className="overflow-x-auto">
                     <table className="w-full text-left">
                       <thead>
@@ -329,13 +433,7 @@ export default function PresupuestoOrientativo() {
                   {(result.totalMin || result.totalMax || result.total) && (
                     <p className="mt-3 font-medium text-gray-900 dark:text-white">
                       {t('demos.presupuestoOrientativo.result.total')}:{' '}
-                      {result.totalMin && result.totalMax
-                        ? `${result.totalMin} € – ${result.totalMax} €`
-                        : result.total
-                        ? `${result.total} €`
-                        : result.min && result.max
-                        ? `${result.min} € – ${result.max} €`
-                        : '—'}
+                      {result.totalMin != null && result.totalMax != null ? `${result.totalMin} € – ${result.totalMax} €` : result.total != null ? `${result.total} €` : '—'}
                     </p>
                   )}
                 </div>
