@@ -91,18 +91,35 @@ export default function LeadQualifier() {
       
       setMessages(prev => [...prev, assistantMessage])
       
-      // Update lead data from structured response
+      // Update lead data from structured response - accumulate progressively
       if (response.structured) {
-        setLeadData(prev => ({
-          ...prev,
-          ...response.structured.leadFields,
-          score: response.structured.score,
-          tier: response.structured.tier,
-          reasons: response.structured.reasons,
-        }))
+        setLeadData(prev => {
+          const newFields = response.structured.leadFields || {}
+          const merged = { ...prev }
+          
+          // Only update fields that have actual values (not null/undefined)
+          Object.entries(newFields).forEach(([key, value]) => {
+            if (value !== null && value !== undefined && value !== '') {
+              merged[key] = value
+            }
+          })
+          
+          // Always update score/tier/reasons as they reflect current state
+          merged.score = response.structured.score
+          merged.tier = response.structured.tier
+          merged.reasons = response.structured.reasons
+          
+          // Keep rawState for advanced view
+          if (response.structured.rawState) {
+            merged.rawState = response.structured.rawState
+          }
+          
+          return merged
+        })
         
-        // Check if conversation is complete (tier assigned and no more questions)
-        if (response.structured.tier && !response.structured.nextQuestion) {
+        // Check if conversation is complete
+        const nextAction = response.structured.nextAction
+        if (nextAction === 'close_success' || nextAction === 'close_not_fit') {
           setIsComplete(true)
         }
       }
