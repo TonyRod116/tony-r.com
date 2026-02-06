@@ -21,7 +21,7 @@
       top: 0;
       left: 0;
       right: 0;
-      z-index: 50;
+      z-index: 100;
       background: rgba(17, 24, 39, 0.9);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid #374151;
@@ -54,15 +54,31 @@
     .main-content {
       padding-top: 64px;
       min-height: 100vh;
+      position: relative;
+      z-index: 10;
+      pointer-events: none;
+    }
+    /* Only specific interactive elements block events */
+    .panel, .title, .education-section {
+      pointer-events: auto;
     }
     .container {
       max-width: 1400px;
       margin: 0 auto;
       padding: 24px;
+      position: relative;
+      z-index: 10;
+      pointer-events: none;
     }
     .title {
       text-align: center;
       margin-bottom: 32px;
+      position: relative;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .title * {
+      pointer-events: auto;
     }
     .title h1 {
       font-size: 2rem;
@@ -77,11 +93,18 @@
       grid-template-columns: 320px 1fr;
       gap: 24px;
       margin-bottom: 24px;
+      position: relative;
+      z-index: 10;
+      pointer-events: none;
     }
     .panel {
-      background: #1f2937;
+      background: rgba(31, 41, 55, 0.95);
+      backdrop-filter: blur(8px);
       border-radius: 12px;
       padding: 16px;
+      position: relative;
+      z-index: 10;
+      border: 1px solid rgba(55, 65, 81, 0.5);
     }
     .panel h2 {
       font-size: 1.125rem;
@@ -111,11 +134,18 @@
       margin-top: 8px;
     }
     #threeContainer {
-      width: 100%;
-      height: 420px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
       background: #111827;
-      border-radius: 8px;
+      z-index: 1;
       overflow: hidden;
+    }
+    #threeContainer canvas {
+      pointer-events: auto !important;
+      touch-action: none;
     }
     #predictionChart {
       margin-top: 24px;
@@ -128,6 +158,12 @@
     /* Educational Section Styles */
     .education-section {
       margin-top: 48px;
+      position: relative;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .education-section > * {
+      pointer-events: auto;
     }
     .separator {
       display: flex;
@@ -435,6 +471,100 @@
       font-size: 0.875rem;
       line-height: 1.625;
     }
+    #epochSlider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100% !important;
+      height: 8px !important;
+      background: #374151 !important;
+      border-radius: 4px;
+      outline: none;
+      margin: 12px 0;
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+    #epochSlider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: #3b82f6;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    #epochSlider::-webkit-slider-thumb:hover {
+      background: #60a5fa;
+      transform: scale(1.1);
+    }
+    #epochSlider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: #3b82f6;
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s, transform 0.2s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    #epochSlider::-moz-range-thumb:hover {
+      background: #60a5fa;
+      transform: scale(1.1);
+    }
+    #epochSlider::-moz-range-track {
+      height: 8px;
+      background: #374151;
+      border-radius: 4px;
+    }
+    #hiddenNodesSlider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100% !important;
+      height: 8px !important;
+      background: #374151 !important;
+      border-radius: 4px;
+      outline: none;
+      margin: 12px 0;
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+    #hiddenNodesSlider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: #10b981;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    #hiddenNodesSlider::-webkit-slider-thumb:hover {
+      background: #34d399;
+      transform: scale(1.1);
+    }
+    #hiddenNodesSlider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: #10b981;
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s, transform 0.2s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    #hiddenNodesSlider::-moz-range-thumb:hover {
+      background: #34d399;
+      transform: scale(1.1);
+    }
+    #hiddenNodesSlider::-moz-range-track {
+      height: 8px;
+      background: #374151;
+      border-radius: 4px;
+    }
     @media (min-width: 1024px) {
       .arch-diagram {
         flex-direction: row;
@@ -446,6 +576,9 @@
   </style>
 </head>
 <body>
+  <!-- 3D Network Visualization Background -->
+  <div id="threeContainer"></div>
+  
   <!-- Header -->
   <div class="header">
     <div class="header-content">
@@ -484,16 +617,68 @@
           <div id="predictionChart" class="panel">
             <h2>Prediction</h2>
           </div>
-        </div>
 
-        <!-- Right: 3D Network Visualization -->
-        <div>
-          <div class="panel" style="height: 600px;">
-            <h2>Network Architecture</h2>
-            <div id="threeContainer"></div>
-            <p class="hint">Left click + drag: rotate | Right click + drag: pan | Scroll: zoom</p>
+          <!-- Epoch Slider -->
+          <div class="panel" style="margin-top: 24px; background: #1f2937; border-radius: 12px; padding: 16px;">
+            <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 16px; color: white;">Training Epoch</h2>
+            <div style="margin-bottom: 12px;">
+              <input 
+                type="range" 
+                id="epochSlider" 
+                min="0" 
+                max="40" 
+                value="40" 
+                step="1"
+              />
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                <div>
+                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;">Epoch</div>
+                  <div style="font-size: 1.5rem; font-weight: 600; color: white;" id="epochValue">40</div>
+                </div>
+                <div style="text-align: right;">
+                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;">Accuracy</div>
+                  <div style="font-size: 1.5rem; font-weight: 600; color: #60a5fa;" id="accuracyValue">96.2%</div>
+                </div>
+              </div>
+            </div>
+            <p class="hint">Adjust the epoch to see how training improves accuracy</p>
+          </div>
+
+          <!-- Hidden Nodes Slider -->
+          <div class="panel" style="margin-top: 24px; background: #1f2937; border-radius: 12px; padding: 16px;">
+            <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 16px; color: white;">Hidden Layer Nodes</h2>
+            <div style="margin-bottom: 12px;">
+              <input 
+                type="range" 
+                id="hiddenNodesSlider" 
+                min="16" 
+                max="256" 
+                value="64" 
+                step="8"
+              />
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                <div>
+                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;">Hidden Nodes</div>
+                  <div style="font-size: 1.5rem; font-weight: 600; color: white;" id="hiddenNodesValue">64</div>
+                </div>
+                <div style="text-align: right;">
+                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;">Accuracy</div>
+                  <div style="font-size: 1.5rem; font-weight: 600; color: #60a5fa;" id="hiddenNodesAccuracyValue">96.2%</div>
+                </div>
+              </div>
+            </div>
+            <p class="hint">Adjust hidden layer size to see its impact on accuracy</p>
+          </div>
+
+          <!-- Update Visualization Button -->
+          <div class="panel" style="margin-top: 24px; background: #1f2937; border-radius: 12px; padding: 16px;">
+            <button id="updateVisualizationBtn" class="btn" style="background: #3b82f6; font-weight: 600;">
+              Update Visualization
+            </button>
+            <p class="hint" style="margin-top: 8px;">Click to update the 3D visualization with current settings</p>
           </div>
         </div>
+
       </div>
 
       <!-- Educational Content -->
@@ -870,6 +1055,37 @@
 
     const NORMALIZATION = { mean: 0.1307, std: 0.3081 }
 
+    // Simulated accuracy progression during training (epoch 0-40)
+    // This simulates how accuracy improves during training
+    function getAccuracyForEpoch(epoch) {
+      // Simulated accuracy curve: starts low, improves quickly, then plateaus
+      if (epoch === 0) return 10.0
+      if (epoch <= 5) return 10 + (epoch / 5) * 30  // 10% to 40%
+      if (epoch <= 15) return 40 + ((epoch - 5) / 10) * 35  // 40% to 75%
+      if (epoch <= 30) return 75 + ((epoch - 15) / 15) * 18  // 75% to 93%
+      return 93 + ((epoch - 30) / 10) * 3.2  // 93% to 96.2%
+    }
+    
+    function getAccuracyForHiddenNodes(hiddenNodes, epoch) {
+      // Base accuracy from epoch
+      const epochAccuracy = getAccuracyForEpoch(epoch)
+      
+      // Adjust based on hidden nodes: more nodes generally = better accuracy up to a point
+      // Optimal around 64-128 nodes, too few (<32) or too many (>256) can reduce accuracy
+      let nodeMultiplier = 1.0
+      if (hiddenNodes < 32) {
+        nodeMultiplier = 0.7 + (hiddenNodes / 32) * 0.3  // 70% to 100% for <32 nodes
+      } else if (hiddenNodes <= 128) {
+        nodeMultiplier = 1.0  // Optimal range
+      } else if (hiddenNodes <= 256) {
+        nodeMultiplier = 1.0 - ((hiddenNodes - 128) / 128) * 0.1  // Slight decrease for >128
+      } else {
+        nodeMultiplier = 0.9 - ((hiddenNodes - 256) / 256) * 0.2  // More decrease for >256
+      }
+      
+      return epochAccuracy * nodeMultiplier
+    }
+
     // Helper functions
     function clamp(value, min, max) {
       return Math.min(max, Math.max(min, value))
@@ -1180,6 +1396,14 @@
         }
       }
 
+      updateLayers(newLayers) {
+        if (!Array.isArray(newLayers) || newLayers.length === 0) {
+          throw new Error('New layers must be a non-empty array.')
+        }
+        this.layers = newLayers.map((layer, index) => this.normaliseLayer(layer, index))
+        this.architecture = this.computeArchitecture(this.layers)
+      }
+
       propagate(pixels) {
         const { mean, std } = this.normalization
         const input = new Float32Array(pixels.length)
@@ -1353,6 +1577,8 @@
         this.controls = new OrbitControls(this.camera, this.renderer.domElement)
         this.controls.enableDamping = true
         this.controls.dampingFactor = 0.08
+        // Disable zoom with scroll wheel to allow page scrolling
+        this.controls.enableZoom = false
         this.controls.minDistance = 8
         this.controls.maxDistance = 52
         this.controls.target.set(0, 0, 0)
@@ -1723,11 +1949,243 @@
           throw new Error('No valid snapshot found.')
         }
 
-        const neuralModel = new FeedForwardModel({
+        // Store original fully-trained weights (epoch 40)
+        let originalLayers = JSON.parse(JSON.stringify(initialSnapshot.layers))
+        let currentArchitectureLayers = JSON.parse(JSON.stringify(initialSnapshot.layers)) // Current architecture layers
+        
+        // Create a seeded random number generator for deterministic results
+        function seededRandom(seed) {
+          let value = seed
+          return function() {
+            value = (value * 9301 + 49297) % 233280
+            return value / 233280
+          }
+        }
+        
+        // Pre-generate random values for each weight/bias to ensure determinism
+        const randomValues = {}
+        function getRandomValue(layerIdx, rowIdx, colIdx, seed) {
+          const key = `${layerIdx}_${rowIdx}_${colIdx}`
+          if (!randomValues[key]) {
+            const rng = seededRandom(seed + layerIdx * 1000 + rowIdx * 100 + colIdx)
+            randomValues[key] = rng()
+          }
+          return randomValues[key]
+        }
+        
+        const biasRandomValues = {}
+        function getBiasRandomValue(layerIdx, biasIdx, seed) {
+          const key = `${layerIdx}_${biasIdx}`
+          if (!biasRandomValues[key]) {
+            const rng = seededRandom(seed + layerIdx * 1000 + biasIdx)
+            biasRandomValues[key] = rng()
+          }
+          return biasRandomValues[key]
+        }
+        
+        // Function to simulate weights at a given epoch
+        // At epoch 0: weights are mostly random (poor performance)
+        // At epoch 40: weights are fully trained (best performance)
+        function getWeightsForEpoch(epoch) {
+          const trainingProgress = Math.max(0, Math.min(1, epoch / 40)) // Clamp between 0 and 1
+          const randomFactor = 1 - trainingProgress // Higher for early epochs
+          
+          // Use current architecture layers instead of original layers
+          return currentArchitectureLayers.map((layer, layerIdx) => {
+            const modifiedWeights = layer.weights.map((row, rowIdx) => {
+              return row.map((weight, colIdx) => {
+                // Mix trained weights with deterministic random noise based on epoch
+                // Early epochs: more random, late epochs: more trained
+                const randomNoise = (getRandomValue(layerIdx, rowIdx, colIdx, 12345) - 0.5) * 0.5 * randomFactor
+                const trainedWeight = weight * trainingProgress
+                const randomWeight = (getRandomValue(layerIdx, rowIdx, colIdx, 67890) - 0.5) * 2 * randomFactor
+                return trainedWeight + randomWeight + randomNoise
+              })
+            })
+            
+            const modifiedBiases = layer.biases.map((bias, biasIdx) => {
+              const randomNoise = (getBiasRandomValue(layerIdx, biasIdx, 11111) - 0.5) * 0.3 * randomFactor
+              const trainedBias = bias * trainingProgress
+              const randomBias = (getBiasRandomValue(layerIdx, biasIdx, 22222) - 0.5) * 1 * randomFactor
+              return trainedBias + randomBias + randomNoise
+            })
+            
+            return {
+              name: layer.name,
+              activation: layer.activation,
+              weights: modifiedWeights,
+              biases: modifiedBiases,
+            }
+          })
+        }
+
+        // Initialize model with fully trained weights
+        let currentEpoch = 40
+        let currentHiddenNodes = 64 // Default hidden layer size
+        let neuralModel = new FeedForwardModel({
           normalization: definition.network.normalization || NORMALIZATION,
           architecture: definition.network.architecture || architecture,
           layers: initialSnapshot.layers,
         })
+        
+        // Function to generate weights for a new architecture with different hidden node count
+        // Adapts the original trained weights to the new architecture
+        function getWeightsForHiddenNodes(hiddenNodes) {
+          // Original architecture: 784 -> 64 -> 32 -> 10
+          // New architecture: 784 -> hiddenNodes -> Math.floor(hiddenNodes/2) -> 10
+          const originalHidden1 = 64
+          const originalHidden2 = 32
+          const newHidden1 = hiddenNodes
+          const newHidden2 = Math.floor(hiddenNodes / 2)
+          
+          const newArchitecture = [
+            784, // input
+            newHidden1, // hidden1
+            newHidden2, // hidden2
+            10 // output
+          ]
+          
+          const originalLayer0 = originalLayers[0] // 784 -> 64
+          const originalLayer1 = originalLayers[1] // 64 -> 32
+          const originalLayer2 = originalLayers[2] // 32 -> 10
+          
+          const newLayers = []
+          
+          // Layer 1: 784 -> newHidden1 (adapt from 784 -> 64)
+          const layer1Weights = []
+          const layer1Biases = []
+          
+          for (let i = 0; i < newHidden1; i++) {
+            // Map new node to original node (with wrapping/replication)
+            const origNodeIdx = i % originalHidden1
+            const origWeights = originalLayer0.weights[origNodeIdx]
+            const origBias = originalLayer0.biases[origNodeIdx]
+            
+            // Copy weights from original node
+            layer1Weights.push([...origWeights])
+            layer1Biases.push(origBias)
+          }
+          
+          newLayers.push({
+            name: 'dense_0',
+            activation: originalLayer0.activation || 'relu',
+            weights: layer1Weights,
+            biases: layer1Biases,
+          })
+          
+          // Layer 2: newHidden1 -> newHidden2 (adapt from 64 -> 32)
+          const layer2Weights = []
+          const layer2Biases = []
+          
+          for (let i = 0; i < newHidden2; i++) {
+            const row = []
+            const origNodeIdx = i % originalHidden2
+            const origWeights = originalLayer1.weights[origNodeIdx]
+            const origBias = originalLayer1.biases[origNodeIdx]
+            
+            // Adapt weights: map from newHidden1 inputs to original 64 inputs
+            for (let j = 0; j < newHidden1; j++) {
+              const origInputIdx = j % originalHidden1
+              row.push(origWeights[origInputIdx])
+            }
+            
+            layer2Weights.push(row)
+            layer2Biases.push(origBias)
+          }
+          
+          newLayers.push({
+            name: 'dense_1',
+            activation: originalLayer1.activation || 'relu',
+            weights: layer2Weights,
+            biases: layer2Biases,
+          })
+          
+          // Layer 3: newHidden2 -> 10 (adapt from 32 -> 10)
+          const layer3Weights = []
+          const layer3Biases = []
+          
+          for (let i = 0; i < 10; i++) {
+            const row = []
+            const origWeights = originalLayer2.weights[i]
+            const origBias = originalLayer2.biases[i]
+            
+            // Adapt weights: map from newHidden2 inputs to original 32 inputs
+            for (let j = 0; j < newHidden2; j++) {
+              const origInputIdx = j % originalHidden2
+              row.push(origWeights[origInputIdx])
+            }
+            
+            layer3Weights.push(row)
+            layer3Biases.push(origBias)
+          }
+          
+          newLayers.push({
+            name: 'dense_2',
+            activation: originalLayer2.activation || 'relu',
+            weights: layer3Weights,
+            biases: layer3Biases,
+          })
+          
+          return {
+            architecture: newArchitecture,
+            layers: newLayers,
+          }
+        }
+        
+        // Function to update model for new hidden node count
+        function updateModelForHiddenNodes(hiddenNodes) {
+          const newArch = getWeightsForHiddenNodes(hiddenNodes)
+          
+          // Update current architecture layers to the new architecture
+          currentArchitectureLayers = JSON.parse(JSON.stringify(newArch.layers))
+          
+          // Apply epoch-based modifications using the new architecture
+          const epochLayers = getWeightsForEpoch(currentEpoch)
+          
+          // Create new model with new architecture and epoch-modified weights
+          neuralModel = new FeedForwardModel({
+            normalization: definition.network.normalization || NORMALIZATION,
+            architecture: newArch.architecture,
+            layers: epochLayers,
+          })
+          
+          // Rebuild the 3D visualization with new architecture
+          rebuildVisualization()
+        }
+        
+        // Helper function to rebuild the 3D visualization
+        function rebuildVisualization() {
+          const threeContainer = document.getElementById('threeContainer')
+          if (threeContainer) {
+            // Clear old visualization completely
+            while (threeContainer.firstChild) {
+              threeContainer.removeChild(threeContainer.firstChild)
+            }
+            
+            // Create new visualization with current model
+            neuralScene = new NeuralVisualizer(neuralModel, {
+              container: threeContainer,
+              layerSpacing: VISUALIZER_CONFIG.layerSpacing,
+              maxConnectionsPerNeuron: VISUALIZER_CONFIG.maxConnectionsPerNeuron,
+              inputSpacing: VISUALIZER_CONFIG.inputSpacing,
+              hiddenSpacing: VISUALIZER_CONFIG.hiddenSpacing,
+              inputNodeSize: VISUALIZER_CONFIG.inputNodeSize,
+              hiddenNodeRadius: VISUALIZER_CONFIG.hiddenNodeRadius,
+              connectionRadius: VISUALIZER_CONFIG.connectionRadius,
+              connectionWeightThreshold: VISUALIZER_CONFIG.connectionWeightThreshold,
+            })
+            
+            // Restart animation loop
+            neuralScene.animate()
+            
+            // Immediately update with current drawing if there is one
+            const rawInput = digitCanvas.getPixels()
+            const hasDrawing = rawInput.some(val => val > 0)
+            if (hasDrawing) {
+              refreshNetworkState()
+            }
+          }
+        }
 
         const gridContainerElement = document.getElementById('gridContainer')
         const digitCanvas = new DigitSketchPad(gridContainerElement, 28, 28, {
@@ -1736,7 +2194,7 @@
 
         const probabilityPanel = new ProbabilityPanel(document.getElementById('predictionChart'))
 
-        const neuralScene = new NeuralVisualizer(neuralModel, {
+        let neuralScene = new NeuralVisualizer(neuralModel, {
           container: document.getElementById('threeContainer'),
           layerSpacing: VISUALIZER_CONFIG.layerSpacing,
           maxConnectionsPerNeuron: VISUALIZER_CONFIG.maxConnectionsPerNeuron,
@@ -1754,6 +2212,87 @@
             digitCanvas.clear()
             refreshNetworkState()
           })
+        }
+
+        // Epoch slider setup
+        const epochSlider = document.getElementById('epochSlider')
+        const epochValue = document.getElementById('epochValue')
+        const accuracyValue = document.getElementById('accuracyValue')
+        
+        function updateEpochDisplay(epoch) {
+          if (epochValue) epochValue.textContent = epoch
+          const accuracy = getAccuracyForHiddenNodes(currentHiddenNodes, epoch)
+          if (accuracyValue) accuracyValue.textContent = accuracy.toFixed(1) + '%'
+        }
+        
+        // Hidden nodes slider setup
+        const hiddenNodesSlider = document.getElementById('hiddenNodesSlider')
+        const hiddenNodesValue = document.getElementById('hiddenNodesValue')
+        const hiddenNodesAccuracyValue = document.getElementById('hiddenNodesAccuracyValue')
+        
+        function updateHiddenNodesDisplay(hiddenNodes) {
+          if (hiddenNodesValue) hiddenNodesValue.textContent = hiddenNodes
+          const accuracy = getAccuracyForHiddenNodes(hiddenNodes, currentEpoch)
+          if (hiddenNodesAccuracyValue) hiddenNodesAccuracyValue.textContent = accuracy.toFixed(1) + '%'
+        }
+        
+        if (hiddenNodesSlider) {
+          hiddenNodesSlider.addEventListener('input', (e) => {
+            const hiddenNodes = parseInt(e.target.value)
+            currentHiddenNodes = hiddenNodes
+            updateHiddenNodesDisplay(hiddenNodes)
+            // Also update epoch display to reflect new accuracy
+            updateEpochDisplay(currentEpoch)
+            // Don't update visualization automatically - wait for button click
+          })
+          // Initialize display
+          updateHiddenNodesDisplay(64)
+        }
+        
+        // Track the last applied architecture to know when to rebuild
+        let lastAppliedHiddenNodes = 64
+        
+        // Function to update visualization with current settings
+        function updateVisualization() {
+          // Check if architecture needs to be updated
+          if (currentHiddenNodes !== lastAppliedHiddenNodes) {
+            // Architecture changed - rebuild with new architecture and current epoch
+            updateModelForHiddenNodes(currentHiddenNodes)
+            lastAppliedHiddenNodes = currentHiddenNodes
+          } else {
+            // Architecture unchanged - just update epoch
+            updateModelForEpoch(currentEpoch)
+          }
+        }
+        
+        // Update Visualization Button
+        const updateVisualizationBtn = document.getElementById('updateVisualizationBtn')
+        if (updateVisualizationBtn) {
+          updateVisualizationBtn.addEventListener('click', () => {
+            updateVisualization()
+          })
+        }
+
+        function updateModelForEpoch(epoch) {
+          // Update model with weights corresponding to this epoch
+          const epochLayers = getWeightsForEpoch(epoch)
+          neuralModel.updateLayers(epochLayers)
+          
+          // Rebuild the 3D visualization with new weights
+          rebuildVisualization()
+        }
+
+        if (epochSlider) {
+          epochSlider.addEventListener('input', (e) => {
+            const epoch = parseInt(e.target.value)
+            currentEpoch = epoch
+            updateEpochDisplay(epoch)
+            // Also update hidden nodes display to reflect new accuracy
+            updateHiddenNodesDisplay(currentHiddenNodes)
+            // Don't update visualization automatically - wait for button click
+          })
+          // Initialize display
+          updateEpochDisplay(40)
         }
 
         function refreshNetworkState() {
