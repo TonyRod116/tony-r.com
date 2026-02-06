@@ -75,9 +75,12 @@ export function useChat(apiToken, config) {
         const systemPrompt = SYSTEM_PROMPT(config)
         raw = await callOpenAI(apiToken, systemPrompt, messages, config)
         displayText = raw
+        
+        console.log('[LeadQualifier] Raw GPT response:', raw)
 
         try {
           const parsed = parseStructuredResponse(raw)
+          console.log('[LeadQualifier] Parsed response:', parsed)
           if (parsed) {
             structured = parsed
             displayText = parsed.displayText || raw

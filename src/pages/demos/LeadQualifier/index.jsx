@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Send, RotateCcw, AlertCircle, CheckCircle2, Sparkles } from 'lucide-react'
+import { Send, RotateCcw, AlertCircle, CheckCircle2, Sparkles, Settings } from 'lucide-react'
 import ChatBubble from './components/ChatBubble'
 import TypingIndicator from './components/TypingIndicator'
 import LeadSummaryCard from './components/LeadSummaryCard'
+import ConfigPanel from './components/ConfigPanel'
 import { useChat } from './hooks/useChat'
 import { DEFAULT_CONFIG } from './utils/config'
 import { resetMockFlow } from './utils/mockResponses'
@@ -18,13 +19,15 @@ const INITIAL_MESSAGE = {
 export default function LeadQualifier() {
   const [messages, setMessages] = useState([INITIAL_MESSAGE])
   const [input, setInput] = useState('')
-  const [config] = useState(DEFAULT_CONFIG)
-  const [leadData, setLeadData] = useState(null)
+  const [config, setConfig] = useState(DEFAULT_CONFIG)
+  const [showConfig, setShowConfig] = useState(false)
+  const [leadData, setLeadData] = useState({})
   const [isComplete, setIsComplete] = useState(false)
   
   const messagesContainerRef = useRef(null)
   const inputRef = useRef(null)
   const userScrolledUp = useRef(false)
+  const prevIsLoading = useRef(false)
   
   const { 
     sendMessage, 
@@ -32,7 +35,7 @@ export default function LeadQualifier() {
     error, 
     clearError,
     lastCooldown,
-  } = useChat(null, config) // null token = usa proxy en producción
+  } = useChat(null, config)
 
   // Detect if user scrolled up manually
   const handleScroll = useCallback(() => {
@@ -44,7 +47,7 @@ export default function LeadQualifier() {
     userScrolledUp.current = distanceFromBottom > 100
   }, [])
 
-  // Scroll chat container to bottom (not the page!)
+  // Scroll chat container to bottom
   const scrollToBottom = useCallback(() => {
     const container = messagesContainerRef.current
     if (container && !userScrolledUp.current) {
@@ -57,10 +60,33 @@ export default function LeadQualifier() {
     scrollToBottom()
   }, [messages, isLoading, scrollToBottom])
 
+  // Auto-focus input when loading finishes
+  useEffect(() => {
+    // Detectar cuando isLoading pasa de true a false
+    if (prevIsLoading.current && !isLoading && !isComplete) {
+      // Pequeño delay para asegurar que el DOM se actualizó
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus({ preventScroll: true })
+        }
+      }, 100)
+    }
+    prevIsLoading.current = isLoading
+  }, [isLoading, isComplete])
+
+  // Focus input on mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus({ preventScroll: true })
+      }
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [])
+
   const handleSend = useCallback(async () => {
     if (!input.trim() || isLoading) return
     
-    // Reset scroll flag when user sends message
     userScrolledUp.current = false
     
     const userMessage = {
@@ -87,28 +113,24 @@ export default function LeadQualifier() {
       
       setMessages(prev => [...prev, assistantMessage])
       
-      // Update lead data from structured response - accumulate progressively
+      // Update lead data progressively
       if (response.structured) {
         setLeadData(prev => {
           const newFields = response.structured.leadFields || {}
           const merged = { ...prev }
           
-          // Only update fields that have actual values (not null/undefined)
+          // Only update fields with actual values
           Object.entries(newFields).forEach(([key, value]) => {
-            if (value !== null && value !== undefined && value !== '') {
+            if (value !== null && value !== undefined && value !== '' && value !== 'null') {
               merged[key] = value
             }
           })
           
-          // Always update score/tier/reasons as they reflect current state
-          merged.score = response.structured.score
-          merged.tier = response.structured.tier
-          merged.reasons = response.structured.reasons
-          
-          // Keep rawState for advanced view
-          if (response.structured.rawState) {
-            merged.rawState = response.structured.rawState
-          }
+          // Update metadata
+          if (response.structured.score !== undefined) merged.score = response.structured.score
+          if (response.structured.tier !== undefined) merged.tier = response.structured.tier
+          if (response.structured.reasons) merged.reasons = response.structured.reasons
+          if (response.structured.rawState) merged.rawState = response.structured.rawState
           
           return merged
         })
@@ -132,20 +154,26 @@ export default function LeadQualifier() {
   }
 
   const handleReset = () => {
-    resetMockFlow() // Reset mock state
+    resetMockFlow()
     setMessages([{
       ...INITIAL_MESSAGE,
       id: `welcome-${Date.now()}`,
       timestamp: new Date().toISOString(),
     }])
-    setLeadData(null)
+    setLeadData({})
     setIsComplete(false)
     clearError()
+    // Focus after reset
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus({ preventScroll: true })
+      }
+    }, 100)
   }
 
   return (
     <div className="pt-16 min-h-screen bg-gray-900">
-      <div className="container mx-auto px-4 py-6 max-w-4xl">
+      <div className="container mx-auto px-4 py-6 max-w-5xl">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -157,9 +185,16 @@ export default function LeadQualifier() {
               <Sparkles className="h-6 w-6 text-primary-400" />
               Asistente de Proyectos
             </h1>
+            <button
+              onClick={() => setShowConfig(true)}
+              className="p-2 rounded-lg bg-gray-700 text-gray-400 hover:bg-gray-600 hover:text-white transition-colors"
+              title="Configuración"
+            >
+              <Settings className="h-5 w-5" />
+            </button>
           </div>
           <p className="text-gray-400 text-sm">
-            Chat conversacional para definir tu proyecto de reforma
+            Demo de chat conversacional para calificación de leads de reforma
           </p>
         </motion.div>
 
@@ -255,6 +290,7 @@ export default function LeadQualifier() {
                       className="flex-1 resize-none rounded-xl border border-gray-600 bg-gray-700 text-white placeholder-gray-400 px-4 py-3 text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       style={{ maxHeight: '120px' }}
                       disabled={isLoading}
+                      autoFocus
                     />
                     <button
                       onClick={handleSend}
@@ -275,6 +311,17 @@ export default function LeadQualifier() {
           </div>
         </div>
       </div>
+
+      {/* Config Panel Modal */}
+      <AnimatePresence>
+        {showConfig && (
+          <ConfigPanel
+            config={config}
+            onSave={setConfig}
+            onClose={() => setShowConfig(false)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   )
 }
