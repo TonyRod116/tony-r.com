@@ -51,8 +51,6 @@ function validateStructuredResponse(parsed) {
     budget: state.budget_max ? parseBudget(state.budget_max) : null,
     budgetRange: state.budget_range || null,
     timeline: state.timeline_start || null,
-    isOwner: state.ownership_status === 'propietario' ? true : 
-             state.ownership_status === 'alquiler' ? false : null,
     hasDocs: state.docs_available && state.docs_available !== 'ninguno' ? true :
              state.docs_available === 'ninguno' ? false : null,
     contactName: state.contact_name || null,
@@ -61,7 +59,6 @@ function validateStructuredResponse(parsed) {
     // Additional fields from new format
     postalCode: state.postal_code || null,
     scopeDescription: state.scope_description || null,
-    accessStatus: state.access_status || null,
     constraints: state.constraints || null,
   }
 
@@ -105,8 +102,7 @@ function dispositionToScoreTier(disposition, state) {
   if (state.city) score += 5
   if (state.budget_max && state.budget_max !== 'unknown') score += 10
   if (state.timeline_start) score += 5
-  if (state.ownership_status === 'propietario') score += 5
-  if (state.contact_phone) score += 10
+  if (state.contact_phone) score += 15
 
   // Cap at 100
   score = Math.min(100, score)
@@ -136,12 +132,6 @@ function generateReasons(state, disposition) {
 
   if (state.timeline_start) {
     reasons.push(`Plazo: ${state.timeline_start}`)
-  }
-
-  if (state.ownership_status === 'propietario') {
-    reasons.push(`Es propietario`)
-  } else if (state.ownership_status === 'alquiler') {
-    reasons.push(`Vivienda en alquiler`)
   }
 
   if (state.contact_phone) {
