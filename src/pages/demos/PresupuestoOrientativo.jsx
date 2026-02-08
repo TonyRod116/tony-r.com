@@ -29,8 +29,17 @@ import {
 import { useLanguage } from '../../hooks/useLanguage.jsx'
 import LoadingProgressBar from '../../components/LoadingProgressBar.jsx'
 
-// Proxy en nuestra API para evitar CORS (producción: Vercel api/buildappBudget.js; desarrollo: server /api/buildappBudget)
-const BUILDAPP_BUDGET_URL = '/api/buildappBudget'
+const BUILDAPP_BASE = 'https://buildapp-v1-backend.onrender.com'
+
+// Producción: usar backend BuildApp (env o URL por defecto). Desarrollo: proxy local /api/buildappBudget
+function getBuildappBudgetUrl() {
+  const base = import.meta.env.VITE_BUILDAPP_DEMO_API_URL || (import.meta.env.PROD ? BUILDAPP_BASE : '')
+  if (base) {
+    const url = base.replace(/\/$/, '')
+    return `${url}/api/v1/budget/generate-detailed`
+  }
+  return '/api/buildappBudget'
+}
 
 const PROJECT_TYPE_ICONS = {
   baño: Bath,
@@ -125,7 +134,7 @@ export default function PresupuestoOrientativo() {
       if (formData.sqm) body.sqm = Number(formData.sqm)
       if (formData.city) body.city = formData.city
 
-      const res = await fetch(BUILDAPP_BUDGET_URL, {
+      const res = await fetch(getBuildappBudgetUrl(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -468,19 +477,23 @@ export default function PresupuestoOrientativo() {
 
             {/* Notes / Assumptions / Exclusions */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-2">
-              {result.notes?.length > 0 && (
+              {(Array.isArray(result.notes) ? result.notes.length > 0 : typeof result.notes === 'string' && result.notes.trim()) && (
                 <div>
                   <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2 flex items-center gap-1.5">
                     <Info className="h-3.5 w-3.5 text-gray-400" />
                     {t('demos.presupuestoOrientativo.result.notes')}
                   </h3>
-                  <ul className="space-y-1.5">
-                    {result.notes.map((n, i) => (
-                      <li key={i} className="text-sm text-gray-600 dark:text-gray-400 pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[9px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 dark:before:bg-gray-600">
-                        {n}
-                      </li>
-                    ))}
-                  </ul>
+                  {Array.isArray(result.notes) ? (
+                    <ul className="space-y-1.5">
+                      {result.notes.map((n, i) => (
+                        <li key={i} className="text-sm text-gray-600 dark:text-gray-400 pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[9px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 dark:before:bg-gray-600">
+                          {n}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{result.notes}</p>
+                  )}
                 </div>
               )}
 

@@ -1,8 +1,15 @@
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions'
 const TIMEOUT_MS = 30000
 
-// Siempre usar el proxy /api/chat (el servidor tiene la API key de OpenAI)
+const BUILDAPP_BASE = 'https://buildapp-v1-backend.onrender.com'
+
+// Producción: usar backend BuildApp (env o URL por defecto). Desarrollo: proxy local /api/chat
 function getApiEndpoint() {
+  const base = import.meta.env.VITE_BUILDAPP_DEMO_API_URL || (import.meta.env.PROD ? BUILDAPP_BASE : '')
+  if (base) {
+    const url = base.replace(/\/$/, '')
+    return `${url}/api/v1/demo/chat`
+  }
   return '/api/chat'
 }
 
