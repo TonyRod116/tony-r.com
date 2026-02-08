@@ -1,6 +1,5 @@
 import { useState, useCallback, useRef } from 'react'
 import { callOpenAI } from '../utils/openai'
-import { getMockResponse, resetMockFlow } from '../utils/mockResponses'
 import { parseStructuredResponse, calculateFallbackScore } from '../utils/scoring'
 import { SYSTEM_PROMPT } from '../utils/prompts'
 
@@ -13,11 +12,6 @@ export function useChat(apiToken, config) {
   
   const lastSendTime = useRef(0)
   const cooldownInterval = useRef(null)
-
-  // Detectar modo: producción usa proxy, desarrollo usa token o mock
-  const isProduction = import.meta.env.PROD || window.location.hostname !== 'localhost'
-  const hasManualToken = !!apiToken
-  const isMockMode = !isProduction && !hasManualToken
 
   const clearError = useCallback(() => {
     setError(null)
@@ -56,39 +50,21 @@ export function useChat(apiToken, config) {
       let structured = null
       let raw
 
-      if (isMockMode) {
-        // Modo mock local - respuestas simuladas
-        await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 700))
-        const mockResponse = getMockResponse(messages, config)
-        displayText = mockResponse.displayText
-        structured = {
-          displayText: mockResponse.displayText,
-          leadFields: mockResponse.leadFields || {},
-          score: mockResponse.score || 0,
-          tier: mockResponse.tier || 5,
-          reasons: mockResponse.reasons || [],
-          nextQuestion: mockResponse.nextQuestion || null,
-        }
-        raw = mockResponse
-      } else {
-        // Modo real - OpenAI (vía proxy en prod, o directo con token en dev)
-        const systemPrompt = SYSTEM_PROMPT(config)
-        raw = await callOpenAI(apiToken, systemPrompt, messages, config)
-        displayText = raw
-        
-        console.log('[LeadQualifier] Raw GPT response:', raw)
+      console.log('[useChat] Sending to ChatGPT, messages:', messages.length)
 
-        try {
-          const parsed = parseStructuredResponse(raw)
-          console.log('[LeadQualifier] Parsed response:', parsed)
-          if (parsed) {
-            structured = parsed
-            displayText = parsed.displayText || raw
-          }
-        } catch (parseError) {
-          console.warn('Could not parse structured response, using fallback scoring')
-          structured = calculateFallbackScore(messages, config)
+      const systemPrompt = SYSTEM_PROMPT(config)
+      raw = await callOpenAI(apiToken, systemPrompt, messages, config)
+      displayText = raw
+
+      try {
+        const parsed = parseStructuredResponse(raw)
+        if (parsed) {
+          structured = parsed
+          displayText = parsed.displayText || raw
         }
+      } catch (parseError) {
+        console.warn('Could not parse structured response, using fallback scoring')
+        structured = calculateFallbackScore(messages, config)
       }
 
       return {
@@ -103,7 +79,7 @@ export function useChat(apiToken, config) {
     } finally {
       setIsLoading(false)
     }
-  }, [apiToken, config, isMockMode])
+  }, [apiToken, config])
 
   return {
     sendMessage,
@@ -111,6 +87,5 @@ export function useChat(apiToken, config) {
     error,
     clearError,
     lastCooldown,
-    isMockMode,
   }
 }

@@ -46,9 +46,9 @@ export default function ChatBubble({ message }) {
           }}
         />
         
-        {/* Message content */}
+        {/* Message content - show displayText for assistant messages if available */}
         <p className="text-sm whitespace-pre-wrap break-words leading-relaxed">
-          {message.content}
+          {message.displayText || message.content}
         </p>
         
         {/* Timestamp and status */}
