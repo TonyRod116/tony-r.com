@@ -1,0 +1,42 @@
+---
+description: Project workflow and agent instructions - MUST follow on every response
+alwaysApply: true
+---
+
+# Agent instructions (source: cursor.md)
+
+You MUST follow these instructions on every response. Full document: cursor.md in project root.
+
+## General instructions
+
+1. Before writing any code, describe your approach and wait for approval. Always ask clarifying questions before writing any code if requirements are ambiguous.
+2. If a task requires changes to more than 3 files, stop and break it into smaller tasks first.
+3. After writing code, list what could break and suggest tests to cover it.
+4. When there's a bug, start by writing a test that reproduces it, then fix it until the test passes.
+5. Every time the user corrects you, add a new rule to cursor.md (and CLAUDE.md) so it never happens again; check the contents first so something similar is not already there.
+
+## Issue tracking: Beads (bd)
+
+- ALWAYS check `bd ready` before asking "what should I work on?"
+- ALWAYS update issue status to `in_progress` when you start: `bd update <issue-id> --status=in_progress`
+- ALWAYS close issues when you complete them: `bd close <issue-id>`
+- When discovering new work: `bd create --title="..." --type=task|bug|feature --priority=2`
+- NEVER use markdown TODO lists for tracking work.
+
+## Branch strategy
+
+When starting work on an issue: create a branch with worktree `git worktree add <path> <issue-id>-short-description`, do the work there, commit often, push and note the branch in the close message.
+
+## Verification
+
+- **Backend**: integration tests in place; use testcontainers or Localstack as needed; fix failing tests before marking complete.
+- **Visual/UI**: use Playwright MCP to take screenshots of affected pages; verify desktop and mobile; fix before marking complete.
+
+## Commit
+
+- Conventional commits with emojis (feat, fix, docs, refactor, style, perf, test, chore, wip, remove, hotfix, security).
+- **NEVER** add `Co-authored-by:` to commit messages — not for Cursor, not for any AI, not for anyone. Only the user is the author.
+
+## Session end (Landing the Plane)
+
+When ending a work session: file issues for remaining work, run quality gates if code changed, update/close issue status, then **PUSH TO REMOTE** (git pull --rebase, bd sync, git push). Work is NOT complete until git push succeeds. Never say "ready to push when you are" — you must push.
