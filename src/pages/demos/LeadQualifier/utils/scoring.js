@@ -9,17 +9,17 @@ function hasValue(val) {
   return true
 }
 
-export function parseStructuredResponse(response) {
+export function parseStructuredResponse(response, t) {
   console.log('[LeadQualifier] Raw response to parse:', response)
-  
+
   // Try to extract JSON from markdown code block
   const jsonMatch = response.match(/```json\s*([\s\S]*?)\s*```/)
-  
+
   if (jsonMatch) {
     try {
       const parsed = JSON.parse(jsonMatch[1])
       console.log('[LeadQualifier] Parsed from JSON block:', parsed)
-      return validateStructuredResponse(parsed)
+      return validateStructuredResponse(parsed, t)
     } catch (e) {
       console.warn('[LeadQualifier] Failed to parse JSON block:', e)
     }
@@ -29,7 +29,7 @@ export function parseStructuredResponse(response) {
   try {
     const parsed = JSON.parse(response)
     console.log('[LeadQualifier] Parsed as direct JSON:', parsed)
-    return validateStructuredResponse(parsed)
+    return validateStructuredResponse(parsed, t)
   } catch (e) {
     // Not valid JSON
   }
@@ -40,7 +40,7 @@ export function parseStructuredResponse(response) {
     try {
       const parsed = JSON.parse(objectMatch[0])
       console.log('[LeadQualifier] Parsed from object match:', parsed)
-      return validateStructuredResponse(parsed)
+      return validateStructuredResponse(parsed, t)
     } catch (e) {
       console.warn('[LeadQualifier] Failed to parse object match:', e)
     }
@@ -50,24 +50,24 @@ export function parseStructuredResponse(response) {
   return null
 }
 
-function validateStructuredResponse(parsed) {
+function validateStructuredResponse(parsed, t) {
   if (!parsed.displayText) {
     console.warn('[LeadQualifier] No displayText in parsed response')
     return null
   }
-  
+
   // Handle new format with "state" object
   const state = parsed.state || parsed.leadFields || {}
-  
+
   console.log('[LeadQualifier] Extracted state:', state)
-  
+
   // Map internal_disposition to tier/score for UI compatibility
   const disposition = state.internal_disposition || 'warm'
   const { score, tier } = dispositionToScoreTier(disposition, state)
-  
+
   const isNoAnswer = (v) => v != null && (NO_ANSWER_VALUES.includes(v) || (typeof v === 'string' && v.toLowerCase() === 'n/a'))
 
-  // Map state fields to leadFields; si el cliente no quiso responder usamos "n/a" para que el campo exista
+  // Map state fields to leadFields
   const leadFields = {
     projectType: hasValue(state.project_type) ? state.project_type : (isNoAnswer(state.project_type) ? 'n/a' : null),
     city: hasValue(state.city) ? state.city : (isNoAnswer(state.city) ? 'n/a' : null),
@@ -85,20 +85,20 @@ function validateStructuredResponse(parsed) {
     scopeDescription: hasValue(state.scope_description) ? state.scope_description : (isNoAnswer(state.scope_description) ? 'n/a' : null),
     constraints: hasValue(state.constraints) ? state.constraints : (isNoAnswer(state.constraints) ? 'n/a' : null),
   }
-  
+
   const cleanLeadFields = Object.fromEntries(
     Object.entries(leadFields).filter(([_, v]) => v !== undefined)
   )
-  
+
   console.log('[LeadQualifier] Mapped leadFields:', cleanLeadFields)
 
   // Generate reasons from state
-  const reasons = generateReasons(state, disposition)
+  const reasons = generateReasons(state, disposition, t)
 
   // Determine next question based on next_action
-  const nextQuestion = parsed.next_action === 'close_success' || 
-                       parsed.next_action === 'close_not_fit' ? null : 
-                       'Continuar conversación'
+  const nextQuestion = parsed.next_action === 'close_success' ||
+                       parsed.next_action === 'close_not_fit' ? null :
+                       'continue'
 
   return {
     displayText: parsed.displayText,
@@ -128,12 +128,12 @@ function dispositionToScoreTier(disposition, state) {
   // Base score from disposition
   let score = disposition === 'hot' ? 80 : disposition === 'warm' ? 50 : 20
 
-  // Adjust based on data completeness (plazo es obligatorio y suma en clasificación)
+  // Adjust based on data completeness
   if (hasValue(state.project_type)) score += 5
   if (hasValue(state.city)) score += 5
   if (hasValue(state.budget_max)) score += 10
   if (hasValue(state.timeline_start)) score += 15
-  else score -= 10 // Plazo no indicado resta; es importante para la clasificación
+  else score -= 10
   if (hasValue(state.contact_phone)) score += 15
 
   // Clamp between 0 and 100
@@ -145,46 +145,46 @@ function dispositionToScoreTier(disposition, state) {
   return { score, tier }
 }
 
-function generateReasons(state, disposition) {
+function generateReasons(state, disposition, t) {
   const reasons = []
 
   if (hasValue(state.project_type)) {
-    reasons.push(`Proyecto: ${state.project_type}`)
+    reasons.push(t('demos.leadQualifier.scoring.project').replace('{type}', state.project_type))
   }
-  
+
   if (hasValue(state.city)) {
-    reasons.push(`Ubicación: ${state.city}`)
+    reasons.push(t('demos.leadQualifier.scoring.location').replace('{city}', state.city))
   }
 
   if (hasValue(state.budget_max)) {
-    reasons.push(`Presupuesto definido`)
+    reasons.push(t('demos.leadQualifier.scoring.budgetDefined'))
   } else if (state.budget_max != null && NO_ANSWER_VALUES.includes(String(state.budget_max).toLowerCase())) {
-    reasons.push(`Presupuesto: no indicado (n/a)`)
+    reasons.push(t('demos.leadQualifier.scoring.budgetNotIndicated'))
   }
 
   if (hasValue(state.timeline_start)) {
-    reasons.push(`Plazo definido: ${state.timeline_start}`)
+    reasons.push(t('demos.leadQualifier.scoring.timelineDefined').replace('{timeline}', state.timeline_start))
   } else {
-    reasons.push('Plazo no indicado (resta en clasificación)')
+    reasons.push(t('demos.leadQualifier.scoring.timelineNotIndicated'))
   }
 
   if (hasValue(state.contact_phone)) {
-    reasons.push(`Contacto facilitado`)
+    reasons.push(t('demos.leadQualifier.scoring.contactProvided'))
   }
 
   // Add disposition-based reason
   if (disposition === 'hot') {
-    reasons.push('Proyecto con buen encaje')
+    reasons.push(t('demos.leadQualifier.scoring.goodFit'))
   } else if (disposition === 'cold') {
-    reasons.push('Proyecto requiere seguimiento')
+    reasons.push(t('demos.leadQualifier.scoring.requiresFollowUp'))
   }
 
   return reasons
 }
 
-export function calculateFallbackScore(messages, config) {
+export function calculateFallbackScore(messages, config, t) {
   const conversation = messages.map(m => m.content.toLowerCase()).join(' ')
-  
+
   let score = 20
   const reasons = []
   const leadFields = {}
@@ -196,13 +196,20 @@ export function calculateFallbackScore(messages, config) {
     'integral': 'integral',
     'reforma completa': 'integral',
     'pintura': 'pintura',
+    'bathroom': 'baño',
+    'kitchen': 'cocina',
+    'full renovation': 'integral',
+    'painting': 'pintura',
+    'bany': 'baño',
+    'cuina': 'cocina',
+    'reforma integral': 'integral',
   }
-  
+
   for (const [keyword, type] of Object.entries(projectTypes)) {
     if (conversation.includes(keyword)) {
       leadFields.projectType = type
       score += 10
-      reasons.push('Tipo de proyecto identificado')
+      reasons.push(t('demos.leadQualifier.scoring.projectTypeIdentified'))
       break
     }
   }
@@ -213,7 +220,7 @@ export function calculateFallbackScore(messages, config) {
     if (conversation.includes(city.toLowerCase())) {
       leadFields.city = city
       score += 15
-      reasons.push('Ciudad cubierta')
+      reasons.push(t('demos.leadQualifier.scoring.coveredCity'))
       break
     }
   }
@@ -224,18 +231,18 @@ export function calculateFallbackScore(messages, config) {
     const budget = parseInt(budgetMatch[1], 10)
     leadFields.budget = budget
     score += 15
-    reasons.push('Presupuesto mencionado')
+    reasons.push(t('demos.leadQualifier.scoring.budgetMentioned'))
   }
 
   // Check timeline
-  if (conversation.match(/(ya|urgente|inmediato|cuanto antes)/i)) {
-    leadFields.timeline = 'Inmediato'
+  if (conversation.match(/(ya|urgente|inmediato|cuanto antes|asap|now|immediately|ara|urgent)/i)) {
+    leadFields.timeline = t('demos.leadQualifier.scoring.immediateTimeline')
     score += 15
-    reasons.push('Urgencia alta')
-  } else if (conversation.match(/(mes|semana|pronto)/i)) {
-    leadFields.timeline = 'Corto plazo'
+    reasons.push(t('demos.leadQualifier.scoring.highUrgency'))
+  } else if (conversation.match(/(mes|semana|pronto|month|week|soon|mes|setmana|aviat)/i)) {
+    leadFields.timeline = t('demos.leadQualifier.scoring.shortTermTimeline')
     score += 10
-    reasons.push('Plazo mencionado')
+    reasons.push(t('demos.leadQualifier.scoring.timelineMentioned'))
   }
 
   // Check contact
@@ -243,7 +250,7 @@ export function calculateFallbackScore(messages, config) {
   if (phoneMatch) {
     leadFields.contactPhone = phoneMatch[1]
     score += 15
-    reasons.push('Teléfono proporcionado')
+    reasons.push(t('demos.leadQualifier.scoring.phoneProvided'))
   }
 
   const tier = score >= 80 ? 1 : score >= 60 ? 2 : score >= 40 ? 3 : score >= 20 ? 4 : 5

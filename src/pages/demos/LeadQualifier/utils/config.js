@@ -15,26 +15,24 @@ export const DEFAULT_CONFIG = {
     'Castelldefels',
     'El Prat',
   ],
-  // Presupuestos mínimos - si el cliente dice menos, baja su clasificación
   budgetRanges: {
-    baño: { min: 12000 },
-    cocina: { min: 18000 },
+    baño: { min: 5000 },
+    cocina: { min: 8000 },
     integral: { min: 50000 },
     pintura: { min: 2500 },
   },
-  // Si el presupuesto aproximado es mayor de este importe, se suman puntos extra al lead
   budgetBonusThreshold: 50000,
 }
 
-export function validateConfig(config) {
+export function validateConfig(config, t) {
   const errors = []
 
   if (!Array.isArray(config.coveredCities) || config.coveredCities.length === 0) {
-    errors.push('Debe haber al menos una ciudad cubierta')
+    errors.push(t('demos.leadQualifier.validation.citiesRequired'))
   }
 
   if (!config.budgetRanges || typeof config.budgetRanges !== 'object') {
-    errors.push('Los presupuestos mínimos son requeridos')
+    errors.push(t('demos.leadQualifier.validation.budgetRequired'))
   }
 
   return errors

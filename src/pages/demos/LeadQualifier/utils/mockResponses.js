@@ -1,6 +1,8 @@
 // Valor estándar cuando el cliente no quiere / no puede responder (existe en JSON como n/a)
 const NO_ANSWER = 'n/a'
 
+const LOCALE_MAP = { en: 'en-US', es: 'es-ES', ca: 'ca-ES' }
+
 // Estado persistente del lead durante la conversación mock
 let mockLeadState = {
   projectType: null,
@@ -12,59 +14,100 @@ let mockLeadState = {
   contactPhone: null,
   contactEmail: null,
   wantsCallBack: null,
-  contactCallbackRefusedOnce: false, // primer "no" a contactar → mostrar explicación
-  doNotContact: false,              // segundo "no" → no contactar, peor clasificación
+  contactCallbackRefusedOnce: false,
+  doNotContact: false,
 }
 
-// Detectores de información
-const PROJECT_TYPES = {
-  'reforma integral': 'integral',
-  'reforma completa': 'integral',
-  'integral': 'integral',
-  'completa': 'integral',
-  'piso entero': 'integral',
-  'todo el piso': 'integral',
-  'baño': 'baño',
-  'bano': 'baño',
-  'aseo': 'baño',
-  'cocina': 'cocina',
-  'pintura': 'pintura',
-  'pintar': 'pintura',
-  'suelo': 'suelo',
-  'suelos': 'suelo',
-  'parquet': 'suelo',
-  'ventanas': 'ventanas',
-  'ventana': 'ventanas',
-  'puertas': 'puertas',
-  'puerta': 'puertas',
-  'carpintería': 'otro',
-  'carpinteria': 'otro',
-  'otros': 'otro',
-  'otro': 'otro',
+// Per-language keyword maps for NLP detection
+const PROJECT_TYPES_BY_LANG = {
+  es: {
+    'reforma integral': 'integral',
+    'reforma completa': 'integral',
+    'integral': 'integral',
+    'completa': 'integral',
+    'piso entero': 'integral',
+    'todo el piso': 'integral',
+    'baño': 'baño',
+    'bano': 'baño',
+    'aseo': 'baño',
+    'cocina': 'cocina',
+    'pintura': 'pintura',
+    'pintar': 'pintura',
+    'suelo': 'suelo',
+    'suelos': 'suelo',
+    'parquet': 'suelo',
+    'ventanas': 'ventanas',
+    'ventana': 'ventanas',
+    'puertas': 'puertas',
+    'puerta': 'puertas',
+    'carpintería': 'otro',
+    'carpinteria': 'otro',
+    'otros': 'otro',
+    'otro': 'otro',
+  },
+  en: {
+    'full renovation': 'integral',
+    'complete renovation': 'integral',
+    'whole apartment': 'integral',
+    'entire flat': 'integral',
+    'bathroom': 'baño',
+    'bath': 'baño',
+    'kitchen': 'cocina',
+    'painting': 'pintura',
+    'paint': 'pintura',
+    'flooring': 'suelo',
+    'floor': 'suelo',
+    'parquet': 'suelo',
+    'windows': 'ventanas',
+    'window': 'ventanas',
+    'doors': 'puertas',
+    'door': 'puertas',
+    'carpentry': 'otro',
+    'other': 'otro',
+  },
+  ca: {
+    'reforma integral': 'integral',
+    'reforma completa': 'integral',
+    'integral': 'integral',
+    'completa': 'integral',
+    'pis sencer': 'integral',
+    'tot el pis': 'integral',
+    'bany': 'baño',
+    'cuina': 'cocina',
+    'pintura': 'pintura',
+    'pintar': 'pintura',
+    'terra': 'suelo',
+    'terres': 'suelo',
+    'parquet': 'suelo',
+    'finestres': 'ventanas',
+    'finestra': 'ventanas',
+    'portes': 'puertas',
+    'porta': 'puertas',
+    'fusteria': 'otro',
+    'altre': 'otro',
+    'altres': 'otro',
+  },
 }
 
-const PROJECT_LABELS = {
-  'integral': 'reforma integral',
-  'baño': 'baño',
-  'cocina': 'cocina',
-  'pintura': 'pintura',
-  'suelo': 'suelos',
-  'ventanas': 'cambio de ventanas',
-  'puertas': 'cambio de puertas',
-  'otro': 'otro',
+// Merge all language keywords for detection
+function getAllProjectTypes(language) {
+  // Primary language first, then others as fallback
+  const primary = PROJECT_TYPES_BY_LANG[language] || PROJECT_TYPES_BY_LANG.es
+  const all = { ...PROJECT_TYPES_BY_LANG.es, ...PROJECT_TYPES_BY_LANG.en, ...PROJECT_TYPES_BY_LANG.ca, ...primary }
+  return all
 }
 
-function detectProjectType(text) {
+function detectProjectType(text, language) {
   const lower = text.toLowerCase().trim()
   if (!lower || lower.length < 2) return null
-  // Priorizar "reforma integral/completa" sobre palabras individuales
-  for (const [keyword, type] of Object.entries(PROJECT_TYPES)) {
+  const types = getAllProjectTypes(language)
+  for (const [keyword, type] of Object.entries(types)) {
     if (lower.includes(keyword)) {
       return type
     }
   }
-  // Si parece una descripción de proyecto (cambiar X, reformar X, quiero X) → otros
-  if (/^(cambiar|reformar|arreglar|hacer|quiero|necesito|poner)\s+.+/.test(lower) || /^.+\s+(nuev[oa]s?|nueva|nuevo)$/.test(lower)) {
+  // Generic action verbs across languages
+  if (/^(cambiar|reformar|arreglar|hacer|quiero|necesito|poner|change|fix|want|need|install|canviar|arreglar|fer|vull|necessito)\s+.+/.test(lower)) {
     return 'otro'
   }
   return null
@@ -77,7 +120,6 @@ function detectCity(text, coveredCities) {
       return city
     }
   }
-  // Ciudades no cubiertas
   const uncovered = ['madrid', 'valencia', 'sevilla', 'bilbao', 'malaga', 'zaragoza']
   for (const city of uncovered) {
     if (lower.includes(city)) {
@@ -92,49 +134,88 @@ function detectNumber(text) {
   return match ? parseInt(match[1], 10) : null
 }
 
-function detectBoolean(text) {
+function detectBoolean(text, language) {
   const lower = text.toLowerCase()
-  if (lower.includes('sí') || lower.includes('si') || lower === 'yes' || 
-      lower.includes('claro') || lower.includes('por supuesto') ||
-      lower.includes('correcto') || lower.includes('exacto')) {
-    return true
+  const yesPatterns = {
+    es: ['sí', 'si', 'claro', 'por supuesto', 'correcto', 'exacto'],
+    en: ['yes', 'sure', 'of course', 'correct', 'exactly', 'yeah', 'yep'],
+    ca: ['sí', 'si', 'clar', 'per descomptat', 'correcte', 'exacte'],
   }
-  if (lower.includes('no') || lower.includes('ninguno') || lower.includes('nada')) {
-    return false
+  const noPatterns = {
+    es: ['no', 'ninguno', 'nada'],
+    en: ['no', 'none', 'nothing', 'nope'],
+    ca: ['no', 'cap', 'res'],
   }
+  const yes = [...(yesPatterns[language] || []), ...(yesPatterns.es)]
+  const no = [...(noPatterns[language] || []), ...(noPatterns.es)]
+  if (yes.some(p => lower.includes(p))) return true
+  if (no.some(p => lower.includes(p))) return false
   return null
 }
 
-function detectTimeline(text) {
+function detectTimeline(text, language, t) {
   const lower = text.toLowerCase().trim()
-  if (lower.includes('cuanto antes') || lower.includes('urgente') || lower.includes('ya') || lower === 'cuando antes') {
-    return 'Lo antes posible'
+
+  // ASAP detection
+  const asapPatterns = {
+    es: ['cuanto antes', 'urgente', 'ya', 'cuando antes'],
+    en: ['asap', 'urgent', 'right away', 'immediately', 'now', 'as soon as possible'],
+    ca: ['com més aviat', 'urgent', 'ara', 'quan abans'],
   }
-  // Días de la semana: "el lunes", "lunes", "para el martes"...
-  const weekdays = ['lunes', 'martes', 'miércoles', 'miercoles', 'jueves', 'viernes', 'sábado', 'sabado', 'domingo']
-  for (const day of weekdays) {
-    if (lower.includes(day)) {
-      const label = day === 'miercoles' ? 'Miércoles' : day === 'sabado' ? 'Sábado' : day.charAt(0).toUpperCase() + day.slice(1)
-      return lower.includes('próxim') || lower.includes('proxim') || lower.includes('que viene') ? `Próximo ${label}` : label
-    }
+  const asap = [...(asapPatterns[language] || []), ...(asapPatterns.es)]
+  if (asap.some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.asap')
+
+  // Tomorrow
+  const tomorrowPatterns = { es: ['mañana', 'manana'], en: ['tomorrow'], ca: ['demà', 'dema'] }
+  const tomorrow = [...(tomorrowPatterns[language] || []), ...(tomorrowPatterns.es)]
+  if (tomorrow.some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.tomorrow')
+
+  // Next week
+  const nextWeekPatterns = {
+    es: ['semana que viene', 'próxima semana', 'proxima semana'],
+    en: ['next week'],
+    ca: ['setmana que ve', 'propera setmana'],
   }
-  if (lower.includes('mañana') || lower.includes('manana')) return 'Mañana'
-  if (lower.includes('semana que viene') || lower.includes('próxima semana') || lower.includes('proxima semana')) return 'La semana que viene'
-  if (lower.includes('semana')) return '1-2 semanas'
-  if (lower.includes('mes')) return '1-3 meses'
-  if (lower.includes('verano')) return 'Verano'
-  if (lower.includes('otoño') || lower.includes('otono')) return 'Otoño'
-  if (lower.includes('primavera')) return 'Primavera'
-  if (lower.includes('año') || lower.includes('ano')) return 'Este año'
-  const monthMatch = lower.match(/(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)/i)
-  if (monthMatch) return monthMatch[1].charAt(0).toUpperCase() + monthMatch[1].slice(1)
+  const nextWeek = [...(nextWeekPatterns[language] || []), ...(nextWeekPatterns.es)]
+  if (nextWeek.some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.nextWeek')
+
+  // Weeks
+  const weekPatterns = { es: ['semana'], en: ['week'], ca: ['setmana'] }
+  const week = [...(weekPatterns[language] || []), ...(weekPatterns.es)]
+  if (week.some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.oneToTwoWeeks')
+
+  // Months
+  const monthPatterns = { es: ['mes'], en: ['month'], ca: ['mes'] }
+  const month = [...(monthPatterns[language] || []), ...(monthPatterns.es)]
+  if (month.some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.oneToThreeMonths')
+
+  // Seasons
+  const summerPatterns = { es: ['verano'], en: ['summer'], ca: ['estiu'] }
+  if ([...(summerPatterns[language] || []), ...(summerPatterns.es)].some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.summer')
+
+  const autumnPatterns = { es: ['otoño', 'otono'], en: ['autumn', 'fall'], ca: ['tardor'] }
+  if ([...(autumnPatterns[language] || []), ...(autumnPatterns.es)].some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.autumn')
+
+  const springPatterns = { es: ['primavera'], en: ['spring'], ca: ['primavera'] }
+  if ([...(springPatterns[language] || []), ...(springPatterns.es)].some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.spring')
+
+  // Year
+  const yearPatterns = { es: ['año', 'ano'], en: ['year'], ca: ['any'] }
+  if ([...(yearPatterns[language] || []), ...(yearPatterns.es)].some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.thisYear')
+
   return null
 }
 
-function detectContact(text) {
+function detectContact(text, language) {
   const phone = text.match(/(\d{9}|\+34\s*\d{9}|\d{3}[\s.-]?\d{3}[\s.-]?\d{3})/)
   const email = text.match(/[\w.-]+@[\w.-]+\.\w+/)
-  const nameMatch = text.match(/(?:me llamo|soy|mi nombre es)\s+([A-Za-záéíóúñÁÉÍÓÚÑ]+)/i)
+  const namePatterns = {
+    es: /(?:me llamo|soy|mi nombre es)\s+([A-Za-záéíóúñÁÉÍÓÚÑ]+)/i,
+    en: /(?:my name is|i'm|i am)\s+([A-Za-záéíóúñÁÉÍÓÚÑ]+)/i,
+    ca: /(?:em dic|soc|el meu nom és)\s+([A-Za-záéíóúñÁÉÍÓÚÑàèòçïü]+)/i,
+  }
+  const nameRegex = namePatterns[language] || namePatterns.es
+  const nameMatch = text.match(nameRegex) || text.match(namePatterns.es)
   return {
     phone: phone ? phone[1].replace(/[\s.-]/g, '') : null,
     email: email ? email[0] : null,
@@ -142,67 +223,67 @@ function detectContact(text) {
   }
 }
 
-function calculateScore(state, config) {
+function calculateScore(state, config, t) {
   if (state.doNotContact) {
-    return { score: 0, tier: 5, reasons: ['Cliente no quiere ser contactado'] }
+    return { score: 0, tier: 5, reasons: [t('demos.leadQualifier.mock.clientDoesNotWantContact')] }
   }
   let score = 0
   const reasons = []
 
   if (state.projectType) {
     score += 10
-    reasons.push('Tipo de proyecto identificado')
+    reasons.push(t('demos.leadQualifier.scoring.projectTypeIdentified'))
   }
-  
+
   if (state.city) {
     const covered = config.coveredCities.some(c => c.toLowerCase() === state.city.toLowerCase())
     if (covered) {
       score += 20
-      reasons.push('Ciudad cubierta')
+      reasons.push(t('demos.leadQualifier.scoring.coveredCity'))
     } else {
-      reasons.push('Ciudad fuera de cobertura')
+      reasons.push(t('demos.leadQualifier.scoring.uncoveredCity'))
     }
   }
 
   if (state.sqm) {
     score += 5
-    reasons.push('Superficie conocida')
+    reasons.push(t('demos.leadQualifier.scoring.surfaceKnown'))
   }
 
   if (state.budget && state.budget !== NO_ANSWER) {
     const budgetNum = typeof state.budget === 'number' ? state.budget : parseInt(state.budget, 10)
     if (!isNaN(budgetNum)) {
-      const minBudget = config.budgetRanges?.[state.projectType]?.min || config.budgetRanges?.baño?.min || 12000
+      const minBudget = config.budgetRanges?.[state.projectType]?.min || config.budgetRanges?.baño?.min || 5000
       if (budgetNum >= minBudget) {
         score += 25
-        reasons.push('Presupuesto adecuado')
+        reasons.push(t('demos.leadQualifier.scoring.adequateBudget'))
       } else {
-        reasons.push('Presupuesto ajustado')
+        reasons.push(t('demos.leadQualifier.scoring.tightBudget'))
       }
       const bonusThreshold = config.budgetBonusThreshold
       if (bonusThreshold && budgetNum >= bonusThreshold) {
         score += 15
-        reasons.push('Presupuesto alto (bonus)')
+        reasons.push(t('demos.leadQualifier.scoring.highBudgetBonus'))
       }
     }
   }
 
   if (state.timeline && state.timeline !== NO_ANSWER) {
     score += 15
-    reasons.push('Plazo definido')
+    reasons.push(t('demos.leadQualifier.scoring.timelineMentioned'))
   } else {
     score -= 10
-    reasons.push('Plazo no indicado')
+    reasons.push(t('demos.leadQualifier.mock.timelineNotIndicated'))
   }
 
   if (state.contactPhone || state.contactEmail) {
     score += 10
-    reasons.push('Datos de contacto facilitados')
+    reasons.push(t('demos.leadQualifier.mock.contactDataProvided'))
   }
 
   if (state.wantsCallBack === true) {
     score += 5
-    reasons.push('Quiere que le contactemos')
+    reasons.push(t('demos.leadQualifier.mock.wantsUsToContact'))
   }
 
   const tier = score >= 80 ? 1 : score >= 60 ? 2 : score >= 40 ? 3 : score >= 20 ? 4 : 5
@@ -210,36 +291,53 @@ function calculateScore(state, config) {
   return { score, tier, reasons }
 }
 
-function getNextQuestion(state) {
+function getNextQuestion(state, t) {
   if (!state.projectType) return null
-  if (!state.city) return '¿En qué ciudad está el inmueble?'
+  if (!state.city) return t('demos.leadQualifier.questions.city')
   if (!state.sqm) {
-    if (state.projectType === 'ventanas') return '¿Cuántas ventanas son?'
-    if (state.projectType === 'puertas') return '¿Cuántas puertas son?'
-    return '¿Cuántos metros cuadrados tiene aproximadamente?'
+    if (state.projectType === 'ventanas') return t('demos.leadQualifier.questions.windowsCount')
+    if (state.projectType === 'puertas') return t('demos.leadQualifier.questions.doorsCount')
+    return t('demos.leadQualifier.questions.sqm')
   }
-  // Plazo siempre se pregunta después del alcance (m²/ventanas) y antes del presupuesto
-  if (!state.timeline) return '¿Cuándo te gustaría empezar la obra?'
-  if (!state.budget) return '¿Cuál es tu presupuesto aproximado?'
-  if (!state.contactPhone && !state.contactEmail) return '¿Me das un teléfono o email de contacto?'
-  if (state.wantsCallBack === null) return 'Ya tenemos todo. En breve nos pondremos en contacto con usted, ¿le parece bien?'
+  if (!state.timeline) return t('demos.leadQualifier.questions.timeline')
+  if (!state.budget) return t('demos.leadQualifier.questions.budget')
+  if (!state.contactPhone && !state.contactEmail) return t('demos.leadQualifier.questions.contact')
+  if (state.wantsCallBack === null) return t('demos.leadQualifier.questions.confirmAll')
   return null
 }
 
-export function getMockResponse(messages, config) {
+function getRefusePatterns(language) {
+  const patterns = {
+    es: ['no lo sé', 'no lo se', 'no sé', 'no se', 'no tengo', 'ni idea', 'prefiero no decirlo', 'no quiero decir', 'no quiero responder', 'paso', 'no sabría', 'no sabria'],
+    en: ["i don't know", "don't know", "no idea", "not sure", "prefer not", "i'd rather not", "pass", "no clue", "can't say"],
+    ca: ['no ho sé', 'no ho se', 'no sé', 'no se', 'no tinc', 'ni idea', 'prefereixo no dir-ho', 'no vull dir', 'passo', 'no sabria'],
+  }
+  return [...(patterns[language] || []), ...(patterns.es)]
+}
+
+function getBudgetRefusePatterns(language) {
+  const patterns = {
+    es: ['no', 'no,', 'no sé', 'no se', 'no tengo', 'estoy mirando', 'aún no', 'todavía no'],
+    en: ['no', "don't have", 'not sure', "haven't decided", 'still looking', 'not yet'],
+    ca: ['no', 'no,', 'no sé', 'no se', 'no tinc', 'estic mirant', 'encara no'],
+  }
+  return [...(patterns[language] || []), ...(patterns.es)]
+}
+
+export function getMockResponse(messages, config, t, language = 'es') {
+  const locale = LOCALE_MAP[language] || 'es-ES'
   const userMessages = messages.filter(m => m.role === 'user')
   const lastUserMessage = userMessages[userMessages.length - 1]?.content || ''
-  const allUserText = userMessages.map(m => m.content).join(' ')
 
-  // Detectar información del mensaje actual
-  const detectedType = detectProjectType(lastUserMessage)
+  // Detect information from current message
+  const detectedType = detectProjectType(lastUserMessage, language)
   const detectedCity = detectCity(lastUserMessage, config.coveredCities)
   const detectedNumber = detectNumber(lastUserMessage)
-  const detectedBoolean = detectBoolean(lastUserMessage)
-  const detectedTimeline = detectTimeline(lastUserMessage)
-  const detectedContact = detectContact(lastUserMessage)
+  const detectedBoolean = detectBoolean(lastUserMessage, language)
+  const detectedTimeline = detectTimeline(lastUserMessage, language, t)
+  const detectedContact = detectContact(lastUserMessage, language)
 
-  // Actualizar estado según el contexto de la conversación
+  // Update state based on conversation context
   if (detectedType && !mockLeadState.projectType) {
     mockLeadState.projectType = detectedType
   }
@@ -248,19 +346,18 @@ export function getMockResponse(messages, config) {
     if (typeof detectedCity === 'string') {
       mockLeadState.city = detectedCity
     } else if (!detectedCity.covered) {
-      // Ciudad no cubierta - cerrar conversación
       return {
-        displayText: 'Lo siento, actualmente no tenemos cobertura en esa zona. Te agradecemos tu interés y esperamos poder ayudarte en el futuro.',
+        displayText: t('demos.leadQualifier.mock.uncoveredCity'),
         leadFields: { ...mockLeadState, city: detectedCity.city },
         score: 5,
         tier: 5,
-        reasons: ['Ciudad fuera de cobertura'],
+        reasons: [t('demos.leadQualifier.mock.cityOutOfCoverage')],
         nextQuestion: null,
       }
     }
   }
 
-  // Asignar números según el contexto (m², nº ventanas/puertas, o presupuesto)
+  // Assign numbers based on context
   if (detectedNumber) {
     const isVentanasOPuertas = mockLeadState.projectType === 'ventanas' || mockLeadState.projectType === 'puertas'
     const looksLikeCount = isVentanasOPuertas ? (detectedNumber >= 1 && detectedNumber <= 99) : (detectedNumber < 500)
@@ -268,15 +365,17 @@ export function getMockResponse(messages, config) {
       mockLeadState.sqm = detectedNumber
     } else if (!mockLeadState.budget && mockLeadState.budget !== NO_ANSWER && mockLeadState.sqm && mockLeadState.sqm !== NO_ANSWER && detectedNumber >= 1000) {
       mockLeadState.budget = detectedNumber
-      // Verificar presupuesto mínimo
       const minBudget = config.budgetRanges?.[mockLeadState.projectType]?.min || config.budgetRanges?.integral?.min || 50000
       if (detectedNumber < minBudget) {
+        const projectLabel = t(`demos.leadQualifier.projectLabels.${mockLeadState.projectType}`) || t('demos.leadQualifier.projectLabels.otro')
         return {
-          displayText: `Entiendo. Para una ${PROJECT_LABELS[mockLeadState.projectType] || 'reforma'} de calidad, el presupuesto mínimo suele ser de ${minBudget.toLocaleString('es-ES')}€. Te agradecemos tu interés y si en el futuro dispones de más presupuesto, estaremos encantados de ayudarte.`,
+          displayText: t('demos.leadQualifier.mock.budgetTooLow')
+            .replace('{label}', projectLabel)
+            .replace('{min}', minBudget.toLocaleString(locale) + '€'),
           leadFields: { ...mockLeadState },
           score: 10,
           tier: 5,
-          reasons: ['Presupuesto insuficiente'],
+          reasons: [t('demos.leadQualifier.mock.insufficientBudget')],
           nextQuestion: null,
         }
       }
@@ -284,23 +383,19 @@ export function getMockResponse(messages, config) {
   }
 
   const lower = lastUserMessage.toLowerCase().trim()
-  const refusesToAnswer = lower.includes('no lo sé') || lower.includes('no lo se') || lower.includes('no sé') ||
-    lower.includes('no se') || lower.includes('no tengo') || lower.includes('ni idea') ||
-    lower.includes('prefiero no decirlo') || lower.includes('no quiero decir') || lower.includes('no quiero responder') ||
-    lower.includes('paso') || lower.includes('no sabría') || lower.includes('no sabria') ||
+  const refusePatterns = getRefusePatterns(language)
+  const refusesToAnswer = refusePatterns.some(p => lower.includes(p)) ||
     (lower.includes('no') && lower.length < 15)
 
-  // Presupuesto: si dice "no", "no estoy mirando", etc., marcar n/a (solo cuando ya hemos preguntado timeline)
+  // Budget refuse detection
+  const budgetRefusePatterns = getBudgetRefusePatterns(language)
   const refusesBudget = mockLeadState.timeline && !mockLeadState.budget && !detectedNumber &&
-    (lower.startsWith('no') || lower.includes('no,') || lower.includes('no sé') || lower.includes('no se') ||
-     lower.includes('no tengo') || lower.includes('estoy mirando') || lower.includes('aún no') ||
-     lower.includes('todavía no') || lower === 'no')
+    (budgetRefusePatterns.some(p => lower.startsWith(p) || lower.includes(p)) || lower === 'no')
   if (refusesBudget) {
     mockLeadState.budget = NO_ANSWER
   }
 
-  // Si no quiere responder / no sabe: marcar el campo pendiente como n/a y seguir. La ciudad NO se marca n/a: es requisito indispensable.
-  // Orden: sqm → timeline → budget → contact (plazo se pregunta antes que presupuesto)
+  // Handle refusal to answer
   if (refusesToAnswer && !detectedNumber && !detectedCity && !detectedTimeline && !detectedContact.phone && !detectedContact.email) {
     if (mockLeadState.city && !mockLeadState.sqm) {
       mockLeadState.sqm = NO_ANSWER
@@ -320,7 +415,6 @@ export function getMockResponse(messages, config) {
         mockLeadState.contactCallbackRefusedOnce = true
       }
     }
-    // Si falta ciudad, NO ponemos n/a: se pide con el mensaje de requisito indispensable
   }
 
   if (detectedTimeline && !mockLeadState.timeline) {
@@ -346,73 +440,101 @@ export function getMockResponse(messages, config) {
   if (detectedContact.email) mockLeadState.contactEmail = detectedContact.email
   if (detectedContact.name) mockLeadState.contactName = detectedContact.name
 
-  // Calcular score y tier
-  const { score, tier, reasons } = calculateScore(mockLeadState, config)
-  const nextQuestion = getNextQuestion(mockLeadState)
+  // Calculate score and tier
+  const { score, tier, reasons } = calculateScore(mockLeadState, config, t)
+  const nextQuestion = getNextQuestion(mockLeadState, t)
 
-  // Generar respuesta según el estado actual
+  // Generate response based on current state
   let displayText = ''
-  const projectLabel = PROJECT_LABELS[mockLeadState.projectType] || 'reforma'
+  const projectLabel = t(`demos.leadQualifier.projectLabels.${mockLeadState.projectType}`) || t('demos.leadQualifier.projectLabels.otro')
 
   if (!mockLeadState.projectType) {
-    // Intentar detectar del mensaje aunque sea el primero
-    const typeFromFirst = detectProjectType(lastUserMessage)
+    const typeFromFirst = detectProjectType(lastUserMessage, language)
     if (typeFromFirst) {
       mockLeadState.projectType = typeFromFirst
-      const label = PROJECT_LABELS[typeFromFirst] || 'reforma'
-      const articulo = (typeFromFirst === 'ventanas' || typeFromFirst === 'puertas') ? 'Un' : 'Una'
-      displayText = typeFromFirst === 'otro'
-        ? '¡Perfecto! ¿En qué ciudad o zona está ubicado el inmueble?'
-        : `¡Perfecto! ${articulo} ${label} es un proyecto muy interesante. ¿Me podrías decir en qué ciudad está ubicado el inmueble?`
+      const label = t(`demos.leadQualifier.projectLabels.${typeFromFirst}`) || t('demos.leadQualifier.projectLabels.otro')
+      if (typeFromFirst === 'otro') {
+        displayText = t('demos.leadQualifier.mock.perfectOther')
+      } else {
+        const articleMap = { en: 'A', es: 'Una', ca: 'Una' }
+        const articleAlt = { en: 'A', es: 'Un', ca: 'Un' }
+        const useMasc = typeFromFirst === 'ventanas' || typeFromFirst === 'puertas'
+        const article = useMasc ? (articleAlt[language] || 'Un') : (articleMap[language] || 'Una')
+        displayText = t('demos.leadQualifier.mock.perfectProject')
+          .replace('{article}', article)
+          .replace('{label}', label)
+      }
     } else {
-      displayText = '¿Podrías decirme qué tipo de reforma o trabajo necesitas? Por ejemplo: baño, cocina, reforma integral, ventanas, u otro tipo.'
+      displayText = t('demos.leadQualifier.mock.askProjectType')
     }
   } else if (!mockLeadState.city) {
     if (refusesToAnswer) {
-      displayText = 'Te entiendo. Para poder ayudarte necesitamos saber si damos servicio en tu zona; es un requisito indispensable. Si te sientes más cómodo, basta con la localidad o el código postal, no hace falta calle ni número. ¿En qué zona está el proyecto?'
+      displayText = t('demos.leadQualifier.mock.needLocation')
     } else if (detectedType) {
-      const articulo = (mockLeadState.projectType === 'ventanas' || mockLeadState.projectType === 'puertas') ? 'Un' : 'Una'
-      displayText = mockLeadState.projectType === 'otro'
-        ? '¡Perfecto! ¿En qué ciudad o zona está ubicado el inmueble?'
-        : `¡Perfecto! ${articulo} ${projectLabel} es un proyecto muy interesante. ¿Me podrías decir en qué ciudad o zona está ubicado el inmueble?`
+      if (mockLeadState.projectType === 'otro') {
+        displayText = t('demos.leadQualifier.mock.perfectOther')
+      } else {
+        const useMasc = mockLeadState.projectType === 'ventanas' || mockLeadState.projectType === 'puertas'
+        const articleMap = { en: 'A', es: 'Una', ca: 'Una' }
+        const articleAlt = { en: 'A', es: 'Un', ca: 'Un' }
+        const article = useMasc ? (articleAlt[language] || 'Un') : (articleMap[language] || 'Una')
+        displayText = t('demos.leadQualifier.mock.perfectProject')
+          .replace('{article}', article)
+          .replace('{label}', projectLabel)
+      }
     } else {
-      displayText = `Entendido. ¿En qué ciudad o zona está el inmueble? Puedes indicar solo localidad o código postal.`
+      displayText = t('demos.leadQualifier.mock.understood')
     }
   } else if (!mockLeadState.sqm) {
     if (mockLeadState.projectType === 'ventanas') {
-      displayText = `¡Genial! ${mockLeadState.city} está dentro de nuestra zona. ¿Cuántas ventanas son?`
+      displayText = t('demos.leadQualifier.mock.greatCoveredWindows').replace('{city}', mockLeadState.city)
     } else if (mockLeadState.projectType === 'puertas') {
-      displayText = `¡Genial! ${mockLeadState.city} está dentro de nuestra zona. ¿Cuántas puertas son?`
+      displayText = t('demos.leadQualifier.mock.greatCoveredDoors').replace('{city}', mockLeadState.city)
     } else {
-      displayText = `¡Genial! ${mockLeadState.city} está dentro de nuestra zona de cobertura. ¿Cuántos metros cuadrados tiene aproximadamente el espacio a reformar?`
+      displayText = t('demos.leadQualifier.mock.greatCovered').replace('{city}', mockLeadState.city)
     }
   } else if (mockLeadState.sqm === NO_ANSWER && !mockLeadState.timeline) {
-    displayText = `No pasa nada. ¿Cuándo te gustaría empezar la obra?`
+    displayText = t('demos.leadQualifier.mock.noWorries') + ' ' + t('demos.leadQualifier.mock.whenStart')
   } else if (!mockLeadState.timeline) {
-    const alcanceText = mockLeadState.projectType === 'ventanas'
-      ? `${mockLeadState.sqm} ventanas`
-      : mockLeadState.projectType === 'puertas'
-        ? `${mockLeadState.sqm} puertas`
-        : `${mockLeadState.sqm} m²`
-    displayText = `Perfecto, ${alcanceText}. ¿Cuándo te gustaría empezar la obra?`
+    let scopeText
+    if (mockLeadState.projectType === 'ventanas') {
+      scopeText = t('demos.leadQualifier.mock.scopeWindows').replace('{count}', mockLeadState.sqm)
+    } else if (mockLeadState.projectType === 'puertas') {
+      scopeText = t('demos.leadQualifier.mock.scopeDoors').replace('{count}', mockLeadState.sqm)
+    } else {
+      scopeText = t('demos.leadQualifier.mock.scopeSqm').replace('{count}', mockLeadState.sqm)
+    }
+    displayText = t('demos.leadQualifier.mock.perfectScope').replace('{scope}', scopeText)
   } else if (mockLeadState.timeline === NO_ANSWER && !mockLeadState.budget) {
-    const paraProyecto = (mockLeadState.projectType === 'ventanas' || mockLeadState.projectType === 'puertas') ? 'este trabajo' : `esta ${projectLabel}`
-    displayText = `No pasa nada. ¿Tienes un presupuesto aproximado en mente para ${paraProyecto}?`
+    const isWorkType = mockLeadState.projectType === 'ventanas' || mockLeadState.projectType === 'puertas'
+    const projectRef = isWorkType
+      ? t('demos.leadQualifier.mock.budgetQuestionWork')
+      : t('demos.leadQualifier.mock.budgetQuestionProject').replace('{label}', projectLabel)
+    displayText = t('demos.leadQualifier.mock.noWorriesBudget').replace('{project}', projectRef)
   } else if (!mockLeadState.budget) {
-    const paraProyecto = (mockLeadState.projectType === 'ventanas' || mockLeadState.projectType === 'puertas') ? 'este trabajo' : `esta ${projectLabel}`
-    displayText = `Muy bien. ¿Tienes un presupuesto aproximado en mente para ${paraProyecto}?`
+    const isWorkType = mockLeadState.projectType === 'ventanas' || mockLeadState.projectType === 'puertas'
+    const projectRef = isWorkType
+      ? t('demos.leadQualifier.mock.budgetQuestionWork')
+      : t('demos.leadQualifier.mock.budgetQuestionProject').replace('{label}', projectLabel)
+    displayText = t('demos.leadQualifier.mock.budgetQuestion').replace('{project}', projectRef)
   } else if (!mockLeadState.contactPhone && !mockLeadState.contactEmail) {
-    displayText = 'Genial. Para finalizar, ¿podrías darme tu nombre y un teléfono o email de contacto?'
+    displayText = t('demos.leadQualifier.mock.askContact')
   } else if (mockLeadState.doNotContact) {
-    displayText = 'Perfecto, lo anotamos. Si cambias de opinión, ya sabes dónde estamos.'
+    displayText = t('demos.leadQualifier.mock.doNotContactMsg')
   } else if (mockLeadState.wantsCallBack === null) {
     if (mockLeadState.contactCallbackRefusedOnce && detectedBoolean === false) {
-      displayText = 'Si no nos das permiso para contactarte, no podremos atender tu solicitud. ¿Le parece bien que nos pongamos en contacto en breve?'
+      displayText = t('demos.leadQualifier.mock.refusedOnce')
     } else {
-      displayText = 'Ya tenemos todo. En breve nos pondremos en contacto con usted, ¿le parece bien?'
+      displayText = t('demos.leadQualifier.mock.confirmContact')
     }
   } else {
-    displayText = `¡Muchas gracias${mockLeadState.contactName ? ', ' + mockLeadState.contactName : ''}! Hemos registrado toda la información de tu proyecto de ${projectLabel} en ${mockLeadState.city}. Te contactaremos en las próximas 24-48 horas para concertar una visita sin compromiso.`
+    const nameStr = mockLeadState.contactName
+      ? t('demos.leadQualifier.mock.thankYouName').replace('{contactName}', mockLeadState.contactName)
+      : ''
+    displayText = t('demos.leadQualifier.mock.thankYou')
+      .replace('{name}', nameStr)
+      .replace('{label}', projectLabel)
+      .replace('{city}', mockLeadState.city)
   }
 
   return {

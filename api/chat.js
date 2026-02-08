@@ -23,13 +23,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { messages, config } = req.body
+    const { messages, config, language } = req.body
 
     if (!messages || !Array.isArray(messages)) {
       return res.status(400).json({ error: 'Messages array required' })
     }
 
-    const systemPrompt = buildSystemPrompt(config)
+    const systemPrompt = buildSystemPrompt(config, language)
 
     const response = await fetch(OPENAI_API_URL, {
       method: 'POST',
@@ -71,14 +71,19 @@ export default async function handler(req, res) {
   }
 }
 
-function buildSystemPrompt(config = {}) {
+const LANGUAGE_NAMES = { en: 'English', es: 'Spanish', ca: 'Catalan' }
+
+function buildSystemPrompt(config = {}, language = 'es') {
   const coveredCities = config.coveredCities || [
     'Barcelona', 'Hospitalet de Llobregat', 'Badalona', 'Terrassa', 'Sabadell',
     'Mataró', 'Santa Coloma de Gramenet', 'Cornellà de Llobregat', 'Sant Boi de Llobregat', 
     'Sant Cugat del Vallès', 'Esplugues', 'Gavà', 'Castelldefels', 'El Prat'
   ]
 
-  return `# ROL
+  const langName = LANGUAGE_NAMES[language] || 'Spanish'
+  const langInstruction = `IMPORTANT: You MUST respond in ${langName}. The "displayText" field MUST always be written in ${langName}.\n\n`
+
+  return langInstruction + `# ROL
 
 Eres el "Asistente de Proyectos" de una empresa de reformas en Barcelona.
 Tu misión es ayudar al cliente a definir su proyecto de forma natural y agradable, como lo haría un asesor humano.

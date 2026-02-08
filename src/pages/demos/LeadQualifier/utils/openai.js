@@ -6,7 +6,7 @@ function getApiEndpoint() {
   return '/api/chat'
 }
 
-export async function callOpenAI(apiToken, systemPrompt, messages, config = {}) {
+export async function callOpenAI(apiToken, systemPrompt, messages, config = {}, language = 'es') {
   const controller = new AbortController()
   const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS)
 
@@ -15,7 +15,7 @@ export async function callOpenAI(apiToken, systemPrompt, messages, config = {}) 
     
     // Siempre usar el proxy (mensajes y config se envían; la API key está en el servidor)
     if (proxyEndpoint) {
-      return await callViaProxy(proxyEndpoint, messages, config, controller.signal)
+      return await callViaProxy(proxyEndpoint, messages, config, controller.signal, language)
     }
     
     // Si hay token manual en el cliente, llamar directamente a OpenAI
@@ -23,20 +23,20 @@ export async function callOpenAI(apiToken, systemPrompt, messages, config = {}) 
       return await callDirectOpenAI(apiToken, systemPrompt, messages, controller.signal)
     }
     
-    throw new Error('No se pudo conectar con el asistente. Comprueba que el servidor /api/chat esté disponible.')
+    throw new Error('Could not connect to assistant')
 
   } finally {
     clearTimeout(timeoutId)
   }
 }
 
-async function callViaProxy(endpoint, messages, config, signal) {
+async function callViaProxy(endpoint, messages, config, signal, language) {
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ messages, config }),
+    body: JSON.stringify({ messages, config, language }),
     signal,
   })
 
@@ -77,13 +77,13 @@ async function callDirectOpenAI(apiToken, systemPrompt, messages, signal) {
     const errorData = await response.json().catch(() => ({}))
     
     if (response.status === 401) {
-      throw new Error('Token inválido o expirado. Por favor, verifica tu API key.')
+      throw new Error('Invalid or expired token')
     }
     if (response.status === 429) {
-      throw new Error('Límite de solicitudes excedido. Espera un momento e intenta de nuevo.')
+      throw new Error('Rate limit exceeded')
     }
     if (response.status === 500) {
-      throw new Error('Error del servidor de OpenAI. Intenta de nuevo más tarde.')
+      throw new Error('OpenAI server error')
     }
     
     throw new Error(errorData.error?.message || `Error ${response.status}`)
@@ -92,7 +92,7 @@ async function callDirectOpenAI(apiToken, systemPrompt, messages, signal) {
   const data = await response.json()
   
   if (!data.choices?.[0]?.message?.content) {
-    throw new Error('Respuesta vacía del modelo')
+    throw new Error('Empty response from model')
   }
 
   return data.choices[0].message.content

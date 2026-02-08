@@ -7,46 +7,47 @@ import LeadSummaryCard from './components/LeadSummaryCard'
 import ConfigPanel from './components/ConfigPanel'
 import { useChat } from './hooks/useChat'
 import { DEFAULT_CONFIG } from './utils/config'
-
-const INITIAL_MESSAGE = {
-  id: 'welcome',
-  role: 'assistant',
-  content: '¡Hola! Soy el asistente de proyectos. Estoy aquí para ayudarte a definir tu reforma y resolver cualquier duda. ¿Qué tipo de proyecto tienes en mente?',
-  timestamp: new Date().toISOString(),
-}
+import { useLanguage } from '../../../hooks/useLanguage'
 
 export default function LeadQualifier() {
-  const [messages, setMessages] = useState([INITIAL_MESSAGE])
+  const { t, language } = useLanguage()
+
+  const [messages, setMessages] = useState(() => [{
+    id: 'welcome',
+    role: 'assistant',
+    content: t('demos.leadQualifier.ui.welcomeMessage'),
+    timestamp: new Date().toISOString(),
+  }])
   const [input, setInput] = useState('')
   const [config, setConfig] = useState(DEFAULT_CONFIG)
   const [showConfig, setShowConfig] = useState(false)
   const [leadData, setLeadData] = useState({})
   const [isComplete, setIsComplete] = useState(false)
-  
+
   const messagesContainerRef = useRef(null)
   const inputRef = useRef(null)
   const userScrolledUp = useRef(false)
   const prevIsLoading = useRef(false)
-  const messagesRef = useRef(messages) // Keep a ref to current messages
-  
+  const messagesRef = useRef(messages)
+
   // Keep messagesRef in sync
   useEffect(() => {
     messagesRef.current = messages
   }, [messages])
-  
-  const { 
-    sendMessage, 
-    isLoading, 
-    error, 
+
+  const {
+    sendMessage,
+    isLoading,
+    error,
     clearError,
     lastCooldown,
-  } = useChat(null, config)
+  } = useChat(null, config, t, language)
 
   // Detect if user scrolled up manually
   const handleScroll = useCallback(() => {
     const container = messagesContainerRef.current
     if (!container) return
-    
+
     const { scrollTop, scrollHeight, clientHeight } = container
     const distanceFromBottom = scrollHeight - scrollTop - clientHeight
     userScrolledUp.current = distanceFromBottom > 100
@@ -67,9 +68,7 @@ export default function LeadQualifier() {
 
   // Auto-focus input when loading finishes
   useEffect(() => {
-    // Detectar cuando isLoading pasa de true a false
     if (prevIsLoading.current && !isLoading && !isComplete) {
-      // Pequeño delay para asegurar que el DOM se actualizó
       setTimeout(() => {
         if (inputRef.current) {
           inputRef.current.focus({ preventScroll: true })
@@ -91,38 +90,36 @@ export default function LeadQualifier() {
 
   const handleSend = useCallback(async () => {
     if (!input.trim() || isLoading) return
-    
+
     const messageContent = input.trim()
-    setInput('') // Clear input immediately
+    setInput('')
     userScrolledUp.current = false
-    
+
     const userMessage = {
       id: `user-${Date.now()}`,
       role: 'user',
       content: messageContent,
       timestamp: new Date().toISOString(),
     }
-    
-    // Use ref to get current messages to avoid stale closure
+
     const currentMessages = [...messagesRef.current, userMessage]
     setMessages(currentMessages)
     clearError()
-    
+
     console.log('[INDEX] messagesRef.current length:', messagesRef.current.length)
     console.log('[INDEX] currentMessages length:', currentMessages.length)
     console.log('[INDEX] Sending to API:', currentMessages.map(m => {
       const contentStr = typeof m.content === 'string' ? m.content : m.displayText || JSON.stringify(m.content)
       return `${m.role}: ${contentStr.substring(0, 30)}...`
     }))
-    
+
     try {
       console.log('[INDEX] Calling sendMessage...')
       const response = await sendMessage(currentMessages)
       console.log('[INDEX] sendMessage returned:', response)
-      
-      // For content: use raw string if available (GPT mode), otherwise displayText (mock mode)
+
       const contentForApi = typeof response.raw === 'string' ? response.raw : response.displayText
-      
+
       const assistantMessage = {
         id: `assistant-${Date.now()}`,
         role: 'assistant',
@@ -131,38 +128,34 @@ export default function LeadQualifier() {
         timestamp: new Date().toISOString(),
         structured: response.structured,
       }
-      
+
       setMessages(prev => [...prev, assistantMessage])
-      
-      // Update lead data progressively
+
       console.log('[LeadQualifier INDEX] response.structured:', response.structured)
       if (response.structured) {
         console.log('[LeadQualifier INDEX] leadFields from structured:', response.structured.leadFields)
         setLeadData(prev => {
           const newFields = response.structured.leadFields || {}
           const merged = { ...prev }
-          
+
           console.log('[LeadQualifier INDEX] prev leadData:', prev)
           console.log('[LeadQualifier INDEX] newFields to merge:', newFields)
-          
-          // Only update fields with actual values
+
           Object.entries(newFields).forEach(([key, value]) => {
             if (value !== null && value !== undefined && value !== '' && value !== 'null') {
               merged[key] = value
             }
           })
-          
-          // Update metadata
+
           if (response.structured.score !== undefined) merged.score = response.structured.score
           if (response.structured.tier !== undefined) merged.tier = response.structured.tier
           if (response.structured.reasons) merged.reasons = response.structured.reasons
           if (response.structured.rawState) merged.rawState = response.structured.rawState
-          
+
           console.log('[LeadQualifier INDEX] merged leadData:', merged)
           return merged
         })
-        
-        // Check if conversation is complete
+
         const nextAction = response.structured.nextAction
         if (nextAction === 'close_success' || nextAction === 'close_not_fit') {
           setIsComplete(true)
@@ -182,14 +175,14 @@ export default function LeadQualifier() {
 
   const handleReset = () => {
     setMessages([{
-      ...INITIAL_MESSAGE,
       id: `welcome-${Date.now()}`,
+      role: 'assistant',
+      content: t('demos.leadQualifier.ui.welcomeMessage'),
       timestamp: new Date().toISOString(),
     }])
     setLeadData({})
     setIsComplete(false)
     clearError()
-    // Focus after reset
     setTimeout(() => {
       if (inputRef.current) {
         inputRef.current.focus({ preventScroll: true })
@@ -209,18 +202,11 @@ export default function LeadQualifier() {
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-2xl font-bold text-white flex items-center gap-2">
               <Sparkles className="h-6 w-6 text-primary-400" />
-              Asistente de Proyectos
+              {t('demos.leadQualifier.ui.pageTitle')}
             </h1>
-            <button
-              onClick={() => setShowConfig(true)}
-              className="p-2 rounded-lg bg-gray-700 text-gray-400 hover:bg-gray-600 hover:text-white transition-colors"
-              title="Configuración"
-            >
-              <Settings className="h-5 w-5" />
-            </button>
           </div>
           <p className="text-gray-400 text-sm">
-            Demo de chat conversacional para calificación de leads de reforma
+            {t('demos.leadQualifier.ui.pageSubtitle')}
           </p>
         </motion.div>
 
@@ -240,33 +226,33 @@ export default function LeadQualifier() {
                     <Sparkles className="h-5 w-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white">Tu Empresa de Reforma</h3>
+                    <h3 className="font-semibold text-white">{t('demos.leadQualifier.ui.chatTitle')}</h3>
                     <p className="text-xs text-white/70">
-                      {isLoading ? 'Escribiendo...' : 'En línea'}
+                      {isLoading ? t('demos.leadQualifier.ui.typing') : t('demos.leadQualifier.ui.online')}
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={handleReset}
                   className="p-2 rounded-full hover:bg-white/10 transition-colors"
-                  title="Reiniciar chat"
+                  title={t('demos.leadQualifier.ui.resetChat')}
                 >
                   <RotateCcw className="h-5 w-5 text-white" />
                 </button>
               </div>
 
               {/* Messages */}
-              <div 
+              <div
                 ref={messagesContainerRef}
                 onScroll={handleScroll}
                 className="flex-1 overflow-y-auto p-4 space-y-4 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFmMjkzNyIgb3BhY2l0eT0iMC4zIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')]"
               >
                 <AnimatePresence>
                   {messages.map((message) => (
-                    <ChatBubble key={message.id} message={message} />
+                    <ChatBubble key={message.id} message={message} language={language} />
                   ))}
                 </AnimatePresence>
-                
+
                 {isLoading && <TypingIndicator />}
               </div>
 
@@ -284,7 +270,7 @@ export default function LeadQualifier() {
               {lastCooldown > 0 && (
                 <div className="px-4 py-2 bg-amber-500/10 border-t border-amber-500/20">
                   <p className="text-sm text-amber-400">
-                    Espera {Math.ceil(lastCooldown / 1000)}s antes del siguiente mensaje...
+                    {t('demos.leadQualifier.ui.cooldownWait').replace('{seconds}', Math.ceil(lastCooldown / 1000))}
                   </p>
                 </div>
               )}
@@ -295,13 +281,13 @@ export default function LeadQualifier() {
                   <div className="flex items-center justify-between">
                     <p className="text-sm text-gray-400 flex items-center gap-2">
                       <CheckCircle2 className="h-4 w-4 text-green-400" />
-                      Conversación completada
+                      {t('demos.leadQualifier.ui.conversationComplete')}
                     </p>
                     <button
                       onClick={handleReset}
                       className="px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium transition-colors"
                     >
-                      Nueva conversación
+                      {t('demos.leadQualifier.ui.newConversation')}
                     </button>
                   </div>
                 ) : (
@@ -311,7 +297,7 @@ export default function LeadQualifier() {
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       onKeyDown={handleKeyDown}
-                      placeholder="Escribe tu mensaje..."
+                      placeholder={t('demos.leadQualifier.ui.placeholder')}
                       rows={1}
                       className="flex-1 resize-none rounded-xl border border-gray-600 bg-gray-700 text-white placeholder-gray-400 px-4 py-3 text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       style={{ maxHeight: '120px' }}
@@ -331,23 +317,52 @@ export default function LeadQualifier() {
             </motion.div>
           </div>
 
-          {/* Lead Summary Sidebar */}
-          <div className="lg:col-span-1">
-            <LeadSummaryCard leadData={leadData} config={config} />
+          {/* Sidebar: Config + Lead Summary */}
+          <div className="lg:col-span-1 space-y-4">
+            {/* Config Toggle */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="rounded-2xl border border-gray-700 bg-gray-800/50 overflow-hidden"
+            >
+              <button
+                onClick={() => setShowConfig(!showConfig)}
+                className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-700/50 transition-colors"
+              >
+                <span className="flex items-center gap-2 text-sm font-semibold text-white">
+                  <Settings className="h-4 w-4 text-primary-400" />
+                  {t('demos.leadQualifier.ui.configBtn')}
+                </span>
+                {showConfig
+                  ? <ChevronUp className="h-4 w-4 text-gray-400" />
+                  : <ChevronDown className="h-4 w-4 text-gray-400" />
+                }
+              </button>
+              <AnimatePresence>
+                {showConfig && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="overflow-hidden border-t border-gray-700"
+                  >
+                    <ConfigPanel
+                      config={config}
+                      onSave={(newConfig) => { setConfig(newConfig); setShowConfig(false) }}
+                      onClose={() => setShowConfig(false)}
+                      t={t}
+                      inline
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+
+            <LeadSummaryCard leadData={leadData} config={config} t={t} language={language} />
           </div>
         </div>
       </div>
-
-      {/* Config Panel Modal */}
-      <AnimatePresence>
-        {showConfig && (
-          <ConfigPanel
-            config={config}
-            onSave={setConfig}
-            onClose={() => setShowConfig(false)}
-          />
-        )}
-      </AnimatePresence>
     </div>
   )
 }
