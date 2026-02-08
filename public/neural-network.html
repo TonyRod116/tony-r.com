@@ -16,43 +16,296 @@
       color: white;
       overflow-x: hidden;
     }
-    .header {
+    /* Site header - matches main app header (dark) */
+    .site-header {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 100;
-      background: rgba(17, 24, 39, 0.9);
+      transition: background 0.3s, border-color 0.3s;
+      background: rgba(17, 24, 39, 0.7);
       backdrop-filter: blur(8px);
-      border-bottom: 1px solid #374151;
-      padding: 12px 0;
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(55, 65, 81, 0.5);
     }
-    .header-content {
-      max-width: 1400px;
+    .site-header.scrolled {
+      background: rgba(17, 24, 39, 0.9);
+      border-bottom-color: #374151;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .site-header .header-inner {
+      max-width: 1800px;
       margin: 0 auto;
       padding: 0 16px;
+    }
+    @media (min-width: 640px) {
+      .site-header .header-inner { padding: 0 24px; }
+    }
+    @media (min-width: 1024px) {
+      .site-header .header-inner { padding: 0 32px; }
+    }
+    .site-header .header-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      height: 80px;
     }
-    .back-link {
+    .site-header .header-left {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      min-width: 0;
+    }
+    .site-header .header-center {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .site-header .header-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      min-width: 0;
+    }
+    .site-header .logo {
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: #fff;
+      text-decoration: none;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2));
+    }
+    .site-header .logo:hover {
+      color: #fff;
+    }
+    .site-header .nav-desktop {
+      display: none;
+    }
+    @media (min-width: 768px) {
+      .site-header .nav-desktop {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .site-header .nav-desktop { gap: 32px; }
+    }
+    .site-header .nav-desktop a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #e5e7eb;
+      text-decoration: none;
+      transition: color 0.2s;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2));
+    }
+    .site-header .nav-desktop a:hover {
+      color: #2563eb;
+    }
+    .site-header .nav-desktop a.active {
+      color: #2563eb;
+    }
+    /* Language selector */
+    .site-header .lang-wrap {
+      position: relative;
+    }
+    .site-header .lang-btn {
       display: flex;
       align-items: center;
       gap: 8px;
-      color: #d1d5db;
-      text-decoration: none;
-      font-size: 14px;
-      transition: color 0.2s;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
     }
-    .back-link:hover {
-      color: white;
+    .site-header .lang-btn:hover {
+      background: rgba(55, 65, 81, 0.8);
     }
-    .back-link svg {
+    .site-header .lang-btn svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+    .site-header .lang-btn .lang-globe {
+      stroke-width: 2;
+    }
+    .site-header .lang-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 8px;
+      width: 192px;
+      background: #1f2937;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+      z-index: 50;
+      overflow: hidden;
+    }
+    .site-header .lang-wrap:hover .lang-dropdown,
+    .site-header .lang-wrap.open .lang-dropdown {
+      opacity: 1;
+      visibility: visible;
+    }
+    .site-header .lang-dropdown button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 10px 16px;
+      font-size: 0.875rem;
+      color: #e5e7eb;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      text-align: left;
+    }
+    .site-header .lang-dropdown button:hover {
+      background: rgba(55, 65, 81, 0.8);
+      color: #2563eb;
+    }
+    .site-header .lang-dropdown button.active {
+      background: rgba(37, 99, 235, 0.2);
+      color: #2563eb;
+    }
+    .site-header .lang-dropdown button.active::after {
+      content: '✓';
+      color: #2563eb;
+    }
+    .site-header .lang-desktop {
+      display: none;
+    }
+    @media (min-width: 768px) {
+      .site-header .lang-desktop { display: block; }
+    }
+    .site-header .mobile-toggle {
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      border-radius: 8px;
+      background: transparent;
+      border: none;
+      color: #e5e7eb;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .site-header .mobile-toggle:hover {
+      background: rgba(55, 65, 81, 0.8);
+    }
+    @media (min-width: 768px) {
+      .site-header .mobile-toggle { display: none; }
+    }
+    .site-header .mobile-toggle svg {
       width: 20px;
       height: 20px;
     }
+    /* Mobile menu overlay */
+    .site-header .mobile-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      top: 80px;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(4px);
+      z-index: 9998;
+    }
+    .site-header .mobile-overlay.open {
+      display: block;
+    }
+    @media (min-width: 768px) {
+      .site-header .mobile-overlay { display: none !important; }
+    }
+    /* Mobile menu panel */
+    .site-header .mobile-panel {
+      position: fixed;
+      top: 80px;
+      right: 0;
+      width: 256px;
+      max-width: 70vw;
+      max-height: calc(100vh - 80px);
+      background: rgba(17, 24, 39, 0.98);
+      backdrop-filter: blur(12px);
+      border-left: 1px solid #374151;
+      box-shadow: -4px 0 24px rgba(0,0,0,0.3);
+      z-index: 9999;
+      padding: 16px 0;
+      overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.3s ease-out;
+    }
+    .site-header .mobile-panel.open {
+      transform: translateX(0);
+    }
+    @media (min-width: 768px) {
+      .site-header .mobile-panel { display: none !important; }
+    }
+    .site-header .mobile-panel a {
+      display: block;
+      padding: 10px 16px;
+      margin: 0 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #d1d5db;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .site-header .mobile-panel a:hover {
+      color: #2563eb;
+      background: rgba(55, 65, 81, 0.5);
+    }
+    .site-header .mobile-panel a.active {
+      color: #2563eb;
+      background: rgba(37, 99, 235, 0.15);
+    }
+    .site-header .mobile-panel .lang-mobile {
+      padding: 16px;
+      border-top: 1px solid #374151;
+      margin-top: 8px;
+    }
+    .site-header .mobile-panel .lang-mobile .lang-label {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-bottom: 8px;
+    }
+    .site-header .mobile-panel .lang-mobile-btns {
+      display: flex;
+      gap: 8px;
+    }
+    .site-header .mobile-panel .lang-mobile-btns button {
+      padding: 8px 12px;
+      font-size: 0.875rem;
+      border-radius: 6px;
+      border: 1px solid #374151;
+      background: rgba(55, 65, 81, 0.5);
+      color: #e5e7eb;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .site-header .mobile-panel .lang-mobile-btns button:hover,
+    .site-header .mobile-panel .lang-mobile-btns button.active {
+      background: rgba(37, 99, 235, 0.2);
+      color: #2563eb;
+      border-color: #2563eb;
+    }
+    /* Legacy .header / .header-content for any refs - keep main-content padding consistent */
+    .header { display: none; }
+    .header-content { display: none; }
     .main-content {
-      padding-top: 64px;
+      padding-top: 80px;
       min-height: 100vh;
       position: relative;
       z-index: 10;
@@ -586,17 +839,149 @@
   <!-- 3D Network Visualization Background -->
   <div id="threeContainer"></div>
   
-  <!-- Header -->
-  <div class="header">
-    <div class="header-content">
-      <a href="/ai" class="back-link">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        <span>Back to AI Lab</span>
-      </a>
+  <!-- Site header (matches main app, no React) -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+      <div class="header-row">
+        <div class="header-left">
+          <a href="/" class="logo">Tony Rodríguez</a>
+        </div>
+        <div class="header-center">
+          <nav class="nav-desktop" aria-label="Main">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/projects">Projects</a>
+            <a href="/ai" class="active">AI Lab</a>
+            <a href="/demos">Demos</a>
+            <a href="/resume">Resume</a>
+            <a href="/contact">Contact</a>
+          </nav>
+        </div>
+        <div class="header-right">
+          <div class="lang-desktop lang-wrap" id="langWrap">
+            <button type="button" class="lang-btn" id="langBtn" aria-label="Language" aria-expanded="false" aria-haspopup="true">
+              <svg class="lang-globe" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                <path d="M2 12h20" />
+              </svg>
+              <span id="langCurrent">EN</span>
+            </button>
+            <div class="lang-dropdown" role="menu">
+              <button type="button" role="menuitem" data-lang="en">EN</button>
+              <button type="button" role="menuitem" data-lang="es">ES</button>
+              <button type="button" role="menuitem" data-lang="ca">CAT</button>
+            </div>
+          </div>
+          <button type="button" class="mobile-toggle" id="mobileMenuBtn" aria-label="Toggle menu">
+            <svg id="menuIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="closeIcon" style="display:none;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
+    <div class="mobile-overlay" id="mobileOverlay" aria-hidden="true"></div>
+    <nav class="mobile-panel" id="mobilePanel" aria-label="Mobile">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/projects">Projects</a>
+      <a href="/ai" class="active">AI Lab</a>
+      <a href="/demos">Demos</a>
+      <a href="/resume">Resume</a>
+      <a href="/contact">Contact</a>
+      <div class="lang-mobile">
+        <div class="lang-label">Idioma / Language</div>
+        <div class="lang-mobile-btns">
+          <button type="button" data-lang="en">EN</button>
+          <button type="button" data-lang="es">ES</button>
+          <button type="button" data-lang="ca">CAT</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <script>
+    (function () {
+      var LANG_KEY = 'portfolio-language'
+      var LANG_LABELS = { en: 'EN', es: 'ES', ca: 'CAT' }
+      function getLang() {
+        var s = localStorage.getItem(LANG_KEY)
+        return (s === 'es' || s === 'ca') ? s : 'en'
+      }
+      function setLang(code) {
+        localStorage.setItem(LANG_KEY, code)
+        var cur = document.getElementById('langCurrent')
+        if (cur) cur.textContent = LANG_LABELS[code] || code.toUpperCase()
+        document.querySelectorAll('.lang-dropdown button[role="menuitem"], .lang-mobile-btns button').forEach(function (btn) {
+          var lang = btn.getAttribute('data-lang')
+          btn.classList.toggle('active', lang === code)
+        })
+      }
+      var header = document.getElementById('siteHeader')
+      var menuBtn = document.getElementById('mobileMenuBtn')
+      var menuIcon = document.getElementById('menuIcon')
+      var closeIcon = document.getElementById('closeIcon')
+      var overlay = document.getElementById('mobileOverlay')
+      var panel = document.getElementById('mobilePanel')
+      setLang(getLang())
+      var langWrap = document.getElementById('langWrap')
+      var langBtn = document.getElementById('langBtn')
+      if (langWrap && langBtn) {
+        langBtn.addEventListener('click', function (e) {
+          e.stopPropagation()
+          langWrap.classList.toggle('open')
+          langBtn.setAttribute('aria-expanded', langWrap.classList.contains('open'))
+        })
+        document.querySelectorAll('.lang-dropdown button[role="menuitem"]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            setLang(btn.getAttribute('data-lang'))
+            langWrap.classList.remove('open')
+            langBtn.setAttribute('aria-expanded', 'false')
+          })
+        })
+        document.addEventListener('click', function (e) {
+          if (langWrap.contains(e.target)) return
+          langWrap.classList.remove('open')
+          langBtn.setAttribute('aria-expanded', 'false')
+        })
+      }
+      panel.querySelectorAll('.lang-mobile-btns button').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          setLang(btn.getAttribute('data-lang'))
+          closeMenu()
+        })
+      })
+      function onScroll() {
+        header.classList.toggle('scrolled', window.scrollY > 20)
+      }
+      function openMenu() {
+        panel.classList.add('open')
+        overlay.classList.add('open')
+        overlay.setAttribute('aria-hidden', 'false')
+        menuIcon.style.display = 'none'
+        closeIcon.style.display = 'block'
+      }
+      function closeMenu() {
+        panel.classList.remove('open')
+        overlay.classList.remove('open')
+        overlay.setAttribute('aria-hidden', 'true')
+        menuIcon.style.display = 'block'
+        closeIcon.style.display = 'none'
+      }
+      window.addEventListener('scroll', onScroll, { passive: true })
+      onScroll()
+      if (menuBtn) menuBtn.addEventListener('click', function () {
+        if (panel.classList.contains('open')) closeMenu(); else openMenu()
+      })
+      if (overlay) overlay.addEventListener('click', closeMenu)
+      panel.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', closeMenu)
+      })
+    })()
+  </script>
 
   <!-- Main Content -->
   <div class="main-content">
@@ -2477,20 +2862,28 @@
 
         function refreshNetworkState() {
           const rawInput = digitCanvas.getPixels()
+          const hasDrawing = rawInput.some(val => val > 0)
           const propagation = neuralModel.propagate(rawInput)
           const displayActivations = propagation.activations.slice()
           if (displayActivations.length > 0) {
             displayActivations[0] = rawInput
           }
 
-          const logitsTyped =
-            propagation.preActivations.length > 0
-              ? propagation.preActivations[propagation.preActivations.length - 1]
-              : new Float32Array(0)
-          const probabilities =
-            logitsTyped.length > 0
-              ? Float32Array.from(softmax(Array.from(logitsTyped)))
-              : new Float32Array(0)
+          let probabilities
+          if (!hasDrawing) {
+            // Canvas en blanco: 10% para cada dígito (0-9)
+            probabilities = new Float32Array(10)
+            for (let i = 0; i < 10; i += 1) probabilities[i] = 0.1
+          } else {
+            const logitsTyped =
+              propagation.preActivations.length > 0
+                ? propagation.preActivations[propagation.preActivations.length - 1]
+                : new Float32Array(0)
+            probabilities =
+              logitsTyped.length > 0
+                ? Float32Array.from(softmax(Array.from(logitsTyped)))
+                : new Float32Array(0)
+          }
 
           if (probabilities.length && displayActivations.length > 1) {
             displayActivations[displayActivations.length - 1] = probabilities
@@ -2505,10 +2898,7 @@
           }
 
           neuralScene.update(displayActivations, networkActivations)
-          const probabilitiesForPanel = probabilities.length ? probabilities : logitsTyped
-          probabilityPanel.update(
-            probabilitiesForPanel.length ? Array.from(probabilitiesForPanel) : []
-          )
+          probabilityPanel.update(Array.from(probabilities))
         }
 
         digitCanvas.setChangeHandler(() => refreshNetworkState())
