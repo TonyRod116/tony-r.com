@@ -1,6 +1,7 @@
 /**
  * Proxy para Presupuesto Orientativo: evita CORS llamando a BuildApp desde servidor.
  * POST body se reenvía a buildapp-v1-backend.onrender.com/api/v1/budget/generate-detailed
+ * Ruta: /api/buildappBudget (sin guión para evitar 404 en Vercel)
  */
 const BUILDAPP_URL = 'https://buildapp-v1-backend.onrender.com/api/v1/budget/generate-detailed'
 
@@ -22,7 +23,7 @@ export default async function handler(req, res) {
     const data = await response.json().catch(() => ({}))
     res.status(response.status).json(data)
   } catch (err) {
-    console.error('buildapp-budget proxy error:', err.message)
+    console.error('buildappBudget proxy error:', err.message)
     res.status(500).json({ error: err.message || 'Proxy error' })
   }
 }

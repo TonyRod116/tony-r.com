@@ -29,8 +29,8 @@ import {
 import { useLanguage } from '../../hooks/useLanguage.jsx'
 import LoadingProgressBar from '../../components/LoadingProgressBar.jsx'
 
-// Proxy en nuestra API para evitar CORS (producción: Vercel api/buildapp-budget.js; desarrollo: server /api/buildapp-budget)
-const BUILDAPP_BUDGET_URL = '/api/buildapp-budget'
+// Proxy en nuestra API para evitar CORS (producción: Vercel api/buildappBudget.js; desarrollo: server /api/buildappBudget)
+const BUILDAPP_BUDGET_URL = '/api/buildappBudget'
 
 const PROJECT_TYPE_ICONS = {
   baño: Bath,
