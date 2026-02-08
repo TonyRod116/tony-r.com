@@ -1,6 +1,6 @@
-# CLAUDE.md
+# Cursor / Agent Instructions
 
-Same instructions as **cursor.md**. cursor.md is the canonical source; `.cursor/rules/project-instructions.mdc` loads it so the agent follows it every time.
+This file is the **source of truth** for how the agent must work in this project. The same content is loaded via `.cursor/rules/` so it applies to every conversation. Follow these instructions on every response.
 
 ---
 
@@ -14,7 +14,7 @@ Same instructions as **cursor.md**. cursor.md is the canonical source; `.cursor/
 
 4. "When there's a bug, start by writing a test that reproduces it, then fix it until the test passes."
 
-5. "Every time I correct you, add a new rule to cursor.md and CLAUDE.md so it never happens again, make sure something similar is not there already, so check the contents first."
+5. "Every time I correct you, add a new rule to the cursor.md (and CLAUDE.md) file so it never happens again, make sure something similar is not there already, so check the contents first."
 
 
 # Issue Tracking: Use Beads
@@ -428,7 +428,7 @@ Prime Claude with comprehensive project understanding.
 
 ## Standard Context Loading:
 1. Read README.md for project overview
-2. Read CLAUDE.md for AI-specific instructions
+2. Read cursor.md (or CLAUDE.md) for AI-specific instructions
 3. List project files excluding ignored paths
 4. Review key configuration files
 5. Understand project structure and conventions
@@ -440,7 +440,7 @@ Prime Claude with comprehensive project understanding.
    - Note key technologies and dependencies
 
 2. **AI Guidelines**:
-   - Read CLAUDE.md if present
+   - Read cursor.md or CLAUDE.md if present
    - Load project-specific AI instructions
    - Note coding standards and preferences
 
