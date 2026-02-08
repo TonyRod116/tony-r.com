@@ -1,4 +1,9 @@
-export const SYSTEM_PROMPT = (config) => `Eres un asistente de calificación de leads para Total Homes, una empresa de reformas en Barcelona.
+const LANGUAGE_NAMES = { en: 'English', es: 'Spanish', ca: 'Catalan' }
+
+export const SYSTEM_PROMPT = (config, language = 'es') => {
+  const langName = LANGUAGE_NAMES[language] || 'Spanish'
+  const langInstruction = `IMPORTANT: You MUST respond in ${langName}. The "displayText" field MUST always be written in ${langName}.\n\n`
+  return langInstruction + `Eres un asistente de calificación de leads para Total Homes, una empresa de reformas en Barcelona.
 
 Tu objetivo es mantener una conversación natural para:
 1. Identificar el tipo de proyecto (baño, cocina, reforma integral, etc.)
@@ -13,8 +18,8 @@ Tu objetivo es mantener una conversación natural para:
 CIUDADES CUBIERTAS: ${config.coveredCities?.join(', ') || 'Barcelona'}
 
 PRESUPUESTOS MÍNIMOS POR TIPO:
-- Baño: ${config.budgetRanges?.baño?.min || 12000}€
-- Cocina: ${config.budgetRanges?.cocina?.min || 18000}€
+- Baño: ${config.budgetRanges?.baño?.min || 5000}€
+- Cocina: ${config.budgetRanges?.cocina?.min || 8000}€
 - Reforma integral: ${config.budgetRanges?.integral?.min || 50000}€
 
 REGLAS DE SCORING (0-100):
@@ -63,3 +68,4 @@ Responde SIEMPRE en este formato JSON exacto:
 \`\`\`
 
 Recuerda: SIEMPRE responde en formato JSON válido.`
+}

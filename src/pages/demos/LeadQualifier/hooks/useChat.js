@@ -5,11 +5,11 @@ import { SYSTEM_PROMPT } from '../utils/prompts'
 
 const COOLDOWN_MS = 2000
 
-export function useChat(apiToken, config) {
+export function useChat(apiToken, config, t, language) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
   const [lastCooldown, setLastCooldown] = useState(0)
-  
+
   const lastSendTime = useRef(0)
   const cooldownInterval = useRef(null)
 
@@ -21,11 +21,11 @@ export function useChat(apiToken, config) {
     // Check cooldown
     const now = Date.now()
     const timeSinceLast = now - lastSendTime.current
-    
+
     if (timeSinceLast < COOLDOWN_MS) {
       const remaining = COOLDOWN_MS - timeSinceLast
       setLastCooldown(remaining)
-      
+
       // Start countdown
       if (cooldownInterval.current) clearInterval(cooldownInterval.current)
       cooldownInterval.current = setInterval(() => {
@@ -37,8 +37,8 @@ export function useChat(apiToken, config) {
           cooldownInterval.current = null
         }
       }, 100)
-      
-      throw new Error(`Espera ${Math.ceil(remaining / 1000)} segundos antes de enviar otro mensaje`)
+
+      throw new Error(t('demos.leadQualifier.errors.cooldown').replace('{seconds}', Math.ceil(remaining / 1000)))
     }
 
     setIsLoading(true)
@@ -52,19 +52,19 @@ export function useChat(apiToken, config) {
 
       console.log('[useChat] Sending to ChatGPT, messages:', messages.length)
 
-      const systemPrompt = SYSTEM_PROMPT(config)
-      raw = await callOpenAI(apiToken, systemPrompt, messages, config)
+      const systemPrompt = SYSTEM_PROMPT(config, language)
+      raw = await callOpenAI(apiToken, systemPrompt, messages, config, language)
       displayText = raw
 
       try {
-        const parsed = parseStructuredResponse(raw)
+        const parsed = parseStructuredResponse(raw, t)
         if (parsed) {
           structured = parsed
           displayText = parsed.displayText || raw
         }
       } catch (parseError) {
         console.warn('Could not parse structured response, using fallback scoring')
-        structured = calculateFallbackScore(messages, config)
+        structured = calculateFallbackScore(messages, config, t)
       }
 
       return {
@@ -73,13 +73,13 @@ export function useChat(apiToken, config) {
         raw,
       }
     } catch (err) {
-      const errorMessage = err.message || 'Error al procesar el mensaje'
+      const errorMessage = err.message || t('demos.leadQualifier.errors.processingError')
       setError(errorMessage)
       throw err
     } finally {
       setIsLoading(false)
     }
-  }, [apiToken, config])
+  }, [apiToken, config, t, language])
 
   return {
     sendMessage,
