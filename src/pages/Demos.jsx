@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { FileText, ImagePlus, ArrowRight, MessageSquare } from 'lucide-react'
+import { FileText, ArrowRight, MessageSquare } from 'lucide-react'
 import { useLanguage } from '../hooks/useLanguage.jsx'
 
 export default function Demos() {
@@ -14,14 +14,6 @@ export default function Demos() {
       description: t('demos.presupuestoOrientativo.description'),
       href: '/demos/presupuesto-orientativo',
       icon: FileText,
-    },
-    {
-      id: 'render-presupuesto',
-      slug: 'render-presupuesto',
-      title: t('demos.renderPresupuesto.title'),
-      description: t('demos.renderPresupuesto.description'),
-      href: '/demos/render-presupuesto',
-      icon: ImagePlus,
     },
     {
       id: 'lead-qualifier',

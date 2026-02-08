@@ -4,6 +4,7 @@ import tttIcon from '../assets/tictactoe.png'
 import msIcon from '../assets/buscaminas.png'
 import nimIcon from '../assets/nim.png'
 import tetrisIcon from '../assets/ttris.png'
+import nnIcon from '../assets/NN.png'
 import parallaxBg from '../assets/04.png'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../hooks/useLanguage.jsx'
@@ -33,6 +34,17 @@ export default function AiLab() {
   })
 
   const aiProjects = [
+    {
+      id: 'neural-network',
+      title: t('aiLab.projects.neuralNetwork.title') || 'Neural Network Visualization',
+      description: t('aiLab.projects.neuralNetwork.description') || 'Interactive 3D visualization of a neural network trained on MNIST. Draw digits and watch activations propagate through layers in real-time.',
+      icon: null,
+      demoUrl: '/ai/neural-network',
+      githubUrl: 'https://github.com/TonyRod116',
+      status: 'completed',
+      tech: ['JavaScript', 'Three.js', 'Neural Networks', 'MNIST'],
+      fullWidth: true
+    },
     {
       id: 'ttt',
       title: t('aiLab.projects.ttt.title'),
@@ -72,16 +84,6 @@ export default function AiLab() {
       githubUrl: 'https://github.com/TonyRod116/T-Tetris',
       status: 'completed',
       tech: ['JavaScript', 'Custom Physics', 'AI Simulation']
-    },
-    {
-      id: 'neural-network',
-      title: t('aiLab.projects.neuralNetwork.title') || 'Neural Network Visualization',
-      description: t('aiLab.projects.neuralNetwork.description') || 'Interactive 3D visualization of a neural network trained on MNIST. Draw digits and watch activations propagate through layers in real-time.',
-      icon: null,
-      demoUrl: '/ai/neural-network',
-      githubUrl: 'https://github.com/TonyRod116',
-      status: 'completed',
-      tech: ['JavaScript', 'Three.js', 'Neural Networks', 'MNIST']
     },
     // {
     //   id: 'six-degrees',
@@ -162,10 +164,13 @@ export default function AiLab() {
                 key={project.id}
                 variants={itemVariants}
                 whileHover={{ y: -5 }}
-                className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                className={`bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 ${project.fullWidth ? 'md:col-span-2' : ''}`}
               >
                 {/* Icon */}
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl mb-6">
+                  {project.id === 'neural-network' && (
+                    <img src={nnIcon} alt="Neural Network" className="h-14 w-14 object-contain" />
+                  )}
                   {project.id === 'ttt' && (
                     <img src={tttIcon} alt="Tic-Tac-Toe" className="h-14 w-14" />
                   )}
@@ -175,9 +180,9 @@ export default function AiLab() {
                   {project.id === 'nim' && (
                     <img src={nimIcon} alt="Nim" className="h-14 w-14" />
                   )}
-    {project.id === 'tetris' && (
-      <img src={tetrisIcon} alt="Tetris" className="h-14 w-14" />
-    )}
+                  {project.id === 'tetris' && (
+                    <img src={tetrisIcon} alt="Tetris" className="h-14 w-14" />
+                  )}
                 </div>
 
                 {/* Title */}

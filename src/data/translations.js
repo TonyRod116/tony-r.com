@@ -557,7 +557,7 @@ export const translations = {
         },
         summary: {
           title: 'Lead Summary',
-          emptyMessage: 'Lead information will appear here as the conversation progresses.',
+          emptyMessage: 'Once the conversation with the client has ended, it will be sent to the person(s) responsible so they can manage and prioritise the lead properly.',
           waiting: 'Waiting for information...',
           leadRating: 'Lead Rating',
           score: 'Score',
@@ -1776,7 +1776,7 @@ export const translations = {
         },
         summary: {
           title: 'Resumen del Lead',
-          emptyMessage: 'Aquí aparecerá la información del lead a medida que avance la conversación.',
+          emptyMessage: 'Una vez acabada la conversación con el cliente, se enviará a la(s) persona(s) responsable(s) para que puedan gestionar y priorizar el lead debidamente.',
           waiting: 'Esperando información...',
           leadRating: 'Clasificación del Lead',
           score: 'Puntuación',
@@ -2732,7 +2732,7 @@ export const translations = {
         },
         summary: {
           title: 'Resum del Lead',
-          emptyMessage: 'Aquí apareixerà la informació del lead a mesura que avanci la conversa.',
+          emptyMessage: 'Un cop acabada la conversa amb el client, s\'enviarà a la(s) persona(s) responsable(s) perquè puguin gestionar i prioritzar el lead degudament.',
           waiting: 'Esperant informació...',
           leadRating: 'Classificació del Lead',
           score: 'Puntuació',
