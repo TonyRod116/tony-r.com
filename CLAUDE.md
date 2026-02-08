@@ -119,6 +119,9 @@ Create well-formatted commits with conventional commit messages and emojis.
 7. Add body for complex changes explaining why
 8. Execute commit
 
+## Rules:
+- **NEVER** add `Co-authored-by: Cursor` or any `Co-authored-by` line to commit messages. Only the user must appear as author; do not append Cursor or AI co-author trailers.
+
 ## Best Practices:
 - Keep commits atomic and focused
 - Write in imperative mood ("Add feature" not "Added feature")

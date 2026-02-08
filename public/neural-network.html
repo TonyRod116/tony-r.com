@@ -894,7 +894,7 @@
       <a href="/resume">Resume</a>
       <a href="/contact">Contact</a>
       <div class="lang-mobile">
-        <div class="lang-label">Idioma / Language</div>
+        <div class="lang-label" data-i18n="langMobileLabel">Idioma / Language</div>
         <div class="lang-mobile-btns">
           <button type="button" data-lang="en">EN</button>
           <button type="button" data-lang="es">ES</button>
@@ -919,6 +919,7 @@
           var lang = btn.getAttribute('data-lang')
           btn.classList.toggle('active', lang === code)
         })
+        try { window.dispatchEvent(new CustomEvent('nn-lang-change', { detail: { lang: code } })) } catch (e) {}
       }
       var header = document.getElementById('siteHeader')
       var menuBtn = document.getElementById('mobileMenuBtn')
@@ -988,8 +989,8 @@
     <div class="container">
       <!-- Title -->
       <div class="title">
-        <h1>MNIST Neural Network Visualization</h1>
-        <p>Draw a digit and watch how activations propagate through the network</p>
+        <h1 data-i18n="heroTitle">MNIST Neural Network Visualization</h1>
+        <p data-i18n="heroSubtitle">Draw a digit and watch how activations propagate through the network</p>
       </div>
 
       <!-- Main Layout -->
@@ -997,17 +998,17 @@
         <!-- Left: Drawing Canvas and Prediction -->
         <div>
           <div class="panel">
-            <h2>Drawing</h2>
+            <h2 data-i18n="drawing">Drawing</h2>
             <div id="gridContainer"></div>
             <div style="margin-top: 16px;">
-              <button id="resetBtn" class="btn">Clear</button>
+              <button id="resetBtn" class="btn" data-i18n="clear">Clear</button>
             </div>
-            <p class="hint">Click and drag to draw (right-click to erase)</p>
+            <p class="hint" data-i18n="hintDraw">Click and drag to draw (right-click to erase)</p>
           </div>
 
           <!-- Prediction Chart -->
           <div id="predictionChart" class="panel" style="margin-top: 24px;">
-            <h2>Prediction</h2>
+            <h2 data-i18n="prediction">Prediction</h2>
           </div>
         </div>
 
@@ -1018,7 +1019,7 @@
         <div>
           <!-- Epoch Slider -->
           <div class="panel" style="background: #1f2937; border-radius: 12px; padding: 16px;">
-            <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 16px; color: white;">Training Epoch</h2>
+            <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 16px; color: white;" data-i18n="trainingEpoch">Training Epoch</h2>
             <div style="margin-bottom: 12px;">
               <input 
                 type="range" 
@@ -1030,21 +1031,21 @@
               />
               <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
                 <div>
-                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;">Epoch</div>
+                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;" data-i18n="epoch">Epoch</div>
                   <div style="font-size: 1.5rem; font-weight: 600; color: white;" id="epochValue">40</div>
                 </div>
                 <div style="text-align: right;">
-                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;">Accuracy</div>
+                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;" data-i18n="accuracy">Accuracy</div>
                   <div style="font-size: 1.5rem; font-weight: 600; color: #60a5fa;" id="accuracyValue">96.2%</div>
                 </div>
               </div>
             </div>
-            <p class="hint">Adjust the epoch to see how training improves accuracy</p>
+            <p class="hint" data-i18n="hintEpoch">Adjust the epoch to see how training improves accuracy</p>
           </div>
 
           <!-- Hidden Nodes Slider -->
           <div class="panel" style="margin-top: 24px; background: #1f2937; border-radius: 12px; padding: 16px;">
-            <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 16px; color: white;">Hidden Layer Nodes</h2>
+            <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 16px; color: white;" data-i18n="hiddenLayerNodes">Hidden Layer Nodes</h2>
             <div style="margin-bottom: 12px;">
               <input 
                 type="range" 
@@ -1056,24 +1057,24 @@
               />
               <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
                 <div>
-                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;">Hidden Nodes</div>
+                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;" data-i18n="hiddenNodes">Hidden Nodes</div>
                   <div style="font-size: 1.5rem; font-weight: 600; color: white;" id="hiddenNodesValue">64</div>
                 </div>
                 <div style="text-align: right;">
-                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;">Accuracy</div>
+                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;" data-i18n="accuracy">Accuracy</div>
                   <div style="font-size: 1.5rem; font-weight: 600; color: #60a5fa;" id="hiddenNodesAccuracyValue">96.2%</div>
                 </div>
               </div>
             </div>
-            <p class="hint">Adjust hidden layer size to see its impact on accuracy</p>
+            <p class="hint" data-i18n="hintHidden">Adjust hidden layer size to see its impact on accuracy</p>
           </div>
 
           <!-- Update Visualization Button -->
           <div class="panel" style="margin-top: 24px; background: #1f2937; border-radius: 12px; padding: 16px;">
-            <button id="updateVisualizationBtn" class="btn" style="background: #3b82f6; font-weight: 600;">
+            <button id="updateVisualizationBtn" class="btn" style="background: #3b82f6; font-weight: 600;" data-i18n="updateBtn">
               Update and Recalculate
             </button>
-            <p class="hint" style="margin-top: 8px;">Click to update the 3D visualization and recalculate predictions</p>
+            <p class="hint" style="margin-top: 8px;" data-i18n="hintUpdate">Click to update the 3D visualization and recalculate predictions</p>
           </div>
         </div>
       </div>
@@ -1083,15 +1084,15 @@
         <!-- Separator -->
         <div class="separator">
           <div class="separator-line"></div>
-          <span class="separator-text">Learn More</span>
+          <span class="separator-text" data-i18n="learnMore">Learn More</span>
           <div class="separator-line"></div>
         </div>
 
         <!-- SECTION 1: Training Code -->
         <section class="section">
           <div>
-            <h2 class="section-title">How This Network Was Trained</h2>
-            <p class="section-subtitle">The actual TensorFlow / Keras code used to build and train the model</p>
+            <h2 class="section-title" data-i18n="section1Title">How This Network Was Trained</h2>
+            <p class="section-subtitle" data-i18n="section1Subtitle">The actual TensorFlow / Keras code used to build and train the model</p>
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
@@ -1103,7 +1104,7 @@
                   <div class="code-dot yellow"></div>
                   <div class="code-dot green"></div>
                 </div>
-                <span class="code-lang">Python / TensorFlow</span>
+                <span class="code-lang" data-i18n="codeLang">Python / TensorFlow</span>
               </div>
               <div class="code-content">
                 <div class="code-line"><span class="code-kw">import</span> tensorflow <span class="code-kw">as</span> tf</div>
@@ -1149,8 +1150,8 @@
                 <div class="annotation-content">
                   <span class="badge">1</span>
                   <div class="annotation-text">
-                    <h4>Input Layer</h4>
-                    <p>Each 28×28 pixel drawing is flattened into a vector of 784 numbers. This is the entry point of the network.</p>
+                    <h4 data-i18n="ann1Title">Input Layer</h4>
+                    <p data-i18n="ann1Text">Each 28×28 pixel drawing is flattened into a vector of 784 numbers. This is the entry point of the network.</p>
                   </div>
                 </div>
               </div>
@@ -1158,8 +1159,8 @@
                 <div class="annotation-content">
                   <span class="badge">2</span>
                   <div class="annotation-text">
-                    <h4>Dense(64, relu)</h4>
-                    <p>A Dense (fully connected) layer: every one of the 64 neurons receives input from ALL 784 pixels. "Dense" means every possible connection exists. ReLU activation: if the value is negative → 0, if positive → passes through unchanged.</p>
+                    <h4 data-i18n="ann2Title">Dense(64, relu)</h4>
+                    <p data-i18n="ann2Text">A Dense (fully connected) layer: every one of the 64 neurons receives input from ALL 784 pixels. "Dense" means every possible connection exists. ReLU activation: if the value is negative → 0, if positive → passes through unchanged.</p>
                   </div>
                 </div>
               </div>
@@ -1167,8 +1168,8 @@
                 <div class="annotation-content">
                   <span class="badge">3</span>
                   <div class="annotation-text">
-                    <h4>Dense(32, relu)</h4>
-                    <p>Second hidden layer with 32 neurons, each connected to all 64 neurons from the previous layer. The network learns progressively more abstract patterns at each layer.</p>
+                    <h4 data-i18n="ann3Title">Dense(32, relu)</h4>
+                    <p data-i18n="ann3Text">Second hidden layer with 32 neurons, each connected to all 64 neurons from the previous layer. The network learns progressively more abstract patterns at each layer.</p>
                   </div>
                 </div>
               </div>
@@ -1176,8 +1177,8 @@
                 <div class="annotation-content">
                   <span class="badge">4</span>
                   <div class="annotation-text">
-                    <h4>Dense(10, softmax)</h4>
-                    <p>10 output neurons — one for each digit (0–9). Softmax converts raw scores into probabilities that sum to 1.0, so the network effectively "votes" on which digit it sees.</p>
+                    <h4 data-i18n="ann4Title">Dense(10, softmax)</h4>
+                    <p data-i18n="ann4Text">10 output neurons — one for each digit (0–9). Softmax converts raw scores into probabilities that sum to 1.0, so the network effectively "votes" on which digit it sees.</p>
                   </div>
                 </div>
               </div>
@@ -1185,8 +1186,8 @@
                 <div class="annotation-content">
                   <span class="badge">5</span>
                   <div class="annotation-text">
-                    <h4>Compile</h4>
-                    <p>Configures how the model learns. The loss function (SparseCategoricalCrossentropy) measures how wrong predictions are. Adam is an optimizer that adjusts weights to minimize that error.</p>
+                    <h4 data-i18n="ann5Title">Compile</h4>
+                    <p data-i18n="ann5Text">Configures how the model learns. The loss function (SparseCategoricalCrossentropy) measures how wrong predictions are. Adam is an optimizer that adjusts weights to minimize that error.</p>
                   </div>
                 </div>
               </div>
@@ -1194,8 +1195,8 @@
                 <div class="annotation-content">
                   <span class="badge">6</span>
                   <div class="annotation-text">
-                    <h4>Train</h4>
-                    <p>The model sees the entire dataset 40 times (epochs). Each pass: it makes predictions, measures the error, and updates its weights to improve.</p>
+                    <h4 data-i18n="ann6Title">Train</h4>
+                    <p data-i18n="ann6Text">The model sees the entire dataset 40 times (epochs). Each pass: it makes predictions, measures the error, and updates its weights to improve.</p>
                   </div>
                 </div>
               </div>
@@ -1206,14 +1207,14 @@
         <!-- SECTION 2: Architecture -->
         <section class="section">
           <div>
-            <h2 class="section-title">Understanding the Architecture</h2>
-            <p class="section-subtitle">A 4-layer neural network that recognizes handwritten digits</p>
+            <h2 class="section-title" data-i18n="section2Title">Understanding the Architecture</h2>
+            <p class="section-subtitle" data-i18n="section2Subtitle">A 4-layer neural network that recognizes handwritten digits</p>
           </div>
 
           <!-- Architecture Diagram -->
           <div class="arch-diagram">
             <div class="arch-box">
-              <div class="arch-label">Input</div>
+              <div class="arch-label" data-i18n="archInput">Input</div>
               <div class="arch-neurons">784</div>
               <div class="arch-sub">28 x 28 px</div>
             </div>
@@ -1224,7 +1225,7 @@
               </svg>
             </div>
             <div class="arch-box green">
-              <div class="arch-label">Hidden 1</div>
+              <div class="arch-label" data-i18n="archHidden1">Hidden 1</div>
               <div class="arch-neurons">64</div>
               <div class="arch-sub">ReLU</div>
             </div>
@@ -1235,7 +1236,7 @@
               </svg>
             </div>
             <div class="arch-box green">
-              <div class="arch-label">Hidden 2</div>
+              <div class="arch-label" data-i18n="archHidden2">Hidden 2</div>
               <div class="arch-neurons">32</div>
               <div class="arch-sub">ReLU</div>
             </div>
@@ -1246,7 +1247,7 @@
               </svg>
             </div>
             <div class="arch-box purple">
-              <div class="arch-label">Output</div>
+              <div class="arch-label" data-i18n="archOutput">Output</div>
               <div class="arch-neurons">10</div>
               <div class="arch-sub">Softmax</div>
             </div>
@@ -1260,8 +1261,8 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z" />
                 </svg>
               </div>
-              <h3 class="concept-title">What is Dense?</h3>
-              <p class="concept-text">In a Dense layer every neuron is connected to every neuron in the previous layer. With 784 inputs and 64 neurons, that means 50,176 individual connections — each with its own trainable weight.</p>
+              <h3 class="concept-title" data-i18n="conceptDenseTitle">What is Dense?</h3>
+              <p class="concept-text" data-i18n="conceptDenseText">In a Dense layer every neuron is connected to every neuron in the previous layer. With 784 inputs and 64 neurons, that means 50,176 individual connections — each with its own trainable weight.</p>
             </div>
             <div class="concept-card">
               <div class="concept-icon" style="background: rgba(34, 197, 94, 0.1); color: #34d399;">
@@ -1269,8 +1270,8 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 class="concept-title">What is ReLU?</h3>
-              <p class="concept-text">ReLU (Rectified Linear Unit) is a simple activation function: if the input is negative it outputs 0, otherwise it passes the value unchanged. This introduces non-linearity, allowing the network to learn complex patterns.</p>
+              <h3 class="concept-title" data-i18n="conceptReLUTitle">What is ReLU?</h3>
+              <p class="concept-text" data-i18n="conceptReLUText">ReLU (Rectified Linear Unit) is a simple activation function: if the input is negative it outputs 0, otherwise it passes the value unchanged. This introduces non-linearity, allowing the network to learn complex patterns.</p>
             </div>
             <div class="concept-card">
               <div class="concept-icon" style="background: rgba(168, 85, 247, 0.1); color: #a855f7;">
@@ -1278,8 +1279,8 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <h3 class="concept-title">What is Softmax?</h3>
-              <p class="concept-text">Softmax converts a vector of raw scores into probabilities. If the output is [2.1, 0.5, 8.3, …], softmax ensures all values are positive and sum to exactly 1.0 — a proper probability distribution.</p>
+              <h3 class="concept-title" data-i18n="conceptSoftmaxTitle">What is Softmax?</h3>
+              <p class="concept-text" data-i18n="conceptSoftmaxText">Softmax converts a vector of raw scores into probabilities. If the output is [2.1, 0.5, 8.3, …], softmax ensures all values are positive and sum to exactly 1.0 — a proper probability distribution.</p>
             </div>
           </div>
         </section>
@@ -1287,8 +1288,8 @@
         <!-- SECTION 3: Pipeline -->
         <section class="section">
           <div>
-            <h2 class="section-title">What Happens When You Draw</h2>
-            <p class="section-subtitle">From pixels to prediction in 6 steps</p>
+            <h2 class="section-title" data-i18n="section3Title">What Happens When You Draw</h2>
+            <p class="section-subtitle" data-i18n="section3Subtitle">From pixels to prediction in 6 steps</p>
           </div>
 
           <div class="pipeline-grid">
@@ -1299,8 +1300,8 @@
                 </svg>
               </div>
               <div class="pipeline-num">1</div>
-              <h4 class="pipeline-title">Draw</h4>
-              <p class="pipeline-text">You draw on a 28×28 canvas. Each cell is a brightness from 0 to 255.</p>
+              <h4 class="pipeline-title" data-i18n="pipe1Title">Draw</h4>
+              <p class="pipeline-text" data-i18n="pipe1Text">You draw on a 28×28 canvas. Each cell is a brightness from 0 to 255.</p>
             </div>
             <div class="pipeline-step">
               <div class="pipeline-icon" style="background: rgba(34, 211, 238, 0.1); color: #22d3ee;">
@@ -1309,8 +1310,8 @@
                 </svg>
               </div>
               <div class="pipeline-num">2</div>
-              <h4 class="pipeline-title">Flatten</h4>
-              <p class="pipeline-text">The 28×28 grid is reshaped into a single array of 784 values.</p>
+              <h4 class="pipeline-title" data-i18n="pipe2Title">Flatten</h4>
+              <p class="pipeline-text" data-i18n="pipe2Text">The 28×28 grid is reshaped into a single array of 784 values.</p>
             </div>
             <div class="pipeline-step">
               <div class="pipeline-icon" style="background: rgba(34, 197, 94, 0.1); color: #34d399;">
@@ -1319,8 +1320,8 @@
                 </svg>
               </div>
               <div class="pipeline-num">3</div>
-              <h4 class="pipeline-title">Normalize</h4>
-              <p class="pipeline-text">Each pixel is normalized: (pixel − 0.13) / 0.31, matching training preprocessing.</p>
+              <h4 class="pipeline-title" data-i18n="pipe3Title">Normalize</h4>
+              <p class="pipeline-text" data-i18n="pipe3Text">Each pixel is normalized: (pixel − 0.13) / 0.31, matching training preprocessing.</p>
             </div>
             <div class="pipeline-step">
               <div class="pipeline-icon" style="background: rgba(234, 179, 8, 0.1); color: #eab308;">
@@ -1329,8 +1330,8 @@
                 </svg>
               </div>
               <div class="pipeline-num">4</div>
-              <h4 class="pipeline-title">Forward Pass</h4>
-              <p class="pipeline-text">Data flows through each layer: multiply by weights, add bias, apply activation.</p>
+              <h4 class="pipeline-title" data-i18n="pipe4Title">Forward Pass</h4>
+              <p class="pipeline-text" data-i18n="pipe4Text">Data flows through each layer: multiply by weights, add bias, apply activation.</p>
             </div>
             <div class="pipeline-step">
               <div class="pipeline-icon" style="background: rgba(251, 146, 60, 0.1); color: #fb923c;">
@@ -1339,8 +1340,8 @@
                 </svg>
               </div>
               <div class="pipeline-num">5</div>
-              <h4 class="pipeline-title">Softmax</h4>
-              <p class="pipeline-text">The 10 raw scores are converted into probabilities that sum to 1.</p>
+              <h4 class="pipeline-title" data-i18n="pipe5Title">Softmax</h4>
+              <p class="pipeline-text" data-i18n="pipe5Text">The 10 raw scores are converted into probabilities that sum to 1.</p>
             </div>
             <div class="pipeline-step">
               <div class="pipeline-icon" style="background: rgba(168, 85, 247, 0.1); color: #a855f7;">
@@ -1349,8 +1350,8 @@
                 </svg>
               </div>
               <div class="pipeline-num">6</div>
-              <h4 class="pipeline-title">Prediction</h4>
-              <p class="pipeline-text">The digit with the highest probability is the network's answer.</p>
+              <h4 class="pipeline-title" data-i18n="pipe6Title">Prediction</h4>
+              <p class="pipeline-text" data-i18n="pipe6Text">The digit with the highest probability is the network's answer.</p>
             </div>
           </div>
         </section>
@@ -1358,54 +1359,46 @@
         <!-- SECTION 4: Key Concepts -->
         <section class="section">
           <div>
-            <h2 class="section-title">Key Concepts</h2>
-            <p class="section-subtitle">Dive deeper into the building blocks</p>
+            <h2 class="section-title" data-i18n="section4Title">Key Concepts</h2>
+            <p class="section-subtitle" data-i18n="section4Subtitle">Dive deeper into the building blocks</p>
           </div>
 
           <div style="display: flex; flex-direction: column; gap: 12px;">
             <div class="expandable-card" style="border-left-color: #3b82f6;">
               <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
-                <span class="expandable-title">Weights & Biases</span>
+                <span class="expandable-title" data-i18n="keyWeights">Weights & Biases</span>
                 <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <div class="expandable-content" style="display: none;">
-                Weights are the learnable numbers on every connection between neurons. Each weight controls how much influence one neuron has on the next. Biases give each neuron an adjustable threshold — they shift the activation function left or right. Together, weights and biases are the "knowledge" the network acquires during training.
-              </div>
+              <div class="expandable-content" style="display: none;" data-i18n="keyWeightsText">Weights are the learnable numbers on every connection between neurons. Each weight controls how much influence one neuron has on the next. Biases give each neuron an adjustable threshold — they shift the activation function left or right. Together, weights and biases are the "knowledge" the network acquires during training.</div>
             </div>
             <div class="expandable-card" style="border-left-color: #f97316;">
               <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
-                <span class="expandable-title">Loss Function</span>
+                <span class="expandable-title" data-i18n="keyLoss">Loss Function</span>
                 <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <div class="expandable-content" style="display: none;">
-                Sparse Categorical Crossentropy measures how far the predicted probabilities are from the true label. If the correct digit is 7 and the model gives 90% confidence to 7, the loss is low. If it gives 10%, the loss is high. The goal of training is to minimize this number across all examples.
-              </div>
+              <div class="expandable-content" style="display: none;" data-i18n="keyLossText">Sparse Categorical Crossentropy measures how far the predicted probabilities are from the true label. If the correct digit is 7 and the model gives 90% confidence to 7, the loss is low. If it gives 10%, the loss is high. The goal of training is to minimize this number across all examples.</div>
             </div>
             <div class="expandable-card" style="border-left-color: #10b981;">
               <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
-                <span class="expandable-title">Adam Optimizer</span>
+                <span class="expandable-title" data-i18n="keyAdam">Adam Optimizer</span>
                 <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <div class="expandable-content" style="display: none;">
-                Adam (Adaptive Moment Estimation) is a smart version of gradient descent. It maintains a moving average of both the gradients and their squared values, adapting the learning rate for each weight individually. This makes training faster and more stable than basic gradient descent.
-              </div>
+              <div class="expandable-content" style="display: none;" data-i18n="keyAdamText">Adam (Adaptive Moment Estimation) is a smart version of gradient descent. It maintains a moving average of both the gradients and their squared values, adapting the learning rate for each weight individually. This makes training faster and more stable than basic gradient descent.</div>
             </div>
             <div class="expandable-card" style="border-left-color: #a855f7;">
               <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
-                <span class="expandable-title">Epochs</span>
+                <span class="expandable-title" data-i18n="keyEpochs">Epochs</span>
                 <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <div class="expandable-content" style="display: none;">
-                One epoch means the model has seen every training example once. Training for 40 epochs means the model passes over the full dataset 40 times. With each pass, it refines its weights — but too many epochs can lead to overfitting, where the model memorizes training data instead of learning general patterns.
-              </div>
+              <div class="expandable-content" style="display: none;" data-i18n="keyEpochsText">One epoch means the model has seen every training example once. Training for 40 epochs means the model passes over the full dataset 40 times. With each pass, it refines its weights — but too many epochs can lead to overfitting, where the model memorizes training data instead of learning general patterns.</div>
             </div>
           </div>
         </section>
@@ -2906,15 +2899,12 @@
         refreshNetworkState()
       } catch (error) {
         console.error('Error initializing visualizer:', error)
-        document.body.innerHTML = `
-          <div style="padding: 48px; text-align: center; color: #ef4444;">
-            <h2>Error loading visualization</h2>
-            <p>${error.message}</p>
-            <p style="margin-top: 16px; font-size: 0.875rem; color: #9ca3af;">
-              Check the console for details.
-            </p>
-          </div>
-        `
+        var errDiv = document.createElement('div')
+        errDiv.style.cssText = 'padding: 48px; text-align: center; color: #ef4444;'
+        errDiv.innerHTML = '<h2 data-i18n="errorTitle">Error loading visualization</h2><p>' + (error.message || '') + '</p><p style="margin-top: 16px; font-size: 0.875rem; color: #9ca3af;" data-i18n="errorConsole">Check the console for details.</p>'
+        document.body.innerHTML = ''
+        document.body.appendChild(errDiv)
+        if (window.applyNNTranslations && window.getNNLang) window.applyNNTranslations(window.getNNLang())
       }
     }
 
@@ -2924,6 +2914,254 @@
     } else {
       initializeVisualizer()
     }
+  </script>
+  <script>
+    (function () {
+      var LANG_KEY = 'portfolio-language'
+      var NN = {
+        en: {
+          pageTitle: 'MNIST Neural Network Visualization',
+          heroTitle: 'MNIST Neural Network Visualization',
+          heroSubtitle: 'Draw a digit and watch how activations propagate through the network',
+          drawing: 'Drawing',
+          clear: 'Clear',
+          hintDraw: 'Click and drag to draw (right-click to erase)',
+          prediction: 'Prediction',
+          trainingEpoch: 'Training Epoch',
+          epoch: 'Epoch',
+          accuracy: 'Accuracy',
+          hintEpoch: 'Adjust the epoch to see how training improves accuracy',
+          hiddenLayerNodes: 'Hidden Layer Nodes',
+          hiddenNodes: 'Hidden Nodes',
+          hintHidden: 'Adjust hidden layer size to see its impact on accuracy',
+          updateBtn: 'Update and Recalculate',
+          hintUpdate: 'Click to update the 3D visualization and recalculate predictions',
+          learnMore: 'Learn More',
+          section1Title: 'How This Network Was Trained',
+          section1Subtitle: 'The actual TensorFlow / Keras code used to build and train the model',
+          codeLang: 'Python / TensorFlow',
+          ann1Title: 'Input Layer',
+          ann1Text: 'Each 28×28 pixel drawing is flattened into a vector of 784 numbers. This is the entry point of the network.',
+          ann2Title: 'Dense(64, relu)',
+          ann2Text: 'A Dense (fully connected) layer: every one of the 64 neurons receives input from ALL 784 pixels. "Dense" means every possible connection exists. ReLU activation: if the value is negative → 0, if positive → passes through unchanged.',
+          ann3Title: 'Dense(32, relu)',
+          ann3Text: 'Second hidden layer with 32 neurons, each connected to all 64 neurons from the previous layer. The network learns progressively more abstract patterns at each layer.',
+          ann4Title: 'Dense(10, softmax)',
+          ann4Text: '10 output neurons — one for each digit (0–9). Softmax converts raw scores into probabilities that sum to 1.0, so the network effectively "votes" on which digit it sees.',
+          ann5Title: 'Compile',
+          ann5Text: 'Configures how the model learns. The loss function (SparseCategoricalCrossentropy) measures how wrong predictions are. Adam is an optimizer that adjusts weights to minimize that error.',
+          ann6Title: 'Train',
+          ann6Text: 'The model sees the entire dataset 40 times (epochs). Each pass: it makes predictions, measures the error, and updates its weights to improve.',
+          section2Title: 'Understanding the Architecture',
+          section2Subtitle: 'A 4-layer neural network that recognizes handwritten digits',
+          archInput: 'Input',
+          archHidden1: 'Hidden 1',
+          archHidden2: 'Hidden 2',
+          archOutput: 'Output',
+          conceptDenseTitle: 'What is Dense?',
+          conceptDenseText: 'In a Dense layer every neuron is connected to every neuron in the previous layer. With 784 inputs and 64 neurons, that means 50,176 individual connections — each with its own trainable weight.',
+          conceptReLUTitle: 'What is ReLU?',
+          conceptReLUText: 'ReLU (Rectified Linear Unit) is a simple activation function: if the input is negative it outputs 0, otherwise it passes the value unchanged. This introduces non-linearity, allowing the network to learn complex patterns.',
+          conceptSoftmaxTitle: 'What is Softmax?',
+          conceptSoftmaxText: 'Softmax converts a vector of raw scores into probabilities. If the output is [2.1, 0.5, 8.3, …], softmax ensures all values are positive and sum to exactly 1.0 — a proper probability distribution.',
+          section3Title: 'What Happens When You Draw',
+          section3Subtitle: 'From pixels to prediction in 6 steps',
+          pipe1Title: 'Draw',
+          pipe1Text: 'You draw on a 28×28 canvas. Each cell is a brightness from 0 to 255.',
+          pipe2Title: 'Flatten',
+          pipe2Text: 'The 28×28 grid is reshaped into a single array of 784 values.',
+          pipe3Title: 'Normalize',
+          pipe3Text: 'Each pixel is normalized: (pixel − 0.13) / 0.31, matching training preprocessing.',
+          pipe4Title: 'Forward Pass',
+          pipe4Text: 'Data flows through each layer: multiply by weights, add bias, apply activation.',
+          pipe5Title: 'Softmax',
+          pipe5Text: 'The 10 raw scores are converted into probabilities that sum to 1.',
+          pipe6Title: 'Prediction',
+          pipe6Text: "The digit with the highest probability is the network's answer.",
+          section4Title: 'Key Concepts',
+          section4Subtitle: 'Dive deeper into the building blocks',
+          keyWeights: 'Weights & Biases',
+          keyWeightsText: 'Weights are the learnable numbers on every connection between neurons. Each weight controls how much influence one neuron has on the next. Biases give each neuron an adjustable threshold — they shift the activation function left or right. Together, weights and biases are the "knowledge" the network acquires during training.',
+          keyLoss: 'Loss Function',
+          keyLossText: 'Sparse Categorical Crossentropy measures how far the predicted probabilities are from the true label. If the correct digit is 7 and the model gives 90% confidence to 7, the loss is low. If it gives 10%, the loss is high. The goal of training is to minimize this number across all examples.',
+          keyAdam: 'Adam Optimizer',
+          keyAdamText: 'Adam (Adaptive Moment Estimation) is a smart version of gradient descent. It maintains a moving average of both the gradients and their squared values, adapting the learning rate for each weight individually. This makes training faster and more stable than basic gradient descent.',
+          keyEpochs: 'Epochs',
+          keyEpochsText: 'One epoch means the model has seen every training example once. Training for 40 epochs means the model passes over the full dataset 40 times. With each pass, it refines its weights — but too many epochs can lead to overfitting, where the model memorizes training data instead of learning general patterns.',
+          errorTitle: 'Error loading visualization',
+          errorConsole: 'Check the console for details.',
+          langMobileLabel: 'Idioma / Language'
+        },
+        es: {
+          pageTitle: 'Visualización de red neuronal MNIST',
+          heroTitle: 'Visualización de red neuronal MNIST',
+          heroSubtitle: 'Dibuja un dígito y observa cómo se propagan las activaciones por la red',
+          drawing: 'Dibujo',
+          clear: 'Borrar',
+          hintDraw: 'Haz clic y arrastra para dibujar (clic derecho para borrar)',
+          prediction: 'Predicción',
+          trainingEpoch: 'Época de entrenamiento',
+          epoch: 'Época',
+          accuracy: 'Precisión',
+          hintEpoch: 'Ajusta la época para ver cómo mejora la precisión con el entrenamiento',
+          hiddenLayerNodes: 'Nodos de la capa oculta',
+          hiddenNodes: 'Nodos ocultos',
+          hintHidden: 'Ajusta el tamaño de la capa oculta para ver su impacto en la precisión',
+          updateBtn: 'Actualizar y recalcular',
+          hintUpdate: 'Haz clic para actualizar la visualización 3D y recalcular las predicciones',
+          learnMore: 'Saber más',
+          section1Title: 'Cómo se entrenó esta red',
+          section1Subtitle: 'El código real en TensorFlow / Keras usado para construir y entrenar el modelo',
+          codeLang: 'Python / TensorFlow',
+          ann1Title: 'Capa de entrada',
+          ann1Text: 'Cada dibujo de 28×28 píxeles se aplana en un vector de 784 números. Es la entrada de la red.',
+          ann2Title: 'Dense(64, relu)',
+          ann2Text: 'Capa Dense (totalmente conectada): cada uno de los 64 neuronas recibe entrada de los 784 píxeles. "Dense" significa que existe cada conexión posible. Activación ReLU: si el valor es negativo → 0, si es positivo → se deja igual.',
+          ann3Title: 'Dense(32, relu)',
+          ann3Text: 'Segunda capa oculta con 32 neuronas, cada una conectada a las 64 de la capa anterior. La red aprende patrones cada vez más abstractos en cada capa.',
+          ann4Title: 'Dense(10, softmax)',
+          ann4Text: '10 neuronas de salida, una por cada dígito (0–9). Softmax convierte las puntuaciones en probabilidades que suman 1.0; la red "vota" qué dígito cree ver.',
+          ann5Title: 'Compile',
+          ann5Text: 'Configura cómo aprende el modelo. La función de pérdida (SparseCategoricalCrossentropy) mide el error de las predicciones. Adam es un optimizador que ajusta los pesos para minimizar ese error.',
+          ann6Title: 'Train',
+          ann6Text: 'El modelo ve todo el dataset 40 veces (épocas). En cada pasada: predice, mide el error y actualiza los pesos para mejorar.',
+          section2Title: 'Entender la arquitectura',
+          section2Subtitle: 'Una red neuronal de 4 capas que reconoce dígitos escritos a mano',
+          archInput: 'Entrada',
+          archHidden1: 'Oculta 1',
+          archHidden2: 'Oculta 2',
+          archOutput: 'Salida',
+          conceptDenseTitle: '¿Qué es Dense?',
+          conceptDenseText: 'En una capa Dense cada neurona está conectada a todas las de la capa anterior. Con 784 entradas y 64 neuronas hay 50.176 conexiones, cada una con su peso entrenable.',
+          conceptReLUTitle: '¿Qué es ReLU?',
+          conceptReLUText: 'ReLU (Unidad Lineal Rectificada) es una función de activación simple: si la entrada es negativa devuelve 0; si no, el valor pasa igual. Introduce no linealidad y permite aprender patrones complejos.',
+          conceptSoftmaxTitle: '¿Qué es Softmax?',
+          conceptSoftmaxText: 'Softmax convierte un vector de puntuaciones en probabilidades. Si la salida es [2.1, 0.5, 8.3, …], softmax hace que los valores sean positivos y sumen 1.0.',
+          section3Title: 'Qué ocurre cuando dibujas',
+          section3Subtitle: 'De píxeles a predicción en 6 pasos',
+          pipe1Title: 'Dibujar',
+          pipe1Text: 'Dibujas en un lienzo 28×28. Cada celda es un brillo de 0 a 255.',
+          pipe2Title: 'Aplanar',
+          pipe2Text: 'La cuadrícula 28×28 se convierte en un único array de 784 valores.',
+          pipe3Title: 'Normalizar',
+          pipe3Text: 'Cada píxel se normaliza: (píxel − 0.13) / 0.31, igual que en el entrenamiento.',
+          pipe4Title: 'Forward pass',
+          pipe4Text: 'Los datos pasan por cada capa: multiplicar por pesos, sumar bias, aplicar activación.',
+          pipe5Title: 'Softmax',
+          pipe5Text: 'Las 10 puntuaciones se convierten en probabilidades que suman 1.',
+          pipe6Title: 'Predicción',
+          pipe6Text: 'El dígito con mayor probabilidad es la respuesta de la red.',
+          section4Title: 'Conceptos clave',
+          section4Subtitle: 'Profundiza en los bloques básicos',
+          keyWeights: 'Pesos y biases',
+          keyWeightsText: 'Los pesos son los números que se aprenden en cada conexión. Cada peso controla la influencia de una neurona en la siguiente. Los biases dan a cada neurona un umbral; desplazan la función de activación. Juntos son el "conocimiento" de la red.',
+          keyLoss: 'Función de pérdida',
+          keyLossText: 'Sparse Categorical Crossentropy mide cuánto se alejan las probabilidades predichas de la etiqueta real. Si el dígito correcto es 7 y el modelo da 90% al 7, la pérdida es baja. Si da 10%, es alta. El entrenamiento minimiza este valor.',
+          keyAdam: 'Optimizador Adam',
+          keyAdamText: 'Adam (Adaptive Moment Estimation) es una versión mejorada del descenso por gradiente. Mantiene medias móviles de los gradientes y de sus cuadrados, adaptando la tasa de aprendizaje por peso. Entrenamiento más rápido y estable.',
+          keyEpochs: 'Épocas',
+          keyEpochsText: 'Una época significa que el modelo ha visto cada ejemplo una vez. 40 épocas = 40 pasadas completas al dataset. En cada pasada refina los pesos; demasiadas épocas pueden causar overfitting (memorizar en vez de generalizar).',
+          errorTitle: 'Error al cargar la visualización',
+          errorConsole: 'Revisa la consola para más detalles.',
+          langMobileLabel: 'Idioma / Language'
+        },
+        ca: {
+          pageTitle: 'Visualització de xarxa neuronal MNIST',
+          heroTitle: 'Visualització de xarxa neuronal MNIST',
+          heroSubtitle: 'Dibuixa un dígit i observa com es propaguen les activacions per la xarxa',
+          drawing: 'Dibuix',
+          clear: 'Esborrar',
+          hintDraw: 'Clica i arrossega per dibuixar (clic dret per esborrar)',
+          prediction: 'Predicció',
+          trainingEpoch: 'Època d\'entrenament',
+          epoch: 'Època',
+          accuracy: 'Precisió',
+          hintEpoch: 'Ajusta l\'època per veure com millora la precisió amb l\'entrenament',
+          hiddenLayerNodes: 'Nodes de la capa oculta',
+          hiddenNodes: 'Nodes ocults',
+          hintHidden: 'Ajusta la mida de la capa oculta per veure el seu impacte en la precisió',
+          updateBtn: 'Actualitzar i recalcular',
+          hintUpdate: 'Clica per actualitzar la visualització 3D i recalcular les prediccions',
+          learnMore: 'Saber-ne més',
+          section1Title: 'Com es va entrenar aquesta xarxa',
+          section1Subtitle: 'El codi real en TensorFlow / Keras utilitzat per construir i entrenar el model',
+          codeLang: 'Python / TensorFlow',
+          ann1Title: 'Capa d\'entrada',
+          ann1Text: 'Cada dibuix de 28×28 píxels s\'aplana en un vector de 784 nombres. És l\'entrada de la xarxa.',
+          ann2Title: 'Dense(64, relu)',
+          ann2Text: 'Capa Dense (totalment connectada): cada una de les 64 neurones rep entrada dels 784 píxels. "Dense" vol dir que existeix cada connexió possible. Activació ReLU: si el valor és negatiu → 0; si és positiu → es deixa igual.',
+          ann3Title: 'Dense(32, relu)',
+          ann3Text: 'Segona capa oculta amb 32 neurones, connectades a les 64 de la capa anterior. La xarxa aprèn patrons cada cop més abstractes.',
+          ann4Title: 'Dense(10, softmax)',
+          ann4Text: '10 neurones de sortida, una per cada dígit (0–9). Softmax converteix les puntuacions en probabilitats que sumen 1.0.',
+          ann5Title: 'Compile',
+          ann5Text: 'Configura com aprèn el model. La funció de pèrdua (SparseCategoricalCrossentropy) mesura l\'error de les prediccions. Adam és un optimitzador que ajusta els pesos per minimitzar aquest error.',
+          ann6Title: 'Train',
+          ann6Text: 'El model veu tot el dataset 40 vegades (èpoques). A cada passada: prediu, mesura l\'error i actualitza els pesos.',
+          section2Title: 'Entendre l\'arquitectura',
+          section2Subtitle: 'Una xarxa neuronal de 4 capes que reconeix dígits escrits a mà',
+          archInput: 'Entrada',
+          archHidden1: 'Oculta 1',
+          archHidden2: 'Oculta 2',
+          archOutput: 'Sortida',
+          conceptDenseTitle: 'Què és Dense?',
+          conceptDenseText: 'En una capa Dense cada neurona està connectada a totes les de la capa anterior. Amb 784 entrades i 64 neurones hi ha 50.176 connexions, cadascuna amb el seu pes entrenable.',
+          conceptReLUTitle: 'Què és ReLU?',
+          conceptReLUText: 'ReLU (Unitat Lineal Rectificada) és una funció d\'activació simple: si l\'entrada és negativa retorna 0; si no, el valor passa igual. Introdueix no linealitat.',
+          conceptSoftmaxTitle: 'Què és Softmax?',
+          conceptSoftmaxText: 'Softmax converteix un vector de puntuacions en probabilitats que sumen 1.0.',
+          section3Title: 'Què passa quan dibuixes',
+          section3Subtitle: 'De píxels a predicció en 6 passos',
+          pipe1Title: 'Dibuixar',
+          pipe1Text: 'Dibuixes en un llenç 28×28. Cada cel·la és una brillantor de 0 a 255.',
+          pipe2Title: 'Aplanar',
+          pipe2Text: 'La graella 28×28 es converteix en un array de 784 valors.',
+          pipe3Title: 'Normalitzar',
+          pipe3Text: 'Cada píxel es normalitza: (píxel − 0.13) / 0.31, com a l\'entrenament.',
+          pipe4Title: 'Forward pass',
+          pipe4Text: 'Les dades passen per cada capa: multiplicar per pesos, sumar bias, aplicar activació.',
+          pipe5Title: 'Softmax',
+          pipe5Text: 'Les 10 puntuacions es converteixen en probabilitats que sumen 1.',
+          pipe6Title: 'Predicció',
+          pipe6Text: 'El dígit amb més probabilitat és la resposta de la xarxa.',
+          section4Title: 'Conceptes clau',
+          section4Subtitle: 'Approfundeix en els blocs bàsics',
+          keyWeights: 'Pesos i biases',
+          keyWeightsText: 'Els pesos són els nombres que s\'aprenen en cada connexió. Els biases donen a cada neurona un llindar. Junts són el "coneixement" de la xarxa.',
+          keyLoss: 'Funció de pèrdua',
+          keyLossText: 'Sparse Categorical Crossentropy mesura com s\'allunyen les probabilitats de l\'etiqueta real. L\'entrenament minimitza aquest valor.',
+          keyAdam: 'Optimitzador Adam',
+          keyAdamText: 'Adam manté mitjanes mòbils dels gradients i adapta la taxa d\'aprenentatge per pes. Entrenament més ràpid i estable.',
+          keyEpochs: 'Èpoques',
+          keyEpochsText: 'Una època vol dir que el model ha vist cada exemple una vegada. Masses èpoques poden causar overfitting.',
+          errorTitle: 'Error en carregar la visualització',
+          errorConsole: 'Revisa la consola per a més detalls.',
+          langMobileLabel: 'Idioma / Language'
+        }
+      }
+      function getNNLang() {
+        var s = localStorage.getItem(LANG_KEY)
+        return (s === 'es' || s === 'ca') ? s : 'en'
+      }
+      function applyTranslations(lang) {
+        var t = NN[lang] || NN.en
+        document.querySelectorAll('[data-i18n]').forEach(function (el) {
+          var key = el.getAttribute('data-i18n')
+          var val = t[key]
+          if (val != null) el.textContent = val
+        })
+        document.title = t.pageTitle
+        document.documentElement.lang = lang === 'es' ? 'es' : lang === 'ca' ? 'ca' : 'en'
+      }
+      window.addEventListener('nn-lang-change', function (e) { if (e.detail && e.detail.lang) applyTranslations(e.detail.lang) })
+      window.applyNNTranslations = applyTranslations
+      window.getNNLang = getNNLang
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () { applyTranslations(getNNLang()) })
+      } else {
+        applyTranslations(getNNLang())
+      }
+    })()
   </script>
 </body>
 </html>
