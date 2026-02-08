@@ -145,6 +145,23 @@ app.post('/api/generate-quote', async (req, res) => {
   }
 })
 
+const BUILDAPP_BUDGET_URL = 'https://buildapp-v1-backend.onrender.com/api/v1/budget/generate-detailed'
+app.post('/api/buildapp-budget', async (req, res) => {
+  try {
+    const body = req.body || {}
+    const response = await fetch(BUILDAPP_BUDGET_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+    const data = await response.json().catch(() => ({}))
+    res.status(response.status).json(data)
+  } catch (err) {
+    console.error('buildapp-budget proxy error:', err.message)
+    res.status(500).json({ error: err.message || 'Proxy error' })
+  }
+})
+
 app.post('/api/leads', (req, res) => {
   try {
     const { lead, result } = req.body || {}

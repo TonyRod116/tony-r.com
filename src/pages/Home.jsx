@@ -346,37 +346,27 @@ export default function Home() {
         <div className="container mx-auto px-8 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col lg:grid lg:grid-cols-2 gap-12 items-center min-h-[70vh]">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 1, x: 0 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.4 }}
               className="space-y-8 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg rounded-2xl px-8 py-6 sm:p-8 shadow-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 sm:mt-0 w-full"
             >
               <div className="space-y-4">
-                <motion.h1
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                  className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tight text-gray-900 dark:text-white drop-shadow-sm"
-                >
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tight text-gray-900 dark:text-white drop-shadow-sm">
                   {t('home.hero.titlePart1')}
                   <br />
                   <span className="gradient-text">{t('home.hero.titlePart2')}</span>
-                </motion.h1>
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl drop-shadow-sm"
-                >
+                </h1>
+                <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl drop-shadow-sm">
                   {t('home.hero.subtitle')}
-                </motion.p>
+                </p>
               </div>
 
 
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 1, y: 0 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
+                transition={{ duration: 0.4, delay: 0.1 }}
                 className="flex flex-col sm:flex-row gap-4"
               >
                 <Link
@@ -394,12 +384,7 @@ export default function Home() {
                 </Link>
               </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-                className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-6 text-sm text-gray-600 dark:text-gray-300"
-              >
+              <div className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-6 text-sm text-gray-600 dark:text-gray-300">
                 <div className="flex items-center space-x-6">
                   <a
                     href={profile.github}
@@ -427,16 +412,11 @@ export default function Home() {
                   <Mail className="h-4 w-4" />
                   <span>Email</span>
                 </a>
-              </motion.div>
+              </div>
             </motion.div>
 
             {/* Scroll down arrow - Mobile only */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-              className="lg:hidden flex justify-center mt-8"
-            >
+            <div className="lg:hidden flex justify-center mt-8">
               <motion.div
                 animate={{ y: [0, 8, 0] }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -445,27 +425,17 @@ export default function Home() {
                 <span className="text-sm font-medium">{t('home.hero.scrollDown')}</span>
                 <ChevronDown className="h-6 w-6" />
               </motion.div>
-            </motion.div>
+            </div>
 
             {/* Space for photo (will be filled with background effect) */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="relative h-96 lg:h-[500px]"
-            >
+            <div className="relative h-96 lg:h-[500px]">
               {/* This space will be filled with the background photo */}
-            </motion.div>
+            </div>
           </div>
         </div>
         
          {/* Scroll down indicator - Desktop only */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="hidden lg:flex justify-center mt-8"
-        >
+        <div className="hidden lg:flex justify-center mt-8">
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -474,7 +444,7 @@ export default function Home() {
             <span className="text-sm font-medium">{t('home.hero.scrollDown')}</span>
             <ChevronDown className="h-5 w-5" />
           </motion.div>
-        </motion.div>
+        </div>
       </section>
 
       {/* About Preview */}

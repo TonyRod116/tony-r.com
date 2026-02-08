@@ -69,6 +69,9 @@ Para que **Lead Qualifier** y **Presupuestos Reformas** conecten con las IAs en 
 4. **Nota sobre historial de leads**  
    En Vercel no hay persistencia para `/api/leads`: el listado de historial en ReformasDemo saldrá vacío. Si necesitas historial real, opciones: usar **Vercel KV** (u otro almacén) en las funciones, o desplegar el `server/` en otro host (p. ej. Render) y definir **`VITE_API_URL`** en Vercel (Build) con esa URL.
 
+5. **Si /demos da 403**  
+   El middleware en `middleware.js` reescribe `/demos` y `/demos/` a `index.html`. Para ver logs de debug: **Vercel Dashboard → tu proyecto → Deployments → [último deployment] → Runtime Logs** (o **Logs**). Ahí salen los `[middleware] pathname= ...` de cada petición.
+
 ---
 
 ## Demo: Presupuestos Reformas

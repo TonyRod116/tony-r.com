@@ -4,9 +4,6 @@
   "framework": "vite",
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/:path*" },
-    { "source": "/demos/data/:path*", "destination": "/demos/data/:path*" },
-    { "source": "/demos/", "destination": "/index.html" },
-    { "source": "/demos", "destination": "/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
