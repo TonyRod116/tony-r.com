@@ -1,8 +1,11 @@
-// Helper to check if a value is actually set (not null, "null", undefined, empty)
+// Valores que indican "no quiso / no pudo responder" (el campo existe en JSON como n/a)
+const NO_ANSWER_VALUES = ['n/a', 'unknown', 'null', 'undefined']
+
+// Helper to check if a value is actually set (not null, "null", undefined, empty, n/a)
 function hasValue(val) {
   if (val === null || val === undefined) return false
-  if (val === 'null' || val === 'undefined' || val === 'unknown') return false
-  if (typeof val === 'string' && val.trim() === '') return false
+  if (NO_ANSWER_VALUES.includes(val)) return false
+  if (typeof val === 'string' && (val.trim() === '' || NO_ANSWER_VALUES.includes(val.toLowerCase()))) return false
   return true
 }
 
@@ -62,26 +65,29 @@ function validateStructuredResponse(parsed) {
   const disposition = state.internal_disposition || 'warm'
   const { score, tier } = dispositionToScoreTier(disposition, state)
   
-  // Map state fields to leadFields for UI - only include fields with actual values
+  const isNoAnswer = (v) => v != null && (NO_ANSWER_VALUES.includes(v) || (typeof v === 'string' && v.toLowerCase() === 'n/a'))
+
+  // Map state fields to leadFields; si el cliente no quiso responder usamos "n/a" para que el campo exista
   const leadFields = {
-    projectType: hasValue(state.project_type) ? state.project_type : null,
-    city: hasValue(state.city) ? state.city : null,
-    sqm: hasValue(state.approx_sqm) ? parseInt(String(state.approx_sqm).replace(/\D/g, ''), 10) || null : null,
-    budget: hasValue(state.budget_max) ? parseBudget(state.budget_max) : null,
-    budgetRange: hasValue(state.budget_range) ? state.budget_range : null,
-    timeline: hasValue(state.timeline_start) ? state.timeline_start : null,
-    hasDocs: hasValue(state.docs_available) ? state.docs_available : null,
-    contactName: hasValue(state.contact_name) ? state.contact_name : null,
-    contactPhone: hasValue(state.contact_phone) ? state.contact_phone : null,
-    contactEmail: hasValue(state.contact_email) ? state.contact_email : null,
-    postalCode: hasValue(state.postal_code) ? state.postal_code : null,
-    scopeDescription: hasValue(state.scope_description) ? state.scope_description : null,
-    constraints: hasValue(state.constraints) ? state.constraints : null,
+    projectType: hasValue(state.project_type) ? state.project_type : (isNoAnswer(state.project_type) ? 'n/a' : null),
+    city: hasValue(state.city) ? state.city : (isNoAnswer(state.city) ? 'n/a' : null),
+    sqm: hasValue(state.approx_sqm) ? parseInt(String(state.approx_sqm).replace(/\D/g, ''), 10) || null : (isNoAnswer(state.approx_sqm) ? 'n/a' : null),
+    budget: hasValue(state.budget_max) ? parseBudget(state.budget_max) : (isNoAnswer(state.budget_max) ? 'n/a' : null),
+    budgetRange: hasValue(state.budget_range) ? state.budget_range : (isNoAnswer(state.budget_range) ? 'n/a' : null),
+    timeline: hasValue(state.timeline_start) ? state.timeline_start : (isNoAnswer(state.timeline_start) ? 'n/a' : null),
+    hasDocs: hasValue(state.docs_available) ? state.docs_available : (isNoAnswer(state.docs_available) ? 'n/a' : null),
+    contactName: hasValue(state.contact_name) ? state.contact_name : (isNoAnswer(state.contact_name) ? 'n/a' : null),
+    contactPhone: hasValue(state.contact_phone) ? state.contact_phone : (isNoAnswer(state.contact_phone) ? 'n/a' : null),
+    contactEmail: hasValue(state.contact_email) ? state.contact_email : (isNoAnswer(state.contact_email) ? 'n/a' : null),
+    wantsCallBack: state.wants_call_back === true || state.wants_call_back === 'true',
+    doNotContact: state.do_not_contact === true || state.do_not_contact === 'true',
+    postalCode: hasValue(state.postal_code) ? state.postal_code : (isNoAnswer(state.postal_code) ? 'n/a' : null),
+    scopeDescription: hasValue(state.scope_description) ? state.scope_description : (isNoAnswer(state.scope_description) ? 'n/a' : null),
+    constraints: hasValue(state.constraints) ? state.constraints : (isNoAnswer(state.constraints) ? 'n/a' : null),
   }
   
-  // Filter out null values for cleaner output
   const cleanLeadFields = Object.fromEntries(
-    Object.entries(leadFields).filter(([_, v]) => v !== null)
+    Object.entries(leadFields).filter(([_, v]) => v !== undefined)
   )
   
   console.log('[LeadQualifier] Mapped leadFields:', cleanLeadFields)
@@ -109,8 +115,7 @@ function validateStructuredResponse(parsed) {
 function parseBudget(value) {
   if (typeof value === 'number') return value
   if (typeof value === 'string') {
-    // Handle "unknown" or similar
-    if (value.toLowerCase() === 'unknown' || value.toLowerCase() === 'null') return null
+    if (NO_ANSWER_VALUES.includes(value.toLowerCase())) return null
     // Extract number from string like "15000" or "15.000€" or "15000-20000"
     const cleanValue = value.replace(/\./g, '').replace(/,/g, '')
     const match = cleanValue.match(/(\d+)/)
@@ -123,15 +128,16 @@ function dispositionToScoreTier(disposition, state) {
   // Base score from disposition
   let score = disposition === 'hot' ? 80 : disposition === 'warm' ? 50 : 20
 
-  // Adjust based on data completeness
+  // Adjust based on data completeness (plazo es obligatorio y suma en clasificación)
   if (hasValue(state.project_type)) score += 5
   if (hasValue(state.city)) score += 5
-  if (hasValue(state.budget_max) && state.budget_max !== 'unknown') score += 10
-  if (hasValue(state.timeline_start)) score += 5
+  if (hasValue(state.budget_max)) score += 10
+  if (hasValue(state.timeline_start)) score += 15
+  else score -= 10 // Plazo no indicado resta; es importante para la clasificación
   if (hasValue(state.contact_phone)) score += 15
 
-  // Cap at 100
-  score = Math.min(100, score)
+  // Clamp between 0 and 100
+  score = Math.max(0, Math.min(100, score))
 
   // Calculate tier
   const tier = score >= 80 ? 1 : score >= 60 ? 2 : score >= 40 ? 3 : score >= 20 ? 4 : 5
@@ -150,14 +156,16 @@ function generateReasons(state, disposition) {
     reasons.push(`Ubicación: ${state.city}`)
   }
 
-  if (hasValue(state.budget_max) && state.budget_max !== 'unknown') {
+  if (hasValue(state.budget_max)) {
     reasons.push(`Presupuesto definido`)
-  } else if (state.budget_max === 'unknown') {
-    reasons.push(`Presupuesto pendiente de definir`)
+  } else if (state.budget_max != null && NO_ANSWER_VALUES.includes(String(state.budget_max).toLowerCase())) {
+    reasons.push(`Presupuesto: no indicado (n/a)`)
   }
 
   if (hasValue(state.timeline_start)) {
-    reasons.push(`Plazo: ${state.timeline_start}`)
+    reasons.push(`Plazo definido: ${state.timeline_start}`)
+  } else {
+    reasons.push('Plazo no indicado (resta en clasificación)')
   }
 
   if (hasValue(state.contact_phone)) {

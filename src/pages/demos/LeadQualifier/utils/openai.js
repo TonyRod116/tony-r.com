@@ -1,14 +1,9 @@
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions'
 const TIMEOUT_MS = 30000
 
-// Detectar si estamos en producción (Vercel) o desarrollo local
+// Siempre usar el proxy /api/chat (el servidor tiene la API key de OpenAI)
 function getApiEndpoint() {
-  // En producción, usar nuestro proxy serverless
-  if (import.meta.env.PROD || window.location.hostname !== 'localhost') {
-    return '/api/chat'
-  }
-  // En desarrollo local, usar OpenAI directamente (requiere token manual)
-  return null
+  return '/api/chat'
 }
 
 export async function callOpenAI(apiToken, systemPrompt, messages, config = {}) {
@@ -18,17 +13,17 @@ export async function callOpenAI(apiToken, systemPrompt, messages, config = {}) 
   try {
     const proxyEndpoint = getApiEndpoint()
     
-    // Si hay endpoint proxy disponible (producción), usarlo
-    if (proxyEndpoint && !apiToken) {
+    // Siempre usar el proxy (mensajes y config se envían; la API key está en el servidor)
+    if (proxyEndpoint) {
       return await callViaProxy(proxyEndpoint, messages, config, controller.signal)
     }
     
-    // Si hay token manual, llamar directamente a OpenAI
+    // Si hay token manual en el cliente, llamar directamente a OpenAI
     if (apiToken) {
       return await callDirectOpenAI(apiToken, systemPrompt, messages, controller.signal)
     }
     
-    throw new Error('No hay token configurado. Usa el modo simulado o configura un token.')
+    throw new Error('No se pudo conectar con el asistente. Comprueba que el servidor /api/chat esté disponible.')
 
   } finally {
     clearTimeout(timeoutId)

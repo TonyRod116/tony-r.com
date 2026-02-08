@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { X, Save, MapPin, Banknote, AlertTriangle } from 'lucide-react'
+import { X, Save, MapPin, Banknote, AlertTriangle, TrendingUp } from 'lucide-react'
 
 export default function ConfigPanel({ config, onSave, onClose }) {
   const [localConfig, setLocalConfig] = useState({
@@ -11,6 +11,7 @@ export default function ConfigPanel({ config, onSave, onClose }) {
       integral: config.budgetRanges?.integral?.min || 50000,
       pintura: config.budgetRanges?.pintura?.min || 2500,
     },
+    budgetBonusThreshold: config.budgetBonusThreshold ?? 50000,
   })
 
   const handleSave = () => {
@@ -23,6 +24,7 @@ export default function ConfigPanel({ config, onSave, onClose }) {
         integral: { min: localConfig.budgetRanges.integral },
         pintura: { min: localConfig.budgetRanges.pintura },
       },
+      budgetBonusThreshold: localConfig.budgetBonusThreshold,
     }
     onSave(newConfig)
     onClose()
@@ -115,6 +117,26 @@ export default function ConfigPanel({ config, onSave, onClose }) {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Budget bonus threshold */}
+          <div>
+            <label className="flex items-center gap-2 text-sm font-medium text-white mb-2">
+              <TrendingUp className="h-4 w-4 text-primary-400" />
+              Presupuesto para bonus de puntos
+            </label>
+            <p className="text-xs text-gray-500 mb-2">
+              Si el cliente indica un presupuesto aproximado mayor de este importe, se suman puntos extra a su clasificación.
+            </p>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                value={localConfig.budgetBonusThreshold}
+                onChange={(e) => setLocalConfig(prev => ({ ...prev, budgetBonusThreshold: parseInt(e.target.value, 10) || 0 }))}
+                className="flex-1 px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white text-sm focus:ring-2 focus:ring-primary-500"
+              />
+              <span className="text-gray-400 text-sm">€</span>
             </div>
           </div>
         </div>

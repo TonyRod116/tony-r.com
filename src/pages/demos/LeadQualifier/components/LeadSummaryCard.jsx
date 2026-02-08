@@ -56,6 +56,9 @@ const clientRatings = {
 // Calcular la clasificación basada en los datos del lead
 function calculateClientRating(leadData, config = {}) {
   if (!leadData) return { rating: 'regular', score: 0, factors: [] }
+  if (leadData.doNotContact) {
+    return { rating: 'bad', score: 0, factors: [{ text: 'No quiere ser contactado', positive: false }] }
+  }
   
   let score = 50 // Empezamos en neutral
   const factors = []
@@ -81,8 +84,8 @@ function calculateClientRating(leadData, config = {}) {
     projectCategory = 'pintura'
   }
   
-  // Factor: Presupuesto vs mínimo del tipo de proyecto
-  const budget = leadData.budget || 0
+  // Factor: Presupuesto vs mínimo (solo si es número; n/a no suma ni resta)
+  const budget = typeof leadData.budget === 'number' ? leadData.budget : 0
   if (budget > 0 && projectCategory) {
     const minRequired = budgetMins[projectCategory]
     if (budget >= minRequired * 1.5) {
@@ -109,17 +112,25 @@ function calculateClientRating(leadData, config = {}) {
     }
   }
   
-  // Factor: Urgencia/Timeline
+  // Factor: Plazo / Cuándo empezar (siempre debe preguntarse; suma o resta en la clasificación)
   const timeline = (leadData.timeline || '').toLowerCase()
-  if (timeline.includes('ya') || timeline.includes('inmediato') || timeline.includes('urgente') || timeline.includes('cuanto antes')) {
-    score += 20
-    factors.push({ text: 'Quiere empezar YA', positive: true })
-  } else if (timeline.includes('mes') || timeline.includes('semana')) {
-    score += 15
-    factors.push({ text: 'Plazo corto', positive: true })
-  } else if (timeline.includes('año') || timeline.includes('no sé') || timeline.includes('más adelante')) {
+  const hasTimeline = timeline && timeline !== 'n/a' && timeline !== 'unknown'
+  if (hasTimeline) {
+    score += 5
+    factors.push({ text: 'Plazo definido', positive: true })
+    if (timeline.includes('ya') || timeline.includes('inmediato') || timeline.includes('urgente') || timeline.includes('cuanto antes')) {
+      score += 20
+      factors.push({ text: 'Quiere empezar YA', positive: true })
+    } else if (timeline.includes('mes') || timeline.includes('semana')) {
+      score += 15
+      factors.push({ text: 'Plazo corto', positive: true })
+    } else if (timeline.includes('año') || timeline.includes('no sé') || timeline.includes('más adelante')) {
+      score -= 10
+      factors.push({ text: 'Sin urgencia', positive: false })
+    }
+  } else {
     score -= 10
-    factors.push({ text: 'Sin urgencia', positive: false })
+    factors.push({ text: 'Plazo no indicado (importante para clasificación)', positive: false })
   }
   
   // Factor: Tipo de proyecto (bonus)
@@ -134,16 +145,25 @@ function calculateClientRating(leadData, config = {}) {
     factors.push({ text: 'Reforma de baño', positive: true })
   }
   
-  // Factor: Ciudad cubierta
-  if (leadData.city) {
+  // Factor: Ciudad cubierta (n/a no suma)
+  if (leadData.city && leadData.city !== 'n/a' && leadData.city !== 'unknown') {
     score += 10
     factors.push({ text: 'Ubicación confirmada', positive: true })
   }
   
-  // Factor: Contacto proporcionado
-  if (leadData.contactPhone) {
+  // Factor: Contacto proporcionado (teléfono o email); solo cuenta si hay valor real, no vacío ni n/a
+  const hasRealValue = (v) => v != null && String(v).trim() !== '' && !['n/a', 'unknown'].includes(String(v).toLowerCase())
+  const hasContact = hasRealValue(leadData.contactPhone) || hasRealValue(leadData.contactEmail)
+  if (hasContact) {
     score += 15
-    factors.push({ text: 'Teléfono facilitado', positive: true })
+    factors.push({ text: 'Contacto facilitado (teléfono o email)', positive: true })
+  }
+
+  // Factor: Presupuesto alto (bonus configurable)
+  const bonusThreshold = config?.budgetBonusThreshold
+  if (bonusThreshold && budget >= bonusThreshold) {
+    score += 15
+    factors.push({ text: `Presupuesto ≥ ${bonusThreshold.toLocaleString('es-ES')}€ (bonus)`, positive: true })
   }
   
   // Factor: Documentación disponible
@@ -155,69 +175,125 @@ function calculateClientRating(leadData, config = {}) {
   // Normalizar score entre 0 y 100
   score = Math.max(0, Math.min(100, score))
   
-  // Determinar rating
+  const hasCity = leadData.city && leadData.city !== 'n/a' && leadData.city !== 'unknown'
+  const priceInfo = estimateProjectPrice(leadData)
+  
+  // Regla de clasificación: solo si tiene localidad Y contacto → regular (o excelente si presupuesto ≥ bonus)
+  // Si solo tiene localidad, no mostrar el factor en rojo de "localidad y contacto"
   let rating
-  if (score >= 85) rating = 'excellent'
-  else if (score >= 70) rating = 'good'
-  else if (score >= 50) rating = 'regular'
-  else if (score >= 30) rating = 'poor'
-  else rating = 'bad'
+  if (hasContact && hasCity) {
+    if (bonusThreshold && (priceInfo.estimatedMin || 0) >= bonusThreshold) {
+      rating = 'excellent'
+      factors.push({ text: `Presupuesto orientativo ≥ ${bonusThreshold.toLocaleString('es-ES')}€ → Excelente`, positive: true })
+    } else {
+      rating = 'regular'
+      if (bonusThreshold) factors.push({ text: 'Con contacto; excelente si presupuesto orientativo supera bonus', positive: false })
+    }
+  } else {
+    if (score >= 85) rating = 'excellent'
+    else if (score >= 70) rating = 'good'
+    else if (score >= 50) rating = 'regular'
+    else if (score >= 30) rating = 'poor'
+    else rating = 'bad'
+  }
   
   return { rating, score, factors }
 }
 
-// Estimar precio aproximado del proyecto - PRECIOS REALES BARCELONA 2024-2025
+// Estimar precio aproximado del proyecto - se va refinando con tipo, m² y presupuesto cliente (Barcelona 2024-2025)
 function estimateProjectPrice(leadData) {
-  if (!leadData) return null
+  if (!leadData) return { displayText: '—', note: '', clientBudget: null, estimated: null, range: null }
   
-  const projectType = (leadData.projectType || '').toLowerCase()
-  const sqm = leadData.sqm || 0
-  const budget = leadData.budget || 0
+  const rawType = (leadData.projectType || '').toLowerCase()
+  const projectType = (rawType === 'n/a' || rawType === 'unknown' ? '' : rawType)
+  const sqm = typeof leadData.sqm === 'number' ? leadData.sqm : 0
+  const budget = typeof leadData.budget === 'number' ? leadData.budget : 0
   
-  // Si el cliente ya dio un presupuesto, usarlo como referencia
+  // Si el cliente ya dio un presupuesto numérico, usarlo como referencia
   if (budget > 0) {
     return {
       clientBudget: budget,
       estimated: null,
-      note: 'Presupuesto del cliente'
+      range: null,
+      estimatedMin: budget,
+      displayText: `${budget.toLocaleString('es-ES')} €`,
+      note: 'Presupuesto indicado por el cliente'
     }
   }
   
-  // Precios REALES de Barcelona 2024-2025
   let minPrice = 0
   let maxPrice = 0
   let pricePerSqmMin = 0
   let pricePerSqmMax = 0
   
   if (projectType.includes('integral') || projectType.includes('completa') || projectType.includes('piso')) {
-    // Reforma integral: 800-1.500€/m²
     pricePerSqmMin = 800
     pricePerSqmMax = 1500
     minPrice = 50000
     maxPrice = 180000
   } else if (projectType.includes('cocina')) {
-    // Cocina completa: 18.000-60.000€
     minPrice = 18000
     maxPrice = 60000
-  } else if (projectType.includes('baño')) {
-    // Baño completo: 12.000-40.000€
+  } else if (projectType.includes('baño') || projectType.includes('bano')) {
     minPrice = 12000
     maxPrice = 40000
   } else if (projectType.includes('pintura')) {
-    // Pintura: 2.500-6.000€
     minPrice = 2500
     maxPrice = 6000
+  } else if (projectType.includes('suelo') || projectType.includes('suelos') || projectType.includes('parquet')) {
+    pricePerSqmMin = 40
+    pricePerSqmMax = 80
+    minPrice = 2000
+    maxPrice = 15000
+  } else if (projectType.includes('ventanas')) {
+    // Precios típicos Barcelona 2024-2025: PVC estándar 350-550€/ud, aluminio/climalit 550-900€/ud
+    if (sqm > 0) {
+      const minW = 350
+      const maxW = 900
+      const minEstimate = sqm * minW
+      const maxEstimate = sqm * maxW
+      return {
+        clientBudget: null,
+        estimated: null,
+        range: `${minEstimate.toLocaleString('es-ES')}€ - ${maxEstimate.toLocaleString('es-ES')}€`,
+        estimatedMin: minEstimate,
+        displayText: `${minEstimate.toLocaleString('es-ES')}€ - ${maxEstimate.toLocaleString('es-ES')}€`,
+        note: `Orientativo para ${sqm} ventanas (Barcelona)`
+      }
+    }
+    return { displayText: '350€ - 900€/ventana', note: 'Indica número de ventanas', clientBudget: null, estimated: null, range: null, estimatedMin: 0 }
+  } else if (projectType.includes('puertas')) {
+    // Precios típicos: interior 400-800€/ud, exterior 800-1.500€/ud
+    if (sqm > 0) {
+      const minP = 400
+      const maxP = 1200
+      const minEstimate = sqm * minP
+      const maxEstimate = sqm * maxP
+      return {
+        clientBudget: null,
+        estimated: null,
+        range: `${minEstimate.toLocaleString('es-ES')}€ - ${maxEstimate.toLocaleString('es-ES')}€`,
+        estimatedMin: minEstimate,
+        displayText: `${minEstimate.toLocaleString('es-ES')}€ - ${maxEstimate.toLocaleString('es-ES')}€`,
+        note: `Orientativo para ${sqm} puertas (Barcelona)`
+      }
+    }
+    return { displayText: '400€ - 1.200€/puerta', note: 'Indica número de puertas', clientBudget: null, estimated: null, range: null, estimatedMin: 0 }
+  } else if (projectType.includes('otro')) {
+    return { displayText: 'Consultar', note: 'Otro tipo de trabajo', clientBudget: null, estimated: null, range: null, estimatedMin: 0 }
   }
   
-  // Ajustar por m² si se conocen (para reforma integral)
+  // Refinar por m² cuando aplica (integral, suelo)
   if (sqm > 0 && pricePerSqmMin > 0) {
-    const minEstimate = sqm * pricePerSqmMin
-    const maxEstimate = sqm * pricePerSqmMax
+    const minEstimate = Math.round(sqm * pricePerSqmMin)
+    const maxEstimate = Math.round(sqm * pricePerSqmMax)
     return {
       clientBudget: null,
       estimated: null,
       range: `${minEstimate.toLocaleString('es-ES')}€ - ${maxEstimate.toLocaleString('es-ES')}€`,
-      note: `Estimación para ${sqm}m² (${pricePerSqmMin}-${pricePerSqmMax}€/m²)`
+      estimatedMin: minEstimate,
+      displayText: `${minEstimate.toLocaleString('es-ES')}€ - ${maxEstimate.toLocaleString('es-ES')}€`,
+      note: `Orientativo para ${sqm} m²`
     }
   }
   
@@ -226,19 +302,23 @@ function estimateProjectPrice(leadData) {
       clientBudget: null,
       estimated: null,
       range: `${minPrice.toLocaleString('es-ES')}€ - ${maxPrice.toLocaleString('es-ES')}€`,
-      note: 'Rango típico Barcelona 2024-2025'
+      estimatedMin: minPrice,
+      displayText: `${minPrice.toLocaleString('es-ES')}€ - ${maxPrice.toLocaleString('es-ES')}€`,
+      note: 'Rango típico (indica m² para afinar)'
     }
   }
   
-  return null
+  return { displayText: '—', note: 'Indica tipo de proyecto', clientBudget: null, estimated: null, range: null, estimatedMin: 0 }
 }
 
+const NO_ANSWER_DISPLAY = 'N/A'
+
 function FieldRow({ icon: Icon, label, value, highlight, valueClass }) {
-  if (!value && value !== false && value !== 0) return null
-  
-  const displayValue = typeof value === 'boolean' 
-    ? (value ? 'Sí' : 'No') 
-    : value
+  if (value === undefined || value === null || value === '') return null
+  const isNoAnswer = value === 'n/a' || value === 'unknown'
+  const displayValue = isNoAnswer 
+    ? NO_ANSWER_DISPLAY 
+    : (typeof value === 'boolean' ? (value ? 'Sí' : 'No') : value)
 
   return (
     <div className="flex items-center gap-3 py-2">
@@ -263,9 +343,9 @@ export default function LeadSummaryCard({ leadData, config = {} }) {
         animate={{ opacity: 1, x: 0 }}
         className="rounded-2xl border border-gray-700 bg-gray-800/50 p-6"
       >
-        <h3 className="text-lg font-semibold text-white mb-4">Resumen del Proyecto</h3>
+        <h3 className="text-lg font-semibold text-white mb-4">Resumen del Lead</h3>
         <p className="text-gray-400 text-sm">
-          La información del proyecto aparecerá aquí a medida que avance la conversación.
+          Aquí aparecerá la información del lead a medida que avance la conversación.
         </p>
         <div className="mt-4 p-4 rounded-lg bg-gray-700/50 border border-gray-600">
           <p className="text-xs text-gray-500 text-center">
@@ -312,29 +392,17 @@ export default function LeadSummaryCard({ leadData, config = {} }) {
         </div>
       </div>
 
-      {/* Price Estimate - PROMINENT */}
-      {priceEstimate && (
-        <div className="px-6 py-4 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border-b border-gray-700">
-          <div className="flex items-center gap-2 mb-2">
-            <Banknote className="h-5 w-5 text-amber-400" />
-            <span className="text-sm font-semibold text-amber-400 uppercase tracking-wider">
-              Precio Estimado
-            </span>
-          </div>
-          {priceEstimate.clientBudget ? (
-            <p className="text-2xl font-bold text-white">
-              Hasta {priceEstimate.clientBudget.toLocaleString('es-ES')} €
-            </p>
-          ) : priceEstimate.estimated ? (
-            <p className="text-2xl font-bold text-white">
-              ~{priceEstimate.estimated.toLocaleString('es-ES')} €
-            </p>
-          ) : priceEstimate.range ? (
-            <p className="text-xl font-bold text-white">{priceEstimate.range}</p>
-          ) : null}
-          <p className="text-xs text-gray-400 mt-1">{priceEstimate.note}</p>
+      {/* Precio aproximado - siempre visible, se va actualizando con los datos */}
+      <div className="px-6 py-4 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border-b border-gray-700">
+        <div className="flex items-center gap-2 mb-2">
+          <Banknote className="h-5 w-5 text-amber-400" />
+          <span className="text-sm font-semibold text-amber-400 uppercase tracking-wider">
+            Presupuesto aproximado
+          </span>
         </div>
-      )}
+        <p className="text-xl font-bold text-white">{priceEstimate.displayText}</p>
+        {priceEstimate.note ? <p className="text-xs text-gray-400 mt-1">{priceEstimate.note}</p> : null}
+      </div>
 
       {/* Factors that affect rating */}
       {factors.length > 0 && (
@@ -386,18 +454,30 @@ export default function LeadSummaryCard({ leadData, config = {} }) {
               value={leadData.postalCode} 
             />
           )}
-          <FieldRow 
-            icon={Ruler} 
-            label="Superficie" 
-            value={leadData.sqm ? `${leadData.sqm} m²` : null} 
-          />
+          {(() => {
+            const pt = (leadData.projectType || '').toLowerCase()
+            const sqmVal = leadData.sqm != null && leadData.sqm !== ''
+            if (!sqmVal || typeof leadData.sqm !== 'number') {
+              return (
+                <FieldRow icon={Ruler} label="Alcance" value={leadData.sqm ?? null} />
+              )
+            }
+            const label = pt.includes('ventanas') ? 'Alcance' : pt.includes('puertas') ? 'Alcance' : 'Superficie'
+            const value = pt.includes('ventanas') ? `${leadData.sqm} ventanas` : pt.includes('puertas') ? `${leadData.sqm} puertas` : `${leadData.sqm} m²`
+            return <FieldRow icon={Ruler} label={label} value={value} />
+          })()}
           <FieldRow 
             icon={Banknote} 
             label="Presupuesto cliente" 
-            value={leadData.budget ? `${leadData.budget.toLocaleString('es-ES')} €` : 
-                   leadData.budgetRange ? leadData.budgetRange : null} 
+            value={leadData.budget != null && leadData.budget !== '' ? (typeof leadData.budget === 'number' ? `${leadData.budget.toLocaleString('es-ES')} €` : leadData.budget) : (leadData.budgetRange || null)} 
             highlight 
             valueClass="text-green-400 font-semibold"
+          />
+          <FieldRow 
+            icon={Banknote} 
+            label="Presupuesto aproximado" 
+            value={priceEstimate.displayText} 
+            valueClass="text-amber-400 font-medium"
           />
           <FieldRow 
             icon={Calendar} 

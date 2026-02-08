@@ -7,7 +7,6 @@ import LeadSummaryCard from './components/LeadSummaryCard'
 import ConfigPanel from './components/ConfigPanel'
 import { useChat } from './hooks/useChat'
 import { DEFAULT_CONFIG } from './utils/config'
-import { resetMockFlow } from './utils/mockResponses'
 
 const INITIAL_MESSAGE = {
   id: 'welcome',
@@ -109,13 +108,26 @@ export default function LeadQualifier() {
     setMessages(currentMessages)
     clearError()
     
+    console.log('[INDEX] messagesRef.current length:', messagesRef.current.length)
+    console.log('[INDEX] currentMessages length:', currentMessages.length)
+    console.log('[INDEX] Sending to API:', currentMessages.map(m => {
+      const contentStr = typeof m.content === 'string' ? m.content : m.displayText || JSON.stringify(m.content)
+      return `${m.role}: ${contentStr.substring(0, 30)}...`
+    }))
+    
     try {
+      console.log('[INDEX] Calling sendMessage...')
       const response = await sendMessage(currentMessages)
+      console.log('[INDEX] sendMessage returned:', response)
+      
+      // For content: use raw string if available (GPT mode), otherwise displayText (mock mode)
+      const contentForApi = typeof response.raw === 'string' ? response.raw : response.displayText
       
       const assistantMessage = {
         id: `assistant-${Date.now()}`,
         role: 'assistant',
-        content: response.displayText,
+        content: contentForApi,
+        displayText: response.displayText,
         timestamp: new Date().toISOString(),
         structured: response.structured,
       }
@@ -169,7 +181,6 @@ export default function LeadQualifier() {
   }
 
   const handleReset = () => {
-    resetMockFlow()
     setMessages([{
       ...INITIAL_MESSAGE,
       id: `welcome-${Date.now()}`,

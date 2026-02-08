@@ -1,3 +1,6 @@
+// Valor estándar cuando el cliente no quiere / no puede responder (existe en JSON como n/a)
+const NO_ANSWER = 'n/a'
+
 // Estado persistente del lead durante la conversación mock
 let mockLeadState = {
   projectType: null,
@@ -5,10 +8,12 @@ let mockLeadState = {
   sqm: null,
   budget: null,
   timeline: null,
-  isOwner: null,
-  hasDocs: null,
   contactName: null,
   contactPhone: null,
+  contactEmail: null,
+  wantsCallBack: null,
+  contactCallbackRefusedOnce: false, // primer "no" a contactar → mostrar explicación
+  doNotContact: false,              // segundo "no" → no contactar, peor clasificación
 }
 
 // Detectores de información
@@ -28,6 +33,14 @@ const PROJECT_TYPES = {
   'suelo': 'suelo',
   'suelos': 'suelo',
   'parquet': 'suelo',
+  'ventanas': 'ventanas',
+  'ventana': 'ventanas',
+  'puertas': 'puertas',
+  'puerta': 'puertas',
+  'carpintería': 'otro',
+  'carpinteria': 'otro',
+  'otros': 'otro',
+  'otro': 'otro',
 }
 
 const PROJECT_LABELS = {
@@ -36,15 +49,23 @@ const PROJECT_LABELS = {
   'cocina': 'cocina',
   'pintura': 'pintura',
   'suelo': 'suelos',
+  'ventanas': 'cambio de ventanas',
+  'puertas': 'cambio de puertas',
+  'otro': 'otro',
 }
 
 function detectProjectType(text) {
-  const lower = text.toLowerCase()
+  const lower = text.toLowerCase().trim()
+  if (!lower || lower.length < 2) return null
   // Priorizar "reforma integral/completa" sobre palabras individuales
   for (const [keyword, type] of Object.entries(PROJECT_TYPES)) {
     if (lower.includes(keyword)) {
       return type
     }
+  }
+  // Si parece una descripción de proyecto (cambiar X, reformar X, quiero X) → otros
+  if (/^(cambiar|reformar|arreglar|hacer|quiero|necesito|poner)\s+.+/.test(lower) || /^.+\s+(nuev[oa]s?|nueva|nuevo)$/.test(lower)) {
+    return 'otro'
   }
   return null
 }
@@ -85,16 +106,26 @@ function detectBoolean(text) {
 }
 
 function detectTimeline(text) {
-  const lower = text.toLowerCase()
-  if (lower.includes('cuanto antes') || lower.includes('urgente') || lower.includes('ya')) {
+  const lower = text.toLowerCase().trim()
+  if (lower.includes('cuanto antes') || lower.includes('urgente') || lower.includes('ya') || lower === 'cuando antes') {
     return 'Lo antes posible'
   }
+  // Días de la semana: "el lunes", "lunes", "para el martes"...
+  const weekdays = ['lunes', 'martes', 'miércoles', 'miercoles', 'jueves', 'viernes', 'sábado', 'sabado', 'domingo']
+  for (const day of weekdays) {
+    if (lower.includes(day)) {
+      const label = day === 'miercoles' ? 'Miércoles' : day === 'sabado' ? 'Sábado' : day.charAt(0).toUpperCase() + day.slice(1)
+      return lower.includes('próxim') || lower.includes('proxim') || lower.includes('que viene') ? `Próximo ${label}` : label
+    }
+  }
+  if (lower.includes('mañana') || lower.includes('manana')) return 'Mañana'
+  if (lower.includes('semana que viene') || lower.includes('próxima semana') || lower.includes('proxima semana')) return 'La semana que viene'
   if (lower.includes('semana')) return '1-2 semanas'
   if (lower.includes('mes')) return '1-3 meses'
   if (lower.includes('verano')) return 'Verano'
-  if (lower.includes('otoño')) return 'Otoño'
+  if (lower.includes('otoño') || lower.includes('otono')) return 'Otoño'
   if (lower.includes('primavera')) return 'Primavera'
-  if (lower.includes('año')) return 'Este año'
+  if (lower.includes('año') || lower.includes('ano')) return 'Este año'
   const monthMatch = lower.match(/(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)/i)
   if (monthMatch) return monthMatch[1].charAt(0).toUpperCase() + monthMatch[1].slice(1)
   return null
@@ -112,6 +143,9 @@ function detectContact(text) {
 }
 
 function calculateScore(state, config) {
+  if (state.doNotContact) {
+    return { score: 0, tier: 5, reasons: ['Cliente no quiere ser contactado'] }
+  }
   let score = 0
   const reasons = []
 
@@ -135,36 +169,40 @@ function calculateScore(state, config) {
     reasons.push('Superficie conocida')
   }
 
-  if (state.budget) {
-    const minBudget = config.minBudgets[state.projectType] || config.minBudgets.baño
-    if (state.budget >= minBudget) {
-      score += 25
-      reasons.push('Presupuesto adecuado')
-    } else {
-      reasons.push('Presupuesto ajustado')
+  if (state.budget && state.budget !== NO_ANSWER) {
+    const budgetNum = typeof state.budget === 'number' ? state.budget : parseInt(state.budget, 10)
+    if (!isNaN(budgetNum)) {
+      const minBudget = config.budgetRanges?.[state.projectType]?.min || config.budgetRanges?.baño?.min || 12000
+      if (budgetNum >= minBudget) {
+        score += 25
+        reasons.push('Presupuesto adecuado')
+      } else {
+        reasons.push('Presupuesto ajustado')
+      }
+      const bonusThreshold = config.budgetBonusThreshold
+      if (bonusThreshold && budgetNum >= bonusThreshold) {
+        score += 15
+        reasons.push('Presupuesto alto (bonus)')
+      }
     }
   }
 
-  if (state.timeline) {
-    score += 10
-    reasons.push('Plazo definido')
-  }
-
-  if (state.isOwner === true) {
+  if (state.timeline && state.timeline !== NO_ANSWER) {
     score += 15
-    reasons.push('Es propietario')
-  } else if (state.isOwner === false) {
-    reasons.push('No es propietario')
-  }
-
-  if (state.hasDocs) {
-    score += 5
-    reasons.push('Tiene documentación')
+    reasons.push('Plazo definido')
+  } else {
+    score -= 10
+    reasons.push('Plazo no indicado')
   }
 
   if (state.contactPhone || state.contactEmail) {
     score += 10
     reasons.push('Datos de contacto facilitados')
+  }
+
+  if (state.wantsCallBack === true) {
+    score += 5
+    reasons.push('Quiere que le contactemos')
   }
 
   const tier = score >= 80 ? 1 : score >= 60 ? 2 : score >= 40 ? 3 : score >= 20 ? 4 : 5
@@ -173,14 +211,18 @@ function calculateScore(state, config) {
 }
 
 function getNextQuestion(state) {
-  if (!state.projectType) return null // Ya se preguntó en el welcome
+  if (!state.projectType) return null
   if (!state.city) return '¿En qué ciudad está el inmueble?'
-  if (!state.sqm) return '¿Cuántos metros cuadrados tiene aproximadamente?'
-  if (!state.budget) return '¿Cuál es tu presupuesto aproximado?'
+  if (!state.sqm) {
+    if (state.projectType === 'ventanas') return '¿Cuántas ventanas son?'
+    if (state.projectType === 'puertas') return '¿Cuántas puertas son?'
+    return '¿Cuántos metros cuadrados tiene aproximadamente?'
+  }
+  // Plazo siempre se pregunta después del alcance (m²/ventanas) y antes del presupuesto
   if (!state.timeline) return '¿Cuándo te gustaría empezar la obra?'
-  if (state.isOwner === null) return '¿Eres el propietario del inmueble?'
-  if (state.hasDocs === null) return '¿Tienes planos o fotos del espacio?'
-  if (!state.contactPhone) return '¿Me das un teléfono de contacto?'
+  if (!state.budget) return '¿Cuál es tu presupuesto aproximado?'
+  if (!state.contactPhone && !state.contactEmail) return '¿Me das un teléfono o email de contacto?'
+  if (state.wantsCallBack === null) return 'Ya tenemos todo. En breve nos pondremos en contacto con usted, ¿le parece bien?'
   return null
 }
 
@@ -208,7 +250,7 @@ export function getMockResponse(messages, config) {
     } else if (!detectedCity.covered) {
       // Ciudad no cubierta - cerrar conversación
       return {
-        displayText: config.tier5CloseText,
+        displayText: 'Lo siento, actualmente no tenemos cobertura en esa zona. Te agradecemos tu interés y esperamos poder ayudarte en el futuro.',
         leadFields: { ...mockLeadState, city: detectedCity.city },
         score: 5,
         tier: 5,
@@ -218,17 +260,19 @@ export function getMockResponse(messages, config) {
     }
   }
 
-  // Asignar números según el contexto
+  // Asignar números según el contexto (m², nº ventanas/puertas, o presupuesto)
   if (detectedNumber) {
-    if (!mockLeadState.sqm && mockLeadState.city && detectedNumber < 500) {
+    const isVentanasOPuertas = mockLeadState.projectType === 'ventanas' || mockLeadState.projectType === 'puertas'
+    const looksLikeCount = isVentanasOPuertas ? (detectedNumber >= 1 && detectedNumber <= 99) : (detectedNumber < 500)
+    if (!mockLeadState.sqm && mockLeadState.city && (detectedNumber < 500 || looksLikeCount)) {
       mockLeadState.sqm = detectedNumber
-    } else if (!mockLeadState.budget && mockLeadState.sqm && detectedNumber >= 1000) {
+    } else if (!mockLeadState.budget && mockLeadState.budget !== NO_ANSWER && mockLeadState.sqm && mockLeadState.sqm !== NO_ANSWER && detectedNumber >= 1000) {
       mockLeadState.budget = detectedNumber
       // Verificar presupuesto mínimo
-      const minBudget = config.minBudgets[mockLeadState.projectType] || config.minBudgets.integral
+      const minBudget = config.budgetRanges?.[mockLeadState.projectType]?.min || config.budgetRanges?.integral?.min || 50000
       if (detectedNumber < minBudget) {
         return {
-          displayText: `Entiendo. Para una ${PROJECT_LABELS[mockLeadState.projectType] || 'reforma'} de calidad, el presupuesto mínimo suele ser de ${minBudget.toLocaleString('es-ES')}€. ${config.tier5CloseText}`,
+          displayText: `Entiendo. Para una ${PROJECT_LABELS[mockLeadState.projectType] || 'reforma'} de calidad, el presupuesto mínimo suele ser de ${minBudget.toLocaleString('es-ES')}€. Te agradecemos tu interés y si en el futuro dispones de más presupuesto, estaremos encantados de ayudarte.`,
           leadFields: { ...mockLeadState },
           score: 10,
           tier: 5,
@@ -239,15 +283,62 @@ export function getMockResponse(messages, config) {
     }
   }
 
+  const lower = lastUserMessage.toLowerCase().trim()
+  const refusesToAnswer = lower.includes('no lo sé') || lower.includes('no lo se') || lower.includes('no sé') ||
+    lower.includes('no se') || lower.includes('no tengo') || lower.includes('ni idea') ||
+    lower.includes('prefiero no decirlo') || lower.includes('no quiero decir') || lower.includes('no quiero responder') ||
+    lower.includes('paso') || lower.includes('no sabría') || lower.includes('no sabria') ||
+    (lower.includes('no') && lower.length < 15)
+
+  // Presupuesto: si dice "no", "no estoy mirando", etc., marcar n/a (solo cuando ya hemos preguntado timeline)
+  const refusesBudget = mockLeadState.timeline && !mockLeadState.budget && !detectedNumber &&
+    (lower.startsWith('no') || lower.includes('no,') || lower.includes('no sé') || lower.includes('no se') ||
+     lower.includes('no tengo') || lower.includes('estoy mirando') || lower.includes('aún no') ||
+     lower.includes('todavía no') || lower === 'no')
+  if (refusesBudget) {
+    mockLeadState.budget = NO_ANSWER
+  }
+
+  // Si no quiere responder / no sabe: marcar el campo pendiente como n/a y seguir. La ciudad NO se marca n/a: es requisito indispensable.
+  // Orden: sqm → timeline → budget → contact (plazo se pregunta antes que presupuesto)
+  if (refusesToAnswer && !detectedNumber && !detectedCity && !detectedTimeline && !detectedContact.phone && !detectedContact.email) {
+    if (mockLeadState.city && !mockLeadState.sqm) {
+      mockLeadState.sqm = NO_ANSWER
+    } else if (mockLeadState.sqm && !mockLeadState.timeline) {
+      mockLeadState.timeline = NO_ANSWER
+    } else if (mockLeadState.timeline && !mockLeadState.budget) {
+      mockLeadState.budget = NO_ANSWER
+    } else if (mockLeadState.budget && !mockLeadState.contactPhone && !mockLeadState.contactEmail) {
+      mockLeadState.contactPhone = NO_ANSWER
+      mockLeadState.contactEmail = NO_ANSWER
+      mockLeadState.wantsCallBack = false
+    } else if ((mockLeadState.contactPhone || mockLeadState.contactEmail) && mockLeadState.wantsCallBack === null) {
+      if (mockLeadState.contactCallbackRefusedOnce) {
+        mockLeadState.wantsCallBack = false
+        mockLeadState.doNotContact = true
+      } else {
+        mockLeadState.contactCallbackRefusedOnce = true
+      }
+    }
+    // Si falta ciudad, NO ponemos n/a: se pide con el mensaje de requisito indispensable
+  }
+
   if (detectedTimeline && !mockLeadState.timeline) {
     mockLeadState.timeline = detectedTimeline
   }
 
   if (detectedBoolean !== null) {
-    if (mockLeadState.timeline && mockLeadState.isOwner === null) {
-      mockLeadState.isOwner = detectedBoolean
-    } else if (mockLeadState.isOwner !== null && mockLeadState.hasDocs === null) {
-      mockLeadState.hasDocs = detectedBoolean
+    if ((mockLeadState.contactPhone || mockLeadState.contactEmail) && mockLeadState.wantsCallBack === null) {
+      if (detectedBoolean === true) {
+        mockLeadState.wantsCallBack = true
+      } else {
+        if (!mockLeadState.contactCallbackRefusedOnce) {
+          mockLeadState.contactCallbackRefusedOnce = true
+        } else {
+          mockLeadState.wantsCallBack = false
+          mockLeadState.doNotContact = true
+        }
+      }
     }
   }
 
@@ -268,32 +359,60 @@ export function getMockResponse(messages, config) {
     const typeFromFirst = detectProjectType(lastUserMessage)
     if (typeFromFirst) {
       mockLeadState.projectType = typeFromFirst
-      displayText = `¡Perfecto! Una ${PROJECT_LABELS[typeFromFirst]} es un proyecto muy interesante. ¿Me podrías decir en qué ciudad está ubicado el inmueble?`
+      const label = PROJECT_LABELS[typeFromFirst] || 'reforma'
+      const articulo = (typeFromFirst === 'ventanas' || typeFromFirst === 'puertas') ? 'Un' : 'Una'
+      displayText = typeFromFirst === 'otro'
+        ? '¡Perfecto! ¿En qué ciudad o zona está ubicado el inmueble?'
+        : `¡Perfecto! ${articulo} ${label} es un proyecto muy interesante. ¿Me podrías decir en qué ciudad está ubicado el inmueble?`
     } else {
-      displayText = '¿Podrías decirme qué tipo de reforma necesitas? Por ejemplo: baño, cocina, reforma integral...'
+      displayText = '¿Podrías decirme qué tipo de reforma o trabajo necesitas? Por ejemplo: baño, cocina, reforma integral, ventanas, u otro tipo.'
     }
   } else if (!mockLeadState.city) {
-    if (detectedType) {
-      displayText = `¡Perfecto! Una ${projectLabel} es un proyecto muy interesante. ¿Me podrías decir en qué ciudad está ubicado el inmueble?`
+    if (refusesToAnswer) {
+      displayText = 'Te entiendo. Para poder ayudarte necesitamos saber si damos servicio en tu zona; es un requisito indispensable. Si te sientes más cómodo, basta con la localidad o el código postal, no hace falta calle ni número. ¿En qué zona está el proyecto?'
+    } else if (detectedType) {
+      const articulo = (mockLeadState.projectType === 'ventanas' || mockLeadState.projectType === 'puertas') ? 'Un' : 'Una'
+      displayText = mockLeadState.projectType === 'otro'
+        ? '¡Perfecto! ¿En qué ciudad o zona está ubicado el inmueble?'
+        : `¡Perfecto! ${articulo} ${projectLabel} es un proyecto muy interesante. ¿Me podrías decir en qué ciudad o zona está ubicado el inmueble?`
     } else {
-      displayText = `Entendido. ¿En qué ciudad está ubicado el inmueble donde quieres hacer la ${projectLabel}?`
+      displayText = `Entendido. ¿En qué ciudad o zona está el inmueble? Puedes indicar solo localidad o código postal.`
     }
   } else if (!mockLeadState.sqm) {
-    displayText = `¡Genial! ${mockLeadState.city} está dentro de nuestra zona de cobertura. ¿Cuántos metros cuadrados tiene aproximadamente el espacio a reformar?`
-  } else if (!mockLeadState.budget) {
-    displayText = `Perfecto, ${mockLeadState.sqm} m² es un buen tamaño para trabajar. ¿Tienes un presupuesto aproximado en mente para esta ${projectLabel}?`
+    if (mockLeadState.projectType === 'ventanas') {
+      displayText = `¡Genial! ${mockLeadState.city} está dentro de nuestra zona. ¿Cuántas ventanas son?`
+    } else if (mockLeadState.projectType === 'puertas') {
+      displayText = `¡Genial! ${mockLeadState.city} está dentro de nuestra zona. ¿Cuántas puertas son?`
+    } else {
+      displayText = `¡Genial! ${mockLeadState.city} está dentro de nuestra zona de cobertura. ¿Cuántos metros cuadrados tiene aproximadamente el espacio a reformar?`
+    }
+  } else if (mockLeadState.sqm === NO_ANSWER && !mockLeadState.timeline) {
+    displayText = `No pasa nada. ¿Cuándo te gustaría empezar la obra?`
   } else if (!mockLeadState.timeline) {
-    displayText = `Muy bien, ese presupuesto está dentro de lo habitual para una ${projectLabel} de calidad. ¿Cuándo te gustaría comenzar con la obra?`
-  } else if (mockLeadState.isOwner === null) {
-    displayText = 'Perfecto, tenemos disponibilidad para esas fechas. Una pregunta importante: ¿eres el propietario del inmueble?'
-  } else if (mockLeadState.hasDocs === null) {
-    displayText = mockLeadState.isOwner 
-      ? '¡Excelente! Eso facilita mucho el proceso. ¿Dispones de planos del espacio actual o fotos que puedas compartir?'
-      : 'Entendido, necesitaremos la autorización del propietario. ¿Dispones de planos o fotos del espacio?'
-  } else if (!mockLeadState.contactPhone) {
-    displayText = 'Genial. Para finalizar, ¿podrías darme tu nombre y un teléfono de contacto para que un técnico pueda llamarte?'
+    const alcanceText = mockLeadState.projectType === 'ventanas'
+      ? `${mockLeadState.sqm} ventanas`
+      : mockLeadState.projectType === 'puertas'
+        ? `${mockLeadState.sqm} puertas`
+        : `${mockLeadState.sqm} m²`
+    displayText = `Perfecto, ${alcanceText}. ¿Cuándo te gustaría empezar la obra?`
+  } else if (mockLeadState.timeline === NO_ANSWER && !mockLeadState.budget) {
+    const paraProyecto = (mockLeadState.projectType === 'ventanas' || mockLeadState.projectType === 'puertas') ? 'este trabajo' : `esta ${projectLabel}`
+    displayText = `No pasa nada. ¿Tienes un presupuesto aproximado en mente para ${paraProyecto}?`
+  } else if (!mockLeadState.budget) {
+    const paraProyecto = (mockLeadState.projectType === 'ventanas' || mockLeadState.projectType === 'puertas') ? 'este trabajo' : `esta ${projectLabel}`
+    displayText = `Muy bien. ¿Tienes un presupuesto aproximado en mente para ${paraProyecto}?`
+  } else if (!mockLeadState.contactPhone && !mockLeadState.contactEmail) {
+    displayText = 'Genial. Para finalizar, ¿podrías darme tu nombre y un teléfono o email de contacto?'
+  } else if (mockLeadState.doNotContact) {
+    displayText = 'Perfecto, lo anotamos. Si cambias de opinión, ya sabes dónde estamos.'
+  } else if (mockLeadState.wantsCallBack === null) {
+    if (mockLeadState.contactCallbackRefusedOnce && detectedBoolean === false) {
+      displayText = 'Si no nos das permiso para contactarte, no podremos atender tu solicitud. ¿Le parece bien que nos pongamos en contacto en breve?'
+    } else {
+      displayText = 'Ya tenemos todo. En breve nos pondremos en contacto con usted, ¿le parece bien?'
+    }
   } else {
-    displayText = `¡Muchas gracias${mockLeadState.contactName ? ', ' + mockLeadState.contactName : ''}! Hemos registrado toda la información de tu proyecto de ${projectLabel} en ${mockLeadState.city}. Un técnico de Total Homes te contactará en las próximas 24-48 horas para concertar una visita sin compromiso.`
+    displayText = `¡Muchas gracias${mockLeadState.contactName ? ', ' + mockLeadState.contactName : ''}! Hemos registrado toda la información de tu proyecto de ${projectLabel} en ${mockLeadState.city}. Te contactaremos en las próximas 24-48 horas para concertar una visita sin compromiso.`
   }
 
   return {
@@ -313,9 +432,11 @@ export function resetMockFlow() {
     sqm: null,
     budget: null,
     timeline: null,
-    isOwner: null,
-    hasDocs: null,
     contactName: null,
     contactPhone: null,
+    contactEmail: null,
+    wantsCallBack: null,
+    contactCallbackRefusedOnce: false,
+    doNotContact: false,
   }
 }

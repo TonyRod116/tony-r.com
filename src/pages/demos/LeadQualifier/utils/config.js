@@ -22,6 +22,8 @@ export const DEFAULT_CONFIG = {
     integral: { min: 50000 },
     pintura: { min: 2500 },
   },
+  // Si el presupuesto aproximado es mayor de este importe, se suman puntos extra al lead
+  budgetBonusThreshold: 50000,
 }
 
 export function validateConfig(config) {
