@@ -1704,8 +1704,8 @@
               this.tempObject.position.copy(position)
               this.tempObject.updateMatrix()
               mesh.setMatrixAt(instanceIndex, this.tempObject.matrix)
-              // Input layer: dark red (no use initially)
-              mesh.setColorAt(instanceIndex, this.tempColor.setRGB(0.8, 0.1, 0.1))
+              // Input layer: white (no use initially) — paso 1: solo valores, sin vertexColors
+              mesh.setColorAt(instanceIndex, this.tempColor.setRGB(1, 1, 1))
             })
 
             mesh.instanceMatrix.needsUpdate = true
@@ -1728,8 +1728,8 @@
               this.tempObject.position.copy(position)
               this.tempObject.updateMatrix()
               mesh.setMatrixAt(instanceIndex, this.tempObject.matrix)
-              // All layers: dark red (no use initially)
-              mesh.setColorAt(instanceIndex, this.tempColor.setRGB(0.8, 0.1, 0.1))
+              // All layers: white (no use initially) — paso 1
+              mesh.setColorAt(instanceIndex, this.tempColor.setRGB(1, 1, 1))
             })
 
             mesh.instanceMatrix.needsUpdate = true
@@ -1824,8 +1824,8 @@
             this.tempObject.quaternion.copy(quaternion)
             this.tempObject.updateMatrix()
             mesh.setMatrixAt(instanceIndex, this.tempObject.matrix)
-            // Initial connection color: dark red (no use initially)
-            mesh.setColorAt(instanceIndex, this.tempColor.setRGB(0.8, 0.1, 0.1))
+            // Initial connection color: white (no use initially) — paso 1
+            mesh.setColorAt(instanceIndex, this.tempColor.setRGB(1, 1, 1))
           })
 
           mesh.instanceMatrix.needsUpdate = true
@@ -1845,8 +1845,8 @@
           // Input layer: Red (no use) to Green (high use)
           for (let i = 0; i < values.length; i += 1) {
             const value = clamp(values[i], 0, 1)
-            // Red to Green gradient: red (0) to green (1)
-            this.tempColor.setRGB(1 - value * 0.8, value * 0.8 + 0.2, 0.1)
+            // White to Green (paso 1): (1-t, 1, 1-t)
+            this.tempColor.setRGB(1 - value, 1, 1 - value)
             mesh.setColorAt(i, this.tempColor)
           }
           mesh.instanceColor.needsUpdate = true
@@ -1858,9 +1858,8 @@
           const value = values[i]
           const normalized = clamp(value / safeScale, 0, 1)
           
-          // All layers: Red (no use) to Green (high use)
-          // Red to Green gradient: red (0) to green (1)
-          this.tempColor.setRGB(1 - normalized * 0.8, normalized * 0.8 + 0.2, 0.1)
+          // All layers: White to Green (paso 1)
+          this.tempColor.setRGB(1 - normalized, 1, 1 - normalized)
           mesh.setColorAt(i, this.tempColor)
         }
         mesh.instanceColor.needsUpdate = true
@@ -1881,12 +1880,11 @@
           const magnitude = Math.abs(contributions[index] / scale)
           const normalized = clamp(magnitude, 0, 1)
           
-          // Red (no use) to Green (high use) based on magnitude
-          // Red to Green gradient: red (0) to green (1)
+          // White (no use) to Green (high use) — paso 1
           if (normalized < 1e-3) {
-            this.tempColor.setRGB(0.8, 0.1, 0.1) // Dark red for no use
+            this.tempColor.setRGB(1, 1, 1)
           } else {
-            this.tempColor.setRGB(1 - normalized * 0.8, normalized * 0.8 + 0.2, 0.1)
+            this.tempColor.setRGB(1 - normalized, 1, 1 - normalized)
           }
           group.mesh.setColorAt(index, this.tempColor)
         })
