@@ -45,6 +45,30 @@ A collection of AI-powered games implemented in JavaScript, converted from origi
    npm run build
    ```
 
+### Deploy en Vercel (demos con IA en vivo)
+
+Para que **Lead Qualifier** y **Presupuestos Reformas** conecten con las IAs en producción:
+
+1. **Variable de entorno obligatoria**  
+   En Vercel: **Project → Settings → Environment Variables** añade:
+   - **Name:** `OPENAI_API_KEY`  
+   - **Value:** tu clave de OpenAI (`sk-...`)  
+   - **Environment:** Production (y Preview si quieres que funcione en PRs).
+
+2. **Rutas API en Vercel**  
+   El proyecto ya incluye funciones serverless en `api/`:
+   - **`/api/chat`** → Lead Qualifier (proxy OpenAI).
+   - **`/api/generate-quote`** → ReformasDemo (borrador de presupuesto con IA).
+   - **`/api/leads`** → ReformasDemo (POST guarda id; GET devuelve lista vacía; sin persistencia entre requests).
+
+3. **Build y deploy**  
+   - `npm run build` genera `dist/`.  
+   - En Vercel el output es `dist` y el build command `npm run build` (ya en `vercel.json`).  
+   - Tras el deploy, comprueba en la URL de producción que el chat (Lead Qualifier) y “Generar borrador” (Reformas) responden.
+
+4. **Nota sobre historial de leads**  
+   En Vercel no hay persistencia para `/api/leads`: el listado de historial en ReformasDemo saldrá vacío. Si necesitas historial real, opciones: usar **Vercel KV** (u otro almacén) en las funciones, o desplegar el `server/` en otro host (p. ej. Render) y definir **`VITE_API_URL`** en Vercel (Build) con esa URL.
+
 ---
 
 ## Demo: Presupuestos Reformas
