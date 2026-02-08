@@ -1025,7 +1025,7 @@
                 type="range" 
                 id="epochSlider" 
                 min="0" 
-                max="40" 
+                max="80" 
                 value="40" 
                 step="1"
               />
@@ -1453,7 +1453,10 @@
       if (epoch <= 5) return 10 + (epoch / 5) * 30  // 10% to 40%
       if (epoch <= 15) return 40 + ((epoch - 5) / 10) * 35  // 40% to 75%
       if (epoch <= 30) return 75 + ((epoch - 15) / 15) * 18  // 75% to 93%
-      return 93 + ((epoch - 30) / 10) * 3.2  // 93% to 96.2%
+      if (epoch <= 40) return 93 + ((epoch - 30) / 10) * 3.2  // 93% to 96.2% (peak)
+      // Overfitting: accuracy declines after epoch 40
+      const overfitDrop = (epoch - 40) * 0.28  // ~2.8% per 10 epochs
+      return Math.max(82, 96.2 - overfitDrop)   // floor ~82% at epoch 80
     }
     
     function getAccuracyForHiddenNodes(hiddenNodes, epoch) {
@@ -1776,7 +1779,7 @@
         } else if (Array.isArray(layer.biases)) {
           biases = Float32Array.from(layer.biases)
         } else {
-          biases = new Float32Array(weights.length > 0 ? weights[0].length : 0)
+          biases = new Float32Array(weights.length) // one bias per neuron (output size)
         }
         return {
           name: typeof layer.name === 'string' ? layer.name : `dense_${index}`,
@@ -2415,7 +2418,8 @@
           // Use current architecture layers instead of original layers
           return currentArchitectureLayers.map((layer, layerIdx) => {
             const modifiedWeights = layer.weights.map((row, rowIdx) => {
-              return row.map((weight, colIdx) => {
+              const rowArr = Array.isArray(row) ? row : Array.from(row)
+              return rowArr.map((weight, colIdx) => {
                 // Mix trained weights with deterministic random noise based on epoch
                 // Early epochs: more random, late epochs: more trained
                 const randomNoise = (getRandomValue(layerIdx, rowIdx, colIdx, 12345) - 0.5) * 0.5 * randomFactor
@@ -2622,45 +2626,20 @@
         
         // Function to update model for new hidden node count
         function updateModelForHiddenNodes(hiddenNodes) {
-          console.log('Updating model for hidden nodes:', hiddenNodes)
           const newArch = getWeightsForHiddenNodes(hiddenNodes)
           
-          console.log('New architecture:', newArch.architecture)
-          console.log('New layers:', newArch.layers.map(l => ({ name: l.name, weights: l.weights.length, biases: l.biases.length })))
-          
-          // Update current architecture layers FIRST, before calling getWeightsForEpoch
-          currentArchitectureLayers = JSON.parse(JSON.stringify(newArch.layers))
+          // Use newArch.layers directly (no JSON clone - avoids corrupting typed arrays / structure)
+          currentArchitectureLayers = newArch.layers
           
           // Apply epoch-based modifications using the new architecture
           const epochLayers = getWeightsForEpoch(currentEpoch)
           
-          console.log('Epoch layers count:', epochLayers.length)
-          console.log('Epoch layer sizes:', epochLayers.map(l => ({ weights: l.weights.length, biases: l.biases.length })))
-          
-          // Verify architecture matches
-          const expectedArch = newArch.architecture
-          const actualArch = [
-            epochLayers[0].weights[0].length, // input size
-            epochLayers[0].weights.length,   // hidden1 size
-            epochLayers[1].weights.length,   // hidden2 size
-            epochLayers[2].weights.length    // output size
-          ]
-          console.log('Expected architecture:', expectedArch)
-          console.log('Actual architecture from layers:', actualArch)
-          
           // Create new model with new architecture and epoch-modified weights
-          // Make sure architecture is explicitly set
           neuralModel = new FeedForwardModel({
             normalization: definition.network.normalization || NORMALIZATION,
-            architecture: newArch.architecture, // Explicitly set architecture
+            architecture: newArch.architecture.slice(),
             layers: epochLayers,
           })
-          
-          // Force architecture to match (in case FeedForwardModel recalculates it incorrectly)
-          neuralModel.architecture = newArch.architecture.slice()
-          
-          console.log('Model architecture after creation:', neuralModel.architecture)
-          console.log('Model layers:', neuralModel.layers.map(l => ({ weights: l.weights.length, biases: l.biases.length })))
           
           // Rebuild the 3D visualization with new architecture
           rebuildVisualization()
@@ -2670,8 +2649,6 @@
         function rebuildVisualization() {
           const threeContainer = document.getElementById('threeContainer')
           if (threeContainer && neuralModel) {
-            console.log('Rebuilding visualization with architecture:', neuralModel.architecture)
-            
             // Stop any existing animation
             if (neuralScene && neuralScene.animate) {
               // Cancel animation frame if possible
@@ -2718,18 +2695,13 @@
                 connectionWeightThreshold: VISUALIZER_CONFIG.connectionWeightThreshold,
               })
               
-              console.log('Visualization created, architecture:', neuralScene.mlp?.architecture)
-              console.log('Model architecture:', neuralModel.architecture)
-              
               // Restart animation loop
               neuralScene.animate()
               
-              // Immediately update with current drawing if there is one
-              const rawInput = digitCanvas.getPixels()
-              const hasDrawing = rawInput.some(val => val > 0)
-              if (hasDrawing) {
+              // Always refresh after rebuild: run after next frame so scene is ready
+              requestAnimationFrame(() => {
                 refreshNetworkState()
-              }
+              })
             })
           }
         }
@@ -2930,7 +2902,7 @@
           trainingEpoch: 'Training Epoch',
           epoch: 'Epoch',
           accuracy: 'Accuracy',
-          hintEpoch: 'Adjust the epoch to see how training improves accuracy',
+          hintEpoch: 'Adjust the epoch to see accuracy improve, then drop after 40 (overfitting)',
           hiddenLayerNodes: 'Hidden Layer Nodes',
           hiddenNodes: 'Hidden Nodes',
           hintHidden: 'Adjust hidden layer size to see its impact on accuracy',
@@ -3003,7 +2975,7 @@
           trainingEpoch: 'Época de entrenamiento',
           epoch: 'Época',
           accuracy: 'Precisión',
-          hintEpoch: 'Ajusta la época para ver cómo mejora la precisión con el entrenamiento',
+          hintEpoch: 'Ajusta la época para ver cómo sube la precisión y luego baja tras 40 (overfitting)',
           hiddenLayerNodes: 'Nodos de la capa oculta',
           hiddenNodes: 'Nodos ocultos',
           hintHidden: 'Ajusta el tamaño de la capa oculta para ver su impacto en la precisión',
@@ -3076,7 +3048,7 @@
           trainingEpoch: 'Època d\'entrenament',
           epoch: 'Època',
           accuracy: 'Precisió',
-          hintEpoch: 'Ajusta l\'època per veure com millora la precisió amb l\'entrenament',
+          hintEpoch: 'Ajusta l\'època per veure com puja la precisió i després baixa després de 40 (overfitting)',
           hiddenLayerNodes: 'Nodes de la capa oculta',
           hiddenNodes: 'Nodes ocults',
           hintHidden: 'Ajusta la mida de la capa oculta per veure el seu impacte en la precisió',
