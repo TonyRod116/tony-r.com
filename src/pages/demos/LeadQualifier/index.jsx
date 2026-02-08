@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Send, RotateCcw, AlertCircle, CheckCircle2, Sparkles, Settings } from 'lucide-react'
+import { Send, RotateCcw, AlertCircle, CheckCircle2, Sparkles, Settings, ChevronDown } from 'lucide-react'
 import ChatBubble from './components/ChatBubble'
 import TypingIndicator from './components/TypingIndicator'
 import LeadSummaryCard from './components/LeadSummaryCard'
@@ -8,6 +8,10 @@ import ConfigPanel from './components/ConfigPanel'
 import { useChat } from './hooks/useChat'
 import { DEFAULT_CONFIG } from './utils/config'
 import { useLanguage } from '../../../hooks/useLanguage'
+import { translations } from '../../../data/translations'
+
+// Mensaje de bienvenida del chat siempre en español al cargar
+const WELCOME_MESSAGE_ES = translations?.es?.demos?.leadQualifier?.ui?.welcomeMessage ?? '¡Hola! Soy el asistente de proyectos. Estoy aquí para ayudarte a definir tu reforma y resolver cualquier duda. ¿Qué tipo de proyecto tienes en mente?'
 
 export default function LeadQualifier() {
   const { t, language } = useLanguage()
@@ -15,7 +19,7 @@ export default function LeadQualifier() {
   const [messages, setMessages] = useState(() => [{
     id: 'welcome',
     role: 'assistant',
-    content: t('demos.leadQualifier.ui.welcomeMessage'),
+    content: WELCOME_MESSAGE_ES,
     timestamp: new Date().toISOString(),
   }])
   const [input, setInput] = useState('')
@@ -177,7 +181,7 @@ export default function LeadQualifier() {
     setMessages([{
       id: `welcome-${Date.now()}`,
       role: 'assistant',
-      content: t('demos.leadQualifier.ui.welcomeMessage'),
+      content: WELCOME_MESSAGE_ES,
       timestamp: new Date().toISOString(),
     }])
     setLeadData({})
@@ -319,45 +323,36 @@ export default function LeadQualifier() {
 
           {/* Sidebar: Config + Lead Summary */}
           <div className="lg:col-span-1 space-y-4">
-            {/* Config Toggle */}
+            {/* Config button: abre modal */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               className="rounded-2xl border border-gray-700 bg-gray-800/50 overflow-hidden"
             >
               <button
-                onClick={() => setShowConfig(!showConfig)}
+                onClick={() => setShowConfig(true)}
                 className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-700/50 transition-colors"
               >
                 <span className="flex items-center gap-2 text-sm font-semibold text-white">
                   <Settings className="h-4 w-4 text-primary-400" />
                   {t('demos.leadQualifier.ui.configBtn')}
                 </span>
-                {showConfig
-                  ? <ChevronUp className="h-4 w-4 text-gray-400" />
-                  : <ChevronDown className="h-4 w-4 text-gray-400" />
-                }
+                <ChevronDown className="h-4 w-4 text-gray-400" />
               </button>
-              <AnimatePresence>
-                {showConfig && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="overflow-hidden border-t border-gray-700"
-                  >
-                    <ConfigPanel
-                      config={config}
-                      onSave={(newConfig) => { setConfig(newConfig); setShowConfig(false) }}
-                      onClose={() => setShowConfig(false)}
-                      t={t}
-                      inline
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </motion.div>
+
+            {/* Modal de configuración */}
+            <AnimatePresence>
+              {showConfig && (
+                <ConfigPanel
+                  config={config}
+                  onSave={(newConfig) => { setConfig(newConfig); setShowConfig(false) }}
+                  onClose={() => setShowConfig(false)}
+                  t={t}
+                  inline={false}
+                />
+              )}
+            </AnimatePresence>
 
             <LeadSummaryCard leadData={leadData} config={config} t={t} language={language} />
           </div>
