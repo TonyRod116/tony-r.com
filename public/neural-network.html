@@ -1068,14 +1068,6 @@
             </div>
             <p class="hint" data-i18n="hintHidden">Adjust hidden layer size to see its impact on accuracy</p>
           </div>
-
-          <!-- Update Visualization Button -->
-          <div class="panel" style="margin-top: 24px; background: #1f2937; border-radius: 12px; padding: 16px;">
-            <button id="updateVisualizationBtn" class="btn" style="background: #3b82f6; font-weight: 600;" data-i18n="updateBtn">
-              Update and Recalculate
-            </button>
-            <p class="hint" style="margin-top: 8px;" data-i18n="hintUpdate">Click to update the 3D visualization and recalculate predictions</p>
-          </div>
         </div>
       </div>
 
@@ -2760,9 +2752,7 @@
             const hiddenNodes = parseInt(e.target.value)
             currentHiddenNodes = hiddenNodes
             updateHiddenNodesDisplay(hiddenNodes)
-            // Also update epoch display to reflect new accuracy
             updateEpochDisplay(currentEpoch)
-            // Don't update visualization automatically - wait for button click
           })
           // Initialize display
           updateHiddenNodesDisplay(64)
@@ -2784,23 +2774,7 @@
             // Architecture unchanged but epoch changed - just update epoch
             updateModelForEpoch(currentEpoch)
             lastAppliedEpoch = currentEpoch
-          } else {
-            // Force rebuild even if nothing changed (user clicked button)
-            // This ensures the visualization is always up to date
-            if (currentHiddenNodes !== 64) {
-              updateModelForHiddenNodes(currentHiddenNodes)
-            } else {
-              updateModelForEpoch(currentEpoch)
-            }
           }
-        }
-        
-        // Update Visualization Button
-        const updateVisualizationBtn = document.getElementById('updateVisualizationBtn')
-        if (updateVisualizationBtn) {
-          updateVisualizationBtn.addEventListener('click', () => {
-            updateVisualization()
-          })
         }
 
         function updateModelForEpoch(epoch) {
@@ -2817,9 +2791,7 @@
             const epoch = parseInt(e.target.value)
             currentEpoch = epoch
             updateEpochDisplay(epoch)
-            // Also update hidden nodes display to reflect new accuracy
             updateHiddenNodesDisplay(currentHiddenNodes)
-            // Don't update visualization automatically - wait for button click
           })
           // Initialize display
           updateEpochDisplay(40)
