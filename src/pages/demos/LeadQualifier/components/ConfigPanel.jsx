@@ -88,7 +88,7 @@ export default function ConfigPanel({ config, onSave, onClose, t, inline = false
                     onChange={(e) => updateBudgetMin(type, e.target.value)}
                     className="flex-1 px-2 py-1.5 rounded-lg bg-gray-700 border border-gray-600 text-white text-sm focus:ring-2 focus:ring-primary-500"
                   />
-                  <span className="text-gray-400 text-sm">\u20AC</span>
+                  <span className="text-gray-400 text-sm">{'\u20AC'}</span>
                 </div>
               </div>
             ))}
@@ -111,7 +111,7 @@ export default function ConfigPanel({ config, onSave, onClose, t, inline = false
               onChange={(e) => setLocalConfig(prev => ({ ...prev, budgetBonusThreshold: parseInt(e.target.value, 10) || 0 }))}
               className="flex-1 px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white text-sm focus:ring-2 focus:ring-primary-500"
             />
-            <span className="text-gray-400 text-sm">\u20AC</span>
+            <span className="text-gray-400 text-sm">{'\u20AC'}</span>
           </div>
         </div>
       </div>
