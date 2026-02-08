@@ -29,7 +29,8 @@ import {
 import { useLanguage } from '../../hooks/useLanguage.jsx'
 import LoadingProgressBar from '../../components/LoadingProgressBar.jsx'
 
-const BUILDAPP_BUDGET_URL = 'https://buildapp-v1-backend.onrender.com/api/v1/budget/generate-detailed'
+// Proxy en nuestra API para evitar CORS (producción: Vercel api/buildapp-budget.js; desarrollo: server /api/buildapp-budget)
+const BUILDAPP_BUDGET_URL = '/api/buildapp-budget'
 
 const PROJECT_TYPE_ICONS = {
   baño: Bath,
