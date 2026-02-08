@@ -317,14 +317,14 @@ export default function Home() {
       {/* Main Content */}
       <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-32 sm:pt-36 lg:pt-20 min-h-screen">
+      <section className="relative overflow-hidden pt-32 sm:pt-36 lg:pt-20 min-h-screen bg-gray-900">
         
         {/* Background photo that gets "eaten" on scroll */}
         <div 
           className="
             absolute inset-x-0 bottom-0 
             top-[5rem] sm:top-[6rem] lg:top-[6vh]
-            z-0 bg-cover bg-right-bottom bg-no-repeat sm:bg-center w-full h-full
+            z-0 bg-gray-900 bg-cover bg-right-bottom bg-no-repeat sm:bg-center w-full h-full
             pointer-events-none
           "
           style={{
@@ -448,7 +448,7 @@ export default function Home() {
       </section>
 
       {/* About Preview */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-blue-50/80 dark:bg-gray-800/50">
+      <section className="py-16 sm:py-20 lg:py-24 bg-gray-100/80 dark:bg-gray-800/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <ScrollAnimatedSection 
@@ -720,7 +720,7 @@ export default function Home() {
       </section>
 
       {/* AI Lab Section */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900">
+      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-slate-50 via-gray-100 to-slate-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollAnimatedProjectCenter
             className="text-center mb-12"
