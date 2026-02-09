@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MNIST Neural Network Visualization</title>
+  <link rel="icon" type="image/svg+xml" href="/src/assets/tr-favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1030,7 +1031,7 @@
 
       <!-- Main Layout -->
       <div class="layout">
-        <!-- Left: Drawing Canvas and Prediction -->
+        <!-- Left: Drawing Canvas and Epoch Slider -->
         <div>
           <div class="panel">
             <h2 data-i18n="drawing">Drawing</h2>
@@ -1041,19 +1042,8 @@
             <p class="hint" data-i18n="hintDraw">Click and drag to draw (right-click to erase)</p>
           </div>
 
-          <!-- Prediction Chart -->
-          <div id="predictionChart" class="panel" style="margin-top: 24px;">
-            <h2 data-i18n="prediction">Prediction</h2>
-          </div>
-        </div>
-
-        <!-- Middle: 3D Visualization (background, handled by CSS) -->
-        <div></div>
-
-        <!-- Right: Controls -->
-        <div>
           <!-- Epoch Slider -->
-          <div class="panel" style="background: #1f2937; border-radius: 12px; padding: 16px;">
+          <div class="panel" style="margin-top: 24px; background: #1f2937; border-radius: 12px; padding: 16px;">
             <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 16px; color: white;" data-i18n="trainingEpoch">Training Epoch</h2>
             <div style="margin-bottom: 12px;">
               <input 
@@ -1076,6 +1066,17 @@
               </div>
             </div>
             <p class="hint" data-i18n="hintEpoch">Adjust the epoch to see how training improves accuracy</p>
+          </div>
+        </div>
+
+        <!-- Middle: 3D Visualization (background, handled by CSS) -->
+        <div></div>
+
+        <!-- Right: Prediction Chart and Hidden Nodes Slider -->
+        <div>
+          <!-- Prediction Chart -->
+          <div id="predictionChart" class="panel">
+            <h2 data-i18n="prediction">Prediction</h2>
           </div>
 
           <!-- Hidden Nodes Slider -->
