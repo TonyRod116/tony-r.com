@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # If it's a real file, serve it directly
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule ^ - [L]
+
+  # Everything else (including directories) → SPA
+  # This prevents 403 when a directory like /demos/ exists but has no index.html
+  RewriteRule ^ /index.html [L]
+</IfModule>
