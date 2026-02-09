@@ -4,10 +4,10 @@ import { translations } from '../data/translations'
 const LanguageContext = createContext()
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState('en')
+  const [language, setLanguage] = useState('es')
 
   useEffect(() => {
-    // Get language from localStorage or default to 'en'
+    // Get language from localStorage or default to 'es' (Spanish)
     const savedLanguage = localStorage.getItem('portfolio-language')
     if (savedLanguage && translations[savedLanguage]) {
       setLanguage(savedLanguage)

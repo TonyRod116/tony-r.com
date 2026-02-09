@@ -1,21 +1,14 @@
-// Vercel Serverless Function - API proxy para OpenAI
-// La API key se guarda en variables de entorno de Vercel (seguro)
+// Vercel Serverless Function - API proxy para OpenAI (solo se usa si el frontend no usa BuildApp)
 
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions'
 
 export default async function handler(req, res) {
-  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end()
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' })
-  }
+  if (req.method === 'OPTIONS') return res.status(200).end()
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
 
   const apiKey = process.env.OPENAI_API_KEY
   if (!apiKey) {

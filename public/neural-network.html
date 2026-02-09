@@ -109,6 +109,17 @@
     .site-header .nav-desktop a.active {
       color: #2563eb;
     }
+    .site-header .nav-desktop button {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #e5e7eb;
+      text-decoration: none;
+      transition: color 0.2s;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2));
+    }
+    .site-header .nav-desktop button:hover {
+      color: #2563eb;
+    }
     /* Language selector */
     .site-header .lang-wrap {
       position: relative;
@@ -270,6 +281,21 @@
     .site-header .mobile-panel a.active {
       color: #2563eb;
       background: rgba(37, 99, 235, 0.15);
+    }
+    .site-header .mobile-panel button {
+      display: block;
+      padding: 10px 16px;
+      margin: 0 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #d1d5db;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .site-header .mobile-panel button:hover {
+      color: #2563eb;
+      background: rgba(55, 65, 81, 0.5);
     }
     .site-header .mobile-panel .lang-mobile {
       padding: 16px;
@@ -852,7 +878,7 @@
             <a href="/about">About</a>
             <a href="/projects">Projects</a>
             <a href="/ai" class="active">AI Lab</a>
-            <a href="https://tony-r.com/demos">Demos</a>
+            <button type="button" onclick="window.location.replace('/demos')" style="background:none;border:none;color:inherit;font:inherit;cursor:pointer;padding:0;text-decoration:none;" class="nav-link">Demos</button>
             <a href="/resume">Resume</a>
             <a href="/contact">Contact</a>
           </nav>
@@ -890,7 +916,7 @@
       <a href="/about">About</a>
       <a href="/projects">Projects</a>
       <a href="/ai" class="active">AI Lab</a>
-      <a href="https://tony-r.com/demos">Demos</a>
+      <button type="button" onclick="window.location.replace('/demos')" style="background:none;border:none;color:inherit;font:inherit;cursor:pointer;padding:0;text-decoration:none;width:100%;text-align:left;" class="mobile-nav-link">Demos</button>
       <a href="/resume">Resume</a>
       <a href="/contact">Contact</a>
       <div class="lang-mobile">
