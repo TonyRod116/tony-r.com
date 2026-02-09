@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MNIST Neural Network Visualization</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -28,6 +31,7 @@
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       border-bottom: 1px solid rgba(55, 65, 81, 0.5);
+      font-family: 'Inter', system-ui, sans-serif;
     }
     .site-header.scrolled {
       background: rgba(17, 24, 39, 0.9);
@@ -75,9 +79,10 @@
     .site-header .logo {
       font-weight: 700;
       font-size: 0.875rem;
+      line-height: 1.25rem;
       color: #fff;
       text-decoration: none;
-      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2));
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.05));
     }
     .site-header .logo:hover {
       color: #fff;
@@ -97,16 +102,29 @@
     }
     .site-header .nav-desktop a {
       font-size: 0.875rem;
+      line-height: 1.25rem;
       font-weight: 500;
       color: #e5e7eb;
       text-decoration: none;
       transition: color 0.2s;
-      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2));
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.05));
     }
     .site-header .nav-desktop a:hover {
       color: #2563eb;
     }
     .site-header .nav-desktop a.active {
+      color: #2563eb;
+    }
+    .site-header .nav-desktop button {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      font-weight: 500;
+      color: #e5e7eb;
+      text-decoration: none;
+      transition: color 0.2s;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.05));
+    }
+    .site-header .nav-desktop button:hover {
       color: #2563eb;
     }
     /* Language selector */
@@ -257,6 +275,7 @@
       padding: 10px 16px;
       margin: 0 8px;
       font-size: 0.875rem;
+      line-height: 1.25rem;
       font-weight: 500;
       color: #d1d5db;
       text-decoration: none;
@@ -270,6 +289,22 @@
     .site-header .mobile-panel a.active {
       color: #2563eb;
       background: rgba(37, 99, 235, 0.15);
+    }
+    .site-header .mobile-panel button {
+      display: block;
+      padding: 10px 16px;
+      margin: 0 8px;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      font-weight: 500;
+      color: #d1d5db;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .site-header .mobile-panel button:hover {
+      color: #2563eb;
+      background: rgba(55, 65, 81, 0.5);
     }
     .site-header .mobile-panel .lang-mobile {
       padding: 16px;
@@ -852,7 +887,7 @@
             <a href="/about">About</a>
             <a href="/projects">Projects</a>
             <a href="/ai" class="active">AI Lab</a>
-            <a href="/demos" target="_top">Demos</a>
+            <a href="/demos">Demos</a>
             <a href="/resume">Resume</a>
             <a href="/contact">Contact</a>
           </nav>
@@ -890,7 +925,7 @@
       <a href="/about">About</a>
       <a href="/projects">Projects</a>
       <a href="/ai" class="active">AI Lab</a>
-      <a href="/demos" target="_top">Demos</a>
+      <a href="/demos">Demos</a>
       <a href="/resume">Resume</a>
       <a href="/contact">Contact</a>
       <div class="lang-mobile">
@@ -1419,11 +1454,11 @@
     const VISUALIZER_CONFIG = {
       weightUrl: 'https://raw.githubusercontent.com/DFin/Neural-Network-Visualisation/main/exports/mlp_weights/014_dataset-1x.json',
       maxConnectionsPerNeuron: 24,
-      layerSpacing: 5.5,
-      inputSpacing: 0.24,
-      hiddenSpacing: 0.95,
-      inputNodeSize: 0.18,
-      hiddenNodeRadius: 0.22,
+      layerSpacing: 4.0,  // Reducido de 5.5 a 4.0
+      inputSpacing: 0.18,  // Reducido de 0.24 a 0.18
+      hiddenSpacing: 0.7,  // Reducido de 0.95 a 0.7
+      inputNodeSize: 0.14,  // Reducido de 0.18 a 0.14
+      hiddenNodeRadius: 0.17,  // Reducido de 0.22 a 0.17
       connectionRadius: 0.005,
       connectionWeightThreshold: 0,
       brush: {
@@ -1919,13 +1954,14 @@
       constructor(mlp, options) {
         console.log('NeuralVisualizer constructor called with architecture:', mlp.architecture)
         this.mlp = mlp
+        this.outputLabels = [] // Array para guardar las etiquetas de la capa de salida
         this.options = Object.assign({
-          layerSpacing: 5.5,
-          inputSpacing: 0.24,
-          hiddenSpacing: 0.95,
-          outputSpacing: 0.95,
-          inputNodeSize: 0.18,
-          hiddenNodeRadius: 0.22,
+          layerSpacing: 4.0,  // Reducido de 5.5 a 4.0
+          inputSpacing: 0.18,  // Reducido de 0.24 a 0.18
+          hiddenSpacing: 0.7,  // Reducido de 0.95 a 0.7
+          outputSpacing: 0.7,  // Reducido de 0.95 a 0.7
+          inputNodeSize: 0.14,  // Reducido de 0.18 a 0.14
+          hiddenNodeRadius: 0.17,  // Reducido de 0.22 a 0.17
           maxConnectionsPerNeuron: 24,
           connectionRadius: 0.005,
           connectionWeightThreshold: 0,
@@ -1959,7 +1995,7 @@
           0.1,
           200
         )
-        this.camera.position.set(-15, 0, 15)
+        this.camera.position.set(-12, 0, 12)  // Acercado para mantener proporción con el tamaño reducido
 
         this.controls = new OrbitControls(this.camera, this.renderer.domElement)
         this.controls.enableDamping = true
@@ -2110,6 +2146,51 @@
             this.scene.add(mesh)
             const layerType = isOutputLayer ? 'output' : 'hidden'
             this.layerMeshes.push({ mesh, positions, type: layerType, layerIndex })
+            
+            // Añadir etiquetas numéricas (0-9) a las neuronas de la capa de salida
+            if (isOutputLayer) {
+              positions.forEach((position, index) => {
+                const canvas = document.createElement('canvas')
+                const context = canvas.getContext('2d')
+                canvas.width = 64
+                canvas.height = 64
+                
+                // Fondo transparente
+                context.clearRect(0, 0, canvas.width, canvas.height)
+                
+                // Estilo del texto
+                context.font = 'bold 48px Arial'
+                context.fillStyle = '#ffffff'
+                context.strokeStyle = '#000000'
+                context.lineWidth = 2
+                context.textAlign = 'center'
+                context.textBaseline = 'middle'
+                
+                // Dibujar número (0-9)
+                const number = index.toString()
+                context.strokeText(number, canvas.width / 2, canvas.height / 2)
+                context.fillText(number, canvas.width / 2, canvas.height / 2)
+                
+                // Crear textura y sprite
+                const texture = new THREE.CanvasTexture(canvas)
+                texture.needsUpdate = true
+                const spriteMaterial = new THREE.SpriteMaterial({ 
+                  map: texture,
+                  transparent: true,
+                  alphaTest: 0.1
+                })
+                const sprite = new THREE.Sprite(spriteMaterial)
+                
+                // Posicionar sprite a la derecha de la neurona
+                sprite.position.set(position.x + 0.6, position.y, position.z)  // Reducido de 0.8 a 0.6
+                sprite.scale.set(0.25, 0.25, 1)  // Reducido de 0.3 a 0.25 para mantener proporción
+                
+                this.scene.add(sprite)
+                // Guardar referencia para poder limpiar después si es necesario
+                if (!this.outputLabels) this.outputLabels = []
+                this.outputLabels.push(sprite)
+              })
+            }
           }
         })
       }

@@ -2,7 +2,7 @@
 
 Este documento describe **solo** los dos endpoints que el backend BuildApp debe exponer (o ya expone) para que las páginas **Lead Qualifier** y **Presupuesto Orientativo** funcionen desde el portfolio. No se toca nada más del backend.
 
-**Origen permitido (CORS):** El frontend se sirve desde `https://tony-r.com` (y en desarrollo desde `http://localhost:5173`). El backend debe permitir estos orígenes en CORS para las rutas indicadas.
+**Origen permitido (CORS):** El frontend se sirve desde `https://tony-r.com` (y en desarrollo desde `http://localhost:5173`). **El backend BuildApp debe incluir en las respuestas** (incluida la preflight OPTIONS) el header `Access-Control-Allow-Origin: https://tony-r.com` (o `*`) para las rutas `/api/v1/demo/chat` y `/api/v1/budget/generate-detailed`. Si no, el navegador bloqueará las peticiones.
 
 ---
 
