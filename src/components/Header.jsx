@@ -33,10 +33,15 @@ export default function Header() {
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
-  const translatedNavigation = navigation.map(item => ({
-    ...item,
-    name: t(`nav.${item.name}`)
-  }))
+  const translatedNavigation = navigation.map(item => {
+    const translatedName = t(`nav.${item.name}`)
+    // Fallback si la traducción falla
+    const displayName = translatedName && translatedName !== `nav.${item.name}` ? translatedName : item.name
+    return {
+      ...item,
+      name: displayName
+    }
+  })
 
   return (
     <motion.header
@@ -60,7 +65,7 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
             {translatedNavigation.map((item) => (
               <Link
-                key={item.name}
+                key={item.href}
                 to={item.href}
                 className={cn(
                   'text-sm font-medium transition-colors hover:text-primary-600 drop-shadow-sm',
@@ -117,7 +122,7 @@ export default function Header() {
               <nav className="flex-1 py-4 space-y-2 overflow-y-auto min-h-0">
                 {translatedNavigation.map((item) => (
                   <Link
-                    key={item.name}
+                    key={item.href}
                     to={item.href}
                     onClick={() => setIsOpen(false)}
                     className={cn(
