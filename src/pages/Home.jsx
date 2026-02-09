@@ -6,6 +6,7 @@ import tttIcon from '../assets/tictactoe.png'
 import msIcon from '../assets/buscaminas.png'
 import nimIcon from '../assets/nim.png'
 import tetrisIcon from '../assets/ttris.png'
+import nnIcon from '../assets/NN.png'
 import { profile } from '../data/profile'
 import { projects } from '../data/projects'
 import { useLanguage } from '../hooks/useLanguage.jsx'
@@ -751,7 +752,33 @@ export default function Home() {
           </ScrollAnimatedProjectCenter>
 
           {/* AI Games Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
+            {/* Neural Network - Unique cyan/emerald gradient */}
+            <ScrollAnimatedAICard
+              delay={0.05}
+              rotation={-30}
+            >
+              <Link
+                to="/ai/neural-network"
+                className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
+              >
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="w-32 h-32 bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(6, 182, 212, 0.6), 0 0 40px rgba(16, 185, 129, 0.4)'}}>
+                    <img src={nnIcon} alt="Neural Network" className="h-30 w-30" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                    {t('home.aiLab.games.neuralNetwork.title')}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                    {t('home.aiLab.games.neuralNetwork.description')}
+                  </p>
+                  <div className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium">
+                    <span>{t('home.aiLab.playNow')}</span>
+                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </Link>
+            </ScrollAnimatedAICard>
             {/* Tic Tac Toe - Clockwise rotation */}
             <ScrollAnimatedAICard
               delay={0.1}

@@ -268,19 +268,19 @@ export default function PresupuestoOrientativo() {
             <div className="mt-6 flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-gray-700 dark:text-gray-300">
               <div className="flex items-center gap-1.5">
                 <Check className="h-4 w-4 text-green-600 dark:text-green-400" strokeWidth={3} />
-                <span className="font-medium">{t('solutions.presupuestoOrientativo.bullets.editable')}</span>
+                <span className="font-medium">{t('solutions.presupuestoOrientativo.resultBullets.editable')}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <Check className="h-4 w-4 text-green-600 dark:text-green-400" strokeWidth={3} />
-                <span className="font-medium">{t('solutions.presupuestoOrientativo.bullets.addMargin')}</span>
+                <span className="font-medium">{t('solutions.presupuestoOrientativo.resultBullets.addMargin')}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <Check className="h-4 w-4 text-green-600 dark:text-green-400" strokeWidth={3} />
-                <span className="font-medium">{t('solutions.presupuestoOrientativo.bullets.exportPdf')}</span>
+                <span className="font-medium">{t('solutions.presupuestoOrientativo.resultBullets.exportPdf')}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <Check className="h-4 w-4 text-green-600 dark:text-green-400" strokeWidth={3} />
-                <span className="font-medium">{t('solutions.presupuestoOrientativo.bullets.readyWhatsApp')}</span>
+                <span className="font-medium">{t('solutions.presupuestoOrientativo.resultBullets.readyWhatsApp')}</span>
               </div>
             </div>
           </motion.div>

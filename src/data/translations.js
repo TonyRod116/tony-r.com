@@ -79,9 +79,14 @@ export const translations = {
           tetris: {
             title: 'Tetris AI',
             description: 'Heuristic bot'
+          },
+          neuralNetwork: {
+            title: 'Neural Network',
+            description: 'Draw & classify digits live'
           }
         },
         playNow: 'Play Now',
+        explore: 'Explore',
         cta: 'Explore AI Lab'
       },
       cta: {
@@ -432,17 +437,17 @@ export const translations = {
       subtitle: 'Budgets in 30 seconds and clients filtered automatically. Less time wasted. More money.',
       presupuestoOrientativo: {
         title: 'Budgets in 30 seconds',
-        description: 'Generate professional budgets from your mobile, in front of the client. No Excel. No office. No wasted hours.',
+        description: 'Generate professional budgets from your mobile or computer. No Excel. No office. No wasted hours.',
         bullets: [
-          'Ready in seconds',
+          'Practically instant',
           'Editable with your margin',
-          'Exportable to PDF',
-          'From site or car'
+          'PDF ready to send',
+          'Uses the power of AI'
         ],
         cta: 'Try now for free',
         pageTitle: 'Professional budgets in 30 seconds',
         pageSubtitle: 'Enter basic data and generate a detailed budget automatically. Save hours of office work and respond to clients instantly.',
-        bullets: {
+        resultBullets: {
           editable: 'Editable',
           addMargin: 'Add your margin',
           exportPdf: 'Export PDF',
@@ -530,8 +535,8 @@ export const translations = {
         }
       },
       leadQualifier: {
-        title: 'Only talk to serious clients',
-        description: 'Our assistant filters curious visitors, collects data and sends you only leads ready to close.',
+        title: 'Lead Qualifier',
+        description: 'Talk only to serious clients. Our smart assistant filters curious visitors, collects data and sends you only leads ready to close.',
         bullets: [
           'Available 24/7',
           'Qualifies automatically',
@@ -1108,9 +1113,14 @@ export const translations = {
           tetris: {
             title: 'IA Tetris',
             description: 'Bot heurístico'
+          },
+          neuralNetwork: {
+            title: 'Red Neuronal',
+            description: 'Dibuja y clasifica dígitos en vivo'
           }
         },
         playNow: 'Jugar Ahora',
+        explore: 'Explorar',
         cta: 'Explorar Lab de IA'
       },
       cta: {
@@ -1697,17 +1707,17 @@ export const translations = {
       subtitle: 'Presupuestos en 30 segundos y clientes filtrados automáticamente. Menos tiempo perdido. Más dinero.',
       presupuestoOrientativo: {
         title: 'Presupuestos en 30 segundos',
-        description: 'Genera presupuestos profesionales desde el móvil, delante del cliente. Sin Excel. Sin oficina. Sin horas perdidas.',
+        description: 'Genera presupuestos profesionales desde el móvil u ordenador. Sin Excel. Sin oficina. Sin horas perdidas.',
         bullets: [
-          'Listos en segundos',
-          'Editables con tu margen',
-          'Exportables en PDF',
-          'Desde obra o coche'
+          'Prácticamente al instante',
+          'Editable con tu margen',
+          'PDF listo para enviar',
+          'Usa el poder de la IA'
         ],
         cta: 'Probar ahora gratis',
         pageTitle: 'Presupuestos profesionales en 30 segundos',
         pageSubtitle: 'Escribe los datos básicos y genera un presupuesto detallado automáticamente. Ahorra horas de oficina y responde al cliente al instante.',
-        bullets: {
+        resultBullets: {
           editable: 'Editable',
           addMargin: 'Añade tu margen',
           exportPdf: 'Exporta PDF',
@@ -1795,8 +1805,8 @@ export const translations = {
         }
       },
       leadQualifier: {
-        title: 'Solo habla con clientes que van en serio',
-        description: 'Nuestro asistente filtra curiosos, recoge datos y te envía solo leads listos para cerrar.',
+        title: 'Calificador de Leads',
+        description: 'Habla solo con clientes que van en serio. Nuestro asistente inteligente filtra curiosos, recoge datos y te envía solo leads listos para cerrar.',
         bullets: [
           'Atiende 24/7',
           'Califica automáticamente',
@@ -2143,9 +2153,14 @@ export const translations = {
           tetris: {
             title: 'IA Tetris',
             description: 'Bot heurístic'
+          },
+          neuralNetwork: {
+            title: 'Xarxa Neuronal',
+            description: 'Dibuixa i classifica dígits en viu'
           }
         },
         playNow: 'Jugar Ara',
+        explore: 'Explorar',
         cta: 'Explorar Lab d\'IA'
       },
       cta: {
@@ -2697,17 +2712,17 @@ export const translations = {
       subtitle: 'Pressupostos en 30 segons i clients filtrats automàticament. Menys temps perdut. Més diners.',
       presupuestoOrientativo: {
         title: 'Pressupostos en 30 segons',
-        description: 'Genera pressupostos professionals des del mòbil, davant del client. Sense Excel. Sense oficina. Sense hores perdudes.',
+        description: 'Genera pressupostos professionals des del mòbil o l\'ordinador. Sense Excel. Sense oficina. Sense hores perdudes.',
         bullets: [
-          'Llestos en segons',
-          'Editables amb el teu marge',
-          'Exportables en PDF',
-          'Des de obra o cotxe'
+          'Pràcticament a l\'instant',
+          'Editable amb el teu marge',
+          'PDF llest per enviar',
+          'Usa el poder de la IA'
         ],
         cta: 'Provar ara gratuïtament',
         pageTitle: 'Pressupostos professionals en 30 segons',
         pageSubtitle: 'Escriu les dades bàsiques i genera un pressupost detallat automàticament. Estalvia hores d\'oficina i respon al client a l\'instant.',
-        bullets: {
+        resultBullets: {
           editable: 'Editable',
           addMargin: 'Afegeix el teu marge',
           exportPdf: 'Exporta PDF',
@@ -2795,8 +2810,8 @@ export const translations = {
         }
       },
       leadQualifier: {
-        title: 'Només parla amb clients que van en seriós',
-        description: 'El nostre assistent filtra curiosos, recull dades i t\'envia només leads llestos per tancar.',
+        title: 'Qualificador de Leads',
+        description: 'Parla només amb clients que van en seriós. El nostre assistent intel·ligent filtra curiosos, recull dades i t\'envia només leads llestos per tancar.',
         bullets: [
           'Atén 24/7',
           'Qualifica automàticament',
