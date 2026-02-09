@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MNIST Neural Network Visualization</title>
+  <link rel="icon" type="image/svg+xml" href="/src/assets/tr-favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -11,48 +15,356 @@
       box-sizing: border-box;
     }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
       background: #111827;
       color: white;
       overflow-x: hidden;
+      letter-spacing: -0.02em;
     }
-    .header {
+    /* Site header - matches main app header (dark) */
+    .site-header {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 100;
-      background: rgba(17, 24, 39, 0.9);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid #374151;
-      padding: 12px 0;
+      transition: background 0.3s, border-color 0.3s;
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(55, 65, 81, 0.5);
+      font-family: 'Inter', system-ui, sans-serif;
     }
-    .header-content {
-      max-width: 1400px;
+    .site-header.scrolled {
+      background: rgba(17, 24, 39, 0.9);
+      border-bottom-color: #374151;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .site-header .header-inner {
+      max-width: 1800px;
       margin: 0 auto;
       padding: 0 16px;
+    }
+    @media (min-width: 640px) {
+      .site-header .header-inner { padding: 0 24px; }
+    }
+    @media (min-width: 1024px) {
+      .site-header .header-inner { padding: 0 32px; }
+    }
+    .site-header .header-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      height: 64px;
     }
-    .back-link {
+    .site-header .header-left {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      min-width: 0;
+    }
+    .site-header .header-center {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .site-header .header-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      min-width: 0;
+    }
+    .site-header .logo {
+      font-weight: 700;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      color: #fff;
+      text-decoration: none;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.05));
+    }
+    .site-header .logo:hover {
+      color: #fff;
+    }
+    .site-header .nav-desktop {
+      display: none;
+    }
+    @media (min-width: 768px) {
+      .site-header .nav-desktop {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .site-header .nav-desktop { gap: 32px; }
+    }
+    .site-header .nav-desktop a {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      font-weight: 500;
+      color: #e5e7eb;
+      text-decoration: none;
+      transition: color 0.2s;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.05));
+    }
+    .site-header .nav-desktop a:hover {
+      color: #2563eb;
+    }
+    .site-header .nav-desktop a.active {
+      color: #2563eb;
+    }
+    .site-header .nav-desktop a.nav-cta {
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: #2563eb;
+      color: #fff;
+      filter: none;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .site-header .nav-desktop a.nav-cta:hover {
+      background: #1d4ed8;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+    }
+    .site-header .mobile-panel a.nav-cta {
+      background: #2563eb;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+    }
+    .site-header .mobile-panel a.nav-cta:hover {
+      background: #1d4ed8;
+    }
+    .site-header .nav-desktop button {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      font-weight: 500;
+      color: #e5e7eb;
+      text-decoration: none;
+      transition: color 0.2s;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.05));
+    }
+    .site-header .nav-desktop button:hover {
+      color: #2563eb;
+    }
+    /* Language selector */
+    .site-header .lang-wrap {
+      position: relative;
+    }
+    .site-header .lang-btn {
       display: flex;
       align-items: center;
       gap: 8px;
-      color: #d1d5db;
-      text-decoration: none;
-      font-size: 14px;
-      transition: color 0.2s;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
     }
-    .back-link:hover {
-      color: white;
+    .site-header .lang-btn:hover {
+      background: rgba(55, 65, 81, 0.8);
     }
-    .back-link svg {
+    .site-header .lang-btn svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+    .site-header .lang-btn .lang-globe {
+      stroke-width: 2;
+    }
+    .site-header .lang-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 8px;
+      width: 192px;
+      background: #1f2937;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+      z-index: 50;
+      overflow: hidden;
+    }
+    .site-header .lang-wrap:hover .lang-dropdown,
+    .site-header .lang-wrap.open .lang-dropdown {
+      opacity: 1;
+      visibility: visible;
+    }
+    .site-header .lang-dropdown button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 10px 16px;
+      font-size: 0.875rem;
+      color: #e5e7eb;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      text-align: left;
+    }
+    .site-header .lang-dropdown button:hover {
+      background: rgba(55, 65, 81, 0.8);
+      color: #2563eb;
+    }
+    .site-header .lang-dropdown button.active {
+      background: rgba(37, 99, 235, 0.2);
+      color: #2563eb;
+    }
+    .site-header .lang-dropdown button.active::after {
+      content: '✓';
+      color: #2563eb;
+    }
+    .site-header .lang-desktop {
+      display: none;
+    }
+    @media (min-width: 768px) {
+      .site-header .lang-desktop { display: block; }
+    }
+    .site-header .mobile-toggle {
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      border-radius: 8px;
+      background: transparent;
+      border: none;
+      color: #e5e7eb;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .site-header .mobile-toggle:hover {
+      background: rgba(55, 65, 81, 0.8);
+    }
+    @media (min-width: 768px) {
+      .site-header .mobile-toggle { display: none; }
+    }
+    .site-header .mobile-toggle svg {
       width: 20px;
       height: 20px;
     }
+    /* Mobile menu overlay */
+    .site-header .mobile-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      top: 64px;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(4px);
+      z-index: 9998;
+    }
+    .site-header .mobile-overlay.open {
+      display: block;
+    }
+    @media (min-width: 768px) {
+      .site-header .mobile-overlay { display: none !important; }
+    }
+    /* Mobile menu panel */
+    .site-header .mobile-panel {
+      position: fixed;
+      top: 64px;
+      right: 0;
+      width: 256px;
+      max-width: 70vw;
+      max-height: calc(100vh - 64px);
+      background: rgba(17, 24, 39, 0.98);
+      backdrop-filter: blur(12px);
+      border-left: 1px solid #374151;
+      box-shadow: -4px 0 24px rgba(0,0,0,0.3);
+      z-index: 9999;
+      padding: 16px 0;
+      overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.3s ease-out;
+    }
+    .site-header .mobile-panel.open {
+      transform: translateX(0);
+    }
+    @media (min-width: 768px) {
+      .site-header .mobile-panel { display: none !important; }
+    }
+    .site-header .mobile-panel a {
+      display: block;
+      padding: 10px 16px;
+      margin: 0 8px;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      font-weight: 500;
+      color: #d1d5db;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .site-header .mobile-panel a:hover {
+      color: #2563eb;
+      background: rgba(55, 65, 81, 0.5);
+    }
+    .site-header .mobile-panel a.active {
+      color: #2563eb;
+      background: rgba(37, 99, 235, 0.15);
+    }
+    .site-header .mobile-panel button {
+      display: block;
+      padding: 10px 16px;
+      margin: 0 8px;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      font-weight: 500;
+      color: #d1d5db;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .site-header .mobile-panel button:hover {
+      color: #2563eb;
+      background: rgba(55, 65, 81, 0.5);
+    }
+    .site-header .mobile-panel .lang-mobile {
+      padding: 16px;
+      border-top: 1px solid #374151;
+      margin-top: 8px;
+    }
+    .site-header .mobile-panel .lang-mobile .lang-label {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-bottom: 8px;
+    }
+    .site-header .mobile-panel .lang-mobile-btns {
+      display: flex;
+      gap: 8px;
+    }
+    .site-header .mobile-panel .lang-mobile-btns button {
+      padding: 8px 12px;
+      font-size: 0.875rem;
+      border-radius: 6px;
+      border: 1px solid #374151;
+      background: rgba(55, 65, 81, 0.5);
+      color: #e5e7eb;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .site-header .mobile-panel .lang-mobile-btns button:hover,
+    .site-header .mobile-panel .lang-mobile-btns button.active {
+      background: rgba(37, 99, 235, 0.2);
+      color: #2563eb;
+      border-color: #2563eb;
+    }
+    /* Legacy .header / .header-content for any refs - keep main-content padding consistent */
+    .header { display: none; }
+    .header-content { display: none; }
     .main-content {
-      padding-top: 64px;
+      padding-top: 80px;
       min-height: 100vh;
       position: relative;
       z-index: 10;
@@ -586,80 +898,213 @@
   <!-- 3D Network Visualization Background -->
   <div id="threeContainer"></div>
   
-  <!-- Header -->
-  <div class="header">
-    <div class="header-content">
-      <a href="/ai" class="back-link">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        <span>Back to AI Lab</span>
-      </a>
+  <!-- Site header (matches main app, no React) -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+      <div class="header-row">
+        <div class="header-left">
+          <a href="/" class="logo">Tony Rodríguez</a>
+        </div>
+        <div class="header-center">
+          <nav class="nav-desktop" aria-label="Main">
+            <a href="/" data-i18n="navHome">Home</a>
+            <a href="/about" data-i18n="navAbout">About</a>
+            <a href="/projects" data-i18n="navProjects">Projects</a>
+            <a href="/ai" class="active" data-i18n="navAiLab">AI Lab</a>
+            <a href="/demos" data-i18n="navDemos">Demos</a>
+            <a href="/resume" data-i18n="navResume">Resume</a>
+            <a href="/contact" class="nav-cta" data-i18n="navContact">Contact</a>
+          </nav>
+        </div>
+        <div class="header-right">
+          <div class="lang-desktop lang-wrap" id="langWrap">
+            <button type="button" class="lang-btn" id="langBtn" aria-label="Language" aria-expanded="false" aria-haspopup="true">
+              <svg class="lang-globe" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                <path d="M2 12h20" />
+              </svg>
+              <span id="langCurrent">EN</span>
+            </button>
+            <div class="lang-dropdown" role="menu">
+              <button type="button" role="menuitem" data-lang="en">EN</button>
+              <button type="button" role="menuitem" data-lang="es">ES</button>
+              <button type="button" role="menuitem" data-lang="ca">CAT</button>
+            </div>
+          </div>
+          <button type="button" class="mobile-toggle" id="mobileMenuBtn" aria-label="Toggle menu">
+            <svg id="menuIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="closeIcon" style="display:none;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
+    <div class="mobile-overlay" id="mobileOverlay" aria-hidden="true"></div>
+    <nav class="mobile-panel" id="mobilePanel" aria-label="Mobile">
+      <a href="/" data-i18n="navHome">Home</a>
+      <a href="/about" data-i18n="navAbout">About</a>
+      <a href="/projects" data-i18n="navProjects">Projects</a>
+      <a href="/ai" class="active" data-i18n="navAiLab">AI Lab</a>
+      <a href="/demos" data-i18n="navDemos">Demos</a>
+      <a href="/resume" data-i18n="navResume">Resume</a>
+      <a href="/contact" class="nav-cta" data-i18n="navContact">Contact</a>
+      <div class="lang-mobile">
+        <div class="lang-label" data-i18n="langMobileLabel">Idioma / Language</div>
+        <div class="lang-mobile-btns">
+          <button type="button" data-lang="en">EN</button>
+          <button type="button" data-lang="es">ES</button>
+          <button type="button" data-lang="ca">CAT</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <script>
+    (function () {
+      var LANG_KEY = 'portfolio-language'
+      var LANG_LABELS = { en: 'EN', es: 'ES', ca: 'CAT' }
+      function getLang() {
+        var s = localStorage.getItem(LANG_KEY)
+        return (s === 'es' || s === 'ca') ? s : 'en'
+      }
+      function setLang(code) {
+        localStorage.setItem(LANG_KEY, code)
+        var cur = document.getElementById('langCurrent')
+        if (cur) cur.textContent = LANG_LABELS[code] || code.toUpperCase()
+        document.querySelectorAll('.lang-dropdown button[role="menuitem"], .lang-mobile-btns button').forEach(function (btn) {
+          var lang = btn.getAttribute('data-lang')
+          btn.classList.toggle('active', lang === code)
+        })
+        try { window.dispatchEvent(new CustomEvent('nn-lang-change', { detail: { lang: code } })) } catch (e) {}
+      }
+      var header = document.getElementById('siteHeader')
+      var menuBtn = document.getElementById('mobileMenuBtn')
+      var menuIcon = document.getElementById('menuIcon')
+      var closeIcon = document.getElementById('closeIcon')
+      var overlay = document.getElementById('mobileOverlay')
+      var panel = document.getElementById('mobilePanel')
+      setLang(getLang())
+      var langWrap = document.getElementById('langWrap')
+      var langBtn = document.getElementById('langBtn')
+      if (langWrap && langBtn) {
+        langBtn.addEventListener('click', function (e) {
+          e.stopPropagation()
+          langWrap.classList.toggle('open')
+          langBtn.setAttribute('aria-expanded', langWrap.classList.contains('open'))
+        })
+        document.querySelectorAll('.lang-dropdown button[role="menuitem"]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            setLang(btn.getAttribute('data-lang'))
+            langWrap.classList.remove('open')
+            langBtn.setAttribute('aria-expanded', 'false')
+          })
+        })
+        document.addEventListener('click', function (e) {
+          if (langWrap.contains(e.target)) return
+          langWrap.classList.remove('open')
+          langBtn.setAttribute('aria-expanded', 'false')
+        })
+      }
+      panel.querySelectorAll('.lang-mobile-btns button').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          setLang(btn.getAttribute('data-lang'))
+          closeMenu()
+        })
+      })
+      function onScroll() {
+        header.classList.toggle('scrolled', window.scrollY > 20)
+      }
+      function openMenu() {
+        panel.classList.add('open')
+        overlay.classList.add('open')
+        overlay.setAttribute('aria-hidden', 'false')
+        menuIcon.style.display = 'none'
+        closeIcon.style.display = 'block'
+      }
+      function closeMenu() {
+        panel.classList.remove('open')
+        overlay.classList.remove('open')
+        overlay.setAttribute('aria-hidden', 'true')
+        menuIcon.style.display = 'block'
+        closeIcon.style.display = 'none'
+      }
+      window.addEventListener('scroll', onScroll, { passive: true })
+      onScroll()
+      if (menuBtn) menuBtn.addEventListener('click', function () {
+        if (panel.classList.contains('open')) closeMenu(); else openMenu()
+      })
+      if (overlay) overlay.addEventListener('click', closeMenu)
+      panel.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', closeMenu)
+      })
+    })()
+  </script>
 
   <!-- Main Content -->
   <div class="main-content">
     <div class="container">
       <!-- Title -->
       <div class="title">
-        <h1>MNIST Neural Network Visualization</h1>
-        <p>Draw a digit and watch how activations propagate through the network</p>
+        <h1 data-i18n="heroTitle">MNIST Neural Network Visualization</h1>
+        <p data-i18n="heroSubtitle">Draw a digit and watch how activations propagate through the network</p>
       </div>
 
       <!-- Main Layout -->
       <div class="layout">
-        <!-- Left: Drawing Canvas and Prediction -->
+        <!-- Left: Drawing Canvas and Epoch Slider -->
         <div>
           <div class="panel">
-            <h2>Drawing</h2>
+            <h2 data-i18n="drawing">Drawing</h2>
             <div id="gridContainer"></div>
             <div style="margin-top: 16px;">
-              <button id="resetBtn" class="btn">Clear</button>
+              <button id="resetBtn" class="btn" data-i18n="clear">Clear</button>
             </div>
-            <p class="hint">Click and drag to draw (right-click to erase)</p>
+            <p class="hint" data-i18n="hintDraw">Click and drag to draw (right-click to erase)</p>
           </div>
 
-          <!-- Prediction Chart -->
-          <div id="predictionChart" class="panel" style="margin-top: 24px;">
-            <h2>Prediction</h2>
+          <!-- Epoch Slider -->
+          <div class="panel" style="margin-top: 24px; background: #1f2937; border-radius: 12px; padding: 16px;">
+            <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 16px; color: white;" data-i18n="trainingEpoch">Training Epoch</h2>
+            <div style="margin-bottom: 12px;">
+              <input 
+                type="range" 
+                id="epochSlider" 
+                min="0" 
+                max="80" 
+                value="40" 
+                step="1"
+              />
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                <div>
+                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;" data-i18n="epoch">Epoch</div>
+                  <div style="font-size: 1.5rem; font-weight: 600; color: white;" id="epochValue">40</div>
+                </div>
+                <div style="text-align: right;">
+                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;" data-i18n="accuracy">Accuracy</div>
+                  <div style="font-size: 1.5rem; font-weight: 600; color: #60a5fa;" id="accuracyValue">96.2%</div>
+                </div>
+              </div>
+            </div>
+            <p class="hint" data-i18n="hintEpoch">Adjust the epoch to see how training improves accuracy</p>
           </div>
         </div>
 
         <!-- Middle: 3D Visualization (background, handled by CSS) -->
         <div></div>
 
-        <!-- Right: Controls -->
+        <!-- Right: Prediction Chart and Hidden Nodes Slider -->
         <div>
-          <!-- Epoch Slider -->
-          <div class="panel" style="background: #1f2937; border-radius: 12px; padding: 16px;">
-            <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 16px; color: white;">Training Epoch</h2>
-            <div style="margin-bottom: 12px;">
-              <input 
-                type="range" 
-                id="epochSlider" 
-                min="0" 
-                max="40" 
-                value="40" 
-                step="1"
-              />
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
-                <div>
-                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;">Epoch</div>
-                  <div style="font-size: 1.5rem; font-weight: 600; color: white;" id="epochValue">40</div>
-                </div>
-                <div style="text-align: right;">
-                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;">Accuracy</div>
-                  <div style="font-size: 1.5rem; font-weight: 600; color: #60a5fa;" id="accuracyValue">96.2%</div>
-                </div>
-              </div>
-            </div>
-            <p class="hint">Adjust the epoch to see how training improves accuracy</p>
+          <!-- Prediction Chart -->
+          <div id="predictionChart" class="panel">
+            <h2 data-i18n="prediction">Prediction</h2>
           </div>
 
           <!-- Hidden Nodes Slider -->
           <div class="panel" style="margin-top: 24px; background: #1f2937; border-radius: 12px; padding: 16px;">
-            <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 16px; color: white;">Hidden Layer Nodes</h2>
+            <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 16px; color: white;" data-i18n="hiddenLayerNodes">Hidden Layer Nodes</h2>
             <div style="margin-bottom: 12px;">
               <input 
                 type="range" 
@@ -671,24 +1116,16 @@
               />
               <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
                 <div>
-                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;">Hidden Nodes</div>
+                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;" data-i18n="hiddenNodes">Hidden Nodes</div>
                   <div style="font-size: 1.5rem; font-weight: 600; color: white;" id="hiddenNodesValue">64</div>
                 </div>
                 <div style="text-align: right;">
-                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;">Accuracy</div>
+                  <div style="font-size: 0.875rem; color: #9ca3af; margin-bottom: 4px;" data-i18n="accuracy">Accuracy</div>
                   <div style="font-size: 1.5rem; font-weight: 600; color: #60a5fa;" id="hiddenNodesAccuracyValue">96.2%</div>
                 </div>
               </div>
             </div>
-            <p class="hint">Adjust hidden layer size to see its impact on accuracy</p>
-          </div>
-
-          <!-- Update Visualization Button -->
-          <div class="panel" style="margin-top: 24px; background: #1f2937; border-radius: 12px; padding: 16px;">
-            <button id="updateVisualizationBtn" class="btn" style="background: #3b82f6; font-weight: 600;">
-              Update and Recalculate
-            </button>
-            <p class="hint" style="margin-top: 8px;">Click to update the 3D visualization and recalculate predictions</p>
+            <p class="hint" data-i18n="hintHidden">Adjust hidden layer size to see its impact on accuracy</p>
           </div>
         </div>
       </div>
@@ -698,15 +1135,15 @@
         <!-- Separator -->
         <div class="separator">
           <div class="separator-line"></div>
-          <span class="separator-text">Learn More</span>
+          <span class="separator-text" data-i18n="learnMore">Learn More</span>
           <div class="separator-line"></div>
         </div>
 
         <!-- SECTION 1: Training Code -->
         <section class="section">
           <div>
-            <h2 class="section-title">How This Network Was Trained</h2>
-            <p class="section-subtitle">The actual TensorFlow / Keras code used to build and train the model</p>
+            <h2 class="section-title" data-i18n="section1Title">How This Network Was Trained</h2>
+            <p class="section-subtitle" data-i18n="section1Subtitle">The actual TensorFlow / Keras code used to build and train the model</p>
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
@@ -718,7 +1155,7 @@
                   <div class="code-dot yellow"></div>
                   <div class="code-dot green"></div>
                 </div>
-                <span class="code-lang">Python / TensorFlow</span>
+                <span class="code-lang" data-i18n="codeLang">Python / TensorFlow</span>
               </div>
               <div class="code-content">
                 <div class="code-line"><span class="code-kw">import</span> tensorflow <span class="code-kw">as</span> tf</div>
@@ -764,8 +1201,8 @@
                 <div class="annotation-content">
                   <span class="badge">1</span>
                   <div class="annotation-text">
-                    <h4>Input Layer</h4>
-                    <p>Each 28×28 pixel drawing is flattened into a vector of 784 numbers. This is the entry point of the network.</p>
+                    <h4 data-i18n="ann1Title">Input Layer</h4>
+                    <p data-i18n="ann1Text">Each 28×28 pixel drawing is flattened into a vector of 784 numbers. This is the entry point of the network.</p>
                   </div>
                 </div>
               </div>
@@ -773,8 +1210,8 @@
                 <div class="annotation-content">
                   <span class="badge">2</span>
                   <div class="annotation-text">
-                    <h4>Dense(64, relu)</h4>
-                    <p>A Dense (fully connected) layer: every one of the 64 neurons receives input from ALL 784 pixels. "Dense" means every possible connection exists. ReLU activation: if the value is negative → 0, if positive → passes through unchanged.</p>
+                    <h4 data-i18n="ann2Title">Dense(64, relu)</h4>
+                    <p data-i18n="ann2Text">A Dense (fully connected) layer: every one of the 64 neurons receives input from ALL 784 pixels. "Dense" means every possible connection exists. ReLU activation: if the value is negative → 0, if positive → passes through unchanged.</p>
                   </div>
                 </div>
               </div>
@@ -782,8 +1219,8 @@
                 <div class="annotation-content">
                   <span class="badge">3</span>
                   <div class="annotation-text">
-                    <h4>Dense(32, relu)</h4>
-                    <p>Second hidden layer with 32 neurons, each connected to all 64 neurons from the previous layer. The network learns progressively more abstract patterns at each layer.</p>
+                    <h4 data-i18n="ann3Title">Dense(32, relu)</h4>
+                    <p data-i18n="ann3Text">Second hidden layer with 32 neurons, each connected to all 64 neurons from the previous layer. The network learns progressively more abstract patterns at each layer.</p>
                   </div>
                 </div>
               </div>
@@ -791,8 +1228,8 @@
                 <div class="annotation-content">
                   <span class="badge">4</span>
                   <div class="annotation-text">
-                    <h4>Dense(10, softmax)</h4>
-                    <p>10 output neurons — one for each digit (0–9). Softmax converts raw scores into probabilities that sum to 1.0, so the network effectively "votes" on which digit it sees.</p>
+                    <h4 data-i18n="ann4Title">Dense(10, softmax)</h4>
+                    <p data-i18n="ann4Text">10 output neurons — one for each digit (0–9). Softmax converts raw scores into probabilities that sum to 1.0, so the network effectively "votes" on which digit it sees.</p>
                   </div>
                 </div>
               </div>
@@ -800,8 +1237,8 @@
                 <div class="annotation-content">
                   <span class="badge">5</span>
                   <div class="annotation-text">
-                    <h4>Compile</h4>
-                    <p>Configures how the model learns. The loss function (SparseCategoricalCrossentropy) measures how wrong predictions are. Adam is an optimizer that adjusts weights to minimize that error.</p>
+                    <h4 data-i18n="ann5Title">Compile</h4>
+                    <p data-i18n="ann5Text">Configures how the model learns. The loss function (SparseCategoricalCrossentropy) measures how wrong predictions are. Adam is an optimizer that adjusts weights to minimize that error.</p>
                   </div>
                 </div>
               </div>
@@ -809,8 +1246,8 @@
                 <div class="annotation-content">
                   <span class="badge">6</span>
                   <div class="annotation-text">
-                    <h4>Train</h4>
-                    <p>The model sees the entire dataset 40 times (epochs). Each pass: it makes predictions, measures the error, and updates its weights to improve.</p>
+                    <h4 data-i18n="ann6Title">Train</h4>
+                    <p data-i18n="ann6Text">The model sees the entire dataset 40 times (epochs). Each pass: it makes predictions, measures the error, and updates its weights to improve.</p>
                   </div>
                 </div>
               </div>
@@ -821,14 +1258,14 @@
         <!-- SECTION 2: Architecture -->
         <section class="section">
           <div>
-            <h2 class="section-title">Understanding the Architecture</h2>
-            <p class="section-subtitle">A 4-layer neural network that recognizes handwritten digits</p>
+            <h2 class="section-title" data-i18n="section2Title">Understanding the Architecture</h2>
+            <p class="section-subtitle" data-i18n="section2Subtitle">A 4-layer neural network that recognizes handwritten digits</p>
           </div>
 
           <!-- Architecture Diagram -->
           <div class="arch-diagram">
             <div class="arch-box">
-              <div class="arch-label">Input</div>
+              <div class="arch-label" data-i18n="archInput">Input</div>
               <div class="arch-neurons">784</div>
               <div class="arch-sub">28 x 28 px</div>
             </div>
@@ -839,7 +1276,7 @@
               </svg>
             </div>
             <div class="arch-box green">
-              <div class="arch-label">Hidden 1</div>
+              <div class="arch-label" data-i18n="archHidden1">Hidden 1</div>
               <div class="arch-neurons">64</div>
               <div class="arch-sub">ReLU</div>
             </div>
@@ -850,7 +1287,7 @@
               </svg>
             </div>
             <div class="arch-box green">
-              <div class="arch-label">Hidden 2</div>
+              <div class="arch-label" data-i18n="archHidden2">Hidden 2</div>
               <div class="arch-neurons">32</div>
               <div class="arch-sub">ReLU</div>
             </div>
@@ -861,7 +1298,7 @@
               </svg>
             </div>
             <div class="arch-box purple">
-              <div class="arch-label">Output</div>
+              <div class="arch-label" data-i18n="archOutput">Output</div>
               <div class="arch-neurons">10</div>
               <div class="arch-sub">Softmax</div>
             </div>
@@ -875,8 +1312,8 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z" />
                 </svg>
               </div>
-              <h3 class="concept-title">What is Dense?</h3>
-              <p class="concept-text">In a Dense layer every neuron is connected to every neuron in the previous layer. With 784 inputs and 64 neurons, that means 50,176 individual connections — each with its own trainable weight.</p>
+              <h3 class="concept-title" data-i18n="conceptDenseTitle">What is Dense?</h3>
+              <p class="concept-text" data-i18n="conceptDenseText">In a Dense layer every neuron is connected to every neuron in the previous layer. With 784 inputs and 64 neurons, that means 50,176 individual connections — each with its own trainable weight.</p>
             </div>
             <div class="concept-card">
               <div class="concept-icon" style="background: rgba(34, 197, 94, 0.1); color: #34d399;">
@@ -884,8 +1321,8 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 class="concept-title">What is ReLU?</h3>
-              <p class="concept-text">ReLU (Rectified Linear Unit) is a simple activation function: if the input is negative it outputs 0, otherwise it passes the value unchanged. This introduces non-linearity, allowing the network to learn complex patterns.</p>
+              <h3 class="concept-title" data-i18n="conceptReLUTitle">What is ReLU?</h3>
+              <p class="concept-text" data-i18n="conceptReLUText">ReLU (Rectified Linear Unit) is a simple activation function: if the input is negative it outputs 0, otherwise it passes the value unchanged. This introduces non-linearity, allowing the network to learn complex patterns.</p>
             </div>
             <div class="concept-card">
               <div class="concept-icon" style="background: rgba(168, 85, 247, 0.1); color: #a855f7;">
@@ -893,8 +1330,8 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <h3 class="concept-title">What is Softmax?</h3>
-              <p class="concept-text">Softmax converts a vector of raw scores into probabilities. If the output is [2.1, 0.5, 8.3, …], softmax ensures all values are positive and sum to exactly 1.0 — a proper probability distribution.</p>
+              <h3 class="concept-title" data-i18n="conceptSoftmaxTitle">What is Softmax?</h3>
+              <p class="concept-text" data-i18n="conceptSoftmaxText">Softmax converts a vector of raw scores into probabilities. If the output is [2.1, 0.5, 8.3, …], softmax ensures all values are positive and sum to exactly 1.0 — a proper probability distribution.</p>
             </div>
           </div>
         </section>
@@ -902,8 +1339,8 @@
         <!-- SECTION 3: Pipeline -->
         <section class="section">
           <div>
-            <h2 class="section-title">What Happens When You Draw</h2>
-            <p class="section-subtitle">From pixels to prediction in 6 steps</p>
+            <h2 class="section-title" data-i18n="section3Title">What Happens When You Draw</h2>
+            <p class="section-subtitle" data-i18n="section3Subtitle">From pixels to prediction in 6 steps</p>
           </div>
 
           <div class="pipeline-grid">
@@ -914,8 +1351,8 @@
                 </svg>
               </div>
               <div class="pipeline-num">1</div>
-              <h4 class="pipeline-title">Draw</h4>
-              <p class="pipeline-text">You draw on a 28×28 canvas. Each cell is a brightness from 0 to 255.</p>
+              <h4 class="pipeline-title" data-i18n="pipe1Title">Draw</h4>
+              <p class="pipeline-text" data-i18n="pipe1Text">You draw on a 28×28 canvas. Each cell is a brightness from 0 to 255.</p>
             </div>
             <div class="pipeline-step">
               <div class="pipeline-icon" style="background: rgba(34, 211, 238, 0.1); color: #22d3ee;">
@@ -924,8 +1361,8 @@
                 </svg>
               </div>
               <div class="pipeline-num">2</div>
-              <h4 class="pipeline-title">Flatten</h4>
-              <p class="pipeline-text">The 28×28 grid is reshaped into a single array of 784 values.</p>
+              <h4 class="pipeline-title" data-i18n="pipe2Title">Flatten</h4>
+              <p class="pipeline-text" data-i18n="pipe2Text">The 28×28 grid is reshaped into a single array of 784 values.</p>
             </div>
             <div class="pipeline-step">
               <div class="pipeline-icon" style="background: rgba(34, 197, 94, 0.1); color: #34d399;">
@@ -934,8 +1371,8 @@
                 </svg>
               </div>
               <div class="pipeline-num">3</div>
-              <h4 class="pipeline-title">Normalize</h4>
-              <p class="pipeline-text">Each pixel is normalized: (pixel − 0.13) / 0.31, matching training preprocessing.</p>
+              <h4 class="pipeline-title" data-i18n="pipe3Title">Normalize</h4>
+              <p class="pipeline-text" data-i18n="pipe3Text">Each pixel is normalized: (pixel − 0.13) / 0.31, matching training preprocessing.</p>
             </div>
             <div class="pipeline-step">
               <div class="pipeline-icon" style="background: rgba(234, 179, 8, 0.1); color: #eab308;">
@@ -944,8 +1381,8 @@
                 </svg>
               </div>
               <div class="pipeline-num">4</div>
-              <h4 class="pipeline-title">Forward Pass</h4>
-              <p class="pipeline-text">Data flows through each layer: multiply by weights, add bias, apply activation.</p>
+              <h4 class="pipeline-title" data-i18n="pipe4Title">Forward Pass</h4>
+              <p class="pipeline-text" data-i18n="pipe4Text">Data flows through each layer: multiply by weights, add bias, apply activation.</p>
             </div>
             <div class="pipeline-step">
               <div class="pipeline-icon" style="background: rgba(251, 146, 60, 0.1); color: #fb923c;">
@@ -954,8 +1391,8 @@
                 </svg>
               </div>
               <div class="pipeline-num">5</div>
-              <h4 class="pipeline-title">Softmax</h4>
-              <p class="pipeline-text">The 10 raw scores are converted into probabilities that sum to 1.</p>
+              <h4 class="pipeline-title" data-i18n="pipe5Title">Softmax</h4>
+              <p class="pipeline-text" data-i18n="pipe5Text">The 10 raw scores are converted into probabilities that sum to 1.</p>
             </div>
             <div class="pipeline-step">
               <div class="pipeline-icon" style="background: rgba(168, 85, 247, 0.1); color: #a855f7;">
@@ -964,8 +1401,8 @@
                 </svg>
               </div>
               <div class="pipeline-num">6</div>
-              <h4 class="pipeline-title">Prediction</h4>
-              <p class="pipeline-text">The digit with the highest probability is the network's answer.</p>
+              <h4 class="pipeline-title" data-i18n="pipe6Title">Prediction</h4>
+              <p class="pipeline-text" data-i18n="pipe6Text">The digit with the highest probability is the network's answer.</p>
             </div>
           </div>
         </section>
@@ -973,54 +1410,46 @@
         <!-- SECTION 4: Key Concepts -->
         <section class="section">
           <div>
-            <h2 class="section-title">Key Concepts</h2>
-            <p class="section-subtitle">Dive deeper into the building blocks</p>
+            <h2 class="section-title" data-i18n="section4Title">Key Concepts</h2>
+            <p class="section-subtitle" data-i18n="section4Subtitle">Dive deeper into the building blocks</p>
           </div>
 
           <div style="display: flex; flex-direction: column; gap: 12px;">
             <div class="expandable-card" style="border-left-color: #3b82f6;">
               <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
-                <span class="expandable-title">Weights & Biases</span>
+                <span class="expandable-title" data-i18n="keyWeights">Weights & Biases</span>
                 <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <div class="expandable-content" style="display: none;">
-                Weights are the learnable numbers on every connection between neurons. Each weight controls how much influence one neuron has on the next. Biases give each neuron an adjustable threshold — they shift the activation function left or right. Together, weights and biases are the "knowledge" the network acquires during training.
-              </div>
+              <div class="expandable-content" style="display: none;" data-i18n="keyWeightsText">Weights are the learnable numbers on every connection between neurons. Each weight controls how much influence one neuron has on the next. Biases give each neuron an adjustable threshold — they shift the activation function left or right. Together, weights and biases are the "knowledge" the network acquires during training.</div>
             </div>
             <div class="expandable-card" style="border-left-color: #f97316;">
               <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
-                <span class="expandable-title">Loss Function</span>
+                <span class="expandable-title" data-i18n="keyLoss">Loss Function</span>
                 <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <div class="expandable-content" style="display: none;">
-                Sparse Categorical Crossentropy measures how far the predicted probabilities are from the true label. If the correct digit is 7 and the model gives 90% confidence to 7, the loss is low. If it gives 10%, the loss is high. The goal of training is to minimize this number across all examples.
-              </div>
+              <div class="expandable-content" style="display: none;" data-i18n="keyLossText">Sparse Categorical Crossentropy measures how far the predicted probabilities are from the true label. If the correct digit is 7 and the model gives 90% confidence to 7, the loss is low. If it gives 10%, the loss is high. The goal of training is to minimize this number across all examples.</div>
             </div>
             <div class="expandable-card" style="border-left-color: #10b981;">
               <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
-                <span class="expandable-title">Adam Optimizer</span>
+                <span class="expandable-title" data-i18n="keyAdam">Adam Optimizer</span>
                 <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <div class="expandable-content" style="display: none;">
-                Adam (Adaptive Moment Estimation) is a smart version of gradient descent. It maintains a moving average of both the gradients and their squared values, adapting the learning rate for each weight individually. This makes training faster and more stable than basic gradient descent.
-              </div>
+              <div class="expandable-content" style="display: none;" data-i18n="keyAdamText">Adam (Adaptive Moment Estimation) is a smart version of gradient descent. It maintains a moving average of both the gradients and their squared values, adapting the learning rate for each weight individually. This makes training faster and more stable than basic gradient descent.</div>
             </div>
             <div class="expandable-card" style="border-left-color: #a855f7;">
               <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
-                <span class="expandable-title">Epochs</span>
+                <span class="expandable-title" data-i18n="keyEpochs">Epochs</span>
                 <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <div class="expandable-content" style="display: none;">
-                One epoch means the model has seen every training example once. Training for 40 epochs means the model passes over the full dataset 40 times. With each pass, it refines its weights — but too many epochs can lead to overfitting, where the model memorizes training data instead of learning general patterns.
-              </div>
+              <div class="expandable-content" style="display: none;" data-i18n="keyEpochsText">One epoch means the model has seen every training example once. Training for 40 epochs means the model passes over the full dataset 40 times. With each pass, it refines its weights — but too many epochs can lead to overfitting, where the model memorizes training data instead of learning general patterns.</div>
             </div>
           </div>
         </section>
@@ -1049,11 +1478,11 @@
     const VISUALIZER_CONFIG = {
       weightUrl: 'https://raw.githubusercontent.com/DFin/Neural-Network-Visualisation/main/exports/mlp_weights/014_dataset-1x.json',
       maxConnectionsPerNeuron: 24,
-      layerSpacing: 5.5,
-      inputSpacing: 0.24,
-      hiddenSpacing: 0.95,
-      inputNodeSize: 0.18,
-      hiddenNodeRadius: 0.22,
+      layerSpacing: 4.0,  // Reducido de 5.5 a 4.0
+      inputSpacing: 0.18,  // Reducido de 0.24 a 0.18
+      hiddenSpacing: 0.7,  // Reducido de 0.95 a 0.7
+      inputNodeSize: 0.14,  // Reducido de 0.18 a 0.14
+      hiddenNodeRadius: 0.17,  // Reducido de 0.22 a 0.17
       connectionRadius: 0.005,
       connectionWeightThreshold: 0,
       brush: {
@@ -1075,7 +1504,10 @@
       if (epoch <= 5) return 10 + (epoch / 5) * 30  // 10% to 40%
       if (epoch <= 15) return 40 + ((epoch - 5) / 10) * 35  // 40% to 75%
       if (epoch <= 30) return 75 + ((epoch - 15) / 15) * 18  // 75% to 93%
-      return 93 + ((epoch - 30) / 10) * 3.2  // 93% to 96.2%
+      if (epoch <= 40) return 93 + ((epoch - 30) / 10) * 3.2  // 93% to 96.2% (peak)
+      // Overfitting: accuracy declines after epoch 40
+      const overfitDrop = (epoch - 40) * 0.28  // ~2.8% per 10 epochs
+      return Math.max(82, 96.2 - overfitDrop)   // floor ~82% at epoch 80
     }
     
     function getAccuracyForHiddenNodes(hiddenNodes, epoch) {
@@ -1398,7 +1830,7 @@
         } else if (Array.isArray(layer.biases)) {
           biases = Float32Array.from(layer.biases)
         } else {
-          biases = new Float32Array(weights.length > 0 ? weights[0].length : 0)
+          biases = new Float32Array(weights.length) // one bias per neuron (output size)
         }
         return {
           name: typeof layer.name === 'string' ? layer.name : `dense_${index}`,
@@ -1546,13 +1978,14 @@
       constructor(mlp, options) {
         console.log('NeuralVisualizer constructor called with architecture:', mlp.architecture)
         this.mlp = mlp
+        this.outputLabels = [] // Array para guardar las etiquetas de la capa de salida
         this.options = Object.assign({
-          layerSpacing: 5.5,
-          inputSpacing: 0.24,
-          hiddenSpacing: 0.95,
-          outputSpacing: 0.95,
-          inputNodeSize: 0.18,
-          hiddenNodeRadius: 0.22,
+          layerSpacing: 4.0,  // Reducido de 5.5 a 4.0
+          inputSpacing: 0.18,  // Reducido de 0.24 a 0.18
+          hiddenSpacing: 0.7,  // Reducido de 0.95 a 0.7
+          outputSpacing: 0.7,  // Reducido de 0.95 a 0.7
+          inputNodeSize: 0.14,  // Reducido de 0.18 a 0.14
+          hiddenNodeRadius: 0.17,  // Reducido de 0.22 a 0.17
           maxConnectionsPerNeuron: 24,
           connectionRadius: 0.005,
           connectionWeightThreshold: 0,
@@ -1586,7 +2019,7 @@
           0.1,
           200
         )
-        this.camera.position.set(-15, 0, 15)
+        this.camera.position.set(-12, 0, 12)  // Acercado para mantener proporción con el tamaño reducido
 
         this.controls = new OrbitControls(this.camera, this.renderer.domElement)
         this.controls.enableDamping = true
@@ -1704,8 +2137,8 @@
               this.tempObject.position.copy(position)
               this.tempObject.updateMatrix()
               mesh.setMatrixAt(instanceIndex, this.tempObject.matrix)
-              // Input layer: dark red (no use initially)
-              mesh.setColorAt(instanceIndex, this.tempColor.setRGB(0.8, 0.1, 0.1))
+              // Input layer: white (no use initially) — paso 1: solo valores, sin vertexColors
+              mesh.setColorAt(instanceIndex, this.tempColor.setRGB(1, 1, 1))
             })
 
             mesh.instanceMatrix.needsUpdate = true
@@ -1728,8 +2161,8 @@
               this.tempObject.position.copy(position)
               this.tempObject.updateMatrix()
               mesh.setMatrixAt(instanceIndex, this.tempObject.matrix)
-              // All layers: dark red (no use initially)
-              mesh.setColorAt(instanceIndex, this.tempColor.setRGB(0.8, 0.1, 0.1))
+              // All layers: white (no use initially) — paso 1
+              mesh.setColorAt(instanceIndex, this.tempColor.setRGB(1, 1, 1))
             })
 
             mesh.instanceMatrix.needsUpdate = true
@@ -1737,6 +2170,51 @@
             this.scene.add(mesh)
             const layerType = isOutputLayer ? 'output' : 'hidden'
             this.layerMeshes.push({ mesh, positions, type: layerType, layerIndex })
+            
+            // Añadir etiquetas numéricas (0-9) a las neuronas de la capa de salida
+            if (isOutputLayer) {
+              positions.forEach((position, index) => {
+                const canvas = document.createElement('canvas')
+                const context = canvas.getContext('2d')
+                canvas.width = 64
+                canvas.height = 64
+                
+                // Fondo transparente
+                context.clearRect(0, 0, canvas.width, canvas.height)
+                
+                // Estilo del texto
+                context.font = 'bold 48px Arial'
+                context.fillStyle = '#ffffff'
+                context.strokeStyle = '#000000'
+                context.lineWidth = 2
+                context.textAlign = 'center'
+                context.textBaseline = 'middle'
+                
+                // Dibujar número (0-9)
+                const number = index.toString()
+                context.strokeText(number, canvas.width / 2, canvas.height / 2)
+                context.fillText(number, canvas.width / 2, canvas.height / 2)
+                
+                // Crear textura y sprite
+                const texture = new THREE.CanvasTexture(canvas)
+                texture.needsUpdate = true
+                const spriteMaterial = new THREE.SpriteMaterial({ 
+                  map: texture,
+                  transparent: true,
+                  alphaTest: 0.1
+                })
+                const sprite = new THREE.Sprite(spriteMaterial)
+                
+                // Posicionar sprite a la derecha de la neurona
+                sprite.position.set(position.x + 0.6, position.y, position.z)  // Reducido de 0.8 a 0.6
+                sprite.scale.set(0.25, 0.25, 1)  // Reducido de 0.3 a 0.25 para mantener proporción
+                
+                this.scene.add(sprite)
+                // Guardar referencia para poder limpiar después si es necesario
+                if (!this.outputLabels) this.outputLabels = []
+                this.outputLabels.push(sprite)
+              })
+            }
           }
         })
       }
@@ -1824,8 +2302,8 @@
             this.tempObject.quaternion.copy(quaternion)
             this.tempObject.updateMatrix()
             mesh.setMatrixAt(instanceIndex, this.tempObject.matrix)
-            // Initial connection color: dark red (no use initially)
-            mesh.setColorAt(instanceIndex, this.tempColor.setRGB(0.8, 0.1, 0.1))
+            // Initial connection color: white (no use initially) — paso 1
+            mesh.setColorAt(instanceIndex, this.tempColor.setRGB(1, 1, 1))
           })
 
           mesh.instanceMatrix.needsUpdate = true
@@ -1845,8 +2323,8 @@
           // Input layer: Red (no use) to Green (high use)
           for (let i = 0; i < values.length; i += 1) {
             const value = clamp(values[i], 0, 1)
-            // Red to Green gradient: red (0) to green (1)
-            this.tempColor.setRGB(1 - value * 0.8, value * 0.8 + 0.2, 0.1)
+            // White to Green (paso 1): (1-t, 1, 1-t)
+            this.tempColor.setRGB(1 - value, 1, 1 - value)
             mesh.setColorAt(i, this.tempColor)
           }
           mesh.instanceColor.needsUpdate = true
@@ -1858,9 +2336,8 @@
           const value = values[i]
           const normalized = clamp(value / safeScale, 0, 1)
           
-          // All layers: Red (no use) to Green (high use)
-          // Red to Green gradient: red (0) to green (1)
-          this.tempColor.setRGB(1 - normalized * 0.8, normalized * 0.8 + 0.2, 0.1)
+          // All layers: White to Green (paso 1)
+          this.tempColor.setRGB(1 - normalized, 1, 1 - normalized)
           mesh.setColorAt(i, this.tempColor)
         }
         mesh.instanceColor.needsUpdate = true
@@ -1881,12 +2358,11 @@
           const magnitude = Math.abs(contributions[index] / scale)
           const normalized = clamp(magnitude, 0, 1)
           
-          // Red (no use) to Green (high use) based on magnitude
-          // Red to Green gradient: red (0) to green (1)
+          // White (no use) to Green (high use) — paso 1
           if (normalized < 1e-3) {
-            this.tempColor.setRGB(0.8, 0.1, 0.1) // Dark red for no use
+            this.tempColor.setRGB(1, 1, 1)
           } else {
-            this.tempColor.setRGB(1 - normalized * 0.8, normalized * 0.8 + 0.2, 0.1)
+            this.tempColor.setRGB(1 - normalized, 1, 1 - normalized)
           }
           group.mesh.setColorAt(index, this.tempColor)
         })
@@ -2039,7 +2515,8 @@
           // Use current architecture layers instead of original layers
           return currentArchitectureLayers.map((layer, layerIdx) => {
             const modifiedWeights = layer.weights.map((row, rowIdx) => {
-              return row.map((weight, colIdx) => {
+              const rowArr = Array.isArray(row) ? row : Array.from(row)
+              return rowArr.map((weight, colIdx) => {
                 // Mix trained weights with deterministic random noise based on epoch
                 // Early epochs: more random, late epochs: more trained
                 const randomNoise = (getRandomValue(layerIdx, rowIdx, colIdx, 12345) - 0.5) * 0.5 * randomFactor
@@ -2246,45 +2723,20 @@
         
         // Function to update model for new hidden node count
         function updateModelForHiddenNodes(hiddenNodes) {
-          console.log('Updating model for hidden nodes:', hiddenNodes)
           const newArch = getWeightsForHiddenNodes(hiddenNodes)
           
-          console.log('New architecture:', newArch.architecture)
-          console.log('New layers:', newArch.layers.map(l => ({ name: l.name, weights: l.weights.length, biases: l.biases.length })))
-          
-          // Update current architecture layers FIRST, before calling getWeightsForEpoch
-          currentArchitectureLayers = JSON.parse(JSON.stringify(newArch.layers))
+          // Use newArch.layers directly (no JSON clone - avoids corrupting typed arrays / structure)
+          currentArchitectureLayers = newArch.layers
           
           // Apply epoch-based modifications using the new architecture
           const epochLayers = getWeightsForEpoch(currentEpoch)
           
-          console.log('Epoch layers count:', epochLayers.length)
-          console.log('Epoch layer sizes:', epochLayers.map(l => ({ weights: l.weights.length, biases: l.biases.length })))
-          
-          // Verify architecture matches
-          const expectedArch = newArch.architecture
-          const actualArch = [
-            epochLayers[0].weights[0].length, // input size
-            epochLayers[0].weights.length,   // hidden1 size
-            epochLayers[1].weights.length,   // hidden2 size
-            epochLayers[2].weights.length    // output size
-          ]
-          console.log('Expected architecture:', expectedArch)
-          console.log('Actual architecture from layers:', actualArch)
-          
           // Create new model with new architecture and epoch-modified weights
-          // Make sure architecture is explicitly set
           neuralModel = new FeedForwardModel({
             normalization: definition.network.normalization || NORMALIZATION,
-            architecture: newArch.architecture, // Explicitly set architecture
+            architecture: newArch.architecture.slice(),
             layers: epochLayers,
           })
-          
-          // Force architecture to match (in case FeedForwardModel recalculates it incorrectly)
-          neuralModel.architecture = newArch.architecture.slice()
-          
-          console.log('Model architecture after creation:', neuralModel.architecture)
-          console.log('Model layers:', neuralModel.layers.map(l => ({ weights: l.weights.length, biases: l.biases.length })))
           
           // Rebuild the 3D visualization with new architecture
           rebuildVisualization()
@@ -2294,8 +2746,6 @@
         function rebuildVisualization() {
           const threeContainer = document.getElementById('threeContainer')
           if (threeContainer && neuralModel) {
-            console.log('Rebuilding visualization with architecture:', neuralModel.architecture)
-            
             // Stop any existing animation
             if (neuralScene && neuralScene.animate) {
               // Cancel animation frame if possible
@@ -2342,18 +2792,13 @@
                 connectionWeightThreshold: VISUALIZER_CONFIG.connectionWeightThreshold,
               })
               
-              console.log('Visualization created, architecture:', neuralScene.mlp?.architecture)
-              console.log('Model architecture:', neuralModel.architecture)
-              
               // Restart animation loop
               neuralScene.animate()
               
-              // Immediately update with current drawing if there is one
-              const rawInput = digitCanvas.getPixels()
-              const hasDrawing = rawInput.some(val => val > 0)
-              if (hasDrawing) {
+              // Always refresh after rebuild: run after next frame so scene is ready
+              requestAnimationFrame(() => {
                 refreshNetworkState()
-              }
+              })
             })
           }
         }
@@ -2412,9 +2857,7 @@
             const hiddenNodes = parseInt(e.target.value)
             currentHiddenNodes = hiddenNodes
             updateHiddenNodesDisplay(hiddenNodes)
-            // Also update epoch display to reflect new accuracy
             updateEpochDisplay(currentEpoch)
-            // Don't update visualization automatically - wait for button click
           })
           // Initialize display
           updateHiddenNodesDisplay(64)
@@ -2436,23 +2879,7 @@
             // Architecture unchanged but epoch changed - just update epoch
             updateModelForEpoch(currentEpoch)
             lastAppliedEpoch = currentEpoch
-          } else {
-            // Force rebuild even if nothing changed (user clicked button)
-            // This ensures the visualization is always up to date
-            if (currentHiddenNodes !== 64) {
-              updateModelForHiddenNodes(currentHiddenNodes)
-            } else {
-              updateModelForEpoch(currentEpoch)
-            }
           }
-        }
-        
-        // Update Visualization Button
-        const updateVisualizationBtn = document.getElementById('updateVisualizationBtn')
-        if (updateVisualizationBtn) {
-          updateVisualizationBtn.addEventListener('click', () => {
-            updateVisualization()
-          })
         }
 
         function updateModelForEpoch(epoch) {
@@ -2469,9 +2896,7 @@
             const epoch = parseInt(e.target.value)
             currentEpoch = epoch
             updateEpochDisplay(epoch)
-            // Also update hidden nodes display to reflect new accuracy
             updateHiddenNodesDisplay(currentHiddenNodes)
-            // Don't update visualization automatically - wait for button click
           })
           // Initialize display
           updateEpochDisplay(40)
@@ -2479,20 +2904,28 @@
 
         function refreshNetworkState() {
           const rawInput = digitCanvas.getPixels()
+          const hasDrawing = rawInput.some(val => val > 0)
           const propagation = neuralModel.propagate(rawInput)
           const displayActivations = propagation.activations.slice()
           if (displayActivations.length > 0) {
             displayActivations[0] = rawInput
           }
 
-          const logitsTyped =
-            propagation.preActivations.length > 0
-              ? propagation.preActivations[propagation.preActivations.length - 1]
-              : new Float32Array(0)
-          const probabilities =
-            logitsTyped.length > 0
-              ? Float32Array.from(softmax(Array.from(logitsTyped)))
-              : new Float32Array(0)
+          let probabilities
+          if (!hasDrawing) {
+            // Canvas en blanco: 10% para cada dígito (0-9)
+            probabilities = new Float32Array(10)
+            for (let i = 0; i < 10; i += 1) probabilities[i] = 0.1
+          } else {
+            const logitsTyped =
+              propagation.preActivations.length > 0
+                ? propagation.preActivations[propagation.preActivations.length - 1]
+                : new Float32Array(0)
+            probabilities =
+              logitsTyped.length > 0
+                ? Float32Array.from(softmax(Array.from(logitsTyped)))
+                : new Float32Array(0)
+          }
 
           if (probabilities.length && displayActivations.length > 1) {
             displayActivations[displayActivations.length - 1] = probabilities
@@ -2507,10 +2940,7 @@
           }
 
           neuralScene.update(displayActivations, networkActivations)
-          const probabilitiesForPanel = probabilities.length ? probabilities : logitsTyped
-          probabilityPanel.update(
-            probabilitiesForPanel.length ? Array.from(probabilitiesForPanel) : []
-          )
+          probabilityPanel.update(Array.from(probabilities))
         }
 
         digitCanvas.setChangeHandler(() => refreshNetworkState())
@@ -2518,15 +2948,12 @@
         refreshNetworkState()
       } catch (error) {
         console.error('Error initializing visualizer:', error)
-        document.body.innerHTML = `
-          <div style="padding: 48px; text-align: center; color: #ef4444;">
-            <h2>Error loading visualization</h2>
-            <p>${error.message}</p>
-            <p style="margin-top: 16px; font-size: 0.875rem; color: #9ca3af;">
-              Check the console for details.
-            </p>
-          </div>
-        `
+        var errDiv = document.createElement('div')
+        errDiv.style.cssText = 'padding: 48px; text-align: center; color: #ef4444;'
+        errDiv.innerHTML = '<h2 data-i18n="errorTitle">Error loading visualization</h2><p>' + (error.message || '') + '</p><p style="margin-top: 16px; font-size: 0.875rem; color: #9ca3af;" data-i18n="errorConsole">Check the console for details.</p>'
+        document.body.innerHTML = ''
+        document.body.appendChild(errDiv)
+        if (window.applyNNTranslations && window.getNNLang) window.applyNNTranslations(window.getNNLang())
       }
     }
 
@@ -2536,6 +2963,275 @@
     } else {
       initializeVisualizer()
     }
+  </script>
+  <script>
+    (function () {
+      var LANG_KEY = 'portfolio-language'
+      var NN = {
+        en: {
+          navHome: 'Home',
+          navAbout: 'About',
+          navProjects: 'Projects',
+          navAiLab: 'AI Lab',
+          navDemos: 'Demos',
+          navResume: 'Resume',
+          navContact: 'Contact',
+          pageTitle: 'MNIST Neural Network Visualization',
+          heroTitle: 'MNIST Neural Network Visualization',
+          heroSubtitle: 'Draw a digit and watch how activations propagate through the network',
+          drawing: 'Drawing',
+          clear: 'Clear',
+          hintDraw: 'Click and drag to draw (right-click to erase)',
+          prediction: 'Prediction',
+          trainingEpoch: 'Training Epoch',
+          epoch: 'Epoch',
+          accuracy: 'Accuracy',
+          hintEpoch: 'Adjust the epoch to see accuracy improve, then drop after 40 (overfitting)',
+          hiddenLayerNodes: 'Hidden Layer Nodes',
+          hiddenNodes: 'Hidden Nodes',
+          hintHidden: 'Adjust hidden layer size to see its impact on accuracy',
+          updateBtn: 'Update and Recalculate',
+          hintUpdate: 'Click to update the 3D visualization and recalculate predictions',
+          learnMore: 'Learn More',
+          section1Title: 'How This Network Was Trained',
+          section1Subtitle: 'The actual TensorFlow / Keras code used to build and train the model',
+          codeLang: 'Python / TensorFlow',
+          ann1Title: 'Input Layer',
+          ann1Text: 'Each 28×28 pixel drawing is flattened into a vector of 784 numbers. This is the entry point of the network.',
+          ann2Title: 'Dense(64, relu)',
+          ann2Text: 'A Dense (fully connected) layer: every one of the 64 neurons receives input from ALL 784 pixels. "Dense" means every possible connection exists. ReLU activation: if the value is negative → 0, if positive → passes through unchanged.',
+          ann3Title: 'Dense(32, relu)',
+          ann3Text: 'Second hidden layer with 32 neurons, each connected to all 64 neurons from the previous layer. The network learns progressively more abstract patterns at each layer.',
+          ann4Title: 'Dense(10, softmax)',
+          ann4Text: '10 output neurons — one for each digit (0–9). Softmax converts raw scores into probabilities that sum to 1.0, so the network effectively "votes" on which digit it sees.',
+          ann5Title: 'Compile',
+          ann5Text: 'Configures how the model learns. The loss function (SparseCategoricalCrossentropy) measures how wrong predictions are. Adam is an optimizer that adjusts weights to minimize that error.',
+          ann6Title: 'Train',
+          ann6Text: 'The model sees the entire dataset 40 times (epochs). Each pass: it makes predictions, measures the error, and updates its weights to improve.',
+          section2Title: 'Understanding the Architecture',
+          section2Subtitle: 'A 4-layer neural network that recognizes handwritten digits',
+          archInput: 'Input',
+          archHidden1: 'Hidden 1',
+          archHidden2: 'Hidden 2',
+          archOutput: 'Output',
+          conceptDenseTitle: 'What is Dense?',
+          conceptDenseText: 'In a Dense layer every neuron is connected to every neuron in the previous layer. With 784 inputs and 64 neurons, that means 50,176 individual connections — each with its own trainable weight.',
+          conceptReLUTitle: 'What is ReLU?',
+          conceptReLUText: 'ReLU (Rectified Linear Unit) is a simple activation function: if the input is negative it outputs 0, otherwise it passes the value unchanged. This introduces non-linearity, allowing the network to learn complex patterns.',
+          conceptSoftmaxTitle: 'What is Softmax?',
+          conceptSoftmaxText: 'Softmax converts a vector of raw scores into probabilities. If the output is [2.1, 0.5, 8.3, …], softmax ensures all values are positive and sum to exactly 1.0 — a proper probability distribution.',
+          section3Title: 'What Happens When You Draw',
+          section3Subtitle: 'From pixels to prediction in 6 steps',
+          pipe1Title: 'Draw',
+          pipe1Text: 'You draw on a 28×28 canvas. Each cell is a brightness from 0 to 255.',
+          pipe2Title: 'Flatten',
+          pipe2Text: 'The 28×28 grid is reshaped into a single array of 784 values.',
+          pipe3Title: 'Normalize',
+          pipe3Text: 'Each pixel is normalized: (pixel − 0.13) / 0.31, matching training preprocessing.',
+          pipe4Title: 'Forward Pass',
+          pipe4Text: 'Data flows through each layer: multiply by weights, add bias, apply activation.',
+          pipe5Title: 'Softmax',
+          pipe5Text: 'The 10 raw scores are converted into probabilities that sum to 1.',
+          pipe6Title: 'Prediction',
+          pipe6Text: "The digit with the highest probability is the network's answer.",
+          section4Title: 'Key Concepts',
+          section4Subtitle: 'Dive deeper into the building blocks',
+          keyWeights: 'Weights & Biases',
+          keyWeightsText: 'Weights are the learnable numbers on every connection between neurons. Each weight controls how much influence one neuron has on the next. Biases give each neuron an adjustable threshold — they shift the activation function left or right. Together, weights and biases are the "knowledge" the network acquires during training.',
+          keyLoss: 'Loss Function',
+          keyLossText: 'Sparse Categorical Crossentropy measures how far the predicted probabilities are from the true label. If the correct digit is 7 and the model gives 90% confidence to 7, the loss is low. If it gives 10%, the loss is high. The goal of training is to minimize this number across all examples.',
+          keyAdam: 'Adam Optimizer',
+          keyAdamText: 'Adam (Adaptive Moment Estimation) is a smart version of gradient descent. It maintains a moving average of both the gradients and their squared values, adapting the learning rate for each weight individually. This makes training faster and more stable than basic gradient descent.',
+          keyEpochs: 'Epochs',
+          keyEpochsText: 'One epoch means the model has seen every training example once. Training for 40 epochs means the model passes over the full dataset 40 times. With each pass, it refines its weights — but too many epochs can lead to overfitting, where the model memorizes training data instead of learning general patterns.',
+          errorTitle: 'Error loading visualization',
+          errorConsole: 'Check the console for details.',
+          langMobileLabel: 'Idioma / Language'
+        },
+        es: {
+          navHome: 'Inicio',
+          navAbout: 'Sobre Mí',
+          navProjects: 'Proyectos',
+          navAiLab: 'Lab de IA',
+          navDemos: 'Demos',
+          navResume: 'CV',
+          navContact: 'Contacto',
+          pageTitle: 'Visualización de red neuronal MNIST',
+          heroTitle: 'Visualización de red neuronal MNIST',
+          heroSubtitle: 'Dibuja un dígito y observa cómo se propagan las activaciones por la red',
+          drawing: 'Dibujo',
+          clear: 'Borrar',
+          hintDraw: 'Haz clic y arrastra para dibujar (clic derecho para borrar)',
+          prediction: 'Predicción',
+          trainingEpoch: 'Época de entrenamiento',
+          epoch: 'Época',
+          accuracy: 'Precisión',
+          hintEpoch: 'Ajusta la época para ver cómo sube la precisión y luego baja tras 40 (overfitting)',
+          hiddenLayerNodes: 'Nodos de la capa oculta',
+          hiddenNodes: 'Nodos ocultos',
+          hintHidden: 'Ajusta el tamaño de la capa oculta para ver su impacto en la precisión',
+          updateBtn: 'Actualizar y recalcular',
+          hintUpdate: 'Haz clic para actualizar la visualización 3D y recalcular las predicciones',
+          learnMore: 'Saber más',
+          section1Title: 'Cómo se entrenó esta red',
+          section1Subtitle: 'El código real en TensorFlow / Keras usado para construir y entrenar el modelo',
+          codeLang: 'Python / TensorFlow',
+          ann1Title: 'Capa de entrada',
+          ann1Text: 'Cada dibujo de 28×28 píxeles se aplana en un vector de 784 números. Es la entrada de la red.',
+          ann2Title: 'Dense(64, relu)',
+          ann2Text: 'Capa Dense (totalmente conectada): cada uno de los 64 neuronas recibe entrada de los 784 píxeles. "Dense" significa que existe cada conexión posible. Activación ReLU: si el valor es negativo → 0, si es positivo → se deja igual.',
+          ann3Title: 'Dense(32, relu)',
+          ann3Text: 'Segunda capa oculta con 32 neuronas, cada una conectada a las 64 de la capa anterior. La red aprende patrones cada vez más abstractos en cada capa.',
+          ann4Title: 'Dense(10, softmax)',
+          ann4Text: '10 neuronas de salida, una por cada dígito (0–9). Softmax convierte las puntuaciones en probabilidades que suman 1.0; la red "vota" qué dígito cree ver.',
+          ann5Title: 'Compile',
+          ann5Text: 'Configura cómo aprende el modelo. La función de pérdida (SparseCategoricalCrossentropy) mide el error de las predicciones. Adam es un optimizador que ajusta los pesos para minimizar ese error.',
+          ann6Title: 'Train',
+          ann6Text: 'El modelo ve todo el dataset 40 veces (épocas). En cada pasada: predice, mide el error y actualiza los pesos para mejorar.',
+          section2Title: 'Entender la arquitectura',
+          section2Subtitle: 'Una red neuronal de 4 capas que reconoce dígitos escritos a mano',
+          archInput: 'Entrada',
+          archHidden1: 'Oculta 1',
+          archHidden2: 'Oculta 2',
+          archOutput: 'Salida',
+          conceptDenseTitle: '¿Qué es Dense?',
+          conceptDenseText: 'En una capa Dense cada neurona está conectada a todas las de la capa anterior. Con 784 entradas y 64 neuronas hay 50.176 conexiones, cada una con su peso entrenable.',
+          conceptReLUTitle: '¿Qué es ReLU?',
+          conceptReLUText: 'ReLU (Unidad Lineal Rectificada) es una función de activación simple: si la entrada es negativa devuelve 0; si no, el valor pasa igual. Introduce no linealidad y permite aprender patrones complejos.',
+          conceptSoftmaxTitle: '¿Qué es Softmax?',
+          conceptSoftmaxText: 'Softmax convierte un vector de puntuaciones en probabilidades. Si la salida es [2.1, 0.5, 8.3, …], softmax hace que los valores sean positivos y sumen 1.0.',
+          section3Title: 'Qué ocurre cuando dibujas',
+          section3Subtitle: 'De píxeles a predicción en 6 pasos',
+          pipe1Title: 'Dibujar',
+          pipe1Text: 'Dibujas en un lienzo 28×28. Cada celda es un brillo de 0 a 255.',
+          pipe2Title: 'Aplanar',
+          pipe2Text: 'La cuadrícula 28×28 se convierte en un único array de 784 valores.',
+          pipe3Title: 'Normalizar',
+          pipe3Text: 'Cada píxel se normaliza: (píxel − 0.13) / 0.31, igual que en el entrenamiento.',
+          pipe4Title: 'Forward pass',
+          pipe4Text: 'Los datos pasan por cada capa: multiplicar por pesos, sumar bias, aplicar activación.',
+          pipe5Title: 'Softmax',
+          pipe5Text: 'Las 10 puntuaciones se convierten en probabilidades que suman 1.',
+          pipe6Title: 'Predicción',
+          pipe6Text: 'El dígito con mayor probabilidad es la respuesta de la red.',
+          section4Title: 'Conceptos clave',
+          section4Subtitle: 'Profundiza en los bloques básicos',
+          keyWeights: 'Pesos y biases',
+          keyWeightsText: 'Los pesos son los números que se aprenden en cada conexión. Cada peso controla la influencia de una neurona en la siguiente. Los biases dan a cada neurona un umbral; desplazan la función de activación. Juntos son el "conocimiento" de la red.',
+          keyLoss: 'Función de pérdida',
+          keyLossText: 'Sparse Categorical Crossentropy mide cuánto se alejan las probabilidades predichas de la etiqueta real. Si el dígito correcto es 7 y el modelo da 90% al 7, la pérdida es baja. Si da 10%, es alta. El entrenamiento minimiza este valor.',
+          keyAdam: 'Optimizador Adam',
+          keyAdamText: 'Adam (Adaptive Moment Estimation) es una versión mejorada del descenso por gradiente. Mantiene medias móviles de los gradientes y de sus cuadrados, adaptando la tasa de aprendizaje por peso. Entrenamiento más rápido y estable.',
+          keyEpochs: 'Épocas',
+          keyEpochsText: 'Una época significa que el modelo ha visto cada ejemplo una vez. 40 épocas = 40 pasadas completas al dataset. En cada pasada refina los pesos; demasiadas épocas pueden causar overfitting (memorizar en vez de generalizar).',
+          errorTitle: 'Error al cargar la visualización',
+          errorConsole: 'Revisa la consola para más detalles.',
+          langMobileLabel: 'Idioma / Language'
+        },
+        ca: {
+          navHome: 'Inici',
+          navAbout: 'Sobre Mi',
+          navProjects: 'Projectes',
+          navAiLab: "Lab d'IA",
+          navDemos: 'Demos',
+          navResume: 'CV',
+          navContact: 'Contacte',
+          pageTitle: 'Visualització de xarxa neuronal MNIST',
+          heroTitle: 'Visualització de xarxa neuronal MNIST',
+          heroSubtitle: 'Dibuixa un dígit i observa com es propaguen les activacions per la xarxa',
+          drawing: 'Dibuix',
+          clear: 'Esborrar',
+          hintDraw: 'Clica i arrossega per dibuixar (clic dret per esborrar)',
+          prediction: 'Predicció',
+          trainingEpoch: 'Època d\'entrenament',
+          epoch: 'Època',
+          accuracy: 'Precisió',
+          hintEpoch: 'Ajusta l\'època per veure com puja la precisió i després baixa després de 40 (overfitting)',
+          hiddenLayerNodes: 'Nodes de la capa oculta',
+          hiddenNodes: 'Nodes ocults',
+          hintHidden: 'Ajusta la mida de la capa oculta per veure el seu impacte en la precisió',
+          updateBtn: 'Actualitzar i recalcular',
+          hintUpdate: 'Clica per actualitzar la visualització 3D i recalcular les prediccions',
+          learnMore: 'Saber-ne més',
+          section1Title: 'Com es va entrenar aquesta xarxa',
+          section1Subtitle: 'El codi real en TensorFlow / Keras utilitzat per construir i entrenar el model',
+          codeLang: 'Python / TensorFlow',
+          ann1Title: 'Capa d\'entrada',
+          ann1Text: 'Cada dibuix de 28×28 píxels s\'aplana en un vector de 784 nombres. És l\'entrada de la xarxa.',
+          ann2Title: 'Dense(64, relu)',
+          ann2Text: 'Capa Dense (totalment connectada): cada una de les 64 neurones rep entrada dels 784 píxels. "Dense" vol dir que existeix cada connexió possible. Activació ReLU: si el valor és negatiu → 0; si és positiu → es deixa igual.',
+          ann3Title: 'Dense(32, relu)',
+          ann3Text: 'Segona capa oculta amb 32 neurones, connectades a les 64 de la capa anterior. La xarxa aprèn patrons cada cop més abstractes.',
+          ann4Title: 'Dense(10, softmax)',
+          ann4Text: '10 neurones de sortida, una per cada dígit (0–9). Softmax converteix les puntuacions en probabilitats que sumen 1.0.',
+          ann5Title: 'Compile',
+          ann5Text: 'Configura com aprèn el model. La funció de pèrdua (SparseCategoricalCrossentropy) mesura l\'error de les prediccions. Adam és un optimitzador que ajusta els pesos per minimitzar aquest error.',
+          ann6Title: 'Train',
+          ann6Text: 'El model veu tot el dataset 40 vegades (èpoques). A cada passada: prediu, mesura l\'error i actualitza els pesos.',
+          section2Title: 'Entendre l\'arquitectura',
+          section2Subtitle: 'Una xarxa neuronal de 4 capes que reconeix dígits escrits a mà',
+          archInput: 'Entrada',
+          archHidden1: 'Oculta 1',
+          archHidden2: 'Oculta 2',
+          archOutput: 'Sortida',
+          conceptDenseTitle: 'Què és Dense?',
+          conceptDenseText: 'En una capa Dense cada neurona està connectada a totes les de la capa anterior. Amb 784 entrades i 64 neurones hi ha 50.176 connexions, cadascuna amb el seu pes entrenable.',
+          conceptReLUTitle: 'Què és ReLU?',
+          conceptReLUText: 'ReLU (Unitat Lineal Rectificada) és una funció d\'activació simple: si l\'entrada és negativa retorna 0; si no, el valor passa igual. Introdueix no linealitat.',
+          conceptSoftmaxTitle: 'Què és Softmax?',
+          conceptSoftmaxText: 'Softmax converteix un vector de puntuacions en probabilitats que sumen 1.0.',
+          section3Title: 'Què passa quan dibuixes',
+          section3Subtitle: 'De píxels a predicció en 6 passos',
+          pipe1Title: 'Dibuixar',
+          pipe1Text: 'Dibuixes en un llenç 28×28. Cada cel·la és una brillantor de 0 a 255.',
+          pipe2Title: 'Aplanar',
+          pipe2Text: 'La graella 28×28 es converteix en un array de 784 valors.',
+          pipe3Title: 'Normalitzar',
+          pipe3Text: 'Cada píxel es normalitza: (píxel − 0.13) / 0.31, com a l\'entrenament.',
+          pipe4Title: 'Forward pass',
+          pipe4Text: 'Les dades passen per cada capa: multiplicar per pesos, sumar bias, aplicar activació.',
+          pipe5Title: 'Softmax',
+          pipe5Text: 'Les 10 puntuacions es converteixen en probabilitats que sumen 1.',
+          pipe6Title: 'Predicció',
+          pipe6Text: 'El dígit amb més probabilitat és la resposta de la xarxa.',
+          section4Title: 'Conceptes clau',
+          section4Subtitle: 'Approfundeix en els blocs bàsics',
+          keyWeights: 'Pesos i biases',
+          keyWeightsText: 'Els pesos són els nombres que s\'aprenen en cada connexió. Els biases donen a cada neurona un llindar. Junts són el "coneixement" de la xarxa.',
+          keyLoss: 'Funció de pèrdua',
+          keyLossText: 'Sparse Categorical Crossentropy mesura com s\'allunyen les probabilitats de l\'etiqueta real. L\'entrenament minimitza aquest valor.',
+          keyAdam: 'Optimitzador Adam',
+          keyAdamText: 'Adam manté mitjanes mòbils dels gradients i adapta la taxa d\'aprenentatge per pes. Entrenament més ràpid i estable.',
+          keyEpochs: 'Èpoques',
+          keyEpochsText: 'Una època vol dir que el model ha vist cada exemple una vegada. Masses èpoques poden causar overfitting.',
+          errorTitle: 'Error en carregar la visualització',
+          errorConsole: 'Revisa la consola per a més detalls.',
+          langMobileLabel: 'Idioma / Language'
+        }
+      }
+      function getNNLang() {
+        var s = localStorage.getItem(LANG_KEY)
+        return (s === 'es' || s === 'ca') ? s : 'en'
+      }
+      function applyTranslations(lang) {
+        var t = NN[lang] || NN.en
+        document.querySelectorAll('[data-i18n]').forEach(function (el) {
+          var key = el.getAttribute('data-i18n')
+          var val = t[key]
+          if (val != null) el.textContent = val
+        })
+        document.title = t.pageTitle
+        document.documentElement.lang = lang === 'es' ? 'es' : lang === 'ca' ? 'ca' : 'en'
+      }
+      window.addEventListener('nn-lang-change', function (e) { if (e.detail && e.detail.lang) applyTranslations(e.detail.lang) })
+      window.applyNNTranslations = applyTranslations
+      window.getNNLang = getNNLang
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () { applyTranslations(getNNLang()) })
+      } else {
+        applyTranslations(getNNLang())
+      }
+    })()
   </script>
 </body>
 </html>

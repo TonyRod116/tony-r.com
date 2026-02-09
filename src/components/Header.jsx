@@ -53,10 +53,10 @@ export default function Header() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-md',
         isScrolled
-          ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700'
-          : 'bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm'
+          ? 'bg-white/90 dark:bg-gray-900/90 border-b border-gray-200 dark:border-gray-700'
+          : 'bg-white/70 dark:bg-gray-900/70'
       )}
     >
       {/* Scroll Progress Bar */}
@@ -65,7 +65,7 @@ export default function Header() {
         style={{ width: `${scrollPercentage}%` }}
       />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <span className="font-bold text-sm md:text-sm lg:text-sm text-gray-900 dark:text-white drop-shadow-sm">Tony Rodríguez</span>
@@ -153,7 +153,7 @@ export default function Header() {
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
               className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[9998] md:hidden"
-              style={{ top: '80px' }}
+              style={{ top: '64px' }}
             />
             {/* Side Panel */}
             <motion.div
@@ -161,7 +161,7 @@ export default function Header() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'tween', duration: 0.3, ease: 'easeOut' }}
-              className="fixed top-20 right-0 w-64 max-w-[70vw] bg-white dark:bg-gray-900 backdrop-blur-md border-l border-gray-200 dark:border-gray-700 shadow-2xl z-[9999] md:hidden max-h-[calc(100vh-5rem)] flex flex-col"
+              className="fixed top-16 right-0 w-64 max-w-[70vw] bg-white dark:bg-gray-900 backdrop-blur-md border-l border-gray-200 dark:border-gray-700 shadow-2xl z-[9999] md:hidden max-h-[calc(100vh-4rem)] flex flex-col"
             >
               {/* Navigation */}
               <nav className="flex-1 py-4 space-y-2 overflow-y-auto min-h-0">

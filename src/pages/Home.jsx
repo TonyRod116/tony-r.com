@@ -351,13 +351,13 @@ export default function Home() {
               transition={{ duration: 0.4 }}
               className="space-y-8 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg rounded-2xl px-8 py-6 sm:p-8 shadow-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 sm:mt-0 w-full"
             >
-              <div className="space-y-4">
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white drop-shadow-sm">
+              <div className="space-y-5">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-[2.75rem] font-extrabold text-gray-900 dark:text-white drop-shadow-sm" style={{ lineHeight: '1.15', letterSpacing: '-0.03em' }}>
                   {t('home.hero.titlePart1')}
                   <br />
                   <span className="gradient-text">{t('home.hero.titlePart2')}</span>
                 </h1>
-                <p className="text-xl text-gray-500 dark:text-gray-400 max-w-2xl drop-shadow-sm">
+                <p className="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-2xl drop-shadow-sm" style={{ lineHeight: '1.6' }}>
                   {t('home.hero.subtitle')}
                 </p>
               </div>
@@ -378,8 +378,7 @@ export default function Home() {
                 </Link>
                 <Link
                   to="/contact"
-                  className="btn-secondary inline-flex items-center justify-center dark:text-primary-300"
-                  style={{ color: '#1a2e4a' }}
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-colors bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
                 >
                   {t('nav.contact')}
                 </Link>
@@ -449,7 +448,7 @@ export default function Home() {
       </section>
 
       {/* About Preview */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-gray-100/80 dark:bg-gray-800/50">
+      <section className="py-20 sm:py-24 lg:py-[120px] bg-gray-100/80 dark:bg-gray-800/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <ScrollAnimatedSection 
@@ -541,7 +540,7 @@ export default function Home() {
           
           {/* Centered More About Me Button */}
           <div className="flex justify-center mt-12">
-            <Link to="/about" className="btn-secondary inline-flex dark:text-gray-200 dark:border-gray-500 dark:hover:bg-gray-700">
+            <Link to="/about" className="btn-primary inline-flex">
               {t('home.about.moreAboutMe')}
             </Link>
           </div>
@@ -549,7 +548,7 @@ export default function Home() {
       </section>
 
       {/* Featured Projects */}
-      <section className="py-16 sm:py-20 lg:py-24">
+      <section className="py-20 sm:py-24 lg:py-[120px]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -721,7 +720,7 @@ export default function Home() {
       </section>
 
       {/* AI Lab Section */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-gray-900 via-indigo-950/50 to-gray-900 relative overflow-hidden">
+      <section className="py-20 sm:py-24 lg:py-[120px] bg-gradient-to-br from-gray-900 via-indigo-950/50 to-gray-900 relative overflow-hidden">
         {/* Glowing divider top */}
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
         {/* Dotted grid overlay */}
@@ -877,7 +876,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-r from-primary-600 to-primary-700 relative z-20 mt-0">
+      <section className="py-20 sm:py-24 lg:py-[120px] bg-gradient-to-r from-primary-600 to-primary-700 relative z-20 mt-0">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

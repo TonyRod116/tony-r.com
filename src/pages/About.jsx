@@ -149,7 +149,7 @@ export default function About() {
   return (
     <div className="pt-16">
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
+      <section className="relative overflow-hidden py-20 sm:py-24 lg:py-[120px]">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-900/20 via-transparent to-blue-900/20" />
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="max-w-4xl mx-auto text-center">
@@ -195,7 +195,7 @@ export default function About() {
       </section>
 
       {/* Technical Expertise */}
-      <section data-skills-section className="py-16 sm:py-20 lg:py-24">
+      <section data-skills-section className="py-20 sm:py-24 lg:py-[120px]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -320,7 +320,7 @@ export default function About() {
 
 
       {/* What I Bring */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-gray-800/50">
+      <section className="py-20 sm:py-24 lg:py-[120px] bg-gray-800/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -436,7 +436,7 @@ export default function About() {
       </section>
 
       {/* What I'm Looking For */}
-      <section className="py-16 sm:py-20 lg:py-24">
+      <section className="py-20 sm:py-24 lg:py-[120px]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -459,7 +459,7 @@ export default function About() {
       </section>
 
       {/* Contact CTA */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-primary-600">
+      <section className="py-20 sm:py-24 lg:py-[120px] bg-primary-600">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

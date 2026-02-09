@@ -48,7 +48,40 @@ const PROJECT_TYPE_ICONS = {
 }
 
 export default function PresupuestoOrientativo() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
+  
+  // Traducir periodType del backend
+  const translatePeriodType = (periodType) => {
+    if (!periodType) return ''
+    const translations = {
+      en: {
+        weeks: 'weeks',
+        days: 'days',
+        months: 'months',
+        week: 'week',
+        day: 'day',
+        month: 'month'
+      },
+      es: {
+        weeks: 'semanas',
+        days: 'días',
+        months: 'meses',
+        week: 'semana',
+        day: 'día',
+        month: 'mes'
+      },
+      ca: {
+        weeks: 'setmanes',
+        days: 'dies',
+        months: 'mesos',
+        week: 'setmana',
+        day: 'dia',
+        month: 'mes'
+      }
+    }
+    const lang = language || 'es'
+    return translations[lang]?.[periodType.toLowerCase()] || periodType
+  }
 
   const PROJECT_TYPES = [
     { value: 'baño', label: t('demos.projectTypes.baño') },
@@ -108,7 +141,13 @@ export default function PresupuestoOrientativo() {
 
     abortControllerRef.current = new AbortController()
 
-    const stages = [500, 1000, 1500, 2000]
+    // Timings diferentes para cada paso: total ~10 segundos
+    // Stage 1 (analyzing): 1500ms - más lento al inicio
+    // Stage 2 (processing): 3000ms acumulado (1500 + 1500)
+    // Stage 3 (generating): 5500ms acumulado (3000 + 2500)
+    // Stage 4 (preparing): 8000ms acumulado (5500 + 2500)
+    // Stage 5 (finalizing): 10000ms acumulado (8000 + 2000)
+    const stages = [1500, 3000, 5500, 8000]
     stages.forEach((delay, index) => {
       const timeout = setTimeout(() => {
         setLoadingStage(index + 1)
@@ -120,8 +159,12 @@ export default function PresupuestoOrientativo() {
       const selectedLabels = formData.projectType
         .map(v => PROJECT_TYPES.find(p => p.value === v)?.label || v)
         .join(', ')
+      const projectTypeValue = formData.projectType.length === 1 
+        ? formData.projectType[0] 
+        : formData.projectType.join(', ')
+      
       const body = {
-        projectType: formData.projectType.length === 1 ? formData.projectType[0] : formData.projectType.join(', '),
+        projectType: projectTypeValue,
         locale: 'es-ES',
         description: formData.notes?.trim() || t('demos.presupuestoOrientativo.form.autoDescription')
           .replace('{type}', selectedLabels)
@@ -130,6 +173,9 @@ export default function PresupuestoOrientativo() {
       }
       if (formData.sqm) body.sqm = Number(formData.sqm)
       if (formData.city) body.city = formData.city
+      
+      // Debug: verificar que projectType se envía correctamente
+      console.log('Sending projectType to backend:', projectTypeValue, 'Selected types:', formData.projectType)
 
       const res = await fetch(getBuildappBudgetUrl(), {
         method: 'POST',
@@ -462,7 +508,7 @@ export default function PresupuestoOrientativo() {
                       </div>
                       <div className={i === result.timeline.length - 1 ? '' : 'pb-5'}>
                         <p className="text-sm font-medium text-gray-900 dark:text-white leading-7">
-                          {phase.period} {phase.periodType}
+                          {phase.period} {translatePeriodType(phase.periodType)}
                         </p>
                         <p className="text-sm text-gray-500 dark:text-gray-400">{phase.description}</p>
                       </div>

@@ -2,6 +2,8 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { FileText, ArrowRight, MessageSquare } from 'lucide-react'
 import { useLanguage } from '../hooks/useLanguage.jsx'
+import budgetImg from '../assets/budget.jpg'
+import leadImg from '../assets/leadq.jpg'
 
 export default function Demos() {
   const { t } = useLanguage()
@@ -14,6 +16,7 @@ export default function Demos() {
       description: t('demos.presupuestoOrientativo.description'),
       href: '/demos/presupuesto-orientativo',
       icon: FileText,
+      bgImage: budgetImg,
     },
     {
       id: 'lead-qualifier',
@@ -22,6 +25,7 @@ export default function Demos() {
       description: t('demos.leadQualifier.description'),
       href: '/demos/lead-qualifier',
       icon: MessageSquare,
+      bgImage: leadImg,
     },
   ]
 
@@ -54,15 +58,31 @@ export default function Demos() {
               <Link
                 key={demo.id}
                 to={demo.href}
-                className="group block rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/50 p-6 shadow-sm hover:shadow-md hover:border-primary-500/50 dark:hover:border-primary-500/50 transition-all"
+                className="group block rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/50 p-6 shadow-sm hover:shadow-md hover:border-primary-500/50 dark:hover:border-primary-500/50 transition-all relative overflow-hidden"
+                style={{
+                  backgroundImage: `url(${demo.bgImage})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
               >
-                <div className="flex items-start gap-4">
+                <div
+                  className="absolute inset-0 bg-white/80 dark:bg-gray-800/80"
+                  style={{ backdropFilter: 'blur(2px)' }}
+                />
+                <div className="relative flex items-start gap-4 z-10">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 dark:text-primary-400">
                     <demo.icon className="h-6 w-6" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                      {demo.title}
+                      {demo.id === 'presupuesto-orientativo' ? (
+                        <>
+                          Presupuesto<br />
+                          orientativo
+                        </>
+                      ) : (
+                        demo.title
+                      )}
                     </h2>
                     <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
                       {demo.description}

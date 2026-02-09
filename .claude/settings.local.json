@@ -6,7 +6,27 @@
       "Bash(npx playwright install:*)",
       "Bash(npx playwright:*)",
       "Bash(sudo apt-get install:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(find:*)",
+      "Bash(dpkg:*)",
+      "Bash(identify:*)",
+      "Bash(python3:*)",
+      "Bash(npm ls:*)",
+      "Bash(npx:*)",
+      "Bash(__NEW_LINE_e3e849aa3118d1c8__ echo \"=== TAMAÑO ACTUAL DE PNGs ===\")",
+      "Bash(sort -rh echo \"\" echo \"Total PNGs:\" find . -name \"*.png\" -type f -exec du -cb {} +)",
+      "Bash(xargs:*)",
+      "Bash(sort -rh echo \"\" echo \"Total JPGs:\" find . \\\\\\( -name \"*.jpg\" -o -name \"*.jpeg\" \\\\\\) -type f -exec du -cb {} +)",
+      "Bash(__NEW_LINE_25f8a2f129a6a296__ python3 << 'PYEOF'\nfrom PIL import Image\nimport os\n\n# Resize NN.png to 256x256 \\(used as 56x56 icon, 256 is 4.5x retina\\)\nimg = Image.open\\(\"NN.png\"\\)\nprint\\(f\"NN.png original: {img.size}, {os.path.getsize\\('NN.png'\\)/1024:.1f}K\"\\)\nimg = img.resize\\(\\(256, 256\\), Image.LANCZOS\\)\nimg.save\\(\"NN.png\", optimize=True\\)\nprint\\(f\"NN.png resized:  {img.size}, {os.path.getsize\\('NN.png'\\)/1024:.1f}K\"\\)\n\n# Also optimize 04.png - it's a photo used as parallax bg, convert to JPEG quality\nimg2 = Image.open\\(\"04.png\"\\)\nprint\\(f\"\\\\n04.png original: {img2.size}, {os.path.getsize\\('04.png'\\)/1024:.1f}K\"\\)\n# Re-save with maximum PNG compression\nimg2.save\\(\"04.png\", optimize=True, compress_level=9\\)\nprint\\(f\"04.png optimized: {img2.size}, {os.path.getsize\\('04.png'\\)/1024:.1f}K\"\\)\nPYEOF)",
+      "Bash(test:*)",
+      "Bash(npm run build:*)",
+      "WebFetch(domain:tony-r.com)",
+      "Bash(curl:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git checkout:*)",
+      "Bash(git merge:*)"
     ]
   }
 }
