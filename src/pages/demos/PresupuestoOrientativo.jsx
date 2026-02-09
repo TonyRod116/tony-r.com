@@ -31,14 +31,11 @@ import LoadingProgressBar from '../../components/LoadingProgressBar.jsx'
 
 const BUILDAPP_BASE = 'https://buildapp-v1-backend.onrender.com'
 
-// Producción: usar backend BuildApp (env o URL por defecto). Desarrollo: proxy local /api/buildappBudget
+// Usar backend BuildApp siempre (env, producción por defecto, o desarrollo si no hay env)
 function getBuildappBudgetUrl() {
-  const base = import.meta.env.VITE_BUILDAPP_DEMO_API_URL || (import.meta.env.PROD ? BUILDAPP_BASE : '')
-  if (base) {
-    const url = base.replace(/\/$/, '')
-    return `${url}/api/v1/budget/generate-detailed`
-  }
-  return '/api/buildappBudget'
+  const base = import.meta.env.VITE_BUILDAPP_DEMO_API_URL || BUILDAPP_BASE
+  const url = base.replace(/\/$/, '')
+  return `${url}/api/v1/budget/generate-detailed`
 }
 
 const PROJECT_TYPE_ICONS = {

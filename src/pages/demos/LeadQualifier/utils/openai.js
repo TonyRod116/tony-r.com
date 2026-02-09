@@ -3,14 +3,11 @@ const TIMEOUT_MS = 30000
 
 const BUILDAPP_BASE = 'https://buildapp-v1-backend.onrender.com'
 
-// Producción: usar backend BuildApp (env o URL por defecto). Desarrollo: proxy local /api/chat
+// Usar backend BuildApp siempre (env, producción por defecto, o desarrollo si no hay env)
 function getApiEndpoint() {
-  const base = import.meta.env.VITE_BUILDAPP_DEMO_API_URL || (import.meta.env.PROD ? BUILDAPP_BASE : '')
-  if (base) {
-    const url = base.replace(/\/$/, '')
-    return `${url}/api/v1/demo/chat`
-  }
-  return '/api/chat'
+  const base = import.meta.env.VITE_BUILDAPP_DEMO_API_URL || BUILDAPP_BASE
+  const url = base.replace(/\/$/, '')
+  return `${url}/api/v1/demo/chat`
 }
 
 export async function callOpenAI(apiToken, systemPrompt, messages, config = {}, language = 'es') {
@@ -46,6 +43,14 @@ async function callViaProxy(endpoint, messages, config, signal, language) {
     body: JSON.stringify({ messages, config, language }),
     signal,
   })
+
+  // Verificar si la respuesta es JSON antes de parsear
+  const contentType = response.headers.get('content-type')
+  if (!contentType || !contentType.includes('application/json')) {
+    const text = await response.text()
+    console.error('[openai] Non-JSON response from', endpoint, ':', text.substring(0, 200))
+    throw new Error(`Invalid response format from server. Expected JSON but got ${contentType || 'unknown'}`)
+  }
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}))

@@ -378,7 +378,8 @@ export default function Home() {
                 </Link>
                 <Link
                   to="/contact"
-                  className="btn-secondary inline-flex items-center justify-center"
+                  className="btn-secondary inline-flex items-center justify-center dark:text-primary-300"
+                  style={{ color: '#1a2e4a' }}
                 >
                   {t('nav.contact')}
                 </Link>
