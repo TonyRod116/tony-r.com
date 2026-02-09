@@ -318,7 +318,7 @@ export default function Home() {
       <div className="flex flex-col">
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-32 sm:pt-36 lg:pt-20 min-h-screen bg-gray-900">
-        
+
         {/* Background photo that gets "eaten" on scroll */}
         <div 
           className="
@@ -352,12 +352,12 @@ export default function Home() {
               className="space-y-8 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg rounded-2xl px-8 py-6 sm:p-8 shadow-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 sm:mt-0 w-full"
             >
               <div className="space-y-4">
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tight text-gray-900 dark:text-white drop-shadow-sm">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white drop-shadow-sm">
                   {t('home.hero.titlePart1')}
                   <br />
                   <span className="gradient-text">{t('home.hero.titlePart2')}</span>
                 </h1>
-                <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl drop-shadow-sm">
+                <p className="text-xl text-gray-500 dark:text-gray-400 max-w-2xl drop-shadow-sm">
                   {t('home.hero.subtitle')}
                 </p>
               </div>
@@ -541,7 +541,7 @@ export default function Home() {
           
           {/* Centered More About Me Button */}
           <div className="flex justify-center mt-12">
-            <Link to="/about" className="btn-secondary inline-flex">
+            <Link to="/about" className="btn-secondary inline-flex dark:text-gray-200 dark:border-gray-500 dark:hover:bg-gray-700">
               {t('home.about.moreAboutMe')}
             </Link>
           </div>
@@ -577,7 +577,7 @@ export default function Home() {
                   className="group"
                   delay={index * 0.1}
                 >
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105">
+                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl hover:shadow-primary-500/10 hover:-translate-y-2 hover:border-primary-500/30 transition-all duration-300">
                     <div className="relative h-80 bg-gradient-to-br from-primary-900/20 to-blue-900/20 overflow-hidden">
                       <img 
                         src={project.image} 
@@ -721,8 +721,20 @@ export default function Home() {
       </section>
 
       {/* AI Lab Section */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-slate-50 via-gray-100 to-slate-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-gray-900 via-indigo-950/50 to-gray-900 relative overflow-hidden">
+        {/* Glowing divider top */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
+        {/* Dotted grid overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: 'radial-gradient(circle, rgba(99,102,241,0.15) 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+          }}
+        />
+        {/* Glowing divider bottom */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <ScrollAnimatedProjectCenter
             className="text-center mb-12"
             delay={0.1}

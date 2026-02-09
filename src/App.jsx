@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { LanguageProvider } from './hooks/useLanguage.jsx'
+import { LanguageProvider, useLanguage } from './hooks/useLanguage.jsx'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
@@ -22,16 +22,18 @@ import Nim from './components/games/Nim'
 import Tetris from './components/games/Tetris'
 import NeuralNetworkRedirect from './components/games/NeuralNetworkRedirect'
 
-function App() {
+function AppContent() {
+  const { isTransitioning } = useLanguage()
+
   // Prevenir overflow horizontal globalmente y forzar modo oscuro
   useEffect(() => {
     document.body.style.overflowX = 'hidden'
     document.documentElement.style.overflowX = 'hidden'
-    
+
     // Forzar modo oscuro siempre
     document.documentElement.classList.add('dark')
     document.documentElement.setAttribute('data-theme', 'dark')
-    
+
     return () => {
       document.body.style.overflowX = ''
       document.documentElement.style.overflowX = ''
@@ -39,38 +41,46 @@ function App() {
   }, [])
 
   return (
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <div className="min-h-screen bg-gray-900 overflow-x-hidden">
+        <ScrollToTop />
+        <GoogleAnalytics />
+        <Header />
+        <main
+          className={`min-h-[70vh] flex-1 transition-opacity duration-200 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+        >
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/resume" element={<Resume />} />
+            <Route path="/ai" element={<AiLab />} />
+            <Route path="/demos" element={<Demos />} />
+            <Route path="/demos/presupuesto-orientativo" element={<PresupuestoOrientativo />} />
+            <Route path="/demos/render-presupuesto" element={<RenderPresupuesto />} />
+            <Route path="/demos/lead-qualifier" element={<LeadQualifier />} />
+            <Route path="/ai/tictactoe" element={<TicTacToe />} />
+            <Route path="/ai/minesweeper" element={<Minesweeper />} />
+            <Route path="/ai/sixdegrees" element={<SixDegrees />} />
+            <Route path="/ai/nim" element={<Nim />} />
+            <Route path="/ai/tetris" element={<Tetris />} />
+            <Route
+              path="/ai/neural-network"
+              element={<NeuralNetworkRedirect />}
+            />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
+  )
+}
+
+function App() {
+  return (
     <LanguageProvider>
-      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <div className="min-h-screen bg-gray-900 overflow-x-hidden">
-          <ScrollToTop />
-          <GoogleAnalytics />
-          <Header />
-          <main className="min-h-[70vh] flex-1">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/resume" element={<Resume />} />
-              <Route path="/ai" element={<AiLab />} />
-              <Route path="/demos" element={<Demos />} />
-              <Route path="/demos/presupuesto-orientativo" element={<PresupuestoOrientativo />} />
-              <Route path="/demos/render-presupuesto" element={<RenderPresupuesto />} />
-              <Route path="/demos/lead-qualifier" element={<LeadQualifier />} />
-              <Route path="/ai/tictactoe" element={<TicTacToe />} />
-              <Route path="/ai/minesweeper" element={<Minesweeper />} />
-              <Route path="/ai/sixdegrees" element={<SixDegrees />} />
-              <Route path="/ai/nim" element={<Nim />} />
-              <Route path="/ai/tetris" element={<Tetris />} />
-              <Route 
-                path="/ai/neural-network" 
-                element={<NeuralNetworkRedirect />} 
-              />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </Router>
+      <AppContent />
     </LanguageProvider>
   )
 }

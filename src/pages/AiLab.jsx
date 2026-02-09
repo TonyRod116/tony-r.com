@@ -8,6 +8,7 @@ import nnIcon from '../assets/NN.png'
 import parallaxBg from '../assets/04.png'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../hooks/useLanguage.jsx'
+import NeuralParticles from '../components/NeuralParticles'
 
 export default function AiLab() {
   const { t } = useLanguage()
@@ -119,12 +120,22 @@ export default function AiLab() {
         style={{ y }}
         className="absolute inset-0 w-full h-[120%] z-0"
       >
-        <img 
+        {/* Neural network particles */}
+        <NeuralParticles className="absolute inset-0 z-[1] w-full h-full" />
+        <img
           src={parallaxBg}
           alt="Background"
           className="w-full h-full object-cover"
           style={{
             filter: 'brightness(0.3) blur(2px)'
+          }}
+        />
+        {/* Dotted grid overlay */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: 'radial-gradient(circle, rgba(99,102,241,0.15) 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
           }}
         />
       </motion.div>
@@ -164,24 +175,24 @@ export default function AiLab() {
                 key={project.id}
                 variants={itemVariants}
                 whileHover={{ y: -5 }}
-                className={`bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 ${project.fullWidth ? 'md:col-span-2' : ''}`}
+                className={`group bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 ${project.fullWidth ? 'md:col-span-2' : ''}`}
               >
                 {/* Icon */}
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl mb-6">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl mb-6">
                   {project.id === 'neural-network' && (
-                    <img src={nnIcon} alt="Neural Network" className="h-14 w-14 object-contain" />
+                    <img src={nnIcon} alt="Neural Network" className="h-16 w-16 object-contain group-hover:animate-pulse" />
                   )}
                   {project.id === 'ttt' && (
-                    <img src={tttIcon} alt="Tic-Tac-Toe" className="h-14 w-14" />
+                    <img src={tttIcon} alt="Tic-Tac-Toe" className="h-16 w-16 group-hover:animate-pulse" />
                   )}
                   {project.id === 'minesweeper' && (
-                    <img src={msIcon} alt="Minesweeper" className="h-14 w-14" />
+                    <img src={msIcon} alt="Minesweeper" className="h-16 w-16 group-hover:animate-pulse" />
                   )}
                   {project.id === 'nim' && (
-                    <img src={nimIcon} alt="Nim" className="h-14 w-14" />
+                    <img src={nimIcon} alt="Nim" className="h-16 w-16 group-hover:animate-pulse" />
                   )}
                   {project.id === 'tetris' && (
-                    <img src={tetrisIcon} alt="Tetris" className="h-14 w-14" />
+                    <img src={tetrisIcon} alt="Tetris" className="h-16 w-16 group-hover:animate-pulse" />
                   )}
                 </div>
 
@@ -248,33 +259,6 @@ export default function AiLab() {
               </motion.div>
             )
           })}
-        </motion.div>
-
-        {/* Coming Soon Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-16 text-center"
-        >
-          <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              {t('aiLab.comingSoon.title')}
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">
-              {t('aiLab.comingSoon.description')}
-            </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              {['Computer Vision', 'NLP', 'Reinforcement Learning', 'Neural Networks'].map((tech) => (
-                <span
-                  key={tech}
-                  className="px-4 py-2 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900 text-purple-800 dark:text-purple-200 text-sm font-medium rounded-full"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
         </motion.div>
 
         {/* Footer CTA */}

@@ -146,6 +146,11 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
+/* Scroll progress bar glow */
+.scroll-progress-glow {
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.6), 0 0 16px rgba(59, 130, 246, 0.3);
+}
+
 /* Progress bar shimmer animation - visible left to right sweep */
 .progress-shimmer {
   background: linear-gradient(

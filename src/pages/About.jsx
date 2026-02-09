@@ -162,7 +162,7 @@ export default function About() {
               <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
                 <Typewriter text={t('about.hero.title')} speed={0.3} delay={3} />
               </h1>
-              <div className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed space-y-4 text-justify">
+              <div className="text-lg text-gray-600 dark:text-gray-300 leading-loose space-y-4 text-justify">
                 <Typewriter 
                   text={`${t('about.hero.description1')}\n\n${t('about.hero.description2')}\n\n${t('about.hero.description3')}\n\n${t('about.hero.description4')}`} 
                   speed={0.002} 
@@ -210,7 +210,7 @@ export default function About() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
