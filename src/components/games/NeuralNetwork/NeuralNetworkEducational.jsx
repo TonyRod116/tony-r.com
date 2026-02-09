@@ -80,8 +80,8 @@ export default function NeuralNetworkEducational() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Code Block */}
-          <motion.div variants={fadeIn} className="relative">
-            <div className="bg-[#0d1117] border border-gray-700/50 rounded-xl overflow-hidden">
+          <motion.div variants={fadeIn} className="relative min-w-0">
+            <div className="bg-[#0d1117] border border-gray-700/50 rounded-xl overflow-hidden min-w-0">
               <div className="flex items-center justify-between px-4 py-2 border-b border-gray-700/50">
                 <div className="flex gap-1.5">
                   <div className="w-3 h-3 rounded-full bg-red-500/70" />
@@ -90,8 +90,8 @@ export default function NeuralNetworkEducational() {
                 </div>
                 <span className="text-xs text-gray-500 font-mono">Python / TensorFlow</span>
               </div>
-              <pre className="p-5 overflow-x-auto text-sm leading-relaxed font-mono">
-                <code>
+              <pre className="p-5 overflow-x-auto text-sm leading-relaxed font-mono min-w-0 w-full" style={{ WebkitOverflowScrolling: 'touch' }}>
+                <code className="block min-w-max">
                   <Line><Kw>import</Kw> tensorflow <Kw>as</Kw> tf</Line>
                   <Line><Kw>from</Kw> tensorflow.keras.layers <Kw>import</Kw> <Fn>Dense</Fn></Line>
                   <Line />
@@ -308,13 +308,13 @@ export default function NeuralNetworkEducational() {
 // -- Helper components --
 
 function Line({ children }) {
-  return <div className="text-gray-300 min-h-[1.375rem]">{children}</div>
+  return <div className="text-gray-300 min-h-[1.375rem] whitespace-pre">{children}</div>
 }
 
 function AnnotatedLine({ n, children }) {
   return (
-    <div className="flex items-center gap-3 text-gray-300 bg-blue-500/5 -mx-5 px-5 border-l-2 border-blue-500/40">
-      <span className="flex-1 min-h-[1.375rem]">{children}</span>
+    <div className="flex items-center gap-3 text-gray-300 bg-blue-500/5 -mx-5 px-5 border-l-2 border-blue-500/40 min-w-0">
+      <span className="flex-1 min-h-[1.375rem] whitespace-pre">{children}</span>
       <Badge n={n} />
     </div>
   )
