@@ -28,11 +28,11 @@ export function validateConfig(config, t) {
   const errors = []
 
   if (!Array.isArray(config.coveredCities) || config.coveredCities.length === 0) {
-    errors.push(t('demos.leadQualifier.validation.citiesRequired'))
+    errors.push(t('solutions.leadQualifier.validation.citiesRequired'))
   }
 
   if (!config.budgetRanges || typeof config.budgetRanges !== 'object') {
-    errors.push(t('demos.leadQualifier.validation.budgetRequired'))
+    errors.push(t('solutions.leadQualifier.validation.budgetRequired'))
   }
 
   return errors

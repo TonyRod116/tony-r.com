@@ -40,10 +40,10 @@ export default function ConfigPanel({ config, onSave, onClose, t, inline = false
   }
 
   const typeLabels = {
-    baño: t('demos.leadQualifier.config.bathroom'),
-    cocina: t('demos.leadQualifier.config.kitchen'),
-    integral: t('demos.leadQualifier.config.fullRenovation'),
-    pintura: t('demos.leadQualifier.config.painting'),
+    baño: t('solutions.leadQualifier.config.bathroom'),
+    cocina: t('solutions.leadQualifier.config.kitchen'),
+    integral: t('solutions.leadQualifier.config.fullRenovation'),
+    pintura: t('solutions.leadQualifier.config.painting'),
   }
 
   const content = (
@@ -54,27 +54,27 @@ export default function ConfigPanel({ config, onSave, onClose, t, inline = false
         <div>
           <label className="flex items-center gap-2 text-sm font-medium text-white mb-2">
             <MapPin className="h-4 w-4 text-primary-400" />
-            {t('demos.leadQualifier.config.coveredCities')}
+            {t('solutions.leadQualifier.config.coveredCities')}
           </label>
           <textarea
             value={localConfig.coveredCities}
             onChange={(e) => setLocalConfig(prev => ({ ...prev, coveredCities: e.target.value }))}
             className="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
             rows={2}
-            placeholder={t('demos.leadQualifier.config.citiesPlaceholder')}
+            placeholder={t('solutions.leadQualifier.config.citiesPlaceholder')}
           />
-          <p className="text-xs text-gray-500 mt-1">{t('demos.leadQualifier.config.citiesSeparator')}</p>
+          <p className="text-xs text-gray-500 mt-1">{t('solutions.leadQualifier.config.citiesSeparator')}</p>
         </div>
 
         {/* Budget Minimums */}
         <div>
           <label className="flex items-center gap-2 text-sm font-medium text-white mb-2">
             <Banknote className="h-4 w-4 text-primary-400" />
-            {t('demos.leadQualifier.config.budgetMinimums')}
+            {t('solutions.leadQualifier.config.budgetMinimums')}
           </label>
           <p className="text-xs text-amber-400 flex items-center gap-1 mb-2">
             <AlertTriangle className="h-3 w-3" />
-            {t('demos.leadQualifier.config.budgetWarning')}
+            {t('solutions.leadQualifier.config.budgetWarning')}
           </p>
 
           <div className="space-y-2">
@@ -99,10 +99,10 @@ export default function ConfigPanel({ config, onSave, onClose, t, inline = false
         <div>
           <label className="flex items-center gap-2 text-sm font-medium text-white mb-2">
             <TrendingUp className="h-4 w-4 text-primary-400" />
-            {t('demos.leadQualifier.config.budgetBonusLabel')}
+            {t('solutions.leadQualifier.config.budgetBonusLabel')}
           </label>
           <p className="text-xs text-gray-500 mb-2">
-            {t('demos.leadQualifier.config.budgetBonusDesc')}
+            {t('solutions.leadQualifier.config.budgetBonusDesc')}
           </p>
           <div className="flex items-center gap-2">
             <input
@@ -123,7 +123,7 @@ export default function ConfigPanel({ config, onSave, onClose, t, inline = false
             onClick={onClose}
             className="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium transition-colors"
           >
-            {t('demos.leadQualifier.config.cancel')}
+            {t('solutions.leadQualifier.config.cancel')}
           </button>
         )}
         <button
@@ -131,7 +131,7 @@ export default function ConfigPanel({ config, onSave, onClose, t, inline = false
           className="px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium transition-colors flex items-center gap-2"
         >
           <Save className="h-4 w-4" />
-          {t('demos.leadQualifier.config.save')}
+          {t('solutions.leadQualifier.config.save')}
         </button>
       </div>
     </>
@@ -158,7 +158,7 @@ export default function ConfigPanel({ config, onSave, onClose, t, inline = false
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700">
-          <h2 className="text-lg font-semibold text-white">{t('demos.leadQualifier.config.title')}</h2>
+          <h2 className="text-lg font-semibold text-white">{t('solutions.leadQualifier.config.title')}</h2>
           <button
             onClick={onClose}
             className="p-2 rounded-full hover:bg-gray-700 transition-colors"

@@ -163,12 +163,12 @@ function detectTimeline(text, language, t) {
     ca: ['com més aviat', 'urgent', 'ara', 'quan abans'],
   }
   const asap = [...(asapPatterns[language] || []), ...(asapPatterns.es)]
-  if (asap.some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.asap')
+  if (asap.some(p => lower.includes(p))) return t('solutions.leadQualifier.timeline.asap')
 
   // Tomorrow
   const tomorrowPatterns = { es: ['mañana', 'manana'], en: ['tomorrow'], ca: ['demà', 'dema'] }
   const tomorrow = [...(tomorrowPatterns[language] || []), ...(tomorrowPatterns.es)]
-  if (tomorrow.some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.tomorrow')
+  if (tomorrow.some(p => lower.includes(p))) return t('solutions.leadQualifier.timeline.tomorrow')
 
   // Next week
   const nextWeekPatterns = {
@@ -177,31 +177,31 @@ function detectTimeline(text, language, t) {
     ca: ['setmana que ve', 'propera setmana'],
   }
   const nextWeek = [...(nextWeekPatterns[language] || []), ...(nextWeekPatterns.es)]
-  if (nextWeek.some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.nextWeek')
+  if (nextWeek.some(p => lower.includes(p))) return t('solutions.leadQualifier.timeline.nextWeek')
 
   // Weeks
   const weekPatterns = { es: ['semana'], en: ['week'], ca: ['setmana'] }
   const week = [...(weekPatterns[language] || []), ...(weekPatterns.es)]
-  if (week.some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.oneToTwoWeeks')
+  if (week.some(p => lower.includes(p))) return t('solutions.leadQualifier.timeline.oneToTwoWeeks')
 
   // Months
   const monthPatterns = { es: ['mes'], en: ['month'], ca: ['mes'] }
   const month = [...(monthPatterns[language] || []), ...(monthPatterns.es)]
-  if (month.some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.oneToThreeMonths')
+  if (month.some(p => lower.includes(p))) return t('solutions.leadQualifier.timeline.oneToThreeMonths')
 
   // Seasons
   const summerPatterns = { es: ['verano'], en: ['summer'], ca: ['estiu'] }
-  if ([...(summerPatterns[language] || []), ...(summerPatterns.es)].some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.summer')
+  if ([...(summerPatterns[language] || []), ...(summerPatterns.es)].some(p => lower.includes(p))) return t('solutions.leadQualifier.timeline.summer')
 
   const autumnPatterns = { es: ['otoño', 'otono'], en: ['autumn', 'fall'], ca: ['tardor'] }
-  if ([...(autumnPatterns[language] || []), ...(autumnPatterns.es)].some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.autumn')
+  if ([...(autumnPatterns[language] || []), ...(autumnPatterns.es)].some(p => lower.includes(p))) return t('solutions.leadQualifier.timeline.autumn')
 
   const springPatterns = { es: ['primavera'], en: ['spring'], ca: ['primavera'] }
-  if ([...(springPatterns[language] || []), ...(springPatterns.es)].some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.spring')
+  if ([...(springPatterns[language] || []), ...(springPatterns.es)].some(p => lower.includes(p))) return t('solutions.leadQualifier.timeline.spring')
 
   // Year
   const yearPatterns = { es: ['año', 'ano'], en: ['year'], ca: ['any'] }
-  if ([...(yearPatterns[language] || []), ...(yearPatterns.es)].some(p => lower.includes(p))) return t('demos.leadQualifier.timeline.thisYear')
+  if ([...(yearPatterns[language] || []), ...(yearPatterns.es)].some(p => lower.includes(p))) return t('solutions.leadQualifier.timeline.thisYear')
 
   return null
 }
@@ -225,29 +225,29 @@ function detectContact(text, language) {
 
 function calculateScore(state, config, t) {
   if (state.doNotContact) {
-    return { score: 0, tier: 5, reasons: [t('demos.leadQualifier.mock.clientDoesNotWantContact')] }
+    return { score: 0, tier: 5, reasons: [t('solutions.leadQualifier.mock.clientDoesNotWantContact')] }
   }
   let score = 0
   const reasons = []
 
   if (state.projectType) {
     score += 10
-    reasons.push(t('demos.leadQualifier.scoring.projectTypeIdentified'))
+    reasons.push(t('solutions.leadQualifier.scoring.projectTypeIdentified'))
   }
 
   if (state.city) {
     const covered = config.coveredCities.some(c => c.toLowerCase() === state.city.toLowerCase())
     if (covered) {
       score += 20
-      reasons.push(t('demos.leadQualifier.scoring.coveredCity'))
+      reasons.push(t('solutions.leadQualifier.scoring.coveredCity'))
     } else {
-      reasons.push(t('demos.leadQualifier.scoring.uncoveredCity'))
+      reasons.push(t('solutions.leadQualifier.scoring.uncoveredCity'))
     }
   }
 
   if (state.sqm) {
     score += 5
-    reasons.push(t('demos.leadQualifier.scoring.surfaceKnown'))
+    reasons.push(t('solutions.leadQualifier.scoring.surfaceKnown'))
   }
 
   if (state.budget && state.budget !== NO_ANSWER) {
@@ -256,34 +256,34 @@ function calculateScore(state, config, t) {
       const minBudget = config.budgetRanges?.[state.projectType]?.min || config.budgetRanges?.baño?.min || 5000
       if (budgetNum >= minBudget) {
         score += 25
-        reasons.push(t('demos.leadQualifier.scoring.adequateBudget'))
+        reasons.push(t('solutions.leadQualifier.scoring.adequateBudget'))
       } else {
-        reasons.push(t('demos.leadQualifier.scoring.tightBudget'))
+        reasons.push(t('solutions.leadQualifier.scoring.tightBudget'))
       }
       const bonusThreshold = config.budgetBonusThreshold
       if (bonusThreshold && budgetNum >= bonusThreshold) {
         score += 15
-        reasons.push(t('demos.leadQualifier.scoring.highBudgetBonus'))
+        reasons.push(t('solutions.leadQualifier.scoring.highBudgetBonus'))
       }
     }
   }
 
   if (state.timeline && state.timeline !== NO_ANSWER) {
     score += 15
-    reasons.push(t('demos.leadQualifier.scoring.timelineMentioned'))
+    reasons.push(t('solutions.leadQualifier.scoring.timelineMentioned'))
   } else {
     score -= 10
-    reasons.push(t('demos.leadQualifier.mock.timelineNotIndicated'))
+    reasons.push(t('solutions.leadQualifier.mock.timelineNotIndicated'))
   }
 
   if (state.contactPhone || state.contactEmail) {
     score += 10
-    reasons.push(t('demos.leadQualifier.mock.contactDataProvided'))
+    reasons.push(t('solutions.leadQualifier.mock.contactDataProvided'))
   }
 
   if (state.wantsCallBack === true) {
     score += 5
-    reasons.push(t('demos.leadQualifier.mock.wantsUsToContact'))
+    reasons.push(t('solutions.leadQualifier.mock.wantsUsToContact'))
   }
 
   const tier = score >= 80 ? 1 : score >= 60 ? 2 : score >= 40 ? 3 : score >= 20 ? 4 : 5
@@ -293,16 +293,16 @@ function calculateScore(state, config, t) {
 
 function getNextQuestion(state, t) {
   if (!state.projectType) return null
-  if (!state.city) return t('demos.leadQualifier.questions.city')
+  if (!state.city) return t('solutions.leadQualifier.questions.city')
   if (!state.sqm) {
-    if (state.projectType === 'ventanas') return t('demos.leadQualifier.questions.windowsCount')
-    if (state.projectType === 'puertas') return t('demos.leadQualifier.questions.doorsCount')
-    return t('demos.leadQualifier.questions.sqm')
+    if (state.projectType === 'ventanas') return t('solutions.leadQualifier.questions.windowsCount')
+    if (state.projectType === 'puertas') return t('solutions.leadQualifier.questions.doorsCount')
+    return t('solutions.leadQualifier.questions.sqm')
   }
-  if (!state.timeline) return t('demos.leadQualifier.questions.timeline')
-  if (!state.budget) return t('demos.leadQualifier.questions.budget')
-  if (!state.contactPhone && !state.contactEmail) return t('demos.leadQualifier.questions.contact')
-  if (state.wantsCallBack === null) return t('demos.leadQualifier.questions.confirmAll')
+  if (!state.timeline) return t('solutions.leadQualifier.questions.timeline')
+  if (!state.budget) return t('solutions.leadQualifier.questions.budget')
+  if (!state.contactPhone && !state.contactEmail) return t('solutions.leadQualifier.questions.contact')
+  if (state.wantsCallBack === null) return t('solutions.leadQualifier.questions.confirmAll')
   return null
 }
 
@@ -347,11 +347,11 @@ export function getMockResponse(messages, config, t, language = 'es') {
       mockLeadState.city = detectedCity
     } else if (!detectedCity.covered) {
       return {
-        displayText: t('demos.leadQualifier.mock.uncoveredCity'),
+        displayText: t('solutions.leadQualifier.mock.uncoveredCity'),
         leadFields: { ...mockLeadState, city: detectedCity.city },
         score: 5,
         tier: 5,
-        reasons: [t('demos.leadQualifier.mock.cityOutOfCoverage')],
+        reasons: [t('solutions.leadQualifier.mock.cityOutOfCoverage')],
         nextQuestion: null,
       }
     }
@@ -367,15 +367,15 @@ export function getMockResponse(messages, config, t, language = 'es') {
       mockLeadState.budget = detectedNumber
       const minBudget = config.budgetRanges?.[mockLeadState.projectType]?.min || config.budgetRanges?.integral?.min || 50000
       if (detectedNumber < minBudget) {
-        const projectLabel = t(`demos.leadQualifier.projectLabels.${mockLeadState.projectType}`) || t('demos.leadQualifier.projectLabels.otro')
+        const projectLabel = t(`solutions.leadQualifier.projectLabels.${mockLeadState.projectType}`) || t('solutions.leadQualifier.projectLabels.otro')
         return {
-          displayText: t('demos.leadQualifier.mock.budgetTooLow')
+          displayText: t('solutions.leadQualifier.mock.budgetTooLow')
             .replace('{label}', projectLabel)
             .replace('{min}', minBudget.toLocaleString(locale) + '€'),
           leadFields: { ...mockLeadState },
           score: 10,
           tier: 5,
-          reasons: [t('demos.leadQualifier.mock.insufficientBudget')],
+          reasons: [t('solutions.leadQualifier.mock.insufficientBudget')],
           nextQuestion: null,
         }
       }
@@ -446,92 +446,92 @@ export function getMockResponse(messages, config, t, language = 'es') {
 
   // Generate response based on current state
   let displayText = ''
-  const projectLabel = t(`demos.leadQualifier.projectLabels.${mockLeadState.projectType}`) || t('demos.leadQualifier.projectLabels.otro')
+  const projectLabel = t(`solutions.leadQualifier.projectLabels.${mockLeadState.projectType}`) || t('solutions.leadQualifier.projectLabels.otro')
 
   if (!mockLeadState.projectType) {
     const typeFromFirst = detectProjectType(lastUserMessage, language)
     if (typeFromFirst) {
       mockLeadState.projectType = typeFromFirst
-      const label = t(`demos.leadQualifier.projectLabels.${typeFromFirst}`) || t('demos.leadQualifier.projectLabels.otro')
+      const label = t(`solutions.leadQualifier.projectLabels.${typeFromFirst}`) || t('solutions.leadQualifier.projectLabels.otro')
       if (typeFromFirst === 'otro') {
-        displayText = t('demos.leadQualifier.mock.perfectOther')
+        displayText = t('solutions.leadQualifier.mock.perfectOther')
       } else {
         const articleMap = { en: 'A', es: 'Una', ca: 'Una' }
         const articleAlt = { en: 'A', es: 'Un', ca: 'Un' }
         const useMasc = typeFromFirst === 'ventanas' || typeFromFirst === 'puertas'
         const article = useMasc ? (articleAlt[language] || 'Un') : (articleMap[language] || 'Una')
-        displayText = t('demos.leadQualifier.mock.perfectProject')
+        displayText = t('solutions.leadQualifier.mock.perfectProject')
           .replace('{article}', article)
           .replace('{label}', label)
       }
     } else {
-      displayText = t('demos.leadQualifier.mock.askProjectType')
+      displayText = t('solutions.leadQualifier.mock.askProjectType')
     }
   } else if (!mockLeadState.city) {
     if (refusesToAnswer) {
-      displayText = t('demos.leadQualifier.mock.needLocation')
+      displayText = t('solutions.leadQualifier.mock.needLocation')
     } else if (detectedType) {
       if (mockLeadState.projectType === 'otro') {
-        displayText = t('demos.leadQualifier.mock.perfectOther')
+        displayText = t('solutions.leadQualifier.mock.perfectOther')
       } else {
         const useMasc = mockLeadState.projectType === 'ventanas' || mockLeadState.projectType === 'puertas'
         const articleMap = { en: 'A', es: 'Una', ca: 'Una' }
         const articleAlt = { en: 'A', es: 'Un', ca: 'Un' }
         const article = useMasc ? (articleAlt[language] || 'Un') : (articleMap[language] || 'Una')
-        displayText = t('demos.leadQualifier.mock.perfectProject')
+        displayText = t('solutions.leadQualifier.mock.perfectProject')
           .replace('{article}', article)
           .replace('{label}', projectLabel)
       }
     } else {
-      displayText = t('demos.leadQualifier.mock.understood')
+      displayText = t('solutions.leadQualifier.mock.understood')
     }
   } else if (!mockLeadState.sqm) {
     if (mockLeadState.projectType === 'ventanas') {
-      displayText = t('demos.leadQualifier.mock.greatCoveredWindows').replace('{city}', mockLeadState.city)
+      displayText = t('solutions.leadQualifier.mock.greatCoveredWindows').replace('{city}', mockLeadState.city)
     } else if (mockLeadState.projectType === 'puertas') {
-      displayText = t('demos.leadQualifier.mock.greatCoveredDoors').replace('{city}', mockLeadState.city)
+      displayText = t('solutions.leadQualifier.mock.greatCoveredDoors').replace('{city}', mockLeadState.city)
     } else {
-      displayText = t('demos.leadQualifier.mock.greatCovered').replace('{city}', mockLeadState.city)
+      displayText = t('solutions.leadQualifier.mock.greatCovered').replace('{city}', mockLeadState.city)
     }
   } else if (mockLeadState.sqm === NO_ANSWER && !mockLeadState.timeline) {
-    displayText = t('demos.leadQualifier.mock.noWorries') + ' ' + t('demos.leadQualifier.mock.whenStart')
+    displayText = t('solutions.leadQualifier.mock.noWorries') + ' ' + t('solutions.leadQualifier.mock.whenStart')
   } else if (!mockLeadState.timeline) {
     let scopeText
     if (mockLeadState.projectType === 'ventanas') {
-      scopeText = t('demos.leadQualifier.mock.scopeWindows').replace('{count}', mockLeadState.sqm)
+      scopeText = t('solutions.leadQualifier.mock.scopeWindows').replace('{count}', mockLeadState.sqm)
     } else if (mockLeadState.projectType === 'puertas') {
-      scopeText = t('demos.leadQualifier.mock.scopeDoors').replace('{count}', mockLeadState.sqm)
+      scopeText = t('solutions.leadQualifier.mock.scopeDoors').replace('{count}', mockLeadState.sqm)
     } else {
-      scopeText = t('demos.leadQualifier.mock.scopeSqm').replace('{count}', mockLeadState.sqm)
+      scopeText = t('solutions.leadQualifier.mock.scopeSqm').replace('{count}', mockLeadState.sqm)
     }
-    displayText = t('demos.leadQualifier.mock.perfectScope').replace('{scope}', scopeText)
+    displayText = t('solutions.leadQualifier.mock.perfectScope').replace('{scope}', scopeText)
   } else if (mockLeadState.timeline === NO_ANSWER && !mockLeadState.budget) {
     const isWorkType = mockLeadState.projectType === 'ventanas' || mockLeadState.projectType === 'puertas'
     const projectRef = isWorkType
-      ? t('demos.leadQualifier.mock.budgetQuestionWork')
-      : t('demos.leadQualifier.mock.budgetQuestionProject').replace('{label}', projectLabel)
-    displayText = t('demos.leadQualifier.mock.noWorriesBudget').replace('{project}', projectRef)
+      ? t('solutions.leadQualifier.mock.budgetQuestionWork')
+      : t('solutions.leadQualifier.mock.budgetQuestionProject').replace('{label}', projectLabel)
+    displayText = t('solutions.leadQualifier.mock.noWorriesBudget').replace('{project}', projectRef)
   } else if (!mockLeadState.budget) {
     const isWorkType = mockLeadState.projectType === 'ventanas' || mockLeadState.projectType === 'puertas'
     const projectRef = isWorkType
-      ? t('demos.leadQualifier.mock.budgetQuestionWork')
-      : t('demos.leadQualifier.mock.budgetQuestionProject').replace('{label}', projectLabel)
-    displayText = t('demos.leadQualifier.mock.budgetQuestion').replace('{project}', projectRef)
+      ? t('solutions.leadQualifier.mock.budgetQuestionWork')
+      : t('solutions.leadQualifier.mock.budgetQuestionProject').replace('{label}', projectLabel)
+    displayText = t('solutions.leadQualifier.mock.budgetQuestion').replace('{project}', projectRef)
   } else if (!mockLeadState.contactPhone && !mockLeadState.contactEmail) {
-    displayText = t('demos.leadQualifier.mock.askContact')
+    displayText = t('solutions.leadQualifier.mock.askContact')
   } else if (mockLeadState.doNotContact) {
-    displayText = t('demos.leadQualifier.mock.doNotContactMsg')
+    displayText = t('solutions.leadQualifier.mock.doNotContactMsg')
   } else if (mockLeadState.wantsCallBack === null) {
     if (mockLeadState.contactCallbackRefusedOnce && detectedBoolean === false) {
-      displayText = t('demos.leadQualifier.mock.refusedOnce')
+      displayText = t('solutions.leadQualifier.mock.refusedOnce')
     } else {
-      displayText = t('demos.leadQualifier.mock.confirmContact')
+      displayText = t('solutions.leadQualifier.mock.confirmContact')
     }
   } else {
     const nameStr = mockLeadState.contactName
-      ? t('demos.leadQualifier.mock.thankYouName').replace('{contactName}', mockLeadState.contactName)
+      ? t('solutions.leadQualifier.mock.thankYouName').replace('{contactName}', mockLeadState.contactName)
       : ''
-    displayText = t('demos.leadQualifier.mock.thankYou')
+    displayText = t('solutions.leadQualifier.mock.thankYou')
       .replace('{name}', nameStr)
       .replace('{label}', projectLabel)
       .replace('{city}', mockLeadState.city)

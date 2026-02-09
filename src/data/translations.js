@@ -9,7 +9,7 @@ export const translations = {
       contact: 'Contact',
       hireMe: 'Hire Me',
       aiLab: 'AI Lab',
-      demos: 'Demos'
+      solutions: 'Solutions'
     },
     
     // Home Page
@@ -427,14 +427,32 @@ export const translations = {
     },
 
     // Demos Page
-    demos: {
-      title: 'Demos',
-      subtitle: 'Practical demos for businesses: from lead capture to AI-powered drafts.',
+    solutions: {
+      title: 'Automate your office and win more projects without hiring anyone',
+      subtitle: 'Budgets in 30 seconds and clients filtered automatically. Less time wasted. More money.',
       presupuestoOrientativo: {
-        title: 'Orientation Budget',
-        description: 'Fill out the form with your project details and get a detailed professional budget breakdown with line items, assumptions, and exclusions.',
-        pageTitle: 'Orientation Budget',
-        pageSubtitle: 'Get a detailed professional budget estimate for your renovation project in seconds.',
+        title: 'Budgets in 30 seconds',
+        description: 'Generate professional budgets from your mobile, in front of the client. No Excel. No office. No wasted hours.',
+        bullets: [
+          'Ready in seconds',
+          'Editable with your margin',
+          'Exportable to PDF',
+          'From site or car'
+        ],
+        cta: 'Try now for free',
+        pageTitle: 'Professional budgets in 30 seconds',
+        pageSubtitle: 'Enter basic data and generate a detailed budget automatically. Save hours of office work and respond to clients instantly.',
+        bullets: {
+          editable: 'Editable',
+          addMargin: 'Add your margin',
+          exportPdf: 'Export PDF',
+          readyWhatsApp: 'Ready to send via WhatsApp'
+        },
+        ctaAfterResult: {
+          question: 'Would you like to do this in 30 seconds for each client?',
+          createAccount: 'Create free account',
+          installCompany: 'Install in my company'
+        },
         form: {
           projectType: 'Project Type',
           sqm: 'm² (approx.)',
@@ -442,7 +460,7 @@ export const translations = {
           targetBudget: 'Target Budget (€)',
           notes: 'Additional Details',
           notesPlaceholder: 'Desired finishes, current condition, special requirements... The more details you provide, the more accurate the budget will be.',
-          generate: 'Generate Budget',
+          generate: 'Create budget now',
           generating: 'Generating...',
           projectTypeRequired: 'Project type is required.',
           sqmPlaceholder: 'e.g. 45',
@@ -470,7 +488,8 @@ export const translations = {
           labor: 'Labor',
           other: 'Other',
           estimatedDuration: 'Estimated duration',
-          timeline: 'Timeline'
+          timeline: 'Timeline',
+          editingNote: 'The professional using this service will also have the ability to edit both their margin and each line item individually if desired.'
         }
       },
       renderPresupuesto: {
@@ -511,11 +530,21 @@ export const translations = {
         }
       },
       leadQualifier: {
-        title: 'Lead Qualifier IA',
-        description: 'WhatsApp-style chat that qualifies renovation leads using AI. Score and tier assignment in real-time.',
+        title: 'Only talk to serious clients',
+        description: 'Our assistant filters curious visitors, collects data and sends you only leads ready to close.',
+        bullets: [
+          'Available 24/7',
+          'Qualifies automatically',
+          'Saves useless calls',
+          'Prioritizes the best'
+        ],
+        cta: 'See live demo',
         ui: {
-          pageTitle: 'Project Assistant',
-          pageSubtitle: 'Conversational chat demo for renovation lead qualification',
+          pageTitle: 'Your 24/7 sales rep',
+          pageSubtitle: 'While you work on site, this assistant: responds to clients, collects measurements, asks for budget, filters curious visitors, and sends you only the good ones',
+          painPoint: 'Each useless call costs you time and money. This assistant only sends you serious clients.',
+          ctaPrimary: 'Try it as if you were a client',
+          ctaSecondary: 'Install on my website',
           configBtn: 'Settings',
           chatTitle: 'Your Renovation Company',
           typing: 'Typing...',
@@ -545,9 +574,9 @@ export const translations = {
         },
         ratings: {
           excellent: 'Excellent',
-          excellentDesc: 'High quality lead',
+          excellentDesc: 'Serious client with high budget',
           good: 'Good',
-          goodDesc: 'Good potential',
+          goodDesc: 'Client with good potential',
           regular: 'Regular',
           regularDesc: 'Requires follow-up',
           poor: 'Low',
@@ -556,9 +585,26 @@ export const translations = {
           badDesc: "Doesn't fit",
         },
         summary: {
-          title: 'Lead Summary',
-          emptyMessage: 'Once the conversation with the client has ended, it will be sent to the person(s) responsible so they can manage and prioritise the lead properly.',
+          title: 'When the conversation ends, you\'ll see here:',
+          description: '',
+          bullets: [
+            'Client data',
+            'Estimated budget',
+            'Lead quality',
+            'Contact priority'
+          ],
+          emptyMessage: 'Everything ready to decide who to call first.',
           waiting: 'Waiting for information...',
+          readyToCall: 'Lead ready to call',
+          whyGoodLead: 'Why is this a good lead?',
+          contact: 'Contact',
+          callNow: 'Call now',
+          projectDetails: 'Project details',
+          seeMore: 'see more',
+          seeLess: 'see less',
+          estimatedBudget: 'Estimated budget',
+          thisCouldBe: 'This could be a big project',
+          ctaQuestion: 'Do you want your website to deliver clients like this automatically?',
           leadRating: 'Lead Rating',
           score: 'Score',
           approxBudget: 'Approximate Budget',
@@ -733,7 +779,7 @@ export const translations = {
         finalizing: 'Finalizing...',
         finalizingMessage: 'This may take a moment...'
       },
-      openDemo: 'Open Demo',
+      openDemo: 'Try Solution',
       cancel: 'Cancel',
       projectTypes: {
         baño: 'Bathroom',
@@ -992,7 +1038,7 @@ export const translations = {
       contact: 'Contacto',
       hireMe: 'Contrátame',
       aiLab: 'Lab de IA',
-      demos: 'Demos'
+      solutions: 'Soluciones'
     },
     
     // Home Page
@@ -1646,14 +1692,32 @@ export const translations = {
     },
 
     // Demos Page
-    demos: {
-      title: 'Demos',
-      subtitle: 'Demos prácticas para empresas: desde captura de leads hasta borradores con IA.',
+    solutions: {
+      title: 'Automatiza tu oficina y gana más obras sin contratar a nadie',
+      subtitle: 'Presupuestos en 30 segundos y clientes filtrados automáticamente. Menos tiempo perdido. Más dinero.',
       presupuestoOrientativo: {
-        title: 'Presupuesto Orientativo',
-        description: 'Completa el formulario con los detalles de tu proyecto y obtén un presupuesto profesional detallado con partidas, supuestos y exclusiones.',
-        pageTitle: 'Presupuesto Orientativo',
-        pageSubtitle: 'Obtén un presupuesto profesional detallado para tu proyecto de reforma en segundos.',
+        title: 'Presupuestos en 30 segundos',
+        description: 'Genera presupuestos profesionales desde el móvil, delante del cliente. Sin Excel. Sin oficina. Sin horas perdidas.',
+        bullets: [
+          'Listos en segundos',
+          'Editables con tu margen',
+          'Exportables en PDF',
+          'Desde obra o coche'
+        ],
+        cta: 'Probar ahora gratis',
+        pageTitle: 'Presupuestos profesionales en 30 segundos',
+        pageSubtitle: 'Escribe los datos básicos y genera un presupuesto detallado automáticamente. Ahorra horas de oficina y responde al cliente al instante.',
+        bullets: {
+          editable: 'Editable',
+          addMargin: 'Añade tu margen',
+          exportPdf: 'Exporta PDF',
+          readyWhatsApp: 'Listo para enviar por WhatsApp'
+        },
+        ctaAfterResult: {
+          question: '¿Te gustaría hacer esto en 30 segundos para cada cliente?',
+          createAccount: 'Crear cuenta gratis',
+          installCompany: 'Instalar en mi empresa'
+        },
         form: {
           projectType: 'Tipo de Proyecto',
           sqm: 'm² (aprox.)',
@@ -1661,7 +1725,7 @@ export const translations = {
           targetBudget: 'Presupuesto Objetivo (€)',
           notes: 'Detalles Adicionales',
           notesPlaceholder: 'Acabados deseados, estado actual, requisitos especiales... Cuantos más detalles proporciones, más exacto será el presupuesto.',
-          generate: 'Generar Presupuesto',
+          generate: 'Crear presupuesto ahora',
           generating: 'Generando...',
           projectTypeRequired: 'El tipo de proyecto es obligatorio.',
           sqmPlaceholder: 'ej. 45',
@@ -1689,7 +1753,8 @@ export const translations = {
           labor: 'Mano de obra',
           other: 'Otros',
           estimatedDuration: 'Duración estimada',
-          timeline: 'Fases'
+          timeline: 'Fases',
+          editingNote: 'El profesional que use este servicio tendrá, además, la posibilidad de poder editar tanto su margen como cada partida individualmente si lo desea.'
         }
       },
       renderPresupuesto: {
@@ -1730,11 +1795,21 @@ export const translations = {
         }
       },
       leadQualifier: {
-        title: 'Calificador de Leads IA',
-        description: 'Chat estilo WhatsApp que califica leads de reformas usando IA. Puntuación y asignación de tier en tiempo real.',
+        title: 'Solo habla con clientes que van en serio',
+        description: 'Nuestro asistente filtra curiosos, recoge datos y te envía solo leads listos para cerrar.',
+        bullets: [
+          'Atiende 24/7',
+          'Califica automáticamente',
+          'Ahorra llamadas inútiles',
+          'Prioriza los mejores'
+        ],
+        cta: 'Ver demo en vivo',
         ui: {
-          pageTitle: 'Asistente de Proyectos',
-          pageSubtitle: 'Demo de chat conversacional para calificación de leads de reforma',
+          pageTitle: 'Tu comercial automático 24/7',
+          pageSubtitle: 'Mientras trabajas en obra, este asistente: responde clientes, recoge medidas, pide presupuesto, filtra curiosos y te envía solo los buenos',
+          painPoint: 'Cada llamada inútil te cuesta tiempo y dinero. Este asistente te envía solo clientes que van en serio.',
+          ctaPrimary: 'Pruébalo como si fueras un cliente',
+          ctaSecondary: 'Instalar en mi web',
           configBtn: 'Configuración',
           chatTitle: 'Tu Empresa de Reforma',
           typing: 'Escribiendo...',
@@ -1764,9 +1839,9 @@ export const translations = {
         },
         ratings: {
           excellent: 'Excelente',
-          excellentDesc: 'Lead de alta calidad',
+          excellentDesc: 'Cliente serio y con presupuesto alto',
           good: 'Bueno',
-          goodDesc: 'Buen potencial',
+          goodDesc: 'Cliente con buen potencial',
           regular: 'Regular',
           regularDesc: 'Requiere seguimiento',
           poor: 'Bajo',
@@ -1775,11 +1850,26 @@ export const translations = {
           badDesc: 'No encaja',
         },
         summary: {
-          title: 'Resumen del Lead',
-          emptyMessage: 'Una vez acabada la conversación con el cliente, se enviará a la(s) persona(s) responsable(s) para que puedan gestionar y priorizar el lead debidamente.',
+          title: 'Cuando acabe la conversación aquí verás:',
+          description: '',
+          bullets: [
+            'Datos del cliente',
+            'Presupuesto estimado',
+            'Calidad del lead',
+            'Prioridad de contacto'
+          ],
+          emptyMessage: 'Todo listo para decidir a quién llamar primero.',
           waiting: 'Esperando información...',
-          leadRating: 'Clasificación del Lead',
-          score: 'Puntuación',
+          readyToCall: 'Lead listo para llamar',
+          whyGoodLead: '¿Por qué es buen lead?',
+          contact: 'Contacto',
+          callNow: 'Llamar ahora',
+          projectDetails: 'Detalles del proyecto',
+          seeMore: 'ver más',
+          seeLess: 'ver menos',
+          estimatedBudget: 'Presupuesto estimado',
+          thisCouldBe: 'Esto puede ser una obra grande',
+          ctaQuestion: '¿Quieres que tu web te entregue clientes así automáticamente?',
           approxBudget: 'Presupuesto aproximado',
           evaluationFactors: 'Factores de Evaluación',
           projectData: 'Datos del Proyecto',
@@ -1952,7 +2042,7 @@ export const translations = {
         finalizing: 'Finalizando detalles...',
         finalizingMessage: 'Esto puede tardar unos momentos...'
       },
-      openDemo: 'Abrir Demo',
+      openDemo: 'Probar Solución',
       cancel: 'Cancelar',
       projectTypes: {
         baño: 'Baño',
@@ -1983,7 +2073,7 @@ export const translations = {
       contact: 'Contacte',
       hireMe: 'Contracta\'m',
       aiLab: 'Lab d\'IA',
-      demos: 'Demos'
+      solutions: 'Solucions'
     },
     
     // Home Page
@@ -2602,14 +2692,32 @@ export const translations = {
     },
 
     // Demos Page
-    demos: {
-      title: 'Demos',
-      subtitle: 'Demos pràctiques per a empreses: des de captura de leads fins a esborranys amb IA.',
+    solutions: {
+      title: 'Automatitza la teva oficina i guanya més obres sense contractar a ningú',
+      subtitle: 'Pressupostos en 30 segons i clients filtrats automàticament. Menys temps perdut. Més diners.',
       presupuestoOrientativo: {
-        title: 'Pressupost Orientatiu',
-        description: 'Completa el formulari amb els detalls del teu projecte i obtén un pressupost professional detallat amb partides, supòsits i exclusiones.',
-        pageTitle: 'Pressupost Orientatiu',
-        pageSubtitle: 'Obtén un pressupost professional detallat per al teu projecte de reforma en segons.',
+        title: 'Pressupostos en 30 segons',
+        description: 'Genera pressupostos professionals des del mòbil, davant del client. Sense Excel. Sense oficina. Sense hores perdudes.',
+        bullets: [
+          'Llestos en segons',
+          'Editables amb el teu marge',
+          'Exportables en PDF',
+          'Des de obra o cotxe'
+        ],
+        cta: 'Provar ara gratuïtament',
+        pageTitle: 'Pressupostos professionals en 30 segons',
+        pageSubtitle: 'Escriu les dades bàsiques i genera un pressupost detallat automàticament. Estalvia hores d\'oficina i respon al client a l\'instant.',
+        bullets: {
+          editable: 'Editable',
+          addMargin: 'Afegeix el teu marge',
+          exportPdf: 'Exporta PDF',
+          readyWhatsApp: 'Llest per enviar per WhatsApp'
+        },
+        ctaAfterResult: {
+          question: 'T\'agradaria fer això en 30 segons per a cada client?',
+          createAccount: 'Crear compte gratuït',
+          installCompany: 'Instal·lar a la meva empresa'
+        },
         form: {
           projectType: 'Tipus de Projecte',
           sqm: 'm² (aprox.)',
@@ -2617,7 +2725,7 @@ export const translations = {
           targetBudget: 'Pressupost Objectiu (€)',
           notes: 'Detalls Addicionals',
           notesPlaceholder: 'Acabats desitjats, estat actual, requisits especials... Com més detalls proporcionis, més exacte serà el pressupost.',
-          generate: 'Generar Pressupost',
+          generate: 'Crear pressupost ara',
           generating: 'Generant...',
           projectTypeRequired: 'Tipus de projecte obligatori.',
           sqmPlaceholder: 'Ex. 45',
@@ -2645,7 +2753,8 @@ export const translations = {
           labor: 'Mà d\'obra',
           other: 'Altres',
           estimatedDuration: 'Durada estimada',
-          timeline: 'Fases'
+          timeline: 'Fases',
+          editingNote: 'El professional que utilitzi aquest servei tindrà, a més, la possibilitat de poder editar tant el seu marge com cada partida individualment si ho desitja.'
         }
       },
       renderPresupuesto: {
@@ -2686,11 +2795,21 @@ export const translations = {
         }
       },
       leadQualifier: {
-        title: 'Qualificador de Leads IA',
-        description: 'Xat estil WhatsApp que qualifica leads de reformes usant IA. Puntuació i assignació de tier en temps real.',
+        title: 'Només parla amb clients que van en seriós',
+        description: 'El nostre assistent filtra curiosos, recull dades i t\'envia només leads llestos per tancar.',
+        bullets: [
+          'Atén 24/7',
+          'Qualifica automàticament',
+          'Estalvia trucades inútils',
+          'Prioritza els millors'
+        ],
+        cta: 'Veure demo en viu',
         ui: {
-          pageTitle: 'Assistent de Projectes',
-          pageSubtitle: 'Demo de xat conversacional per a qualificació de leads de reforma',
+          pageTitle: 'El teu comercial automàtic 24/7',
+          pageSubtitle: 'Mentre treballes a l\'obra, aquest assistent: respon clients, recull mesures, demana pressupost, filtra curiosos i t\'envia només els bons',
+          painPoint: 'Cada trucada inútil et costa temps i diners. Aquest assistent t\'envia només clients que van en seriós.',
+          ctaPrimary: 'Prova-ho com si fossis un client',
+          ctaSecondary: 'Instal·lar al meu web',
           configBtn: 'Configuració',
           chatTitle: 'La Teva Empresa de Reforma',
           typing: 'Escrivint...',
@@ -2720,9 +2839,9 @@ export const translations = {
         },
         ratings: {
           excellent: 'Excel·lent',
-          excellentDesc: 'Lead d\'alta qualitat',
+          excellentDesc: 'Client seriós i amb pressupost alt',
           good: 'Bo',
-          goodDesc: 'Bon potencial',
+          goodDesc: 'Client amb bon potencial',
           regular: 'Regular',
           regularDesc: 'Requereix seguiment',
           poor: 'Baix',
@@ -2731,9 +2850,26 @@ export const translations = {
           badDesc: 'No encaixa',
         },
         summary: {
-          title: 'Resum del Lead',
-          emptyMessage: 'Un cop acabada la conversa amb el client, s\'enviarà a la(s) persona(s) responsable(s) perquè puguin gestionar i prioritzar el lead degudament.',
+          title: 'Quan acabi la conversa aquí veuràs:',
+          description: '',
+          bullets: [
+            'Dades del client',
+            'Pressupost estimat',
+            'Qualitat del lead',
+            'Prioritat de contacte'
+          ],
+          emptyMessage: 'Tot llest per decidir a qui trucar primer.',
           waiting: 'Esperant informació...',
+          readyToCall: 'Lead llest per trucar',
+          whyGoodLead: 'Per què és un bon lead?',
+          contact: 'Contacte',
+          callNow: 'Trucar ara',
+          projectDetails: 'Detalls del projecte',
+          seeMore: 'veure més',
+          seeLess: 'veure menys',
+          estimatedBudget: 'Pressupost estimat',
+          thisCouldBe: 'Això pot ser una obra gran',
+          ctaQuestion: 'Vols que el teu web et lliuri clients així automàticament?',
           leadRating: 'Classificació del Lead',
           score: 'Puntuació',
           approxBudget: 'Pressupost aproximat',
@@ -2908,7 +3044,7 @@ export const translations = {
         finalizing: 'Finalitzant detalls...',
         finalizingMessage: 'Això pot trigar uns moments...'
       },
-      openDemo: 'Obrir Demo',
+      openDemo: 'Provar Solució',
       cancel: 'Cancel·lar',
       projectTypes: {
         baño: 'Bany',

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { Send, RotateCcw, AlertCircle, CheckCircle2, Sparkles, Settings, ChevronDown } from 'lucide-react'
 import ChatBubble from './components/ChatBubble'
 import TypingIndicator from './components/TypingIndicator'
@@ -11,7 +12,7 @@ import { useLanguage } from '../../../hooks/useLanguage'
 import { translations } from '../../../data/translations'
 
 // Mensaje de bienvenida del chat siempre en español al cargar
-const WELCOME_MESSAGE_ES = translations?.es?.demos?.leadQualifier?.ui?.welcomeMessage ?? '¡Hola! Soy el asistente de proyectos. Estoy aquí para ayudarte a definir tu reforma y resolver cualquier duda. ¿Qué tipo de proyecto tienes en mente?'
+const WELCOME_MESSAGE_ES = translations?.es?.solutions?.leadQualifier?.ui?.welcomeMessage ?? '¡Hola! Soy el asistente de proyectos. Estoy aquí para ayudarte a definir tu reforma y resolver cualquier duda. ¿Qué tipo de proyecto tienes en mente?'
 
 export default function LeadQualifier() {
   const { t, language } = useLanguage()
@@ -204,13 +205,15 @@ export default function LeadQualifier() {
           className="mb-6"
         >
           <div className="flex items-center justify-between mb-2">
-            <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-              <Sparkles className="h-6 w-6 text-primary-400" />
-              {t('demos.leadQualifier.ui.pageTitle')}
+            <h1 className="text-2xl font-bold text-white">
+              {t('solutions.leadQualifier.ui.pageTitle')}
             </h1>
           </div>
-          <p className="text-gray-400 text-sm">
-            {t('demos.leadQualifier.ui.pageSubtitle')}
+          <p className="text-amber-400 text-sm mb-3">
+            {t('solutions.leadQualifier.ui.pageSubtitle')}
+          </p>
+          <p className="text-gray-400 text-sm mb-4">
+            {t('solutions.leadQualifier.ui.painPoint')}
           </p>
         </motion.div>
 
@@ -230,16 +233,16 @@ export default function LeadQualifier() {
                     <Sparkles className="h-5 w-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white">{t('demos.leadQualifier.ui.chatTitle')}</h3>
+                    <h3 className="font-semibold text-white">{t('solutions.leadQualifier.ui.chatTitle')}</h3>
                     <p className="text-xs text-white/70">
-                      {isLoading ? t('demos.leadQualifier.ui.typing') : t('demos.leadQualifier.ui.online')}
+                      {isLoading ? t('solutions.leadQualifier.ui.typing') : t('solutions.leadQualifier.ui.online')}
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={handleReset}
                   className="p-2 rounded-full hover:bg-white/10 transition-colors"
-                  title={t('demos.leadQualifier.ui.resetChat')}
+                  title={t('solutions.leadQualifier.ui.resetChat')}
                 >
                   <RotateCcw className="h-5 w-5 text-white" />
                 </button>
@@ -274,7 +277,7 @@ export default function LeadQualifier() {
               {lastCooldown > 0 && (
                 <div className="px-4 py-2 bg-amber-500/10 border-t border-amber-500/20">
                   <p className="text-sm text-amber-400">
-                    {t('demos.leadQualifier.ui.cooldownWait').replace('{seconds}', Math.ceil(lastCooldown / 1000))}
+                    {t('solutions.leadQualifier.ui.cooldownWait').replace('{seconds}', Math.ceil(lastCooldown / 1000))}
                   </p>
                 </div>
               )}
@@ -285,13 +288,13 @@ export default function LeadQualifier() {
                   <div className="flex items-center justify-between">
                     <p className="text-sm text-gray-400 flex items-center gap-2">
                       <CheckCircle2 className="h-4 w-4 text-green-400" />
-                      {t('demos.leadQualifier.ui.conversationComplete')}
+                      {t('solutions.leadQualifier.ui.conversationComplete')}
                     </p>
                     <button
                       onClick={handleReset}
                       className="px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium transition-colors"
                     >
-                      {t('demos.leadQualifier.ui.newConversation')}
+                      {t('solutions.leadQualifier.ui.newConversation')}
                     </button>
                   </div>
                 ) : (
@@ -301,7 +304,7 @@ export default function LeadQualifier() {
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       onKeyDown={handleKeyDown}
-                      placeholder={t('demos.leadQualifier.ui.placeholder')}
+                      placeholder={t('solutions.leadQualifier.ui.placeholder')}
                       rows={1}
                       className="flex-1 resize-none rounded-xl border border-gray-600 bg-gray-700 text-white placeholder-gray-400 px-4 py-3 text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       style={{ maxHeight: '120px' }}
@@ -335,7 +338,7 @@ export default function LeadQualifier() {
               >
                 <span className="flex items-center gap-2 text-sm font-semibold text-white">
                   <Settings className="h-4 w-4 text-primary-400" />
-                  {t('demos.leadQualifier.ui.configBtn')}
+                  {t('solutions.leadQualifier.ui.configBtn')}
                 </span>
                 <ChevronDown className="h-4 w-4 text-gray-400" />
               </button>

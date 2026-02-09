@@ -29,11 +29,11 @@ export default function RenderPresupuesto() {
   // Validar imagen para BuildApp: tamaño ≤10MB, tipo jpeg/png/webp, dimensión máx 8192px
   const validateRenderImage = (file) => {
     if (file.size > MAX_IMAGE_SIZE) {
-      return t('demos.renderPresupuesto.upload.imageTooLarge').replace('{size}', MAX_IMAGE_SIZE / 1024 / 1024)
+      return t('solutions.renderPresupuesto.upload.imageTooLarge').replace('{size}', MAX_IMAGE_SIZE / 1024 / 1024)
     }
     const type = (file.type || '').toLowerCase()
     if (!ALLOWED_IMAGE_TYPES.includes(type)) {
-      return t('demos.renderPresupuesto.upload.invalidFormat')
+      return t('solutions.renderPresupuesto.upload.invalidFormat')
     }
     return null
   }
@@ -45,11 +45,11 @@ export default function RenderPresupuesto() {
       img.onload = () => {
         URL.revokeObjectURL(url)
         const ok = img.naturalWidth <= MAX_IMAGE_DIMENSION && img.naturalHeight <= MAX_IMAGE_DIMENSION
-        resolve(ok ? null : t('demos.renderPresupuesto.upload.imageTooBig').replace('{size}', MAX_IMAGE_DIMENSION))
+        resolve(ok ? null : t('solutions.renderPresupuesto.upload.imageTooBig').replace('{size}', MAX_IMAGE_DIMENSION))
       }
       img.onerror = () => {
         URL.revokeObjectURL(url)
-        resolve(t('demos.renderPresupuesto.upload.imageReadError'))
+        resolve(t('solutions.renderPresupuesto.upload.imageReadError'))
       }
       img.src = url
     })
@@ -84,7 +84,7 @@ export default function RenderPresupuesto() {
     
     if (!renderImageDataUrl || !renderPrompt.trim()) {
       console.error('❌ [DEBUG] Validation failed - missing image or prompt')
-      setRenderError(t('demos.renderPresupuesto.upload.imageAndPromptRequired'))
+      setRenderError(t('solutions.renderPresupuesto.upload.imageAndPromptRequired'))
       return
     }
     
@@ -197,7 +197,7 @@ export default function RenderPresupuesto() {
         message: err.message,
         stack: err.stack,
       })
-      setRenderError(err.message || t('demos.renderPresupuesto.upload.errorGenerating'))
+      setRenderError(err.message || t('solutions.renderPresupuesto.upload.errorGenerating'))
     } finally {
       console.log('🏁 [DEBUG] Finally block - setting loading to false')
       setRenderLoading(false)
@@ -213,10 +213,10 @@ export default function RenderPresupuesto() {
           className="mb-8"
         >
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
-            {t('demos.renderPresupuesto.pageTitle')}
+            {t('solutions.renderPresupuesto.pageTitle')}
           </h1>
           <p className="mt-2 text-gray-600 dark:text-gray-300 text-sm sm:text-base">
-            {t('demos.renderPresupuesto.pageSubtitle')}
+            {t('solutions.renderPresupuesto.pageSubtitle')}
           </p>
         </motion.div>
 
@@ -241,27 +241,27 @@ export default function RenderPresupuesto() {
               className="inline-flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
               <ImagePlus className="h-4 w-4" />
-              {renderImageDataUrl ? t('demos.renderPresupuesto.upload.changeImage') : t('demos.renderPresupuesto.upload.selectImage')}
+              {renderImageDataUrl ? t('solutions.renderPresupuesto.upload.changeImage') : t('solutions.renderPresupuesto.upload.selectImage')}
             </button>
             {renderImageDataUrl && (
               <div className="flex-1 max-w-[200px] rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
-                <img src={renderImageDataUrl} alt={t('demos.renderPresupuesto.upload.previewAlt')} className="w-full h-auto object-cover max-h-32" />
+                <img src={renderImageDataUrl} alt={t('solutions.renderPresupuesto.upload.previewAlt')} className="w-full h-auto object-cover max-h-32" />
               </div>
             )}
           </div>
           <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
-            {t('demos.renderPresupuesto.upload.maxSize')}
+            {t('solutions.renderPresupuesto.upload.maxSize')}
           </p>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              {t('demos.renderPresupuesto.upload.promptLabel')}
+              {t('solutions.renderPresupuesto.upload.promptLabel')}
             </label>
             <textarea
               value={renderPrompt}
               onChange={(e) => { setRenderPrompt(e.target.value); setRenderError(null) }}
               rows={3}
               className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              placeholder={t('demos.renderPresupuesto.upload.promptPlaceholder')}
+              placeholder={t('solutions.renderPresupuesto.upload.promptPlaceholder')}
             />
           </div>
           {renderError && (
@@ -283,12 +283,12 @@ export default function RenderPresupuesto() {
             {renderLoading ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
-                {t('demos.renderPresupuesto.upload.generating')}
+                {t('solutions.renderPresupuesto.upload.generating')}
               </>
             ) : (
               <>
                 <ImagePlus className="h-4 w-4" />
-                {t('demos.renderPresupuesto.upload.generate')}
+                {t('solutions.renderPresupuesto.upload.generate')}
               </>
             )}
           </button>
@@ -302,7 +302,7 @@ export default function RenderPresupuesto() {
             className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/50 shadow-sm p-6"
           >
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              {t('demos.renderPresupuesto.result.budget')}
+              {t('solutions.renderPresupuesto.result.budget')}
             </h2>
             <div className="space-y-4">
               {renderResult.budget != null && (
@@ -328,12 +328,12 @@ export default function RenderPresupuesto() {
                   {renderResult.originalImageUrl && (
                     <div>
                       <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
-                        {t('demos.renderPresupuesto.result.originalImage')}
+                        {t('solutions.renderPresupuesto.result.originalImage')}
                       </h3>
                       <div className="relative rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 max-h-96 overflow-hidden">
                         <img
                           src={renderResult.originalImageUrl}
-                          alt={t('demos.renderPresupuesto.result.originalImageAlt')}
+                          alt={t('solutions.renderPresupuesto.result.originalImageAlt')}
                           className="w-full h-auto object-contain"
                           onError={(e) => {
                             console.error('❌ Error loading original image:', renderResult.originalImageUrl)
@@ -357,12 +357,12 @@ export default function RenderPresupuesto() {
                   {renderResult.editedImageUrl && (
                     <div>
                       <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
-                        {t('demos.renderPresupuesto.result.render')}
+                        {t('solutions.renderPresupuesto.result.render')}
                       </h3>
                       <div className="relative rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 max-h-96 overflow-hidden">
                         <img
                           src={renderResult.editedImageUrl}
-                          alt={t('demos.renderPresupuesto.result.renderAlt')}
+                          alt={t('solutions.renderPresupuesto.result.renderAlt')}
                           className="w-full h-auto object-contain"
                           onError={(e) => {
                             console.error('❌ Error loading edited image:', renderResult.editedImageUrl)
@@ -402,7 +402,7 @@ export default function RenderPresupuesto() {
             <div className="flex items-center justify-center gap-3">
               <Loader2 className="h-6 w-6 animate-spin text-primary-600" />
               <p className="text-gray-900 dark:text-white font-medium">
-                {t('demos.renderPresupuesto.upload.generating')}
+                {t('solutions.renderPresupuesto.upload.generating')}
               </p>
             </div>
           </div>

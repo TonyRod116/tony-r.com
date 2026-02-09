@@ -12,8 +12,8 @@ export default function Demos() {
     {
       id: 'presupuesto-orientativo',
       slug: 'presupuesto-orientativo',
-      title: t('demos.presupuestoOrientativo.title'),
-      description: t('demos.presupuestoOrientativo.description'),
+      title: t('solutions.presupuestoOrientativo.title'),
+      description: t('solutions.presupuestoOrientativo.description'),
       href: '/demos/presupuesto-orientativo',
       icon: FileText,
       bgImage: budgetImg,
@@ -21,8 +21,8 @@ export default function Demos() {
     {
       id: 'lead-qualifier',
       slug: 'lead-qualifier',
-      title: t('demos.leadQualifier.title'),
-      description: t('demos.leadQualifier.description'),
+      title: t('solutions.leadQualifier.title'),
+      description: t('solutions.leadQualifier.description'),
       href: '/demos/lead-qualifier',
       icon: MessageSquare,
       bgImage: leadImg,
@@ -41,10 +41,10 @@ export default function Demos() {
             className="text-center max-w-2xl mx-auto mb-12"
           >
             <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {t('demos.title')}
+              {t('solutions.title')}
             </h1>
             <p className="text-gray-600 dark:text-gray-300">
-              {t('demos.subtitle')}
+              {t('solutions.subtitle')}
             </p>
           </motion.div>
 
@@ -75,20 +75,39 @@ export default function Demos() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                      {demo.id === 'presupuesto-orientativo' ? (
-                        <>
-                          Presupuesto<br />
-                          orientativo
-                        </>
-                      ) : (
-                        demo.title
-                      )}
+                      {demo.title}
                     </h2>
                     <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
                       {demo.description}
                     </p>
+                    {(() => {
+                      const bulletsKey = demo.id === 'presupuesto-orientativo' 
+                        ? 'solutions.presupuestoOrientativo.bullets'
+                        : 'solutions.leadQualifier.bullets'
+                      const bullets = t(bulletsKey)
+                      const bulletsArray = Array.isArray(bullets) && bullets.length > 0 && typeof bullets[0] === 'string' ? bullets : []
+                      return bulletsArray.length > 0 ? (
+                        <ul className="mt-3 space-y-1.5">
+                          {bulletsArray.map((bullet, idx) => (
+                            <li key={idx} className="text-xs text-gray-600 dark:text-gray-300 flex items-start">
+                              <span className="mr-1.5 text-primary-600 dark:text-primary-400">•</span>
+                              <span>{bullet}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null
+                    })()}
                     <span className="mt-3 inline-flex items-center text-sm font-medium text-primary-600 dark:text-primary-400">
-                      {t('demos.openDemo')}
+                      {(() => {
+                        if (demo.id === 'presupuesto-orientativo') {
+                          const cta = t('solutions.presupuestoOrientativo.cta')
+                          return cta && cta !== 'solutions.presupuestoOrientativo.cta' ? cta : 'Probar ahora gratis'
+                        } else if (demo.id === 'lead-qualifier') {
+                          const cta = t('solutions.leadQualifier.cta')
+                          return cta && cta !== 'solutions.leadQualifier.cta' ? cta : 'Ver demo en vivo'
+                        }
+                        return t('solutions.openDemo')
+                      })()}
                       <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </span>
                   </div>

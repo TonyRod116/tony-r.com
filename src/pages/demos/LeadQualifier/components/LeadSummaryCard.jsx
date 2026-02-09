@@ -1,4 +1,6 @@
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   Target,
   MapPin,
@@ -10,8 +12,8 @@ import {
   Phone,
   Mail,
   AlertCircle,
-  TrendingUp,
-  Clock
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react'
 
 const LOCALE_MAP = { en: 'en-US', es: 'es-ES', ca: 'ca-ES' }
@@ -19,39 +21,34 @@ const LOCALE_MAP = { en: 'en-US', es: 'es-ES', ca: 'ca-ES' }
 function getClientRatings(t) {
   return {
     excellent: {
-      label: t('demos.leadQualifier.ratings.excellent'),
+      label: t('solutions.leadQualifier.ratings.excellent'),
       color: 'bg-green-500',
       textColor: 'text-green-400',
-      emoji: '\u{1F31F}',
-      description: t('demos.leadQualifier.ratings.excellentDesc'),
+      description: t('solutions.leadQualifier.ratings.excellentDesc'),
     },
     good: {
-      label: t('demos.leadQualifier.ratings.good'),
+      label: t('solutions.leadQualifier.ratings.good'),
       color: 'bg-emerald-500',
       textColor: 'text-emerald-400',
-      emoji: '\u2705',
-      description: t('demos.leadQualifier.ratings.goodDesc'),
+      description: t('solutions.leadQualifier.ratings.goodDesc'),
     },
     regular: {
-      label: t('demos.leadQualifier.ratings.regular'),
+      label: t('solutions.leadQualifier.ratings.regular'),
       color: 'bg-amber-500',
       textColor: 'text-amber-400',
-      emoji: '\u26A0\uFE0F',
-      description: t('demos.leadQualifier.ratings.regularDesc'),
+      description: t('solutions.leadQualifier.ratings.regularDesc'),
     },
     poor: {
-      label: t('demos.leadQualifier.ratings.poor'),
+      label: t('solutions.leadQualifier.ratings.poor'),
       color: 'bg-orange-500',
       textColor: 'text-orange-400',
-      emoji: '\uD83D\uDCC9',
-      description: t('demos.leadQualifier.ratings.poorDesc'),
+      description: t('solutions.leadQualifier.ratings.poorDesc'),
     },
     bad: {
-      label: t('demos.leadQualifier.ratings.bad'),
+      label: t('solutions.leadQualifier.ratings.bad'),
       color: 'bg-red-500',
       textColor: 'text-red-400',
-      emoji: '\u274C',
-      description: t('demos.leadQualifier.ratings.badDesc'),
+      description: t('solutions.leadQualifier.ratings.badDesc'),
     },
   }
 }
@@ -59,7 +56,7 @@ function getClientRatings(t) {
 function calculateClientRating(leadData, config, t, locale) {
   if (!leadData) return { rating: 'regular', score: 0, factors: [] }
   if (leadData.doNotContact) {
-    return { rating: 'bad', score: 0, factors: [{ text: t('demos.leadQualifier.factors.doNotContact'), positive: false }] }
+    return { rating: 'bad', score: 0, factors: [] }
   }
 
   let score = 50
@@ -89,24 +86,21 @@ function calculateClientRating(leadData, config, t, locale) {
     const minRequired = budgetMins[projectCategory]
     if (budget >= minRequired * 1.5) {
       score += 25
-      factors.push({ text: t('demos.leadQualifier.factors.budgetHigh'), positive: true })
+      factors.push({ text: t('solutions.leadQualifier.factors.budgetHigh'), positive: true })
     } else if (budget >= minRequired) {
       score += 15
-      factors.push({ text: t('demos.leadQualifier.factors.budgetAdequate'), positive: true })
+      factors.push({ text: t('solutions.leadQualifier.factors.budgetAdequate'), positive: true })
     } else if (budget >= minRequired * 0.7) {
       score += 5
-      factors.push({ text: t('demos.leadQualifier.factors.budgetTight'), positive: true })
-    } else {
-      score -= 25
-      factors.push({ text: t('demos.leadQualifier.factors.budgetLow').replace('{min}', minRequired.toLocaleString(locale) + '€'), positive: false })
+      factors.push({ text: t('solutions.leadQualifier.factors.budgetTight'), positive: true })
     }
   } else if (budget > 0) {
     if (budget >= 50000) {
       score += 20
-      factors.push({ text: t('demos.leadQualifier.factors.budgetHigh'), positive: true })
+      factors.push({ text: t('solutions.leadQualifier.factors.budgetHigh'), positive: true })
     } else if (budget >= 20000) {
       score += 10
-      factors.push({ text: t('demos.leadQualifier.factors.budgetMedium'), positive: true })
+      factors.push({ text: t('solutions.leadQualifier.factors.budgetMedium'), positive: true })
     }
   }
 
@@ -114,54 +108,48 @@ function calculateClientRating(leadData, config, t, locale) {
   const hasTimeline = timeline && timeline !== 'n/a' && timeline !== 'unknown'
   if (hasTimeline) {
     score += 5
-    factors.push({ text: t('demos.leadQualifier.factors.timelineDefined'), positive: true })
+    factors.push({ text: t('solutions.leadQualifier.factors.timelineDefined'), positive: true })
     if (timeline.includes('ya') || timeline.includes('inmediato') || timeline.includes('urgente') || timeline.includes('cuanto antes') || timeline.includes('asap') || timeline.includes('now') || timeline.includes('ara')) {
       score += 20
-      factors.push({ text: t('demos.leadQualifier.factors.wantsToStartNow'), positive: true })
+      factors.push({ text: t('solutions.leadQualifier.factors.wantsToStartNow'), positive: true })
     } else if (timeline.includes('mes') || timeline.includes('semana') || timeline.includes('week') || timeline.includes('month') || timeline.includes('setmana')) {
       score += 15
-      factors.push({ text: t('demos.leadQualifier.factors.shortTimeline'), positive: true })
-    } else if (timeline.includes('año') || timeline.includes('no sé') || timeline.includes('más adelante') || timeline.includes('year') || timeline.includes('later') || timeline.includes('any')) {
-      score -= 10
-      factors.push({ text: t('demos.leadQualifier.factors.noUrgency'), positive: false })
+      factors.push({ text: t('solutions.leadQualifier.factors.shortTimeline'), positive: true })
     }
-  } else {
-    score -= 10
-    factors.push({ text: t('demos.leadQualifier.factors.timelineNotIndicated'), positive: false })
   }
 
   if (projectCategory === 'integral') {
     score += 15
-    factors.push({ text: t('demos.leadQualifier.factors.fullRenovation'), positive: true })
+    factors.push({ text: t('solutions.leadQualifier.factors.fullRenovation'), positive: true })
   } else if (projectCategory === 'cocina') {
     score += 10
-    factors.push({ text: t('demos.leadQualifier.factors.kitchenRenovation'), positive: true })
+    factors.push({ text: t('solutions.leadQualifier.factors.kitchenRenovation'), positive: true })
   } else if (projectCategory === 'baño') {
     score += 5
-    factors.push({ text: t('demos.leadQualifier.factors.bathroomRenovation'), positive: true })
+    factors.push({ text: t('solutions.leadQualifier.factors.bathroomRenovation'), positive: true })
   }
 
   if (leadData.city && leadData.city !== 'n/a' && leadData.city !== 'unknown') {
     score += 10
-    factors.push({ text: t('demos.leadQualifier.factors.locationConfirmed'), positive: true })
+    factors.push({ text: t('solutions.leadQualifier.factors.locationConfirmed'), positive: true })
   }
 
   const hasRealValue = (v) => v != null && String(v).trim() !== '' && !['n/a', 'unknown'].includes(String(v).toLowerCase())
   const hasContact = hasRealValue(leadData.contactPhone) || hasRealValue(leadData.contactEmail)
   if (hasContact) {
     score += 15
-    factors.push({ text: t('demos.leadQualifier.factors.contactProvided'), positive: true })
+    factors.push({ text: t('solutions.leadQualifier.factors.contactProvided'), positive: true })
   }
 
   const bonusThreshold = config?.budgetBonusThreshold
   if (bonusThreshold && budget >= bonusThreshold) {
     score += 15
-    factors.push({ text: t('demos.leadQualifier.factors.budgetBonus').replace('{threshold}', bonusThreshold.toLocaleString(locale) + '€'), positive: true })
+    factors.push({ text: t('solutions.leadQualifier.factors.budgetBonus').replace('{threshold}', bonusThreshold.toLocaleString(locale) + '€'), positive: true })
   }
 
   if (leadData.hasDocs && leadData.hasDocs !== 'No' && leadData.hasDocs !== 'ninguno') {
     score += 5
-    factors.push({ text: t('demos.leadQualifier.factors.hasDocumentation'), positive: true })
+    factors.push({ text: t('solutions.leadQualifier.factors.hasDocumentation'), positive: true })
   }
 
   score = Math.max(0, Math.min(100, score))
@@ -173,10 +161,9 @@ function calculateClientRating(leadData, config, t, locale) {
   if (hasContact && hasCity) {
     if (bonusThreshold && (priceInfo.estimatedMin || 0) >= bonusThreshold) {
       rating = 'excellent'
-      factors.push({ text: t('demos.leadQualifier.factors.estimatedBudgetExcellent').replace('{threshold}', bonusThreshold.toLocaleString(locale) + '€'), positive: true })
+      factors.push({ text: t('solutions.leadQualifier.factors.estimatedBudgetExcellent').replace('{threshold}', bonusThreshold.toLocaleString(locale) + '€'), positive: true })
     } else {
       rating = 'regular'
-      if (bonusThreshold) factors.push({ text: t('demos.leadQualifier.factors.withContactExcellentIfBudget'), positive: false })
     }
   } else {
     if (score >= 85) rating = 'excellent'
@@ -186,7 +173,10 @@ function calculateClientRating(leadData, config, t, locale) {
     else rating = 'bad'
   }
 
-  return { rating, score, factors }
+  // Solo devolver factores positivos
+  const positiveFactors = factors.filter(f => f.positive)
+
+  return { rating, score, factors: positiveFactors }
 }
 
 function estimateProjectPrice(leadData, t, locale) {
@@ -204,7 +194,7 @@ function estimateProjectPrice(leadData, t, locale) {
       range: null,
       estimatedMin: budget,
       displayText: `${budget.toLocaleString(locale)} \u20AC`,
-      note: t('demos.leadQualifier.priceNotes.clientBudget'),
+      note: t('solutions.leadQualifier.priceNotes.clientBudget'),
     }
   }
 
@@ -244,10 +234,10 @@ function estimateProjectPrice(leadData, t, locale) {
         range: `${minEstimate.toLocaleString(locale)}\u20AC - ${maxEstimate.toLocaleString(locale)}\u20AC`,
         estimatedMin: minEstimate,
         displayText: `${minEstimate.toLocaleString(locale)}\u20AC - ${maxEstimate.toLocaleString(locale)}\u20AC`,
-        note: t('demos.leadQualifier.priceNotes.orientativeFor').replace('{count}', sqm).replace('{unit}', t('demos.leadQualifier.priceNotes.unitWindows')) + ' (Barcelona)',
+        note: t('solutions.leadQualifier.priceNotes.orientativeFor').replace('{count}', sqm).replace('{unit}', t('solutions.leadQualifier.priceNotes.unitWindows')) + ' (Barcelona)',
       }
     }
-    return { displayText: t('demos.leadQualifier.priceNotes.perWindow'), note: t('demos.leadQualifier.priceNotes.indicateWindowCount'), clientBudget: null, estimated: null, range: null, estimatedMin: 0 }
+    return { displayText: t('solutions.leadQualifier.priceNotes.perWindow'), note: t('solutions.leadQualifier.priceNotes.indicateWindowCount'), clientBudget: null, estimated: null, range: null, estimatedMin: 0 }
   } else if (projectType.includes('puertas') || projectType.includes('door') || projectType.includes('porta') || projectType.includes('portes')) {
     if (sqm > 0) {
       const minP = 400
@@ -260,12 +250,12 @@ function estimateProjectPrice(leadData, t, locale) {
         range: `${minEstimate.toLocaleString(locale)}\u20AC - ${maxEstimate.toLocaleString(locale)}\u20AC`,
         estimatedMin: minEstimate,
         displayText: `${minEstimate.toLocaleString(locale)}\u20AC - ${maxEstimate.toLocaleString(locale)}\u20AC`,
-        note: t('demos.leadQualifier.priceNotes.orientativeFor').replace('{count}', sqm).replace('{unit}', t('demos.leadQualifier.priceNotes.unitDoors')) + ' (Barcelona)',
+        note: t('solutions.leadQualifier.priceNotes.orientativeFor').replace('{count}', sqm).replace('{unit}', t('solutions.leadQualifier.priceNotes.unitDoors')) + ' (Barcelona)',
       }
     }
-    return { displayText: t('demos.leadQualifier.priceNotes.perDoor'), note: t('demos.leadQualifier.priceNotes.indicateDoorCount'), clientBudget: null, estimated: null, range: null, estimatedMin: 0 }
+    return { displayText: t('solutions.leadQualifier.priceNotes.perDoor'), note: t('solutions.leadQualifier.priceNotes.indicateDoorCount'), clientBudget: null, estimated: null, range: null, estimatedMin: 0 }
   } else if (projectType.includes('otro') || projectType.includes('other') || projectType.includes('altre')) {
-    return { displayText: t('demos.leadQualifier.priceNotes.otherConsult'), note: t('demos.leadQualifier.priceNotes.otherWork'), clientBudget: null, estimated: null, range: null, estimatedMin: 0 }
+    return { displayText: t('solutions.leadQualifier.priceNotes.otherConsult'), note: t('solutions.leadQualifier.priceNotes.otherWork'), clientBudget: null, estimated: null, range: null, estimatedMin: 0 }
   }
 
   if (sqm > 0 && pricePerSqmMin > 0) {
@@ -277,7 +267,7 @@ function estimateProjectPrice(leadData, t, locale) {
       range: `${minEstimate.toLocaleString(locale)}\u20AC - ${maxEstimate.toLocaleString(locale)}\u20AC`,
       estimatedMin: minEstimate,
       displayText: `${minEstimate.toLocaleString(locale)}\u20AC - ${maxEstimate.toLocaleString(locale)}\u20AC`,
-      note: t('demos.leadQualifier.priceNotes.orientativeSqm').replace('{count}', sqm),
+      note: t('solutions.leadQualifier.priceNotes.orientativeSqm').replace('{count}', sqm),
     }
   }
 
@@ -288,19 +278,17 @@ function estimateProjectPrice(leadData, t, locale) {
       range: `${minPrice.toLocaleString(locale)}\u20AC - ${maxPrice.toLocaleString(locale)}\u20AC`,
       estimatedMin: minPrice,
       displayText: `${minPrice.toLocaleString(locale)}\u20AC - ${maxPrice.toLocaleString(locale)}\u20AC`,
-      note: t('demos.leadQualifier.priceNotes.typicalRange'),
+      note: t('solutions.leadQualifier.priceNotes.typicalRange'),
     }
   }
 
-  return { displayText: '\u2014', note: t('demos.leadQualifier.priceNotes.indicateType'), clientBudget: null, estimated: null, range: null, estimatedMin: 0 }
+  return { displayText: '\u2014', note: t('solutions.leadQualifier.priceNotes.indicateType'), clientBudget: null, estimated: null, range: null, estimatedMin: 0 }
 }
-
-const NO_ANSWER_DISPLAY = 'N/A'
 
 function FieldRow({ icon: Icon, label, value, highlight, valueClass }) {
   if (value === undefined || value === null || value === '') return null
   const isNoAnswer = value === 'n/a' || value === 'unknown'
-  const displayValue = isNoAnswer ? NO_ANSWER_DISPLAY : value
+  const displayValue = isNoAnswer ? 'N/A' : value
 
   return (
     <div className="flex items-center gap-3 py-2">
@@ -314,6 +302,7 @@ function FieldRow({ icon: Icon, label, value, highlight, valueClass }) {
 }
 
 export default function LeadSummaryCard({ leadData, config = {}, t, language = 'es' }) {
+  const [showDetails, setShowDetails] = useState(false)
   const locale = LOCALE_MAP[language] || 'es-ES'
   const clientRatings = getClientRatings(t)
   const { rating, score, factors } = calculateClientRating(leadData, config, t, locale)
@@ -321,19 +310,29 @@ export default function LeadSummaryCard({ leadData, config = {}, t, language = '
   const priceEstimate = estimateProjectPrice(leadData, t, locale)
 
   if (!leadData || Object.keys(leadData).length === 0) {
+    const bullets = t('solutions.leadQualifier.summary.bullets') || []
     return (
       <motion.div
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         className="rounded-2xl border border-gray-700 bg-gray-800/50 p-6"
       >
-        <h3 className="text-lg font-semibold text-white mb-4">{t('demos.leadQualifier.summary.title')}</h3>
-        <p className="text-gray-400 text-sm">
-          {t('demos.leadQualifier.summary.emptyMessage')}
-        </p>
-        <div className="mt-4 p-4 rounded-lg bg-gray-700/50 border border-gray-600">
-          <p className="text-xs text-gray-500 text-center">
-            {t('demos.leadQualifier.summary.waiting')}
+        <h3 className="text-lg font-semibold text-white mb-4">{t('solutions.leadQualifier.summary.title')}</h3>
+        {Array.isArray(bullets) && bullets.length > 0 && (
+          <div className="mb-4">
+            <ul className="space-y-2">
+              {bullets.map((bullet, index) => (
+                <li key={index} className="flex items-start gap-2 text-sm text-gray-300">
+                  <span className="text-green-400 mt-0.5 font-bold">✓</span>
+                  <span>{bullet}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <div className="mt-4 p-4 rounded-lg bg-primary-500/10 border border-primary-500/20">
+          <p className="text-sm text-primary-300 text-center leading-relaxed">
+            {t('solutions.leadQualifier.summary.emptyMessage')}
           </p>
         </div>
       </motion.div>
@@ -341,9 +340,14 @@ export default function LeadSummaryCard({ leadData, config = {}, t, language = '
   }
 
   const booleanDisplay = (value) => {
-    if (typeof value === 'boolean') return value ? t('demos.leadQualifier.summary.yes') : t('demos.leadQualifier.summary.no')
+    if (typeof value === 'boolean') return value ? t('solutions.leadQualifier.summary.yes') : t('solutions.leadQualifier.summary.no')
     return value
   }
+
+  const hasRealValue = (v) => v != null && String(v).trim() !== '' && !['n/a', 'unknown'].includes(String(v).toLowerCase())
+  const hasContact = hasRealValue(leadData.contactPhone) || hasRealValue(leadData.contactEmail)
+  const contactPhone = leadData.contactPhone || ''
+  const contactName = leadData.contactName || ''
 
   return (
     <motion.div
@@ -351,195 +355,189 @@ export default function LeadSummaryCard({ leadData, config = {}, t, language = '
       animate={{ opacity: 1, x: 0 }}
       className="rounded-2xl border border-gray-700 bg-gray-800/50 overflow-hidden"
     >
-      {/* Rating Header */}
-      <div className={`${ratingInfo.color} px-6 py-4`}>
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-white/80 text-xs font-medium uppercase tracking-wider">
-              {t('demos.leadQualifier.summary.leadRating')}
-            </p>
-            <p className="text-white text-xl font-bold flex items-center gap-2">
-              <span>{ratingInfo.emoji}</span>
-              {ratingInfo.label}
-            </p>
-            <p className="text-white/70 text-xs mt-1">{ratingInfo.description}</p>
-          </div>
-          <div className="text-right">
-            <p className="text-white/80 text-xs">{t('demos.leadQualifier.summary.score')}</p>
-            <p className="text-white text-3xl font-bold">{score}</p>
-          </div>
-        </div>
-
-        {/* Progress bar */}
-        <div className="mt-3 h-2 bg-white/20 rounded-full overflow-hidden">
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${score}%` }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
-            className="h-full bg-white rounded-full"
-          />
-        </div>
+      {/* Header grande - Lead listo para llamar */}
+      <div className={`${ratingInfo.color} px-6 py-5`}>
+        <p className="text-white/90 text-xs font-medium uppercase tracking-wider mb-1">
+          {t('solutions.leadQualifier.summary.readyToCall')}
+        </p>
+        <p className="text-white text-2xl font-bold mb-1">
+          {ratingInfo.label}
+        </p>
+        <p className="text-white/90 text-sm">{ratingInfo.description}</p>
       </div>
 
-      {/* Price estimate */}
-      <div className="px-6 py-4 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border-b border-gray-700">
-        <div className="flex items-center gap-2 mb-2">
-          <Banknote className="h-5 w-5 text-amber-400" />
-          <span className="text-sm font-semibold text-amber-400 uppercase tracking-wider">
-            {t('demos.leadQualifier.summary.approxBudget')}
-          </span>
-        </div>
-        <p className="text-xl font-bold text-white">{priceEstimate.displayText}</p>
-        {priceEstimate.note ? <p className="text-xs text-gray-400 mt-1">{priceEstimate.note}</p> : null}
+      {/* BLOQUE 1: Presupuesto estimado (MUY GRANDE) */}
+      <div className="px-6 py-6 bg-gradient-to-br from-amber-500/20 to-orange-500/20 border-b border-gray-700">
+        <p className="text-sm font-semibold text-amber-400 uppercase tracking-wider mb-2">
+          {t('solutions.leadQualifier.summary.estimatedBudget')}
+        </p>
+        <p className="text-4xl font-bold text-white mb-2">{priceEstimate.displayText}</p>
+        {priceEstimate.estimatedMin && priceEstimate.estimatedMin >= 50000 && (
+          <p className="text-sm text-gray-300">{t('solutions.leadQualifier.summary.thisCouldBe')}</p>
+        )}
       </div>
 
-      {/* Factors */}
+      {/* BLOQUE 2: ¿Por qué es buen lead? (solo positivos) */}
       {factors.length > 0 && (
         <div className="px-6 py-4 border-b border-gray-700">
-          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-            <TrendingUp className="h-4 w-4" />
-            {t('demos.leadQualifier.summary.evaluationFactors')}
+          <h3 className="text-sm font-semibold text-white mb-3">
+            {t('solutions.leadQualifier.summary.whyGoodLead')}
           </h3>
-          <div className="flex flex-wrap gap-2">
+          <div className="space-y-2">
             {factors.map((factor, i) => (
-              <span
-                key={i}
-                className={`text-xs px-2 py-1 rounded-full ${
-                  factor.positive
-                    ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                    : 'bg-red-500/20 text-red-400 border border-red-500/30'
-                }`}
-              >
-                {factor.positive ? '\u2713' : '\u2717'} {factor.text}
-              </span>
+              <div key={i} className="flex items-start gap-2 text-sm text-gray-300">
+                <span className="text-green-400 mt-0.5 font-bold">✓</span>
+                <span>{factor.text}</span>
+              </div>
             ))}
           </div>
         </div>
       )}
 
-      {/* Fields */}
-      <div className="p-6">
-        <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
-          {t('demos.leadQualifier.summary.projectData')}
-        </h3>
-
-        <div className="divide-y divide-gray-700/50">
-          <FieldRow
-            icon={Target}
-            label={t('demos.leadQualifier.summary.type')}
-            value={leadData.projectType}
-            highlight
-          />
-          <FieldRow
-            icon={MapPin}
-            label={t('demos.leadQualifier.summary.location')}
-            value={leadData.city}
-            highlight
-          />
-          {leadData.postalCode && (
-            <FieldRow
-              icon={MapPin}
-              label={t('demos.leadQualifier.summary.postalCode')}
-              value={leadData.postalCode}
-            />
+      {/* BLOQUE 3: Contacto con botón principal */}
+      {hasContact && (
+        <div className="px-6 py-5 border-b border-gray-700">
+          <h3 className="text-sm font-semibold text-white mb-3">
+            {t('solutions.leadQualifier.summary.contact')}
+          </h3>
+          {contactName && (
+            <div className="flex items-center gap-2 mb-2">
+              <User className="h-4 w-4 text-gray-400" />
+              <span className="text-white font-medium">{contactName}</span>
+            </div>
           )}
-          {(() => {
-            const pt = (leadData.projectType || '').toLowerCase()
-            const sqmVal = leadData.sqm != null && leadData.sqm !== ''
-            if (!sqmVal || typeof leadData.sqm !== 'number') {
-              return (
-                <FieldRow icon={Ruler} label={t('demos.leadQualifier.summary.scope')} value={leadData.sqm ?? null} />
-              )
-            }
-            const isWindows = pt.includes('ventanas') || pt.includes('window') || pt.includes('finestra')
-            const isDoors = pt.includes('puertas') || pt.includes('door') || pt.includes('porta')
-            const label = isWindows || isDoors ? t('demos.leadQualifier.summary.scope') : t('demos.leadQualifier.summary.surface')
-            const value = isWindows
-              ? `${leadData.sqm} ${t('demos.leadQualifier.summary.windows')}`
-              : isDoors
-                ? `${leadData.sqm} ${t('demos.leadQualifier.summary.doors')}`
-                : `${leadData.sqm} ${t('demos.leadQualifier.summary.sqm')}`
-            return <FieldRow icon={Ruler} label={label} value={value} />
-          })()}
-          <FieldRow
-            icon={Banknote}
-            label={t('demos.leadQualifier.summary.clientBudget')}
-            value={leadData.budget != null && leadData.budget !== '' ? (typeof leadData.budget === 'number' ? `${leadData.budget.toLocaleString(locale)} \u20AC` : leadData.budget) : (leadData.budgetRange || null)}
-            highlight
-            valueClass="text-green-400 font-semibold"
-          />
-          <FieldRow
-            icon={Banknote}
-            label={t('demos.leadQualifier.summary.estimatedBudget')}
-            value={priceEstimate.displayText}
-            valueClass="text-amber-400 font-medium"
-          />
-          <FieldRow
-            icon={Calendar}
-            label={t('demos.leadQualifier.summary.start')}
-            value={leadData.timeline}
-            valueClass={
-              leadData.timeline && (
-                leadData.timeline.toLowerCase().includes('ya') ||
-                leadData.timeline.toLowerCase().includes('urgente') ||
-                leadData.timeline.toLowerCase().includes('inmediato') ||
-                leadData.timeline.toLowerCase().includes('asap') ||
-                leadData.timeline.toLowerCase().includes('now') ||
-                leadData.timeline.toLowerCase().includes('ara')
-              ) ? 'text-green-400 font-semibold' : undefined
-            }
-          />
-          <FieldRow
-            icon={FileText}
-            label={t('demos.leadQualifier.summary.documentation')}
-            value={booleanDisplay(leadData.hasDocs)}
-          />
-          {leadData.constraints && (
-            <FieldRow
-              icon={AlertCircle}
-              label={t('demos.leadQualifier.summary.restrictions')}
-              value={leadData.constraints}
-            />
+          {contactPhone && (
+            <div className="flex items-center gap-2 mb-4">
+              <Phone className="h-4 w-4 text-gray-400" />
+              <span className="text-white">{contactPhone}</span>
+            </div>
+          )}
+          {contactPhone && (
+            <a
+              href={`tel:${contactPhone.replace(/\s/g, '')}`}
+              className="w-full block px-6 py-3 rounded-lg bg-primary-600 hover:bg-primary-700 text-white font-semibold transition-colors text-center"
+            >
+              {t('solutions.leadQualifier.summary.callNow')}
+            </a>
           )}
         </div>
+      )}
 
-        {/* Scope description */}
-        {leadData.scopeDescription && (
-          <>
-            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-3">
-              {t('demos.leadQualifier.summary.description')}
-            </h3>
-            <p className="text-sm text-gray-300 bg-gray-700/30 rounded-lg p-3">
-              {leadData.scopeDescription}
-            </p>
-          </>
-        )}
+      {/* BLOQUE 4: Detalles del proyecto (colapsable) */}
+      <div>
+        <button
+          onClick={() => setShowDetails(!showDetails)}
+          className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-700/30 transition-colors"
+        >
+          <span className="text-sm font-semibold text-gray-400">
+            {t('solutions.leadQualifier.summary.projectDetails')}
+          </span>
+          {showDetails ? (
+            <ChevronUp className="h-4 w-4 text-gray-400" />
+          ) : (
+            <ChevronDown className="h-4 w-4 text-gray-400" />
+          )}
+        </button>
 
-        {/* Contact section */}
-        {(leadData.contactName || leadData.contactPhone || leadData.contactEmail) && (
-          <>
-            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-3">
-              {t('demos.leadQualifier.summary.contact')}
-            </h3>
-            <div className="divide-y divide-gray-700/50">
-              <FieldRow
-                icon={User}
-                label={t('demos.leadQualifier.summary.name')}
-                value={leadData.contactName}
-              />
-              <FieldRow
-                icon={Phone}
-                label={t('demos.leadQualifier.summary.phone')}
-                value={leadData.contactPhone}
-              />
-              <FieldRow
-                icon={Mail}
-                label={t('demos.leadQualifier.summary.email')}
-                value={leadData.contactEmail}
-              />
-            </div>
-          </>
-        )}
+        <AnimatePresence>
+          {showDetails && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="overflow-hidden"
+            >
+              <div className="px-6 pb-6 space-y-4">
+                <div className="divide-y divide-gray-700/50">
+                  <FieldRow
+                    icon={Target}
+                    label={t('solutions.leadQualifier.summary.type')}
+                    value={leadData.projectType}
+                  />
+                  <FieldRow
+                    icon={MapPin}
+                    label={t('solutions.leadQualifier.summary.location')}
+                    value={leadData.city}
+                  />
+                  {leadData.postalCode && (
+                    <FieldRow
+                      icon={MapPin}
+                      label={t('solutions.leadQualifier.summary.postalCode')}
+                      value={leadData.postalCode}
+                    />
+                  )}
+                  {(() => {
+                    const pt = (leadData.projectType || '').toLowerCase()
+                    const sqmVal = leadData.sqm != null && leadData.sqm !== ''
+                    if (!sqmVal || typeof leadData.sqm !== 'number') {
+                      return (
+                        <FieldRow icon={Ruler} label={t('solutions.leadQualifier.summary.scope')} value={leadData.sqm ?? null} />
+                      )
+                    }
+                    const isWindows = pt.includes('ventanas') || pt.includes('window') || pt.includes('finestra')
+                    const isDoors = pt.includes('puertas') || pt.includes('door') || pt.includes('porta')
+                    const label = isWindows || isDoors ? t('solutions.leadQualifier.summary.scope') : t('solutions.leadQualifier.summary.surface')
+                    const value = isWindows
+                      ? `${leadData.sqm} ${t('solutions.leadQualifier.summary.windows')}`
+                      : isDoors
+                        ? `${leadData.sqm} ${t('solutions.leadQualifier.summary.doors')}`
+                        : `${leadData.sqm} ${t('solutions.leadQualifier.summary.sqm')}`
+                    return <FieldRow icon={Ruler} label={label} value={value} />
+                  })()}
+                  <FieldRow
+                    icon={Calendar}
+                    label={t('solutions.leadQualifier.summary.start')}
+                    value={leadData.timeline}
+                  />
+                  <FieldRow
+                    icon={FileText}
+                    label={t('solutions.leadQualifier.summary.documentation')}
+                    value={booleanDisplay(leadData.hasDocs)}
+                  />
+                  {leadData.constraints && (
+                    <FieldRow
+                      icon={AlertCircle}
+                      label={t('solutions.leadQualifier.summary.restrictions')}
+                      value={leadData.constraints}
+                    />
+                  )}
+                </div>
+
+                {leadData.scopeDescription && (
+                  <div>
+                    <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                      {t('solutions.leadQualifier.summary.description')}
+                    </h4>
+                    <p className="text-sm text-gray-300 bg-gray-700/30 rounded-lg p-3">
+                      {leadData.scopeDescription}
+                    </p>
+                  </div>
+                )}
+
+                {leadData.contactEmail && (
+                  <div className="flex items-center gap-2">
+                    <Mail className="h-4 w-4 text-gray-400" />
+                    <span className="text-sm text-gray-300">{leadData.contactEmail}</span>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* CTA final */}
+      <div className="px-6 py-4 border-t border-gray-700 bg-gray-800/30">
+        <p className="text-xs text-gray-400 mb-3 text-center">
+          {t('solutions.leadQualifier.summary.ctaQuestion')}
+        </p>
+        <Link
+          to="/contact"
+          className="w-full block px-6 py-3 rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-medium transition-colors text-sm text-center"
+        >
+          {t('solutions.leadQualifier.ui.ctaSecondary')}
+        </Link>
       </div>
     </motion.div>
   )

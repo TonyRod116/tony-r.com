@@ -2,25 +2,40 @@ import Lottie from 'lottie-react'
 import loadingAnimation from '../assets/loading-animation.json'
 
 export default function LoadingProgressBar({ stage, t }) {
+  const getMessage = (key, fallback) => {
+    if (!t || typeof t !== 'function') return fallback
+    try {
+      const translated = t(key)
+      // Si devuelve la clave exacta (no encontró traducción), usar fallback
+      if (!translated || translated === key) {
+        return fallback
+      }
+      return translated
+    } catch (error) {
+      console.warn('Translation error for', key, error)
+      return fallback
+    }
+  }
+
   const stages = [
     { 
-      message: t?.('demos.loading.analyzing') || 'Analizando tu solicitud...', 
+      message: getMessage('solutions.loading.analyzing', 'Analizando proyecto...'), 
       percentage: 10 
     },
     { 
-      message: t?.('demos.loading.processing') || 'Procesando información...', 
+      message: getMessage('solutions.loading.processing', 'Calculando materiales...'), 
       percentage: 25 
     },
     { 
-      message: t?.('demos.loading.generating') || 'Generando contenido...', 
+      message: getMessage('solutions.loading.generating', 'Generando partidas...'), 
       percentage: 40 
     },
     { 
-      message: t?.('demos.loading.preparing') || 'Preparando resultados...', 
+      message: getMessage('solutions.loading.preparing', 'Preparando presupuesto...'), 
       percentage: 55 
     },
     { 
-      message: t?.('demos.loading.finalizing') || 'Finalizando...', 
+      message: getMessage('solutions.loading.finalizing', 'Finalizando detalles...'), 
       percentage: 75 
     },
   ]
@@ -71,7 +86,7 @@ export default function LoadingProgressBar({ stage, t }) {
 
         {isFinalStage && (
           <p className="text-xs text-primary-600/60 dark:text-primary-400/60">
-            {t?.('demos.loading.finalizingMessage') || 'Esto puede tardar unos momentos...'}
+            {getMessage('solutions.loading.finalizingMessage', 'Esto puede tardar unos momentos...')}
           </p>
         )}
       </div>

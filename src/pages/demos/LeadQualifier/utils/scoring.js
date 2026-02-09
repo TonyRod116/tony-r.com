@@ -149,34 +149,34 @@ function generateReasons(state, disposition, t) {
   const reasons = []
 
   if (hasValue(state.project_type)) {
-    reasons.push(t('demos.leadQualifier.scoring.project').replace('{type}', state.project_type))
+    reasons.push(t('solutions.leadQualifier.scoring.project').replace('{type}', state.project_type))
   }
 
   if (hasValue(state.city)) {
-    reasons.push(t('demos.leadQualifier.scoring.location').replace('{city}', state.city))
+    reasons.push(t('solutions.leadQualifier.scoring.location').replace('{city}', state.city))
   }
 
   if (hasValue(state.budget_max)) {
-    reasons.push(t('demos.leadQualifier.scoring.budgetDefined'))
+    reasons.push(t('solutions.leadQualifier.scoring.budgetDefined'))
   } else if (state.budget_max != null && NO_ANSWER_VALUES.includes(String(state.budget_max).toLowerCase())) {
-    reasons.push(t('demos.leadQualifier.scoring.budgetNotIndicated'))
+    reasons.push(t('solutions.leadQualifier.scoring.budgetNotIndicated'))
   }
 
   if (hasValue(state.timeline_start)) {
-    reasons.push(t('demos.leadQualifier.scoring.timelineDefined').replace('{timeline}', state.timeline_start))
+    reasons.push(t('solutions.leadQualifier.scoring.timelineDefined').replace('{timeline}', state.timeline_start))
   } else {
-    reasons.push(t('demos.leadQualifier.scoring.timelineNotIndicated'))
+    reasons.push(t('solutions.leadQualifier.scoring.timelineNotIndicated'))
   }
 
   if (hasValue(state.contact_phone)) {
-    reasons.push(t('demos.leadQualifier.scoring.contactProvided'))
+    reasons.push(t('solutions.leadQualifier.scoring.contactProvided'))
   }
 
   // Add disposition-based reason
   if (disposition === 'hot') {
-    reasons.push(t('demos.leadQualifier.scoring.goodFit'))
+    reasons.push(t('solutions.leadQualifier.scoring.goodFit'))
   } else if (disposition === 'cold') {
-    reasons.push(t('demos.leadQualifier.scoring.requiresFollowUp'))
+    reasons.push(t('solutions.leadQualifier.scoring.requiresFollowUp'))
   }
 
   return reasons
@@ -209,7 +209,7 @@ export function calculateFallbackScore(messages, config, t) {
     if (conversation.includes(keyword)) {
       leadFields.projectType = type
       score += 10
-      reasons.push(t('demos.leadQualifier.scoring.projectTypeIdentified'))
+      reasons.push(t('solutions.leadQualifier.scoring.projectTypeIdentified'))
       break
     }
   }
@@ -220,7 +220,7 @@ export function calculateFallbackScore(messages, config, t) {
     if (conversation.includes(city.toLowerCase())) {
       leadFields.city = city
       score += 15
-      reasons.push(t('demos.leadQualifier.scoring.coveredCity'))
+      reasons.push(t('solutions.leadQualifier.scoring.coveredCity'))
       break
     }
   }
@@ -231,18 +231,18 @@ export function calculateFallbackScore(messages, config, t) {
     const budget = parseInt(budgetMatch[1], 10)
     leadFields.budget = budget
     score += 15
-    reasons.push(t('demos.leadQualifier.scoring.budgetMentioned'))
+    reasons.push(t('solutions.leadQualifier.scoring.budgetMentioned'))
   }
 
   // Check timeline
   if (conversation.match(/(ya|urgente|inmediato|cuanto antes|asap|now|immediately|ara|urgent)/i)) {
-    leadFields.timeline = t('demos.leadQualifier.scoring.immediateTimeline')
+    leadFields.timeline = t('solutions.leadQualifier.scoring.immediateTimeline')
     score += 15
-    reasons.push(t('demos.leadQualifier.scoring.highUrgency'))
+    reasons.push(t('solutions.leadQualifier.scoring.highUrgency'))
   } else if (conversation.match(/(mes|semana|pronto|month|week|soon|mes|setmana|aviat)/i)) {
-    leadFields.timeline = t('demos.leadQualifier.scoring.shortTermTimeline')
+    leadFields.timeline = t('solutions.leadQualifier.scoring.shortTermTimeline')
     score += 10
-    reasons.push(t('demos.leadQualifier.scoring.timelineMentioned'))
+    reasons.push(t('solutions.leadQualifier.scoring.timelineMentioned'))
   }
 
   // Check contact
@@ -250,7 +250,7 @@ export function calculateFallbackScore(messages, config, t) {
   if (phoneMatch) {
     leadFields.contactPhone = phoneMatch[1]
     score += 15
-    reasons.push(t('demos.leadQualifier.scoring.phoneProvided'))
+    reasons.push(t('solutions.leadQualifier.scoring.phoneProvided'))
   }
 
   const tier = score >= 80 ? 1 : score >= 60 ? 2 : score >= 40 ? 3 : score >= 20 ? 4 : 5

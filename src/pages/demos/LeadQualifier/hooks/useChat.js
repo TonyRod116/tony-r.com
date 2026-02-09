@@ -38,7 +38,7 @@ export function useChat(apiToken, config, t, language) {
         }
       }, 100)
 
-      throw new Error(t('demos.leadQualifier.errors.cooldown').replace('{seconds}', Math.ceil(remaining / 1000)))
+      throw new Error(t('solutions.leadQualifier.errors.cooldown').replace('{seconds}', Math.ceil(remaining / 1000)))
     }
 
     setIsLoading(true)
@@ -73,7 +73,7 @@ export function useChat(apiToken, config, t, language) {
         raw,
       }
     } catch (err) {
-      const errorMessage = err.message || t('demos.leadQualifier.errors.processingError')
+      const errorMessage = err.message || t('solutions.leadQualifier.errors.processingError')
       setError(errorMessage)
       throw err
     } finally {

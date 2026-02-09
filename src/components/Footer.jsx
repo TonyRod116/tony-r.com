@@ -26,24 +26,12 @@ export default function Footer() {
           {/* Quick Links */}
           <div className="space-y-4">
             <h3 className="font-semibold text-gray-900 dark:text-white">{t('footer.quickLinks')}</h3>
-            <nav className="space-y-2">
+            <nav className="grid grid-cols-2 gap-x-6 gap-y-2">
               <Link
                 to="/"
                 className="block text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 transition-colors"
               >
                 {t('nav.home')}
-              </Link>
-              <Link
-                to="/about"
-                className="block text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 transition-colors"
-              >
-                {t('nav.about')}
-              </Link>
-              <Link
-                to="/projects"
-                className="block text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 transition-colors"
-              >
-                {t('nav.projects')}
               </Link>
               <Link
                 to="/ai"
@@ -52,10 +40,22 @@ export default function Footer() {
                 {t('nav.aiLab')}
               </Link>
               <Link
+                to="/about"
+                className="block text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 transition-colors"
+              >
+                {t('nav.about')}
+              </Link>
+              <Link
                 to="/demos"
                 className="block text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 transition-colors"
               >
-                {t('nav.demos')}
+                {t('nav.solutions')}
+              </Link>
+              <Link
+                to="/projects"
+                className="block text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 transition-colors"
+              >
+                {t('nav.projects')}
               </Link>
               <Link
                 to="/resume"

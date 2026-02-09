@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import {
   Loader2,
   AlertCircle,
@@ -84,12 +85,12 @@ export default function PresupuestoOrientativo() {
   }
 
   const PROJECT_TYPES = [
-    { value: 'baño', label: t('demos.projectTypes.baño') },
-    { value: 'cocina', label: t('demos.projectTypes.cocina') },
-    { value: 'integral', label: t('demos.projectTypes.integral') },
-    { value: 'pintura', label: t('demos.projectTypes.pintura') },
-    { value: 'suelo', label: t('demos.projectTypes.suelo') },
-    { value: 'otros', label: t('demos.projectTypes.otros') },
+    { value: 'baño', label: t('solutions.projectTypes.baño') },
+    { value: 'cocina', label: t('solutions.projectTypes.cocina') },
+    { value: 'integral', label: t('solutions.projectTypes.integral') },
+    { value: 'pintura', label: t('solutions.projectTypes.pintura') },
+    { value: 'suelo', label: t('solutions.projectTypes.suelo') },
+    { value: 'otros', label: t('solutions.projectTypes.otros') },
   ]
   const [formData, setFormData] = useState({
     projectType: [],
@@ -126,11 +127,20 @@ export default function PresupuestoOrientativo() {
   }
 
   const generateBudget = async () => {
-    if (formData.projectType.length === 0) {
-      setError(t('demos.presupuestoOrientativo.form.projectTypeRequired'))
+    // Prevent multiple simultaneous requests
+    if (loading) {
       return
     }
 
+    if (formData.projectType.length === 0) {
+      setError(t('solutions.presupuestoOrientativo.form.projectTypeRequired'))
+      return
+    }
+
+    // Clean up previous request if any
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
     progressTimeoutsRef.current.forEach((timeout) => clearTimeout(timeout))
     progressTimeoutsRef.current = []
 
@@ -166,7 +176,7 @@ export default function PresupuestoOrientativo() {
       const body = {
         projectType: projectTypeValue,
         locale: 'es-ES',
-        description: formData.notes?.trim() || t('demos.presupuestoOrientativo.form.autoDescription')
+        description: formData.notes?.trim() || t('solutions.presupuestoOrientativo.form.autoDescription')
           .replace('{type}', selectedLabels)
           .replace('{sqm}', formData.sqm ? ` de ${formData.sqm} m²` : '')
           .replace('{city}', formData.city ? ` en ${formData.city}` : ''),
@@ -184,18 +194,28 @@ export default function PresupuestoOrientativo() {
         signal: abortControllerRef.current.signal,
       })
 
-      const data = await res.json()
+      // Check content-type before parsing JSON
+      const contentType = res.headers.get('content-type')
+      let data
+      
+      if (contentType && contentType.includes('application/json')) {
+        data = await res.json()
+      } else {
+        // If not JSON, try to get text for error message
+        const text = await res.text()
+        throw new Error(`Server error (${res.status}): ${text.substring(0, 200)}`)
+      }
 
       if (!res.ok) {
-        const errorMsg = data.message || data.detail || data.error
+        const errorMsg = data.message || data.detail || data.error || `Server error (${res.status})`
         const validationDetails = data.details || data.errors || data.validation_errors
         if (validationDetails && Array.isArray(validationDetails) && validationDetails.length > 0) {
           const errorDetails = validationDetails
-            .map(e => `${e.field || t('demos.presupuestoOrientativo.form.field')}: ${e.message || JSON.stringify(e)}`)
+            .map(e => `${e.field || t('solutions.presupuestoOrientativo.form.field')}: ${e.message || JSON.stringify(e)}`)
             .join('; ')
-          throw new Error(`${errorMsg || t('demos.presupuestoOrientativo.form.errorValidation')}. ${errorDetails}`)
+          throw new Error(`${errorMsg || t('solutions.presupuestoOrientativo.form.errorValidation')}. ${errorDetails}`)
         }
-        throw new Error(errorMsg || `Error ${res.status}`)
+        throw new Error(errorMsg)
       }
 
       progressTimeoutsRef.current.forEach((timeout) => clearTimeout(timeout))
@@ -208,7 +228,7 @@ export default function PresupuestoOrientativo() {
         return
       }
       console.error('Error generating budget:', err)
-      setError(err.message || t('demos.presupuestoOrientativo.form.errorGenerating'))
+      setError(err.message || t('solutions.presupuestoOrientativo.form.errorGenerating'))
     } finally {
       progressTimeoutsRef.current.forEach((timeout) => clearTimeout(timeout))
       progressTimeoutsRef.current = []
@@ -238,16 +258,37 @@ export default function PresupuestoOrientativo() {
           >
             <p className="text-xs font-medium text-primary-600 dark:text-primary-400 uppercase tracking-widest mb-2">Demo</p>
             <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white">
-              {t('demos.presupuestoOrientativo.pageTitle')}
+              {t('solutions.presupuestoOrientativo.pageTitle')}
             </h1>
             <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 max-w-xl">
-              {t('demos.presupuestoOrientativo.pageSubtitle')}
+              {t('solutions.presupuestoOrientativo.pageSubtitle')}
             </p>
+            
+            {/* Bullets */}
+            <div className="mt-6 flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-gray-700 dark:text-gray-300">
+              <div className="flex items-center gap-1.5">
+                <Check className="h-4 w-4 text-green-600 dark:text-green-400" strokeWidth={3} />
+                <span className="font-medium">{t('solutions.presupuestoOrientativo.bullets.editable')}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Check className="h-4 w-4 text-green-600 dark:text-green-400" strokeWidth={3} />
+                <span className="font-medium">{t('solutions.presupuestoOrientativo.bullets.addMargin')}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Check className="h-4 w-4 text-green-600 dark:text-green-400" strokeWidth={3} />
+                <span className="font-medium">{t('solutions.presupuestoOrientativo.bullets.exportPdf')}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Check className="h-4 w-4 text-green-600 dark:text-green-400" strokeWidth={3} />
+                <span className="font-medium">{t('solutions.presupuestoOrientativo.bullets.readyWhatsApp')}</span>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+
         {/* Form */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
@@ -258,7 +299,7 @@ export default function PresupuestoOrientativo() {
             {/* Left: Project type selection */}
             <div>
               <label className="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-3">
-                {t('demos.presupuestoOrientativo.form.projectType')} <span className="text-red-500">*</span>
+                {t('solutions.presupuestoOrientativo.form.projectType')}
               </label>
               <div className="space-y-2">
                 {PROJECT_TYPES.map((opt) => {
@@ -304,7 +345,7 @@ export default function PresupuestoOrientativo() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-1.5">
-                    {t('demos.presupuestoOrientativo.form.sqm')}
+                    {t('solutions.presupuestoOrientativo.form.sqm')}
                   </label>
                   <div className="relative">
                     <Ruler className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -316,13 +357,13 @@ export default function PresupuestoOrientativo() {
                       value={formData.sqm}
                       onChange={handleChange}
                       className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white pl-10 pr-3 py-2.5 text-sm focus:ring-2 focus:ring-primary-600/20 focus:border-primary-600 dark:focus:border-primary-400 outline-none transition-colors"
-                      placeholder={t('demos.presupuestoOrientativo.form.sqmPlaceholder')}
+                      placeholder={t('solutions.presupuestoOrientativo.form.sqmPlaceholder')}
                     />
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-1.5">
-                    {t('demos.presupuestoOrientativo.form.city')}
+                    {t('solutions.presupuestoOrientativo.form.city')}
                   </label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -332,7 +373,7 @@ export default function PresupuestoOrientativo() {
                       value={formData.city}
                       onChange={handleChange}
                       className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white pl-10 pr-3 py-2.5 text-sm focus:ring-2 focus:ring-primary-600/20 focus:border-primary-600 dark:focus:border-primary-400 outline-none transition-colors"
-                      placeholder={t('demos.presupuestoOrientativo.form.cityPlaceholder')}
+                      placeholder={t('solutions.presupuestoOrientativo.form.cityPlaceholder')}
                     />
                   </div>
                 </div>
@@ -340,7 +381,7 @@ export default function PresupuestoOrientativo() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-1.5">
-                  {t('demos.presupuestoOrientativo.form.notes')}
+                  {t('solutions.presupuestoOrientativo.form.notes')}
                 </label>
                 <textarea
                   name="notes"
@@ -348,7 +389,7 @@ export default function PresupuestoOrientativo() {
                   onChange={handleChange}
                   rows={4}
                   className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white px-3 py-2.5 text-sm focus:ring-2 focus:ring-primary-600/20 focus:border-primary-600 dark:focus:border-primary-400 outline-none transition-colors resize-none"
-                  placeholder={t('demos.presupuestoOrientativo.form.notesPlaceholder')}
+                  placeholder={t('solutions.presupuestoOrientativo.form.notesPlaceholder')}
                 />
               </div>
 
@@ -377,11 +418,11 @@ export default function PresupuestoOrientativo() {
                 {loading ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    {t('demos.presupuestoOrientativo.form.generating')}
+                    {t('solutions.presupuestoOrientativo.form.generating')}
                   </>
                 ) : (
                   <>
-                    {t('demos.presupuestoOrientativo.form.generate')}
+                    {t('solutions.presupuestoOrientativo.form.generate')}
                     <ArrowRight className="h-4 w-4" />
                   </>
                 )}
@@ -403,20 +444,20 @@ export default function PresupuestoOrientativo() {
             {/* Results header row */}
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
               <div>
-                <p className="text-xs font-medium text-primary-600 dark:text-primary-400 uppercase tracking-widest mb-1">{t('demos.presupuestoOrientativo.result.title')}</p>
+                <p className="text-xs font-medium text-primary-600 dark:text-primary-400 uppercase tracking-widest mb-1">{t('solutions.presupuestoOrientativo.result.title')}</p>
                 <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white">
-                  {t('demos.presupuestoOrientativo.result.title')}
+                  {t('solutions.presupuestoOrientativo.result.title')}
                 </h2>
                 {result.estimatedDuration && (
                   <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
                     <Clock className="h-3.5 w-3.5" />
-                    {t('demos.presupuestoOrientativo.result.estimatedDuration')}: {result.estimatedDuration}
+                    {t('solutions.presupuestoOrientativo.result.estimatedDuration')}: {result.estimatedDuration}
                   </p>
                 )}
               </div>
               {result.total != null && (
                 <div className="sm:text-right">
-                  <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-0.5">{t('demos.presupuestoOrientativo.result.total')}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-0.5">{t('solutions.presupuestoOrientativo.result.total')}</p>
                   <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tabular-nums">
                     {Number(result.total).toLocaleString('es-ES')} <span className="text-lg font-medium text-gray-400">{result.currency || '€'}</span>
                   </p>
@@ -435,7 +476,7 @@ export default function PresupuestoOrientativo() {
                   <div key={card.key} className="bg-white dark:bg-gray-900 px-5 py-4 flex items-center gap-4">
                     <card.icon className={`h-5 w-5 ${card.color} flex-shrink-0`} />
                     <div className="min-w-0">
-                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{t(`demos.presupuestoOrientativo.result.${card.key}`)}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{t(`solutions.presupuestoOrientativo.result.${card.key}`)}</p>
                       <p className="text-base font-semibold text-gray-900 dark:text-white tabular-nums">{Number(card.value).toLocaleString('es-ES')} €</p>
                     </div>
                   </div>
@@ -447,18 +488,18 @@ export default function PresupuestoOrientativo() {
             {result.items?.length > 0 && (
               <div className="mb-8">
                 <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
-                  {t('demos.presupuestoOrientativo.result.lineItems')}
+                  {t('solutions.presupuestoOrientativo.result.lineItems')}
                 </h3>
                 <div className="overflow-x-auto border border-gray-200 dark:border-gray-800 rounded-md">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="bg-gray-50 dark:bg-gray-900 text-left">
-                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">{t('demos.presupuestoOrientativo.result.category')}</th>
-                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">{t('demos.presupuestoOrientativo.result.item')}</th>
-                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider text-right">{t('demos.presupuestoOrientativo.result.qty')}</th>
-                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">{t('demos.presupuestoOrientativo.result.unit')}</th>
-                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider text-right">{t('demos.presupuestoOrientativo.result.unitPrice')}</th>
-                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider text-right">{t('demos.presupuestoOrientativo.result.total')}</th>
+                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">{t('solutions.presupuestoOrientativo.result.category')}</th>
+                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">{t('solutions.presupuestoOrientativo.result.item')}</th>
+                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider text-right">{t('solutions.presupuestoOrientativo.result.qty')}</th>
+                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">{t('solutions.presupuestoOrientativo.result.unit')}</th>
+                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider text-right">{t('solutions.presupuestoOrientativo.result.unitPrice')}</th>
+                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider text-right">{t('solutions.presupuestoOrientativo.result.total')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -479,7 +520,7 @@ export default function PresupuestoOrientativo() {
                     {result.total != null && (
                       <tfoot>
                         <tr className="border-t-2 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
-                          <td colSpan={5} className="py-2.5 px-4 text-right text-sm font-medium text-gray-900 dark:text-white">{t('demos.presupuestoOrientativo.result.total')}</td>
+                          <td colSpan={5} className="py-2.5 px-4 text-right text-sm font-medium text-gray-900 dark:text-white">{t('solutions.presupuestoOrientativo.result.total')}</td>
                           <td className="py-2.5 px-4 text-right font-bold text-gray-900 dark:text-white tabular-nums">{Number(result.total).toLocaleString('es-ES')} €</td>
                         </tr>
                       </tfoot>
@@ -493,7 +534,7 @@ export default function PresupuestoOrientativo() {
             {result.timeline?.length > 0 && (
               <div className="mb-8">
                 <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-4">
-                  {t('demos.presupuestoOrientativo.result.timeline')}
+                  {t('solutions.presupuestoOrientativo.result.timeline')}
                 </h3>
                 <div className="space-y-0">
                   {result.timeline.map((phase, i) => (
@@ -524,7 +565,7 @@ export default function PresupuestoOrientativo() {
                 <div>
                   <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2 flex items-center gap-1.5">
                     <Info className="h-3.5 w-3.5 text-gray-400" />
-                    {t('demos.presupuestoOrientativo.result.notes')}
+                    {t('solutions.presupuestoOrientativo.result.notes')}
                   </h3>
                   {Array.isArray(result.notes) ? (
                     <ul className="space-y-1.5">
@@ -544,7 +585,7 @@ export default function PresupuestoOrientativo() {
                 <div>
                   <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2 flex items-center gap-1.5">
                     <CheckCircle2 className="h-3.5 w-3.5 text-gray-400" />
-                    {t('demos.presupuestoOrientativo.result.assumptions')}
+                    {t('solutions.presupuestoOrientativo.result.assumptions')}
                   </h3>
                   <ul className="space-y-1.5">
                     {result.assumptions.map((a, i) => (
@@ -560,7 +601,7 @@ export default function PresupuestoOrientativo() {
                 <div>
                   <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2 flex items-center gap-1.5">
                     <XCircle className="h-3.5 w-3.5 text-gray-400" />
-                    {t('demos.presupuestoOrientativo.result.exclusions')}
+                    {t('solutions.presupuestoOrientativo.result.exclusions')}
                   </h3>
                   <ul className="space-y-1.5">
                     {result.exclusions.map((e, i) => (
@@ -573,23 +614,33 @@ export default function PresupuestoOrientativo() {
               )}
             </div>
 
+            {/* Editing note */}
+            {result && (
+              <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                <p className="text-sm text-blue-800 dark:text-blue-300">
+                  <Info className="h-4 w-4 inline-block mr-1.5 align-text-bottom" />
+                  {t('solutions.presupuestoOrientativo.result.editingNote')}
+                </p>
+              </div>
+            )}
+
             {/* Alt lineItems with ranges */}
             {!result.items?.length && result.lineItems?.length > 0 && (
               <div className="mb-8">
                 <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
-                  {t('demos.presupuestoOrientativo.result.lineItems')}
+                  {t('solutions.presupuestoOrientativo.result.lineItems')}
                 </h3>
                 <div className="overflow-x-auto border border-gray-200 dark:border-gray-800 rounded-md">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="bg-gray-50 dark:bg-gray-900 text-left">
-                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">{t('demos.presupuestoOrientativo.result.category')}</th>
-                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">{t('demos.presupuestoOrientativo.result.item')}</th>
-                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider text-right">{t('demos.presupuestoOrientativo.result.qty')}</th>
-                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">{t('demos.presupuestoOrientativo.result.unit')}</th>
-                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider text-right">{t('demos.presupuestoOrientativo.result.min')}</th>
-                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider text-right">{t('demos.presupuestoOrientativo.result.max')}</th>
-                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">{t('demos.presupuestoOrientativo.result.notes')}</th>
+                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">{t('solutions.presupuestoOrientativo.result.category')}</th>
+                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">{t('solutions.presupuestoOrientativo.result.item')}</th>
+                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider text-right">{t('solutions.presupuestoOrientativo.result.qty')}</th>
+                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">{t('solutions.presupuestoOrientativo.result.unit')}</th>
+                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider text-right">{t('solutions.presupuestoOrientativo.result.min')}</th>
+                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider text-right">{t('solutions.presupuestoOrientativo.result.max')}</th>
+                        <th className="py-2.5 px-4 font-medium text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">{t('solutions.presupuestoOrientativo.result.notes')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -609,7 +660,7 @@ export default function PresupuestoOrientativo() {
                 </div>
                 {(result.totalMin || result.totalMax || result.total) && (
                   <div className="mt-3 text-right">
-                    <span className="text-sm text-gray-500 dark:text-gray-400 mr-2">{t('demos.presupuestoOrientativo.result.total')}:</span>
+                    <span className="text-sm text-gray-500 dark:text-gray-400 mr-2">{t('solutions.presupuestoOrientativo.result.total')}:</span>
                     <span className="text-base font-bold text-gray-900 dark:text-white tabular-nums">
                       {result.totalMin != null && result.totalMax != null
                         ? `${Number(result.totalMin).toLocaleString('es-ES')} € – ${Number(result.totalMax).toLocaleString('es-ES')} €`
@@ -618,6 +669,36 @@ export default function PresupuestoOrientativo() {
                   </div>
                 )}
               </div>
+            )}
+
+            {/* CTA After Result */}
+            {result && (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1, duration: 0.4 }}
+                className="mt-12 p-6 sm:p-8 bg-gradient-to-br from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 border border-primary-200 dark:border-primary-800 rounded-lg"
+              >
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                  {t('solutions.presupuestoOrientativo.ctaAfterResult.question')}
+                </h3>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center justify-center gap-2 rounded-md bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 text-white px-6 py-3 text-sm font-medium transition-colors"
+                  >
+                    {t('solutions.presupuestoOrientativo.ctaAfterResult.createAccount')}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center justify-center gap-2 rounded-md border border-primary-600 dark:border-primary-500 bg-white dark:bg-gray-900 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 px-6 py-3 text-sm font-medium transition-colors"
+                  >
+                    {t('solutions.presupuestoOrientativo.ctaAfterResult.installCompany')}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </motion.div>
             )}
           </motion.div>
         )}
@@ -647,7 +728,7 @@ export default function PresupuestoOrientativo() {
                 }}
                 className="px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm font-medium transition-colors"
               >
-                {t('demos.cancel')}
+                {t('solutions.cancel')}
               </button>
             </div>
           </motion.div>
