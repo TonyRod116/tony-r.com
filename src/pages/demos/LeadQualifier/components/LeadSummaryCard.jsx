@@ -147,7 +147,14 @@ function calculateClientRating(leadData, config, t, locale) {
     factors.push({ text: t('solutions.leadQualifier.factors.budgetBonus').replace('{threshold}', bonusThreshold.toLocaleString(locale) + '€'), positive: true })
   }
 
-  if (leadData.hasDocs && leadData.hasDocs !== 'No' && leadData.hasDocs !== 'ninguno') {
+  // Normalizar documentación: solo contar como "tiene docs" si NO dice explícitamente que no
+  const hasDocsRaw = (leadData.hasDocs ?? '').toString().trim().toLowerCase()
+  const hasDocs =
+    hasDocsRaw &&
+    !['no', 'ninguno', 'ninguna', 'none'].some(neg => hasDocsRaw.includes(neg)) &&
+    !['n/a', 'unknown'].includes(hasDocsRaw)
+
+  if (hasDocs) {
     score += 5
     factors.push({ text: t('solutions.leadQualifier.factors.hasDocumentation'), positive: true })
   }
@@ -157,15 +164,33 @@ function calculateClientRating(leadData, config, t, locale) {
   const hasCity = leadData.city && leadData.city !== 'n/a' && leadData.city !== 'unknown'
   const priceInfo = estimateProjectPrice(leadData, t, locale)
 
+  // Boost por presupuesto estimado alto (aunque el cliente no haya dado cifra)
+  const estMin = priceInfo.estimatedMin || 0
+  const estMax = priceInfo.estimatedMax || estMin || 0
+  const highEstimate =
+    bonusThreshold &&
+    (estMin >= bonusThreshold || estMax >= bonusThreshold || budget >= bonusThreshold)
+
+  if (highEstimate) {
+    score += 20
+    factors.push({
+      text: t('solutions.leadQualifier.factors.estimatedBudgetExcellent').replace(
+        '{threshold}',
+        bonusThreshold.toLocaleString(locale) + '€'
+      ),
+      positive: true,
+    })
+  }
+
+  // Recalcular con el nuevo score
+  score = Math.max(0, Math.min(100, score))
+
   let rating
-  if (hasContact && hasCity) {
-    if (bonusThreshold && (priceInfo.estimatedMin || 0) >= bonusThreshold) {
-      rating = 'excellent'
-      factors.push({ text: t('solutions.leadQualifier.factors.estimatedBudgetExcellent').replace('{threshold}', bonusThreshold.toLocaleString(locale) + '€'), positive: true })
-    } else {
-      rating = 'regular'
-    }
+  if (hasContact && hasCity && highEstimate) {
+    // Lead completo (contacto + ciudad) y presupuesto estimado alto → excelente directo
+    rating = 'excellent'
   } else {
+    // En el resto de casos, rating se decide solo por score
     if (score >= 85) rating = 'excellent'
     else if (score >= 70) rating = 'good'
     else if (score >= 50) rating = 'regular'
@@ -180,7 +205,7 @@ function calculateClientRating(leadData, config, t, locale) {
 }
 
 function estimateProjectPrice(leadData, t, locale) {
-  if (!leadData) return { displayText: '\u2014', note: '', clientBudget: null, estimated: null, range: null }
+  if (!leadData) return { displayText: '\u2014', note: '', clientBudget: null, estimated: null, range: null, estimatedMin: 0, estimatedMax: 0 }
 
   const rawType = (leadData.projectType || '').toLowerCase()
   const projectType = (rawType === 'n/a' || rawType === 'unknown' ? '' : rawType)
@@ -193,6 +218,7 @@ function estimateProjectPrice(leadData, t, locale) {
       estimated: null,
       range: null,
       estimatedMin: budget,
+      estimatedMax: budget,
       displayText: `${budget.toLocaleString(locale)} \u20AC`,
       note: t('solutions.leadQualifier.priceNotes.clientBudget'),
     }
@@ -233,6 +259,7 @@ function estimateProjectPrice(leadData, t, locale) {
         estimated: null,
         range: `${minEstimate.toLocaleString(locale)}\u20AC - ${maxEstimate.toLocaleString(locale)}\u20AC`,
         estimatedMin: minEstimate,
+        estimatedMax: maxEstimate,
         displayText: `${minEstimate.toLocaleString(locale)}\u20AC - ${maxEstimate.toLocaleString(locale)}\u20AC`,
         note: t('solutions.leadQualifier.priceNotes.orientativeFor').replace('{count}', sqm).replace('{unit}', t('solutions.leadQualifier.priceNotes.unitWindows')) + ' (Barcelona)',
       }
@@ -249,6 +276,7 @@ function estimateProjectPrice(leadData, t, locale) {
         estimated: null,
         range: `${minEstimate.toLocaleString(locale)}\u20AC - ${maxEstimate.toLocaleString(locale)}\u20AC`,
         estimatedMin: minEstimate,
+        estimatedMax: maxEstimate,
         displayText: `${minEstimate.toLocaleString(locale)}\u20AC - ${maxEstimate.toLocaleString(locale)}\u20AC`,
         note: t('solutions.leadQualifier.priceNotes.orientativeFor').replace('{count}', sqm).replace('{unit}', t('solutions.leadQualifier.priceNotes.unitDoors')) + ' (Barcelona)',
       }
@@ -266,6 +294,7 @@ function estimateProjectPrice(leadData, t, locale) {
       estimated: null,
       range: `${minEstimate.toLocaleString(locale)}\u20AC - ${maxEstimate.toLocaleString(locale)}\u20AC`,
       estimatedMin: minEstimate,
+      estimatedMax: maxEstimate,
       displayText: `${minEstimate.toLocaleString(locale)}\u20AC - ${maxEstimate.toLocaleString(locale)}\u20AC`,
       note: t('solutions.leadQualifier.priceNotes.orientativeSqm').replace('{count}', sqm),
     }
@@ -277,12 +306,13 @@ function estimateProjectPrice(leadData, t, locale) {
       estimated: null,
       range: `${minPrice.toLocaleString(locale)}\u20AC - ${maxPrice.toLocaleString(locale)}\u20AC`,
       estimatedMin: minPrice,
+      estimatedMax: maxPrice,
       displayText: `${minPrice.toLocaleString(locale)}\u20AC - ${maxPrice.toLocaleString(locale)}\u20AC`,
       note: t('solutions.leadQualifier.priceNotes.typicalRange'),
     }
   }
 
-  return { displayText: '\u2014', note: t('solutions.leadQualifier.priceNotes.indicateType'), clientBudget: null, estimated: null, range: null, estimatedMin: 0 }
+  return { displayText: '\u2014', note: t('solutions.leadQualifier.priceNotes.indicateType'), clientBudget: null, estimated: null, range: null, estimatedMin: 0, estimatedMax: 0 }
 }
 
 function FieldRow({ icon: Icon, label, value, highlight, valueClass }) {
@@ -344,10 +374,33 @@ export default function LeadSummaryCard({ leadData, config = {}, t, language = '
     return value
   }
 
+  const normalizeTimelineDisplay = (value) => {
+    if (!value) return value
+    const raw = value.toString().trim().toLowerCase()
+    if (raw === 'soon') {
+      if (language === 'es') return 'Pronto'
+      if (language === 'ca') return 'Aviat'
+      return 'Soon'
+    }
+    return value
+  }
+
   const hasRealValue = (v) => v != null && String(v).trim() !== '' && !['n/a', 'unknown'].includes(String(v).toLowerCase())
   const hasContact = hasRealValue(leadData.contactPhone) || hasRealValue(leadData.contactEmail)
   const contactPhone = leadData.contactPhone || ''
   const contactName = leadData.contactName || ''
+  const contactEmail = leadData.contactEmail || ''
+
+  // Normalizar documentación para la parte visual
+  const docsRaw = (leadData.hasDocs ?? '').toString().trim().toLowerCase()
+  let docsValue = ''
+  if (!docsRaw || ['n/a', 'unknown'].includes(docsRaw)) {
+    docsValue = ''
+  } else if (['no', 'ninguno', 'ninguna', 'none'].some(neg => docsRaw.includes(neg))) {
+    docsValue = false
+  } else {
+    docsValue = true
+  }
 
   return (
     <motion.div
@@ -377,39 +430,28 @@ export default function LeadSummaryCard({ leadData, config = {}, t, language = '
         )}
       </div>
 
-      {/* BLOQUE 2: ¿Por qué es buen lead? (solo positivos) */}
-      {factors.length > 0 && (
-        <div className="px-6 py-4 border-b border-gray-700">
-          <h3 className="text-sm font-semibold text-white mb-3">
-            {t('solutions.leadQualifier.summary.whyGoodLead')}
-          </h3>
-          <div className="space-y-2">
-            {factors.map((factor, i) => (
-              <div key={i} className="flex items-start gap-2 text-sm text-gray-300">
-                <span className="text-green-400 mt-0.5 font-bold">✓</span>
-                <span>{factor.text}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* BLOQUE 3: Contacto con botón principal */}
+      {/* BLOQUE 2: Contacto con botón principal (teléfono primero) */}
       {hasContact && (
         <div className="px-6 py-5 border-b border-gray-700">
           <h3 className="text-sm font-semibold text-white mb-3">
             {t('solutions.leadQualifier.summary.contact')}
           </h3>
+          {contactPhone && (
+            <div className="flex items-center gap-2 mb-4">
+              <Phone className="h-4 w-4 text-gray-400" />
+              <span className="text-white">{contactPhone}</span>
+            </div>
+          )}
           {contactName && (
             <div className="flex items-center gap-2 mb-2">
               <User className="h-4 w-4 text-gray-400" />
               <span className="text-white font-medium">{contactName}</span>
             </div>
           )}
-          {contactPhone && (
+          {contactEmail && (
             <div className="flex items-center gap-2 mb-4">
-              <Phone className="h-4 w-4 text-gray-400" />
-              <span className="text-white">{contactPhone}</span>
+              <Mail className="h-4 w-4 text-gray-400" />
+              <span className="text-sm text-gray-300">{contactEmail}</span>
             </div>
           )}
           {contactPhone && (
@@ -423,7 +465,43 @@ export default function LeadSummaryCard({ leadData, config = {}, t, language = '
         </div>
       )}
 
-      {/* BLOQUE 4: Detalles del proyecto (colapsable) */}
+      {/* BLOQUE 3: Resumen de lo que pide el cliente (siempre visible, debajo de contacto) */}
+      {leadData.scopeDescription && (
+        <div className="px-6 py-4 border-b border-gray-700">
+          <h4 className="text-sm font-semibold text-white mb-2">
+            {t('solutions.leadQualifier.summary.description')}
+          </h4>
+          <p className="text-sm text-gray-300 bg-gray-700/30 rounded-lg p-3">
+            {leadData.scopeDescription}
+          </p>
+        </div>
+      )}
+
+      {/* BLOQUE 4: ¿Por qué es buen lead? (solo positivos, filtrando detalles de tipo de obra no integrales) */}
+      {factors.length > 0 && (
+        <div className="px-6 py-4 border-b border-gray-700">
+          <h3 className="text-sm font-semibold text-white mb-3">
+            {t('solutions.leadQualifier.summary.whyGoodLead')}
+          </h3>
+          <div className="space-y-2">
+            {factors
+              .filter((factor) => {
+                const kitchen = t('solutions.leadQualifier.factors.kitchenRenovation')
+                const bath = t('solutions.leadQualifier.factors.bathroomRenovation')
+                // Mantenemos solo factores que no sean estos dos (la integral sí se mantiene)
+                return factor.text !== kitchen && factor.text !== bath
+              })
+              .map((factor, i) => (
+                <div key={i} className="flex items-start gap-2 text-sm text-gray-300">
+                  <span className="text-green-400 mt-0.5 font-bold">✓</span>
+                  <span>{factor.text}</span>
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
+
+      {/* BLOQUE 5: Detalles del proyecto (colapsable) */}
       <div>
         <button
           onClick={() => setShowDetails(!showDetails)}
@@ -488,12 +566,12 @@ export default function LeadSummaryCard({ leadData, config = {}, t, language = '
                   <FieldRow
                     icon={Calendar}
                     label={t('solutions.leadQualifier.summary.start')}
-                    value={leadData.timeline}
+                    value={normalizeTimelineDisplay(leadData.timeline)}
                   />
                   <FieldRow
                     icon={FileText}
                     label={t('solutions.leadQualifier.summary.documentation')}
-                    value={booleanDisplay(leadData.hasDocs)}
+                    value={docsValue}
                   />
                   {leadData.constraints && (
                     <FieldRow
@@ -504,23 +582,7 @@ export default function LeadSummaryCard({ leadData, config = {}, t, language = '
                   )}
                 </div>
 
-                {leadData.scopeDescription && (
-                  <div>
-                    <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
-                      {t('solutions.leadQualifier.summary.description')}
-                    </h4>
-                    <p className="text-sm text-gray-300 bg-gray-700/30 rounded-lg p-3">
-                      {leadData.scopeDescription}
-                    </p>
-                  </div>
-                )}
-
-                {leadData.contactEmail && (
-                  <div className="flex items-center gap-2">
-                    <Mail className="h-4 w-4 text-gray-400" />
-                    <span className="text-sm text-gray-300">{leadData.contactEmail}</span>
-                  </div>
-                )}
+                {/* El email ya se muestra en el bloque de contacto */}
               </div>
             </motion.div>
           )}

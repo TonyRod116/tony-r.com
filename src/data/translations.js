@@ -591,7 +591,7 @@ export const translations = {
         },
         summary: {
           title: 'When the conversation ends, you\'ll see here:',
-          description: '',
+          description: 'Summary',
           bullets: [
             'Client data',
             'Estimated budget',
@@ -1861,7 +1861,7 @@ export const translations = {
         },
         summary: {
           title: 'Cuando acabe la conversación aquí verás:',
-          description: '',
+          description: 'Resumen',
           bullets: [
             'Datos del cliente',
             'Presupuesto estimado',
@@ -2866,7 +2866,7 @@ export const translations = {
         },
         summary: {
           title: 'Quan acabi la conversa aquí veuràs:',
-          description: '',
+          description: 'Resum',
           bullets: [
             'Dades del client',
             'Pressupost estimat',
