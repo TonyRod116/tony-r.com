@@ -83,12 +83,13 @@ export class MLP {
     const norm = this.normalization
     const normalized = input.map((v) => (v - norm.mean) / norm.std)
 
-    this.activations = [normalized]
+    // Keep visualization activations in a human-readable range:
+    // input in [0,1] and hidden layers post-activation.
+    this.activations = [input]
     let current = normalized
 
     for (let i = 0; i < this.weights.length; i++) {
       const layerOutput = []
-      const layerActivations = []
       
       for (let j = 0; j < this.weights[i].length; j++) {
         let sum = this.biases[i][j]
@@ -100,10 +101,9 @@ export class MLP {
         // Apply activation function (ReLU for hidden layers, linear for output)
         const activated = i < this.weights.length - 1 ? this.relu(sum) : sum
         layerOutput.push(activated)
-        layerActivations.push(sum) // Store pre-activation for visualization
       }
       
-      this.activations.push(layerActivations)
+      this.activations.push(layerOutput)
       current = layerOutput
     }
     

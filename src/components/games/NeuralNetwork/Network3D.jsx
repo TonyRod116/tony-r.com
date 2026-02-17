@@ -10,7 +10,7 @@ const VISUALIZER_CONFIG = {
   outputSpacing: 0.95,
   inputNodeSize: 0.18,
   hiddenNodeRadius: 0.22,
-  connectionRadius: 0.005,
+  connectionRadius: 0.012,
 }
 
 // Función para calcular grids dinámicamente basado en la arquitectura
@@ -70,20 +70,13 @@ function getActivationColor(activation, maxActivation, isInputLayer = false) {
 }
 
 function getWeightColor(weight, contribution = null, maxContribution = null) {
-  // Si tenemos información de contribución (activation * weight), usarla
+  // Si tenemos información de contribución (activation * weight), mapear magnitud a gris -> verde
   if (contribution !== null && maxContribution !== null && maxContribution > 1e-6) {
-    const normalized = Math.max(-1, Math.min(1, contribution / maxContribution))
-    const magnitude = Math.abs(normalized)
-    if (magnitude < 1e-3) {
-      return new THREE.Color(0, 0, 0) // Negro para contribuciones muy pequeñas
-    }
-    if (normalized >= 0) {
-      // Verde para contribuciones positivas
-      return new THREE.Color(0, magnitude, 0)
-    } else {
-      // Rojo para contribuciones negativas
-      return new THREE.Color(magnitude, 0, 0)
-    }
+    const magnitude = Math.max(0, Math.min(1, Math.abs(contribution) / maxContribution))
+    const base = 0.15
+    const redBlue = base * (1 - magnitude)
+    const green = base + (1 - base) * magnitude
+    return new THREE.Color(redBlue, green, redBlue)
   }
   
   // Fallback: color basado solo en el peso
@@ -94,7 +87,16 @@ function getWeightColor(weight, contribution = null, maxContribution = null) {
   return new THREE.Color(intensity, 0, 0) // Rojo para pesos negativos
 }
 
+function getInputConnectionColor(sourceActivation) {
+  const a = Math.max(0, Math.min(1, sourceActivation))
+  const base = 0.12
+  const redBlue = base * (1 - a)
+  const green = base + (1 - base) * a
+  return new THREE.Color(redBlue, green, redBlue)
+}
+
 function buildNetwork(scene, activations, weights, architecture, maxConnections, hideWeakConnections, connectionThickness, networkActivations = null) {
+  const INPUT_ACTIVITY_THRESHOLD = 0.3
   const { layers: LAYERS, grids: LAYER_GRIDS } = calculateLayerGrids(architecture)
   // networkActivations se usa para calcular contribuciones (activation * weight) para colorear conexiones
   const toRemove = []
@@ -214,7 +216,7 @@ function buildNetwork(scene, activations, weights, architecture, maxConnections,
         
         for (let j = 0; j < nextCount; j++) {
           const weight = layerWeights[j][realNeuronIndex]
-          connections.push({ targetIndex: j, weight })
+          connections.push({ sourceIndex: realNeuronIndex, targetIndex: j, weight })
         }
         connections.sort((a, b) => Math.abs(b.weight) - Math.abs(a.weight))
         const top = connections.slice(0, maxConnections)
@@ -222,12 +224,11 @@ function buildNetwork(scene, activations, weights, architecture, maxConnections,
         // Calcular contribuciones para colorear conexiones (como el original)
         const sourceActivations = networkActivations?.[layerIndex]
         let maxContribution = 0
-        const contributions = top.map(conn => {
+        top.forEach((conn) => {
           const sourceActivation = sourceActivations?.[conn.sourceIndex] ?? 0
           const contribution = sourceActivation * conn.weight
           const absContribution = Math.abs(contribution)
           if (absContribution > maxContribution) maxContribution = absContribution
-          return { ...conn, contribution }
         })
         
         // Usar maxAbsWeight como fallback si no hay activaciones
@@ -236,24 +237,34 @@ function buildNetwork(scene, activations, weights, architecture, maxConnections,
 
         for (const conn of top) {
           if (Math.abs(conn.weight) < hideWeakConnections) continue
+          const sourceActivation = sourceActivations?.[conn.sourceIndex] ?? 0
+          if (layerIndex === 0 && sourceActivation < INPUT_ACTIVITY_THRESHOLD) continue
           const from = pos.clone()
           const to = neuronPosition(layerIndex + 1, conn.targetIndex)
           const dir = new THREE.Vector3().subVectors(to, from)
           const length = dir.length()
           const mid = new THREE.Vector3().addVectors(from, to).multiplyScalar(0.5)
 
-          const radius = VISUALIZER_CONFIG.connectionRadius * connectionThickness
+          const baseRadius = VISUALIZER_CONFIG.connectionRadius * connectionThickness
+          const activationScale = layerIndex === 0
+            ? (0.05 + sourceActivation * 11.5)
+            : 1
+          const radius = baseRadius * activationScale
           const cylGeo = new THREE.CylinderGeometry(radius, radius, length, 10, 1, true)
           
           // Calcular contribución para colorear
-          const sourceActivation = sourceActivations?.[conn.sourceIndex] ?? 0
           const contribution = sourceActivation * conn.weight
-          const color = getWeightColor(conn.weight, contribution, contributionScale)
+          const color = layerIndex === 0
+            ? getInputConnectionColor(sourceActivation)
+            : getWeightColor(conn.weight, contribution, contributionScale)
           
+          const opacity = layerIndex === 0
+            ? Math.min(1, 0.05 + sourceActivation * 1.8)
+            : Math.min(1, 0.6 + Math.abs(conn.weight) * 0.4)
           const cylMat = new THREE.MeshLambertMaterial({
             color,
             transparent: true,
-            opacity: 0.35 + Math.abs(conn.weight) * 0.6
+            opacity
           })
           const cyl = new THREE.Mesh(cylGeo, cylMat)
           cyl.position.copy(mid)
