@@ -1,6 +1,3 @@
-import Lottie from 'lottie-react'
-import loadingAnimation from '../assets/loading-animation.json'
-
 export default function LoadingProgressBar({ stage, t }) {
   const getMessage = (key, fallback) => {
     if (!t || typeof t !== 'function') return fallback
@@ -47,10 +44,16 @@ export default function LoadingProgressBar({ stage, t }) {
   return (
     <div className="space-y-4">
       <div className="space-y-3">
-        {/* Lottie Animation above progress bar */}
+        {/* Loader above progress bar */}
         <div className="relative w-full h-24 mb-2 flex items-center justify-center">
-          <div className="w-20 h-20">
-            <Lottie animationData={loadingAnimation} loop autoplay />
+          <div
+            className="solutions-loader text-primary-600 dark:text-primary-400"
+            style={{
+              '--solutions-loader-secondary': 'rgb(107 114 128)',
+              '--solutions-loader-tertiary': 'rgb(59 130 246)',
+            }}
+          >
+            <span className="solutions-loader__ring" />
           </div>
         </div>
 

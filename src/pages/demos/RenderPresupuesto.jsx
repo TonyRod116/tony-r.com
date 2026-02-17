@@ -400,7 +400,15 @@ export default function RenderPresupuesto() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 mx-4 max-w-md w-full shadow-2xl">
             <div className="flex items-center justify-center gap-3">
-              <Loader2 className="h-6 w-6 animate-spin text-primary-600" />
+              <div
+                className="solutions-loader text-primary-600 dark:text-primary-400"
+                style={{
+                  '--solutions-loader-secondary': 'rgb(156 163 175)',
+                  '--solutions-loader-tertiary': 'rgb(59 130 246)',
+                }}
+              >
+                <span className="solutions-loader__ring" />
+              </div>
               <p className="text-gray-900 dark:text-white font-medium">
                 {t('solutions.renderPresupuesto.upload.generating')}
               </p>
