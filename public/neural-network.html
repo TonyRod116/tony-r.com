@@ -1111,7 +1111,7 @@
                 </div>
               </div>
             </div>
-            <p class="hint" data-i18n="hintEpoch">Adjust the epoch to see how training improves accuracy</p>
+            <p class="hint" id="epochHint" data-i18n="hintEpoch">Adjust the epoch to see how training improves accuracy</p>
           </div>
         </div>
 
@@ -1148,7 +1148,7 @@
                 </div>
               </div>
             </div>
-            <p class="hint" data-i18n="hintHidden">Adjust hidden layer size to see its impact on accuracy</p>
+            <p class="hint" id="hiddenHint" data-i18n="hintHidden">Adjust hidden layer size to see its impact on accuracy</p>
           </div>
         </div>
       </div>
@@ -2342,12 +2342,14 @@
 
       applyNodeColors(layer, values, scale, layerIndex) {
         const { mesh, type } = layer
+        const base = 0.06
         if (type === 'input') {
-          // Input layer: Red (no use) to Green (high use)
+          // Input layer: very dark gray (low use) to green (high use)
           for (let i = 0; i < values.length; i += 1) {
             const value = clamp(values[i], 0, 1)
-            // White to Green (paso 1): (1-t, 1, 1-t)
-            this.tempColor.setRGB(1 - value, 1, 1 - value)
+            const redBlue = base * (1 - value)
+            const green = base + (1 - base) * value
+            this.tempColor.setRGB(redBlue, green, redBlue)
             mesh.setColorAt(i, this.tempColor)
           }
           mesh.instanceColor.needsUpdate = true
@@ -2358,9 +2360,10 @@
         for (let i = 0; i < values.length; i += 1) {
           const value = values[i]
           const normalized = clamp(value / safeScale, 0, 1)
-          
-          // All layers: White to Green (paso 1)
-          this.tempColor.setRGB(1 - normalized, 1, 1 - normalized)
+          const redBlue = base * (1 - normalized)
+          const green = base + (1 - base) * normalized
+          // All layers: very dark gray (low use) to green (high use)
+          this.tempColor.setRGB(redBlue, green, redBlue)
           mesh.setColorAt(i, this.tempColor)
         }
         mesh.instanceColor.needsUpdate = true
@@ -2380,13 +2383,10 @@
         group.connections.forEach((connection, index) => {
           const magnitude = Math.abs(contributions[index] / scale)
           const normalized = clamp(magnitude, 0, 1)
-          
-          // White (no use) to Green (high use) — paso 1
-          if (normalized < 1e-3) {
-            this.tempColor.setRGB(1, 1, 1)
-          } else {
-            this.tempColor.setRGB(1 - normalized, 1, 1 - normalized)
-          }
+          const redBlue = 0.06 * (1 - normalized)
+          const green = 0.06 + 0.94 * normalized
+          // Connections: very dark gray (low use) to green (high use)
+          this.tempColor.setRGB(redBlue, green, redBlue)
           group.mesh.setColorAt(index, this.tempColor)
         })
         group.mesh.instanceColor.needsUpdate = true
@@ -2857,22 +2857,42 @@
         const epochSlider = document.getElementById('epochSlider')
         const epochValue = document.getElementById('epochValue')
         const accuracyValue = document.getElementById('accuracyValue')
+        const epochHint = document.getElementById('epochHint')
         
         function updateEpochDisplay(epoch) {
           if (epochValue) epochValue.textContent = epoch
           const accuracy = getAccuracyForHiddenNodes(currentHiddenNodes, epoch)
           if (accuracyValue) accuracyValue.textContent = accuracy.toFixed(1) + '%'
+          if (epochHint) {
+            if (epoch > 40) {
+              epochHint.textContent = 'Warning: overfitting zone (epoch > 40).'
+            } else if (epoch < 12) {
+              epochHint.textContent = 'Warning: high bias zone (very low epoch).'
+            } else {
+              epochHint.textContent = 'Epoch in balanced range.'
+            }
+          }
         }
         
         // Hidden nodes slider setup
         const hiddenNodesSlider = document.getElementById('hiddenNodesSlider')
         const hiddenNodesValue = document.getElementById('hiddenNodesValue')
         const hiddenNodesAccuracyValue = document.getElementById('hiddenNodesAccuracyValue')
+        const hiddenHint = document.getElementById('hiddenHint')
         
         function updateHiddenNodesDisplay(hiddenNodes) {
           if (hiddenNodesValue) hiddenNodesValue.textContent = hiddenNodes
           const accuracy = getAccuracyForHiddenNodes(hiddenNodes, currentEpoch)
           if (hiddenNodesAccuracyValue) hiddenNodesAccuracyValue.textContent = accuracy.toFixed(1) + '%'
+          if (hiddenHint) {
+            if (hiddenNodes < 32) {
+              hiddenHint.textContent = 'Warning: high bias risk (too few hidden nodes).'
+            } else if (hiddenNodes > 192) {
+              hiddenHint.textContent = 'Warning: overfitting risk (many hidden nodes).'
+            } else {
+              hiddenHint.textContent = 'Hidden nodes in balanced range.'
+            }
+          }
         }
         
         if (hiddenNodesSlider) {
