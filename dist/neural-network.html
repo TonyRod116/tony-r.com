@@ -454,6 +454,18 @@
     .btn:hover {
       background: #4b5563;
     }
+    .btn.btn-primary {
+      background: #2563eb;
+    }
+    .btn.btn-primary:hover {
+      background: #1d4ed8;
+    }
+    .btn.btn-disabled,
+    .btn.btn-disabled:hover {
+      background: #374151;
+      color: #9ca3af;
+      cursor: not-allowed;
+    }
     .hint {
       font-size: 0.75rem;
       color: #9ca3af;
@@ -1155,7 +1167,7 @@
           </div>
 
           <!-- Hidden Nodes Slider -->
-          <div class="panel" style="margin-top: 24px; background: #1f2937; border-radius: 12px; padding: 16px;">
+          <div class="panel" style="margin-top: 24px; background: #1f2937; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; min-height: 260px;">
             <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 16px; color: white;" data-i18n="hiddenLayerNodes">Hidden Layer Nodes</h2>
             <div style="margin-bottom: 12px;">
               <input 
@@ -1178,6 +1190,10 @@
               </div>
             </div>
             <p class="hint" id="hiddenHint" data-i18n="hintHidden">Adjust hidden layer size to see its impact on accuracy</p>
+            <div style="margin-top: auto;">
+              <button id="applyModelBtn" class="btn btn-primary" style="margin-top: 12px;" data-i18n="updateBtn">Reload and Recalculate</button>
+              <p class="hint" id="updateHint" data-i18n="hintUpdate">Click to update the 3D visualization and recalculate predictions</p>
+            </div>
           </div>
         </div>
       </div>
@@ -3043,6 +3059,7 @@
         const hiddenNodesValue = document.getElementById('hiddenNodesValue')
         const hiddenNodesAccuracyValue = document.getElementById('hiddenNodesAccuracyValue')
         const hiddenHint = document.getElementById('hiddenHint')
+        const applyModelBtn = document.getElementById('applyModelBtn')
         
         function updateHiddenNodesDisplay(hiddenNodes) {
           if (hiddenNodesValue) hiddenNodesValue.textContent = hiddenNodes
@@ -3066,14 +3083,34 @@
             currentHiddenNodes = hiddenNodes
             updateHiddenNodesDisplay(hiddenNodes)
             updateEpochDisplay(currentEpoch)
+            setApplyButtonState(true)
+          })
+          hiddenNodesSlider.addEventListener('change', () => {
+            setApplyButtonState(true)
           })
           // Initialize display
           updateHiddenNodesDisplay(64)
+        }
+
+        if (applyModelBtn) {
+          applyModelBtn.addEventListener('click', () => {
+            applyPendingModelChanges(true)
+          })
         }
         
         // Track the last applied architecture to know when to rebuild
         let lastAppliedHiddenNodes = 64
         let lastAppliedEpoch = 40
+        let hasPendingModelChanges = false
+
+        function setApplyButtonState(isPending) {
+          hasPendingModelChanges = isPending
+          if (!applyModelBtn) return
+          applyModelBtn.disabled = !isPending
+          applyModelBtn.classList.toggle('btn-disabled', !isPending)
+          applyModelBtn.classList.toggle('btn-primary', isPending)
+        }
+        setApplyButtonState(false)
         
         // Function to update visualization with current settings
         function updateVisualization() {
@@ -3083,11 +3120,22 @@
             updateModelForHiddenNodes(currentHiddenNodes)
             lastAppliedHiddenNodes = currentHiddenNodes
             lastAppliedEpoch = currentEpoch
+            return true
           } else if (currentEpoch !== lastAppliedEpoch) {
             // Architecture unchanged but epoch changed - just update epoch
             updateModelForEpoch(currentEpoch)
             lastAppliedEpoch = currentEpoch
+            return true
           }
+          return false
+        }
+
+        function applyPendingModelChanges(forceRefresh = false) {
+          const updated = updateVisualization()
+          if (!updated || forceRefresh) {
+            refreshNetworkState()
+          }
+          setApplyButtonState(false)
         }
 
         function updateModelForEpoch(epoch) {
@@ -3105,6 +3153,10 @@
             currentEpoch = epoch
             updateEpochDisplay(epoch)
             updateHiddenNodesDisplay(currentHiddenNodes)
+            setApplyButtonState(true)
+          })
+          epochSlider.addEventListener('change', () => {
+            setApplyButtonState(true)
           })
           // Initialize display
           updateEpochDisplay(40)
@@ -3198,7 +3250,7 @@
           hiddenLayerNodes: 'Hidden Layer Nodes',
           hiddenNodes: 'Hidden Nodes',
           hintHidden: 'Didactic control: this slider does not rebuild the model live. It marks low/high capacity risk.',
-          updateBtn: 'Update and Recalculate',
+          updateBtn: 'Reload and Recalculate',
           hintUpdate: 'Click to update the 3D visualization and recalculate predictions',
           learnMore: 'Learn More',
           section0Title: 'How to Read This Demo',
@@ -3305,7 +3357,7 @@
           hiddenLayerNodes: 'Nodos de la capa oculta',
           hiddenNodes: 'Nodos ocultos',
           hintHidden: 'Control didáctico: este slider no reconstruye el modelo en vivo. Marca riesgo de capacidad baja/alta.',
-          updateBtn: 'Actualizar y recalcular',
+          updateBtn: 'Recargar y recalcular',
           hintUpdate: 'Haz clic para actualizar la visualización 3D y recalcular las predicciones',
           learnMore: 'Saber más',
           section0Title: 'Cómo leer esta demo',
@@ -3412,7 +3464,7 @@
           hiddenLayerNodes: 'Nodes de la capa oculta',
           hiddenNodes: 'Nodes ocults',
           hintHidden: 'Control didàctic: aquest slider no reconstrueix el model en viu. Marca risc de capacitat baixa/alta.',
-          updateBtn: 'Actualitzar i recalcular',
+          updateBtn: 'Recarregar i recalcular',
           hintUpdate: 'Clica per actualitzar la visualització 3D i recalcular les prediccions',
           learnMore: 'Saber-ne més',
           section0Title: 'Com llegir aquesta demo',
