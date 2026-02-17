@@ -813,6 +813,35 @@
       font-size: 0.875rem;
       line-height: 1.625;
     }
+    .activation-table {
+      background: rgba(13, 17, 23, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.5);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .activation-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 1fr;
+      gap: 12px;
+      padding: 12px 16px;
+      border-top: 1px solid rgba(55, 65, 81, 0.4);
+      align-items: start;
+    }
+    .activation-row:first-child {
+      border-top: none;
+      background: rgba(55, 65, 81, 0.2);
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+    .activation-name {
+      color: #93c5fd;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    .activation-note {
+      color: #d1d5db;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
     #epochSlider {
       -webkit-appearance: none;
       appearance: none;
@@ -1162,6 +1191,28 @@
           <div class="separator-line"></div>
         </div>
 
+        <!-- SECTION 0: Live Reading Guide -->
+        <section class="section">
+          <div>
+            <h2 class="section-title" data-i18n="section0Title">How to Read This Demo</h2>
+            <p class="section-subtitle" data-i18n="section0Subtitle">What runs live, what was trained offline, and how to interpret the output</p>
+          </div>
+          <div class="concept-grid">
+            <div class="concept-card">
+              <h3 class="concept-title" data-i18n="liveCard1Title">Live = Inference</h3>
+              <p class="concept-text" data-i18n="liveCard1Text">When you draw, the page does inference with a pre-trained model. It does not perform full training on your device.</p>
+            </div>
+            <div class="concept-card">
+              <h3 class="concept-title" data-i18n="liveCard2Title">Prediction Panel</h3>
+              <p class="concept-text" data-i18n="liveCard2Text">Look at top-1 class and also the margin to top-2. Small margin means uncertainty even if top-1 is high.</p>
+            </div>
+            <div class="concept-card">
+              <h3 class="concept-title" data-i18n="liveCard3Title">Didactic Controls</h3>
+              <p class="concept-text" data-i18n="liveCard3Text">Epoch and hidden-node sliders are pedagogical guides. They highlight high-bias and overfitting zones.</p>
+            </div>
+          </div>
+        </section>
+
         <!-- SECTION 1: Training Code -->
         <section class="section">
           <div>
@@ -1474,6 +1525,68 @@
               </button>
               <div class="expandable-content" style="display: none;" data-i18n="keyEpochsText">One epoch means the model has seen every training example once. Training for 40 epochs means the model passes over the full dataset 40 times. With each pass, it refines its weights — but too many epochs can lead to overfitting, where the model memorizes training data instead of learning general patterns.</div>
             </div>
+            <div class="expandable-card" style="border-left-color: #22c55e;">
+              <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
+                <span class="expandable-title" data-i18n="keyActivations">Common Activations</span>
+                <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div class="expandable-content" style="display: none;" data-i18n="keyActivationsText">ReLU is the default in hidden layers. Leaky ReLU helps avoid dead neurons. Sigmoid is common for binary output. Tanh is zero-centered. GELU is frequent in transformers. Softmax is used for multiclass output.</div>
+            </div>
+            <div class="expandable-card" style="border-left-color: #06b6d4;">
+              <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
+                <span class="expandable-title" data-i18n="keyReadPrediction">How to Read Predictions</span>
+                <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div class="expandable-content" style="display: none;" data-i18n="keyReadPredictionText">Use three checks: top-1 probability, gap to top-2, and visual plausibility of your stroke. A high score with tiny gap often means ambiguity, not certainty.</div>
+            </div>
+            <div class="expandable-card" style="border-left-color: #f59e0b;">
+              <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
+                <span class="expandable-title" data-i18n="keyTroubleshoot">Quick Diagnosis Checklist</span>
+                <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div class="expandable-content" style="display: none;" data-i18n="keyTroubleshootText">If prediction is wrong: 1) center the digit, 2) avoid very thick strokes, 3) reduce extra marks, 4) compare top-1 vs top-2, 5) retry with cleaner shape.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 5: Activation Comparison -->
+        <section class="section">
+          <div>
+            <h2 class="section-title" data-i18n="section5Title">Activation Quick Comparison</h2>
+            <p class="section-subtitle" data-i18n="section5Subtitle">When to use each activation in practice</p>
+          </div>
+          <div class="activation-table">
+            <div class="activation-row">
+              <div data-i18n="actCol1">Activation</div>
+              <div data-i18n="actCol2">Good for</div>
+              <div data-i18n="actCol3">Watch out for</div>
+            </div>
+            <div class="activation-row">
+              <div class="activation-name">ReLU</div>
+              <div class="activation-note" data-i18n="actReluGood">Default hidden layers in MLP/CNN.</div>
+              <div class="activation-note" data-i18n="actReluBad">Dead neurons if many outputs stay at 0.</div>
+            </div>
+            <div class="activation-row">
+              <div class="activation-name">Leaky ReLU</div>
+              <div class="activation-note" data-i18n="actLeakyGood">Safer ReLU variant for sparse gradients.</div>
+              <div class="activation-note" data-i18n="actLeakyBad">One extra hyperparameter (negative slope).</div>
+            </div>
+            <div class="activation-row">
+              <div class="activation-name">Sigmoid</div>
+              <div class="activation-note" data-i18n="actSigGood">Binary output probabilities.</div>
+              <div class="activation-note" data-i18n="actSigBad">Saturates in hidden layers, slower training.</div>
+            </div>
+            <div class="activation-row">
+              <div class="activation-name">Softmax</div>
+              <div class="activation-note" data-i18n="actSoftGood">Multiclass output (probabilities sum to 1).</div>
+              <div class="activation-note" data-i18n="actSoftBad">Confidence is not always calibrated.</div>
+            </div>
           </div>
         </section>
       </div>
@@ -1660,6 +1773,20 @@
         }
         this.brush = Object.assign(defaultBrush, options.brush || {})
         this.buildGrid()
+        window.addEventListener('nn-lang-change', () => this.updateTitleText())
+      }
+
+      getTitleByLanguage() {
+        const lang = localStorage.getItem('portfolio-language')
+        if (lang === 'es') return 'Dibuja un dígito'
+        if (lang === 'ca') return 'Dibuixa un dígit'
+        return 'Draw a digit'
+      }
+
+      updateTitleText() {
+        if (this.titleElement) {
+          this.titleElement.textContent = this.getTitleByLanguage()
+        }
       }
 
       buildGrid() {
@@ -1673,6 +1800,7 @@
         this.gridElement.style.border = '2px solid #374151'
         this.gridElement.style.borderRadius = '8px'
         this.gridElement.style.overflow = 'hidden'
+        this.gridElement.style.touchAction = 'none'
 
         for (let i = 0; i < this.values.length; i += 1) {
           const cell = document.createElement('div')
@@ -1686,7 +1814,8 @@
 
         this.container.innerHTML = ''
         const title = document.createElement('div')
-        title.textContent = 'Draw digit'
+        this.titleElement = title
+        this.updateTitleText()
         title.style.fontSize = '0.875rem'
         title.style.color = '#9ca3af'
         title.style.marginBottom = '8px'
@@ -1707,6 +1836,9 @@
 
       handlePointerDown(event) {
         event.preventDefault()
+        if (this.gridElement && event.pointerId != null) {
+          try { this.gridElement.setPointerCapture(event.pointerId) } catch (e) {}
+        }
         const isErase = event.button === 2 || event.buttons === 2
         this.activeMode = isErase ? 'erase' : 'draw'
         this.isDrawing = true
@@ -2342,7 +2474,7 @@
 
       applyNodeColors(layer, values, scale, layerIndex) {
         const { mesh, type } = layer
-        const base = 0.06
+        const base = 0.45
         if (type === 'input') {
           // Input layer: very dark gray (low use) to green (high use)
           for (let i = 0; i < values.length; i += 1) {
@@ -2383,8 +2515,8 @@
         group.connections.forEach((connection, index) => {
           const magnitude = Math.abs(contributions[index] / scale)
           const normalized = clamp(magnitude, 0, 1)
-          const redBlue = 0.06 * (1 - normalized)
-          const green = 0.06 + 0.94 * normalized
+          const redBlue = 0.45 * (1 - normalized)
+          const green = 0.45 + 0.55 * normalized
           // Connections: very dark gray (low use) to green (high use)
           this.tempColor.setRGB(redBlue, green, redBlue)
           group.mesh.setColorAt(index, this.tempColor)
@@ -2424,6 +2556,37 @@
     // Main initialization
     async function initializeVisualizer() {
       try {
+        const HINT_MESSAGES = {
+          en: {
+            epochOverfit: 'Didactic control: overfitting risk (too many epochs).',
+            epochHighBias: 'Didactic control: high bias risk (too few epochs).',
+            epochBalanced: 'Didactic control: balanced training range.',
+            hiddenHighBias: 'Didactic control: high bias risk (too few hidden nodes).',
+            hiddenOverfit: 'Didactic control: overfitting risk (too many hidden nodes).',
+            hiddenBalanced: 'Didactic control: balanced model capacity.',
+          },
+          es: {
+            epochOverfit: 'Control didáctico: riesgo de overfitting (demasiadas épocas).',
+            epochHighBias: 'Control didáctico: riesgo de high bias (pocas épocas).',
+            epochBalanced: 'Control didáctico: rango de entrenamiento equilibrado.',
+            hiddenHighBias: 'Control didáctico: riesgo de high bias (pocos nodos ocultos).',
+            hiddenOverfit: 'Control didáctico: riesgo de overfitting (muchos nodos ocultos).',
+            hiddenBalanced: 'Control didáctico: capacidad del modelo equilibrada.',
+          },
+          ca: {
+            epochOverfit: "Control didàctic: risc d'overfitting (massa èpoques).",
+            epochHighBias: 'Control didàctic: risc de high bias (poques èpoques).',
+            epochBalanced: "Control didàctic: rang d'entrenament equilibrat.",
+            hiddenHighBias: 'Control didàctic: risc de high bias (pocs nodes ocults).',
+            hiddenOverfit: "Control didàctic: risc d'overfitting (massa nodes ocults).",
+            hiddenBalanced: 'Control didàctic: capacitat del model equilibrada.',
+          },
+        }
+        function getHintLang() {
+          const lang = localStorage.getItem('portfolio-language')
+          return lang === 'es' || lang === 'ca' ? lang : 'en'
+        }
+
         const weightDefinitionUrl = new URL(VISUALIZER_CONFIG.weightUrl, window.location.href)
         const rawDefinition = await fetchNetworkDefinition(weightDefinitionUrl.toString())
         
@@ -2864,12 +3027,13 @@
           const accuracy = getAccuracyForHiddenNodes(currentHiddenNodes, epoch)
           if (accuracyValue) accuracyValue.textContent = accuracy.toFixed(1) + '%'
           if (epochHint) {
+            const msgs = HINT_MESSAGES[getHintLang()]
             if (epoch > 40) {
-              epochHint.textContent = 'Warning: overfitting zone (epoch > 40).'
+              epochHint.textContent = msgs.epochOverfit
             } else if (epoch < 12) {
-              epochHint.textContent = 'Warning: high bias zone (very low epoch).'
+              epochHint.textContent = msgs.epochHighBias
             } else {
-              epochHint.textContent = 'Epoch in balanced range.'
+              epochHint.textContent = msgs.epochBalanced
             }
           }
         }
@@ -2885,12 +3049,13 @@
           const accuracy = getAccuracyForHiddenNodes(hiddenNodes, currentEpoch)
           if (hiddenNodesAccuracyValue) hiddenNodesAccuracyValue.textContent = accuracy.toFixed(1) + '%'
           if (hiddenHint) {
+            const msgs = HINT_MESSAGES[getHintLang()]
             if (hiddenNodes < 32) {
-              hiddenHint.textContent = 'Warning: high bias risk (too few hidden nodes).'
+              hiddenHint.textContent = msgs.hiddenHighBias
             } else if (hiddenNodes > 192) {
-              hiddenHint.textContent = 'Warning: overfitting risk (many hidden nodes).'
+              hiddenHint.textContent = msgs.hiddenOverfit
             } else {
-              hiddenHint.textContent = 'Hidden nodes in balanced range.'
+              hiddenHint.textContent = msgs.hiddenBalanced
             }
           }
         }
@@ -3029,64 +3194,91 @@
           trainingEpoch: 'Training Epoch',
           epoch: 'Epoch',
           accuracy: 'Accuracy',
-          hintEpoch: 'Adjust the epoch to see accuracy improve, then drop after 40 (overfitting)',
+          hintEpoch: 'Didactic control: this slider does not retrain live. It highlights high bias vs overfitting zones.',
           hiddenLayerNodes: 'Hidden Layer Nodes',
           hiddenNodes: 'Hidden Nodes',
-          hintHidden: 'Adjust hidden layer size to see its impact on accuracy',
+          hintHidden: 'Didactic control: this slider does not rebuild the model live. It marks low/high capacity risk.',
           updateBtn: 'Update and Recalculate',
           hintUpdate: 'Click to update the 3D visualization and recalculate predictions',
           learnMore: 'Learn More',
-          section1Title: 'How This Network Was Trained',
-          section1Subtitle: 'The actual TensorFlow / Keras code used to build and train the model',
+          section0Title: 'How to Read This Demo',
+          section0Subtitle: 'What runs live, what was trained offline, and how to interpret the output',
+          liveCard1Title: 'Live = Inference',
+          liveCard1Text: 'When you draw, the page does inference with a pre-trained model. It does not perform full training on your device.',
+          liveCard2Title: 'Prediction Panel',
+          liveCard2Text: 'Look at top-1 class and also the margin to top-2. Small margin means uncertainty even if top-1 is high.',
+          liveCard3Title: 'Didactic Controls',
+          liveCard3Text: 'Epoch and hidden-node sliders are pedagogical guides. They highlight high-bias and overfitting zones.',
+          section1Title: 'What Was Trained vs What Runs Live',
+          section1Subtitle: 'Training happened offline in TensorFlow/Keras. This page runs inference and visual explanation in real time.',
           codeLang: 'Python / TensorFlow',
           ann1Title: 'Input Layer',
-          ann1Text: 'Each 28×28 pixel drawing is flattened into a vector of 784 numbers. This is the entry point of the network.',
+          ann1Text: 'Each 28×28 drawing is flattened to 784 numbers. That vector is the model input at inference time.',
           ann2Title: 'Dense(64, relu)',
-          ann2Text: 'A Dense (fully connected) layer: every one of the 64 neurons receives input from ALL 784 pixels. "Dense" means every possible connection exists. ReLU activation: if the value is negative → 0, if positive → passes through unchanged.',
+          ann2Text: 'First hidden layer. Every neuron receives all 784 inputs (fully connected). ReLU keeps positive values and clips negative values to 0.',
           ann3Title: 'Dense(32, relu)',
-          ann3Text: 'Second hidden layer with 32 neurons, each connected to all 64 neurons from the previous layer. The network learns progressively more abstract patterns at each layer.',
+          ann3Text: 'Second hidden layer. It compresses and refines the representation learned by the first layer.',
           ann4Title: 'Dense(10, softmax)',
-          ann4Text: '10 output neurons — one for each digit (0–9). Softmax converts raw scores into probabilities that sum to 1.0, so the network effectively "votes" on which digit it sees.',
+          ann4Text: 'Output layer with 10 classes (0-9). Softmax converts logits into class probabilities that sum to 1.',
           ann5Title: 'Compile',
-          ann5Text: 'Configures how the model learns. The loss function (SparseCategoricalCrossentropy) measures how wrong predictions are. Adam is an optimizer that adjusts weights to minimize that error.',
+          ann5Text: 'Defines the training objective: loss (error metric) and optimizer (how weights are updated).',
           ann6Title: 'Train',
-          ann6Text: 'The model sees the entire dataset 40 times (epochs). Each pass: it makes predictions, measures the error, and updates its weights to improve.',
-          section2Title: 'Understanding the Architecture',
-          section2Subtitle: 'A 4-layer neural network that recognizes handwritten digits',
+          ann6Text: 'Offline phase: the model iterates over the dataset for multiple epochs, reducing loss and improving generalization.',
+          section2Title: 'Architecture at a Glance',
+          section2Subtitle: 'A compact MLP for handwritten digit classification',
           archInput: 'Input',
           archHidden1: 'Hidden 1',
           archHidden2: 'Hidden 2',
           archOutput: 'Output',
-          conceptDenseTitle: 'What is Dense?',
-          conceptDenseText: 'In a Dense layer every neuron is connected to every neuron in the previous layer. With 784 inputs and 64 neurons, that means 50,176 individual connections — each with its own trainable weight.',
-          conceptReLUTitle: 'What is ReLU?',
-          conceptReLUText: 'ReLU (Rectified Linear Unit) is a simple activation function: if the input is negative it outputs 0, otherwise it passes the value unchanged. This introduces non-linearity, allowing the network to learn complex patterns.',
-          conceptSoftmaxTitle: 'What is Softmax?',
-          conceptSoftmaxText: 'Softmax converts a vector of raw scores into probabilities. If the output is [2.1, 0.5, 8.3, …], softmax ensures all values are positive and sum to exactly 1.0 — a proper probability distribution.',
-          section3Title: 'What Happens When You Draw',
-          section3Subtitle: 'From pixels to prediction in 6 steps',
+          conceptDenseTitle: 'Dense Layer',
+          conceptDenseText: 'A dense layer connects every input to every neuron. This gives high flexibility, but also many parameters.',
+          conceptReLUTitle: 'ReLU',
+          conceptReLUText: 'ReLU introduces non-linearity with almost no extra cost. It is still the standard default in hidden layers.',
+          conceptSoftmaxTitle: 'Softmax Output',
+          conceptSoftmaxText: 'Softmax maps logits to probabilities over classes. The highest probability becomes the predicted class.',
+          section3Title: 'Inference Pipeline',
+          section3Subtitle: 'From your pixels to a class probability distribution',
           pipe1Title: 'Draw',
-          pipe1Text: 'You draw on a 28×28 canvas. Each cell is a brightness from 0 to 255.',
+          pipe1Text: 'You draw a digit in the canvas. Internally we read grayscale intensity per cell.',
           pipe2Title: 'Flatten',
-          pipe2Text: 'The 28×28 grid is reshaped into a single array of 784 values.',
+          pipe2Text: 'The 2D grid is flattened into a 784-length vector.',
           pipe3Title: 'Normalize',
-          pipe3Text: 'Each pixel is normalized: (pixel − 0.13) / 0.31, matching training preprocessing.',
+          pipe3Text: 'Input is normalized with the same mean/std used during training to keep distributions consistent.',
           pipe4Title: 'Forward Pass',
-          pipe4Text: 'Data flows through each layer: multiply by weights, add bias, apply activation.',
+          pipe4Text: 'For each layer: weighted sum + bias, then activation.',
           pipe5Title: 'Softmax',
-          pipe5Text: 'The 10 raw scores are converted into probabilities that sum to 1.',
+          pipe5Text: 'Final logits are converted into probabilities that sum to 1.',
           pipe6Title: 'Prediction',
-          pipe6Text: "The digit with the highest probability is the network's answer.",
-          section4Title: 'Key Concepts',
-          section4Subtitle: 'Dive deeper into the building blocks',
+          pipe6Text: 'We return the class with highest probability, plus the full confidence distribution.',
+          section4Title: 'Practical Concepts',
+          section4Subtitle: 'Short explanations focused on what you see in this demo',
           keyWeights: 'Weights & Biases',
-          keyWeightsText: 'Weights are the learnable numbers on every connection between neurons. Each weight controls how much influence one neuron has on the next. Biases give each neuron an adjustable threshold — they shift the activation function left or right. Together, weights and biases are the "knowledge" the network acquires during training.',
+          keyWeightsText: 'Weights control how strongly signals propagate between neurons. Bias shifts the neuron threshold. Together they are the trainable parameters learned from data.',
           keyLoss: 'Loss Function',
-          keyLossText: 'Sparse Categorical Crossentropy measures how far the predicted probabilities are from the true label. If the correct digit is 7 and the model gives 90% confidence to 7, the loss is low. If it gives 10%, the loss is high. The goal of training is to minimize this number across all examples.',
+          keyLossText: 'Sparse Categorical Crossentropy compares predicted probabilities against the correct class. Lower loss means predictions align better with labels.',
           keyAdam: 'Adam Optimizer',
-          keyAdamText: 'Adam (Adaptive Moment Estimation) is a smart version of gradient descent. It maintains a moving average of both the gradients and their squared values, adapting the learning rate for each weight individually. This makes training faster and more stable than basic gradient descent.',
+          keyAdamText: 'Adam adapts the effective learning rate per parameter using gradient statistics. It usually converges faster and more stably than plain SGD in this type of model.',
           keyEpochs: 'Epochs',
-          keyEpochsText: 'One epoch means the model has seen every training example once. Training for 40 epochs means the model passes over the full dataset 40 times. With each pass, it refines its weights — but too many epochs can lead to overfitting, where the model memorizes training data instead of learning general patterns.',
+          keyEpochsText: 'One epoch is one full pass over the training set. Too few epochs can underfit (high bias). Too many can overfit (poor generalization).',
+          keyActivations: 'Common Activations',
+          keyActivationsText: 'ReLU: fast default in hidden layers. Leaky ReLU: avoids dead neurons. Sigmoid: common for binary output but saturates in hidden layers. Tanh: zero-centered alternative. GELU: frequent in transformer models. Softmax: output activation for multiclass classification.',
+          keyReadPrediction: 'How to Read Predictions',
+          keyReadPredictionText: 'Use three checks: top-1 probability, gap to top-2, and visual plausibility of your stroke. A high score with tiny gap often means ambiguity, not certainty.',
+          keyTroubleshoot: 'Quick Diagnosis Checklist',
+          keyTroubleshootText: 'If prediction is wrong: 1) center the digit, 2) avoid very thick strokes, 3) reduce extra marks, 4) compare top-1 vs top-2, 5) retry with cleaner shape.',
+          section5Title: 'Activation Quick Comparison',
+          section5Subtitle: 'When to use each activation in practice',
+          actCol1: 'Activation',
+          actCol2: 'Good for',
+          actCol3: 'Watch out for',
+          actReluGood: 'Default hidden layers in MLP/CNN.',
+          actReluBad: 'Dead neurons if many outputs stay at 0.',
+          actLeakyGood: 'Safer ReLU variant for sparse gradients.',
+          actLeakyBad: 'One extra hyperparameter (negative slope).',
+          actSigGood: 'Binary output probabilities.',
+          actSigBad: 'Saturates in hidden layers, slower training.',
+          actSoftGood: 'Multiclass output (probabilities sum to 1).',
+          actSoftBad: 'Confidence is not always calibrated.',
           errorTitle: 'Error loading visualization',
           errorConsole: 'Check the console for details.',
           langMobileLabel: 'Idioma / Language'
@@ -3109,64 +3301,91 @@
           trainingEpoch: 'Época de entrenamiento',
           epoch: 'Época',
           accuracy: 'Precisión',
-          hintEpoch: 'Ajusta la época para ver cómo sube la precisión y luego baja tras 40 (overfitting)',
+          hintEpoch: 'Control didáctico: este slider no reentrena en vivo. Marca zonas de high bias y overfitting.',
           hiddenLayerNodes: 'Nodos de la capa oculta',
           hiddenNodes: 'Nodos ocultos',
-          hintHidden: 'Ajusta el tamaño de la capa oculta para ver su impacto en la precisión',
+          hintHidden: 'Control didáctico: este slider no reconstruye el modelo en vivo. Marca riesgo de capacidad baja/alta.',
           updateBtn: 'Actualizar y recalcular',
           hintUpdate: 'Haz clic para actualizar la visualización 3D y recalcular las predicciones',
           learnMore: 'Saber más',
-          section1Title: 'Cómo se entrenó esta red',
-          section1Subtitle: 'El código real en TensorFlow / Keras usado para construir y entrenar el modelo',
+          section0Title: 'Cómo leer esta demo',
+          section0Subtitle: 'Qué corre en vivo, qué se entrenó offline y cómo interpretar la salida',
+          liveCard1Title: 'En vivo = inferencia',
+          liveCard1Text: 'Cuando dibujas, la página ejecuta inferencia con un modelo ya entrenado. No hace entrenamiento completo en tu dispositivo.',
+          liveCard2Title: 'Panel de predicción',
+          liveCard2Text: 'Mira la clase top-1 y también la diferencia con top-2. Si el margen es pequeño, hay incertidumbre aunque top-1 sea alto.',
+          liveCard3Title: 'Controles didácticos',
+          liveCard3Text: 'Los sliders de época y nodos son guías pedagógicas. Marcan zonas de high bias y overfitting.',
+          section1Title: 'Qué se entrenó y qué corre en vivo',
+          section1Subtitle: 'El entrenamiento se hizo offline con TensorFlow/Keras. Esta página ejecuta inferencia y explicación visual en tiempo real.',
           codeLang: 'Python / TensorFlow',
           ann1Title: 'Capa de entrada',
-          ann1Text: 'Cada dibujo de 28×28 píxeles se aplana en un vector de 784 números. Es la entrada de la red.',
+          ann1Text: 'Cada dibujo 28×28 se aplana a 784 valores. Ese vector es la entrada del modelo en inferencia.',
           ann2Title: 'Dense(64, relu)',
-          ann2Text: 'Capa Dense (totalmente conectada): cada uno de los 64 neuronas recibe entrada de los 784 píxeles. "Dense" significa que existe cada conexión posible. Activación ReLU: si el valor es negativo → 0, si es positivo → se deja igual.',
+          ann2Text: 'Primera capa oculta. Cada neurona recibe los 784 inputs (totalmente conectada). ReLU deja pasar valores positivos y recorta negativos a 0.',
           ann3Title: 'Dense(32, relu)',
-          ann3Text: 'Segunda capa oculta con 32 neuronas, cada una conectada a las 64 de la capa anterior. La red aprende patrones cada vez más abstractos en cada capa.',
+          ann3Text: 'Segunda capa oculta. Comprime y refina la representación aprendida en la capa anterior.',
           ann4Title: 'Dense(10, softmax)',
-          ann4Text: '10 neuronas de salida, una por cada dígito (0–9). Softmax convierte las puntuaciones en probabilidades que suman 1.0; la red "vota" qué dígito cree ver.',
+          ann4Text: 'Capa de salida con 10 clases (0-9). Softmax transforma logits en probabilidades que suman 1.',
           ann5Title: 'Compile',
-          ann5Text: 'Configura cómo aprende el modelo. La función de pérdida (SparseCategoricalCrossentropy) mide el error de las predicciones. Adam es un optimizador que ajusta los pesos para minimizar ese error.',
+          ann5Text: 'Define el objetivo de entrenamiento: pérdida (cómo medimos el error) y optimizador (cómo se actualizan los pesos).',
           ann6Title: 'Train',
-          ann6Text: 'El modelo ve todo el dataset 40 veces (épocas). En cada pasada: predice, mide el error y actualiza los pesos para mejorar.',
-          section2Title: 'Entender la arquitectura',
-          section2Subtitle: 'Una red neuronal de 4 capas que reconoce dígitos escritos a mano',
+          ann6Text: 'Fase offline: el modelo recorre el dataset varias épocas, reduce la pérdida y mejora su capacidad de generalizar.',
+          section2Title: 'Arquitectura en resumen',
+          section2Subtitle: 'Un MLP compacto para clasificar dígitos manuscritos',
           archInput: 'Entrada',
           archHidden1: 'Oculta 1',
           archHidden2: 'Oculta 2',
           archOutput: 'Salida',
-          conceptDenseTitle: '¿Qué es Dense?',
-          conceptDenseText: 'En una capa Dense cada neurona está conectada a todas las de la capa anterior. Con 784 entradas y 64 neuronas hay 50.176 conexiones, cada una con su peso entrenable.',
-          conceptReLUTitle: '¿Qué es ReLU?',
-          conceptReLUText: 'ReLU (Unidad Lineal Rectificada) es una función de activación simple: si la entrada es negativa devuelve 0; si no, el valor pasa igual. Introduce no linealidad y permite aprender patrones complejos.',
-          conceptSoftmaxTitle: '¿Qué es Softmax?',
-          conceptSoftmaxText: 'Softmax convierte un vector de puntuaciones en probabilidades. Si la salida es [2.1, 0.5, 8.3, …], softmax hace que los valores sean positivos y sumen 1.0.',
-          section3Title: 'Qué ocurre cuando dibujas',
-          section3Subtitle: 'De píxeles a predicción en 6 pasos',
+          conceptDenseTitle: 'Capa Dense',
+          conceptDenseText: 'Una capa densa conecta todas las entradas con todas las neuronas. Es flexible, pero también aumenta el número de parámetros.',
+          conceptReLUTitle: 'ReLU',
+          conceptReLUText: 'ReLU mete no linealidad con coste casi cero. Por eso sigue siendo la opción estándar en capas ocultas.',
+          conceptSoftmaxTitle: 'Salida Softmax',
+          conceptSoftmaxText: 'Softmax convierte logits en probabilidades por clase. La mayor probabilidad se toma como predicción.',
+          section3Title: 'Pipeline de inferencia',
+          section3Subtitle: 'De tus píxeles a una distribución de probabilidades',
           pipe1Title: 'Dibujar',
-          pipe1Text: 'Dibujas en un lienzo 28×28. Cada celda es un brillo de 0 a 255.',
+          pipe1Text: 'Dibujas un dígito. Internamente leemos la intensidad en escala de grises por celda.',
           pipe2Title: 'Aplanar',
-          pipe2Text: 'La cuadrícula 28×28 se convierte en un único array de 784 valores.',
+          pipe2Text: 'La imagen 2D se convierte en un vector de longitud 784.',
           pipe3Title: 'Normalizar',
-          pipe3Text: 'Cada píxel se normaliza: (píxel − 0.13) / 0.31, igual que en el entrenamiento.',
+          pipe3Text: 'Normalizamos con la misma media/desviación estándar del entrenamiento para mantener consistencia.',
           pipe4Title: 'Forward pass',
-          pipe4Text: 'Los datos pasan por cada capa: multiplicar por pesos, sumar bias, aplicar activación.',
+          pipe4Text: 'En cada capa: suma ponderada + bias, y después activación.',
           pipe5Title: 'Softmax',
-          pipe5Text: 'Las 10 puntuaciones se convierten en probabilidades que suman 1.',
+          pipe5Text: 'Los logits finales se transforman en probabilidades que suman 1.',
           pipe6Title: 'Predicción',
-          pipe6Text: 'El dígito con mayor probabilidad es la respuesta de la red.',
-          section4Title: 'Conceptos clave',
-          section4Subtitle: 'Profundiza en los bloques básicos',
+          pipe6Text: 'Devolvemos la clase con mayor probabilidad y toda la distribución de confianza.',
+          section4Title: 'Conceptos prácticos',
+          section4Subtitle: 'Explicaciones cortas orientadas a lo que ves en esta demo',
           keyWeights: 'Pesos y biases',
-          keyWeightsText: 'Los pesos son los números que se aprenden en cada conexión. Cada peso controla la influencia de una neurona en la siguiente. Los biases dan a cada neurona un umbral; desplazan la función de activación. Juntos son el "conocimiento" de la red.',
+          keyWeightsText: 'Los pesos controlan cuánto se propaga cada señal entre neuronas. El bias desplaza el umbral de activación. Juntos forman los parámetros entrenables del modelo.',
           keyLoss: 'Función de pérdida',
-          keyLossText: 'Sparse Categorical Crossentropy mide cuánto se alejan las probabilidades predichas de la etiqueta real. Si el dígito correcto es 7 y el modelo da 90% al 7, la pérdida es baja. Si da 10%, es alta. El entrenamiento minimiza este valor.',
+          keyLossText: 'Sparse Categorical Crossentropy compara probabilidades predichas con la clase correcta. Menor pérdida = mejor ajuste a las etiquetas.',
           keyAdam: 'Optimizador Adam',
-          keyAdamText: 'Adam (Adaptive Moment Estimation) es una versión mejorada del descenso por gradiente. Mantiene medias móviles de los gradientes y de sus cuadrados, adaptando la tasa de aprendizaje por peso. Entrenamiento más rápido y estable.',
+          keyAdamText: 'Adam adapta la tasa de aprendizaje efectiva por parámetro usando estadísticas del gradiente. Suele converger más rápido y estable que SGD básico.',
           keyEpochs: 'Épocas',
-          keyEpochsText: 'Una época significa que el modelo ha visto cada ejemplo una vez. 40 épocas = 40 pasadas completas al dataset. En cada pasada refina los pesos; demasiadas épocas pueden causar overfitting (memorizar en vez de generalizar).',
+          keyEpochsText: 'Una época es una pasada completa por el conjunto de entrenamiento. Pocas épocas pueden infraajustar (high bias); demasiadas pueden sobreajustar (overfitting).',
+          keyActivations: 'Activaciones comunes',
+          keyActivationsText: 'ReLU: rápida y estándar en ocultas. Leaky ReLU: reduce neuronas muertas. Sigmoid: útil en salida binaria, pero se satura en ocultas. Tanh: alternativa centrada en 0. GELU: frecuente en transformers. Softmax: salida para clasificación multiclase.',
+          keyReadPrediction: 'Cómo leer la predicción',
+          keyReadPredictionText: 'Usa tres comprobaciones: probabilidad top-1, diferencia con top-2 y plausibilidad visual del trazo. Un valor alto con margen pequeño suele indicar ambigüedad, no certeza.',
+          keyTroubleshoot: 'Checklist rápido de diagnóstico',
+          keyTroubleshootText: 'Si falla la predicción: 1) centra el dígito, 2) evita trazos muy gruesos, 3) elimina marcas extra, 4) compara top-1 vs top-2, 5) repite con forma más limpia.',
+          section5Title: 'Comparativa rápida de activaciones',
+          section5Subtitle: 'Cuándo usar cada activación en la práctica',
+          actCol1: 'Activación',
+          actCol2: 'Útil para',
+          actCol3: 'Ojo con',
+          actReluGood: 'Capas ocultas por defecto en MLP/CNN.',
+          actReluBad: 'Neuronas muertas si muchas salidas se quedan en 0.',
+          actLeakyGood: 'Variante más segura de ReLU con gradiente en negativos.',
+          actLeakyBad: 'Añade un hiperparámetro (pendiente negativa).',
+          actSigGood: 'Probabilidad de salida binaria.',
+          actSigBad: 'Se satura en ocultas y puede ralentizar entrenamiento.',
+          actSoftGood: 'Salida multiclase (probabilidades suman 1).',
+          actSoftBad: 'La confianza no siempre está bien calibrada.',
           errorTitle: 'Error al cargar la visualización',
           errorConsole: 'Revisa la consola para más detalles.',
           langMobileLabel: 'Idioma / Language'
@@ -3189,64 +3408,91 @@
           trainingEpoch: 'Època d\'entrenament',
           epoch: 'Època',
           accuracy: 'Precisió',
-          hintEpoch: 'Ajusta l\'època per veure com puja la precisió i després baixa després de 40 (overfitting)',
+          hintEpoch: "Control didàctic: aquest slider no reentrena en viu. Marca zones de high bias i overfitting.",
           hiddenLayerNodes: 'Nodes de la capa oculta',
           hiddenNodes: 'Nodes ocults',
-          hintHidden: 'Ajusta la mida de la capa oculta per veure el seu impacte en la precisió',
+          hintHidden: 'Control didàctic: aquest slider no reconstrueix el model en viu. Marca risc de capacitat baixa/alta.',
           updateBtn: 'Actualitzar i recalcular',
           hintUpdate: 'Clica per actualitzar la visualització 3D i recalcular les prediccions',
           learnMore: 'Saber-ne més',
-          section1Title: 'Com es va entrenar aquesta xarxa',
-          section1Subtitle: 'El codi real en TensorFlow / Keras utilitzat per construir i entrenar el model',
+          section0Title: 'Com llegir aquesta demo',
+          section0Subtitle: 'Què corre en viu, què es va entrenar offline i com interpretar la sortida',
+          liveCard1Title: 'En viu = inferència',
+          liveCard1Text: "Quan dibuixes, la pàgina executa inferència amb un model ja entrenat. No fa entrenament complet al teu dispositiu.",
+          liveCard2Title: 'Panell de predicció',
+          liveCard2Text: 'Mira la classe top-1 i també la diferència amb top-2. Si el marge és petit, hi ha incertesa encara que top-1 siga alt.',
+          liveCard3Title: 'Controls didàctics',
+          liveCard3Text: "Els sliders d'època i nodes són guies pedagògiques. Marquen zones de high bias i overfitting.",
+          section1Title: 'Què es va entrenar i què corre en viu',
+          section1Subtitle: "L'entrenament es va fer offline amb TensorFlow/Keras. Aquesta pàgina executa inferència i explicació visual en temps real.",
           codeLang: 'Python / TensorFlow',
           ann1Title: 'Capa d\'entrada',
-          ann1Text: 'Cada dibuix de 28×28 píxels s\'aplana en un vector de 784 nombres. És l\'entrada de la xarxa.',
+          ann1Text: "Cada dibuix 28×28 s'aplana a 784 valors. Aquest vector és l'entrada del model en inferència.",
           ann2Title: 'Dense(64, relu)',
-          ann2Text: 'Capa Dense (totalment connectada): cada una de les 64 neurones rep entrada dels 784 píxels. "Dense" vol dir que existeix cada connexió possible. Activació ReLU: si el valor és negatiu → 0; si és positiu → es deixa igual.',
+          ann2Text: 'Primera capa oculta. Cada neurona rep els 784 inputs (totalment connectada). ReLU deixa passar valors positius i talla els negatius a 0.',
           ann3Title: 'Dense(32, relu)',
-          ann3Text: 'Segona capa oculta amb 32 neurones, connectades a les 64 de la capa anterior. La xarxa aprèn patrons cada cop més abstractes.',
+          ann3Text: 'Segona capa oculta. Comprimeix i refina la representació apresa per la capa anterior.',
           ann4Title: 'Dense(10, softmax)',
-          ann4Text: '10 neurones de sortida, una per cada dígit (0–9). Softmax converteix les puntuacions en probabilitats que sumen 1.0.',
+          ann4Text: 'Capa de sortida amb 10 classes (0-9). Softmax transforma logits en probabilitats que sumen 1.',
           ann5Title: 'Compile',
-          ann5Text: 'Configura com aprèn el model. La funció de pèrdua (SparseCategoricalCrossentropy) mesura l\'error de les prediccions. Adam és un optimitzador que ajusta els pesos per minimitzar aquest error.',
+          ann5Text: "Defineix l'objectiu d'entrenament: pèrdua (com mesurem l'error) i optimitzador (com s'actualitzen els pesos).",
           ann6Title: 'Train',
-          ann6Text: 'El model veu tot el dataset 40 vegades (èpoques). A cada passada: prediu, mesura l\'error i actualitza els pesos.',
-          section2Title: 'Entendre l\'arquitectura',
-          section2Subtitle: 'Una xarxa neuronal de 4 capes que reconeix dígits escrits a mà',
+          ann6Text: "Fase offline: el model recorre el dataset en diverses èpoques, redueix la pèrdua i millora la generalització.",
+          section2Title: "Arquitectura d'un cop d'ull",
+          section2Subtitle: 'Un MLP compacte per classificar dígits manuscrits',
           archInput: 'Entrada',
           archHidden1: 'Oculta 1',
           archHidden2: 'Oculta 2',
           archOutput: 'Sortida',
-          conceptDenseTitle: 'Què és Dense?',
-          conceptDenseText: 'En una capa Dense cada neurona està connectada a totes les de la capa anterior. Amb 784 entrades i 64 neurones hi ha 50.176 connexions, cadascuna amb el seu pes entrenable.',
-          conceptReLUTitle: 'Què és ReLU?',
-          conceptReLUText: 'ReLU (Unitat Lineal Rectificada) és una funció d\'activació simple: si l\'entrada és negativa retorna 0; si no, el valor passa igual. Introdueix no linealitat.',
-          conceptSoftmaxTitle: 'Què és Softmax?',
-          conceptSoftmaxText: 'Softmax converteix un vector de puntuacions en probabilitats que sumen 1.0.',
-          section3Title: 'Què passa quan dibuixes',
-          section3Subtitle: 'De píxels a predicció en 6 passos',
+          conceptDenseTitle: 'Capa Dense',
+          conceptDenseText: 'Una capa densa connecta totes les entrades amb totes les neurones. És flexible, però incrementa els paràmetres.',
+          conceptReLUTitle: 'ReLU',
+          conceptReLUText: 'ReLU introdueix no linealitat amb cost gairebé zero. Encara és l\'estàndard en capes ocultes.',
+          conceptSoftmaxTitle: 'Sortida Softmax',
+          conceptSoftmaxText: 'Softmax converteix logits en probabilitats per classe. La més alta és la predicció.',
+          section3Title: "Pipeline d'inferència",
+          section3Subtitle: 'Dels teus píxels a una distribució de probabilitats',
           pipe1Title: 'Dibuixar',
-          pipe1Text: 'Dibuixes en un llenç 28×28. Cada cel·la és una brillantor de 0 a 255.',
+          pipe1Text: "Dibuixes un dígit. Internament llegim la intensitat en escala de grisos per cel·la.",
           pipe2Title: 'Aplanar',
-          pipe2Text: 'La graella 28×28 es converteix en un array de 784 valors.',
+          pipe2Text: 'La imatge 2D es converteix en un vector de longitud 784.',
           pipe3Title: 'Normalitzar',
-          pipe3Text: 'Cada píxel es normalitza: (píxel − 0.13) / 0.31, com a l\'entrenament.',
+          pipe3Text: "Normalitzem amb la mateixa mitjana/desviació estàndard de l'entrenament per mantenir consistència.",
           pipe4Title: 'Forward pass',
-          pipe4Text: 'Les dades passen per cada capa: multiplicar per pesos, sumar bias, aplicar activació.',
+          pipe4Text: 'A cada capa: suma ponderada + bias, i després activació.',
           pipe5Title: 'Softmax',
-          pipe5Text: 'Les 10 puntuacions es converteixen en probabilitats que sumen 1.',
+          pipe5Text: 'Els logits finals es transformen en probabilitats que sumen 1.',
           pipe6Title: 'Predicció',
-          pipe6Text: 'El dígit amb més probabilitat és la resposta de la xarxa.',
-          section4Title: 'Conceptes clau',
-          section4Subtitle: 'Approfundeix en els blocs bàsics',
+          pipe6Text: 'Retornem la classe amb més probabilitat i tota la distribució de confiança.',
+          section4Title: 'Conceptes pràctics',
+          section4Subtitle: 'Explicacions curtes enfocades al que veus en aquesta demo',
           keyWeights: 'Pesos i biases',
-          keyWeightsText: 'Els pesos són els nombres que s\'aprenen en cada connexió. Els biases donen a cada neurona un llindar. Junts són el "coneixement" de la xarxa.',
+          keyWeightsText: "Els pesos controlen com de fort es propaga cada senyal entre neurones. El bias desplaça el llindar d'activació. Junts són els paràmetres entrenables.",
           keyLoss: 'Funció de pèrdua',
-          keyLossText: 'Sparse Categorical Crossentropy mesura com s\'allunyen les probabilitats de l\'etiqueta real. L\'entrenament minimitza aquest valor.',
+          keyLossText: "Sparse Categorical Crossentropy compara probabilitats predites amb la classe correcta. Menys pèrdua = millor ajust a les etiquetes.",
           keyAdam: 'Optimitzador Adam',
-          keyAdamText: 'Adam manté mitjanes mòbils dels gradients i adapta la taxa d\'aprenentatge per pes. Entrenament més ràpid i estable.',
+          keyAdamText: "Adam adapta la taxa d'aprenentatge efectiva per paràmetre utilitzant estadístiques del gradient. Sol convergir més ràpid i estable.",
           keyEpochs: 'Èpoques',
-          keyEpochsText: 'Una època vol dir que el model ha vist cada exemple una vegada. Masses èpoques poden causar overfitting.',
+          keyEpochsText: "Una època és una passada completa pel conjunt d'entrenament. Poques èpoques poden infraajustar (high bias); masses poden sobreajustar (overfitting).",
+          keyActivations: 'Activacions comunes',
+          keyActivationsText: 'ReLU: ràpida i estàndard en ocultes. Leaky ReLU: redueix neurones mortes. Sigmoid: útil a sortida binària, però se satura en ocultes. Tanh: alternativa centrada en 0. GELU: freqüent en transformers. Softmax: sortida per classificació multiclasse.',
+          keyReadPrediction: 'Com llegir la predicció',
+          keyReadPredictionText: 'Fes tres comprovacions: probabilitat top-1, diferència amb top-2 i plausibilitat visual del traç. Un valor alt amb marge petit sol indicar ambigüitat, no certesa.',
+          keyTroubleshoot: 'Checklist ràpid de diagnosi',
+          keyTroubleshootText: 'Si falla la predicció: 1) centra el dígit, 2) evita traços massa gruixuts, 3) elimina marques extra, 4) compara top-1 vs top-2, 5) repeteix amb forma més neta.',
+          section5Title: "Comparativa ràpida d'activacions",
+          section5Subtitle: "Quan utilitzar cada activació a la pràctica",
+          actCol1: 'Activació',
+          actCol2: 'Bo per a',
+          actCol3: 'Compte amb',
+          actReluGood: 'Capes ocultes per defecte en MLP/CNN.',
+          actReluBad: 'Neurones mortes si moltes sortides queden a 0.',
+          actLeakyGood: 'Variant més segura de ReLU amb gradient en negatius.',
+          actLeakyBad: 'Afig un hiperparàmetre (pendent negativa).',
+          actSigGood: 'Probabilitat de sortida binària.',
+          actSigBad: "Se satura en ocultes i pot alentir l'entrenament.",
+          actSoftGood: 'Sortida multiclasse (probabilitats sumen 1).',
+          actSoftBad: 'La confiança no sempre està ben calibrada.',
           errorTitle: 'Error en carregar la visualització',
           errorConsole: 'Revisa la consola per a més detalls.',
           langMobileLabel: 'Idioma / Language'
