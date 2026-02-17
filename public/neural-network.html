@@ -409,6 +409,16 @@
       z-index: 10;
       pointer-events: none;
     }
+    @media (min-width: 1280px) {
+      .layout {
+        width: min(100vw - 48px, 1800px);
+        margin-left: 0;
+        margin-right: 0;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
     .layout > div:nth-child(2) {
       /* Middle column - empty, 3D visualization is in background */
       pointer-events: none;
