@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { Download, Mail, MapPin, Github, Linkedin, ExternalLink, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { profile } from '../data/profile'
 import { useLanguage } from '../hooks/useLanguage.jsx'
@@ -356,6 +357,30 @@ export default function Resume() {
                     </a>
                   </div>
                 </div>
+              </div>
+
+              {/* About Me */}
+              <div className="mb-8 p-5 rounded-lg border border-primary-200 dark:border-primary-800 bg-primary-50/60 dark:bg-primary-900/20">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                  {getText('resume.recruiterSnapshot.title', 'Recruiter Snapshot')}
+                </h2>
+                <ul className="space-y-1 text-sm text-gray-700 dark:text-gray-300 mb-4">
+                  <li className="flex items-start">
+                    <span className="text-primary-600 mr-2 mt-0.5">•</span>
+                    <span>{getText('resume.recruiterSnapshot.point1', 'Solutions Engineer bridging business, product, and technical execution.')}</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-primary-600 mr-2 mt-0.5">•</span>
+                    <span>{getText('resume.recruiterSnapshot.point2', 'Founder-operator background with high-stakes project delivery and client ownership.')}</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-primary-600 mr-2 mt-0.5">•</span>
+                    <span>{getText('resume.recruiterSnapshot.point3', 'Hands-on in AI automation, full-stack implementation, and customer-facing discovery.')}</span>
+                  </li>
+                </ul>
+                <Link to="/contact?intent=recruiter" className="btn-primary inline-flex items-center">
+                  {getText('resume.recruiterSnapshot.cta', 'Contact me for hiring')}
+                </Link>
               </div>
 
               {/* About Me */}

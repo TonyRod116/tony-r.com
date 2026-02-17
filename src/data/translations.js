@@ -21,7 +21,9 @@ export const translations = {
         cta: {
           viewProjects: 'View Projects',
           viewResume: 'View Resume',
-          startProject: 'Start project'
+          startProject: 'Start project',
+          forRecruiters: 'I am recruiting',
+          forCompanies: 'I need AI solutions'
         },
         scrollDown: 'Scroll down'
       },
@@ -93,7 +95,9 @@ export const translations = {
         title: 'Ready to build something incredible?',
         description: 'I have real experience building products that people use. From construction to software, I combine technical depth with strategic thinking.',
         viewResume: 'View Resume',
-        startProject: 'Start project'
+        startProject: 'Start project',
+        forRecruiters: 'I am recruiting',
+        forCompanies: 'I need AI solutions'
       }
     },
 
@@ -435,6 +439,11 @@ export const translations = {
     solutions: {
       title: 'Automate your office and win more projects without hiring anyone',
       subtitle: 'Budgets in 30 seconds and clients filtered automatically. Less time wasted. More money.',
+      implementCta: 'Implement this in my company',
+      companyBannerTitle: 'Company mode: implementation-focused',
+      companyBannerTitleDefault: 'Want this running in your company?',
+      companyBannerDesc: 'I can adapt these workflows to your process, team, and sales pipeline.',
+      companyBannerCta: 'Talk implementation',
       presupuestoOrientativo: {
         title: 'Budgets in 30 seconds',
         description: 'Generate professional budgets from your mobile or computer. No Excel. No office. No wasted hours.',
@@ -818,6 +827,13 @@ export const translations = {
       subtitle: 'Solutions Engineer | AI & Automation | Turning Business Problems into Scalable Solutions',
       nameTitle: 'Solutions Engineer focused on AI, automation, and business impact',
       aboutMe: 'About Me',
+      recruiterSnapshot: {
+        title: 'Recruiter Snapshot',
+        point1: 'Solutions Engineer bridging business, product, and technical execution.',
+        point2: 'Founder-operator background with high-stakes project delivery and client ownership.',
+        point3: 'Hands-on in AI automation, full-stack implementation, and customer-facing discovery.',
+        cta: 'Contact me for hiring'
+      },
       aboutMeContent: "I am a Solutions Engineer focused on using software, AI, and automation to solve real business problems and drive measurable outcomes.\n\nBefore transitioning into tech, I spent over a decade as Founder & CEO in the construction sector, leading client-facing, high-stakes projects. That experience shaped my strongest advantage today: understanding business and user needs deeply, often before they are clearly articulated, and turning ambiguity into clear, effective solutions.\n\nAfter graduating from General Assembly's 420+ hour Software Engineering Immersive, I built multiple end-to-end applications with a strong product and architecture mindset. My final project, TradeLab, a trading strategy backtesting platform, was publicly recognized by my instructor as one of the best projects he had seen at GA.\n\nI later expanded my technical scope through Harvard's CS50 AI and Stanford / DeepLearning.AI's Machine Learning specialization, applying AI to practical use cases such as automation, data extraction, lead qualification, and decision support.\n\nWhat drives me is impact. I enjoy working at the intersection of business, customers, and technology—designing solutions that save time, reduce friction, and help companies grow. I bring a founder mindset, strong communication skills, and real-world execution experience to every project.",
       experience: 'Professional Experience',
       experienceDetails: {
@@ -987,10 +1003,15 @@ export const translations = {
     contact: {
       title: 'Contact',
       subtitle: 'Recruiter or company? Let\'s talk about hiring me or implementing AI and automation solutions for your business.',
+      subtitleRecruiter: 'Recruiter? I am open to roles in Solutions Engineering, AI automation, and product-focused software.',
+      subtitleCompany: 'Company? Let\'s talk about implementing AI and automation solutions tailored to your business.',
       form: {
         name: 'Name',
         email: 'Email',
         message: 'Message',
+        intentLabel: 'I am contacting you as',
+        intentRecruiter: 'Recruiter',
+        intentCompany: 'Company',
         budget: 'Budget (Optional)',
         availability: 'Hiring / Project Timeline',
         sendMessage: 'Send message',
@@ -999,6 +1020,8 @@ export const translations = {
         sending: 'Sending message...',
         namePlaceholder: 'Your name',
         emailPlaceholder: 'tu@email.com',
+        messagePlaceholderRecruiter: 'Share role, team, location/remote policy, and hiring timeline...',
+        messagePlaceholderCompany: 'Share your process, goals, bottlenecks, and what you want to automate...',
         messagePlaceholder: 'Tell me about the role, team, project scope, or which solution you want to implement...',
         selectRange: 'Select a range',
         whenStart: 'When are you planning to start?'
@@ -1071,7 +1094,9 @@ export const translations = {
         cta: {
           viewProjects: 'Ver Proyectos',
           viewResume: 'Ver CV',
-          startProject: 'Iniciar proyecto'
+          startProject: 'Iniciar proyecto',
+          forRecruiters: 'Estoy contratando',
+          forCompanies: 'Quiero soluciones de IA'
         },
         scrollDown: 'Desplázate hacia abajo'
       },
@@ -1143,7 +1168,9 @@ export const translations = {
         title: '¿Listo para construir algo increíble?',
         description: 'Tengo experiencia real construyendo productos que la gente usa. De la construcción al software, combino profundidad técnica con pensamiento estratégico.',
         viewResume: 'Ver CV',
-        startProject: 'Iniciar proyecto'
+        startProject: 'Iniciar proyecto',
+        forRecruiters: 'Estoy contratando',
+        forCompanies: 'Quiero soluciones de IA'
       }
     },
 
@@ -1530,6 +1557,13 @@ export const translations = {
       subtitle: 'Ingeniero de Soluciones | IA y Automatización | Convirtiendo Problemas Empresariales en Soluciones Escalables',
       nameTitle: 'Ingeniero de Soluciones enfocado en IA, automatización e impacto empresarial',
       aboutMe: 'Sobre Mí',
+      recruiterSnapshot: {
+        title: 'Resumen para Recruiters',
+        point1: 'Ingeniero de Soluciones que conecta negocio, producto y ejecución técnica.',
+        point2: 'Perfil founder-operator con experiencia en entrega de proyectos complejos y gestión de cliente.',
+        point3: 'Hands-on en automatización con IA, implementación full-stack y discovery con stakeholders.',
+        cta: 'Contactar para contratación'
+      },
       aboutMeContent: 'Soy un Ingeniero de Soluciones enfocado en usar software, IA y automatización para resolver problemas empresariales reales e impulsar resultados medibles.\n\nAntes de hacer la transición a la tecnología, pasé más de una década como Fundador y CEO en el sector de la construcción, liderando proyectos de alto riesgo orientados al cliente. Esa experiencia moldeó mi mayor ventaja hoy: entender profundamente las necesidades empresariales y de los usuarios, a menudo antes de que estén claramente articuladas, y convertir la ambigüedad en soluciones claras y efectivas.\n\nDespués de graduarme del programa inmersivo de Software Engineering de General Assembly de más de 420 horas, construí múltiples aplicaciones de extremo a extremo con una mentalidad sólida de producto y arquitectura. Mi proyecto final, TradeLab, una plataforma de backtesting de estrategias de trading, fue reconocido públicamente por mi instructor como uno de los mejores proyectos que había visto en GA.\n\nMás tarde expandí mi alcance técnico a través de CS50 AI de Harvard y la especialización en Machine Learning de Stanford / DeepLearning.AI, aplicando IA a casos de uso prácticos como automatización, extracción de datos, calificación de leads y soporte para la toma de decisiones.\n\nLo que me impulsa es el impacto. Disfruto trabajando en la intersección de negocios, clientes y tecnología—diseñando soluciones que ahorran tiempo, reducen la fricción y ayudan a las empresas a crecer. Traigo una mentalidad de fundador, fuertes habilidades de comunicación y experiencia de ejecución en el mundo real a cada proyecto.',
       experience: 'Experiencia Profesional',
       experienceDetails: {
@@ -1699,10 +1733,15 @@ export const translations = {
     contact: {
       title: 'Contacto',
       subtitle: '¿Eres recruiter o empresa? Hablemos sobre cómo incorporarme o cómo implementar soluciones de IA y automatización en tu negocio.',
+      subtitleRecruiter: '¿Eres recruiter? Estoy abierto a roles de Solutions Engineering, automatización con IA y software orientado a producto.',
+      subtitleCompany: '¿Eres empresa? Hablemos de cómo implementar soluciones de IA y automatización adaptadas a tu negocio.',
       form: {
         name: 'Nombre',
         email: 'Email',
         message: 'Mensaje',
+        intentLabel: 'Te pones en contacto como',
+        intentRecruiter: 'Recruiter',
+        intentCompany: 'Empresa',
         budget: 'Presupuesto (Opcional)',
         availability: 'Timeline de contratación / proyecto',
         sendMessage: 'Enviar mensaje',
@@ -1711,6 +1750,8 @@ export const translations = {
         sending: 'Enviando mensaje...',
         namePlaceholder: 'Tu nombre',
         emailPlaceholder: 'tu@email.com',
+        messagePlaceholderRecruiter: 'Compárteme rol, equipo, modalidad (remoto/híbrido) y timing de contratación...',
+        messagePlaceholderCompany: 'Compárteme proceso actual, objetivos, cuellos de botella y qué quieres automatizar...',
         messagePlaceholder: 'Cuéntame sobre el rol, equipo, alcance del proyecto o qué solución quieres implementar...',
         selectRange: 'Selecciona un rango',
         whenStart: '¿Cuándo tenéis previsto empezar?'
@@ -1747,6 +1788,11 @@ export const translations = {
     solutions: {
       title: 'Automatiza tu oficina y gana más obras sin contratar a nadie',
       subtitle: 'Presupuestos en 30 segundos y clientes filtrados automáticamente. Menos tiempo perdido. Más dinero.',
+      implementCta: 'Implementar en mi empresa',
+      companyBannerTitle: 'Modo empresa: enfoque en implementación',
+      companyBannerTitleDefault: '¿Quieres esto funcionando en tu empresa?',
+      companyBannerDesc: 'Puedo adaptar estos flujos a tus procesos, equipo y pipeline comercial.',
+      companyBannerCta: 'Hablar de implementación',
       presupuestoOrientativo: {
         title: 'Presupuestos en 30 segundos',
         description: 'Genera presupuestos profesionales desde el móvil u ordenador. Sin Excel. Sin oficina. Sin horas perdidas.',
@@ -2137,7 +2183,9 @@ export const translations = {
         cta: {
           viewProjects: 'Veure Projectes',
           viewResume: 'Veure CV',
-          startProject: 'Iniciar projecte'
+          startProject: 'Iniciar projecte',
+          forRecruiters: 'Estic contractant',
+          forCompanies: 'Vull solucions d\'IA'
         },
         scrollDown: 'Desplaça\'t cap avall'
       },
@@ -2209,7 +2257,9 @@ export const translations = {
         title: 'Llest per construir alguna cosa increïble?',
         description: 'Tinc experiència real construint productes que la gent usa. De la construcció al programari, combino profunditat tècnica amb pensament estratègic.',
         viewResume: 'Veure CV',
-        startProject: 'Iniciar projecte'
+        startProject: 'Iniciar projecte',
+        forRecruiters: 'Estic contractant',
+        forCompanies: 'Vull solucions d\'IA'
       }
     },
 
@@ -2561,6 +2611,13 @@ export const translations = {
       subtitle: 'Enginyer de Solucions | IA i Automatització | Convertint Problemes Empresarials en Solucions Escalables',
       nameTitle: 'Enginyer de Solucions enfocat en IA, automatització i impacte empresarial',
       aboutMe: 'Sobre Mi',
+      recruiterSnapshot: {
+        title: 'Resum per Recruiters',
+        point1: 'Enginyer de Solucions que connecta negoci, producte i execució tècnica.',
+        point2: 'Perfil founder-operator amb experiència en lliurament de projectes complexos i gestió de client.',
+        point3: 'Hands-on en automatització amb IA, implementació full-stack i discovery amb stakeholders.',
+        cta: 'Contactar per contractació'
+      },
       aboutMeContent: 'Soc un Enginyer de Solucions enfocat en usar programari, IA i automatització per resoldre problemes empresarials reals i impulsar resultats mesurables.\n\nAbans de fer la transició a la tecnologia, vaig passar més d\'una dècada com a Fundador i CEO en el sector de la construcció, liderant projectes d\'alt risc orientats al client. Aquesta experiència va modelar el meu major avantatge avui: entendre profundament les necessitats empresarials i dels usuaris, sovint abans que estiguin clarament articulades, i convertir l\'ambigüitat en solucions clares i efectives.\n\nDesprés de graduar-me del programa immersiu d\'Enginyeria de Programari de General Assembly de més de 420 hores, vaig construir múltiples aplicacions d\'extrem a extrem amb una mentalitat sòlida de producte i arquitectura. El meu projecte final, TradeLab, una plataforma de backtesting d\'estratègies de trading, va ser reconegut públicament pel meu instructor com un dels millors projectes que havia vist a GA.\n\nMés tard vaig expandir el meu abast tècnic a través de CS50 AI de Harvard i l\'especialització en Machine Learning de Stanford / DeepLearning.AI, aplicant IA a casos d\'ús pràctics com automatització, extracció de dades, qualificació de leads i suport per a la presa de decisions.\n\nEl que em impulsa és l\'impacte. Gaudeixo treballant en la intersecció de negocis, clients i tecnologia—dissenyant solucions que estalvien temps, redueixen la fricció i ajuden a les empreses a créixer. Porto una mentalitat de fundador, forts habilitats de comunicació i experiència d\'execució en el món real a cada projecte.',
       experience: 'Experiència Professional',
       experienceDetails: {
@@ -2730,10 +2787,15 @@ export const translations = {
     contact: {
       title: 'Contacte',
       subtitle: 'Ets recruiter o empresa? Parlem de com incorporar-me o d\'implementar solucions d\'IA i automatització al teu negoci.',
+      subtitleRecruiter: 'Ets recruiter? Estic obert a rols de Solutions Engineering, automatització amb IA i software orientat a producte.',
+      subtitleCompany: 'Ets empresa? Parlem de com implementar solucions d\'IA i automatització adaptades al teu negoci.',
       form: {
         name: 'Nom',
         email: 'Email',
         message: 'Missatge',
+        intentLabel: 'Et poses en contacte com a',
+        intentRecruiter: 'Recruiter',
+        intentCompany: 'Empresa',
         budget: 'Pressupost (Opcional)',
         availability: 'Timeline de contractació / projecte',
         sendMessage: 'Enviar missatge',
@@ -2742,6 +2804,8 @@ export const translations = {
         sending: 'Enviant missatge...',
         namePlaceholder: 'El teu nom',
         emailPlaceholder: 'tu@email.com',
+        messagePlaceholderRecruiter: 'Comparteix rol, equip, modalitat (remot/híbrid) i timing de contractació...',
+        messagePlaceholderCompany: 'Comparteix procés actual, objectius, colls d\'ampolla i què vols automatitzar...',
         messagePlaceholder: 'Explica\'m el rol, l\'equip, l\'abast del projecte o quina solució vols implementar...',
         selectRange: 'Selecciona un rang',
         whenStart: 'Quan teniu previst començar?'
@@ -2778,6 +2842,11 @@ export const translations = {
     solutions: {
       title: 'Automatitza la teva oficina i guanya més obres sense contractar a ningú',
       subtitle: 'Pressupostos en 30 segons i clients filtrats automàticament. Menys temps perdut. Més diners.',
+      implementCta: 'Implementar a la meva empresa',
+      companyBannerTitle: 'Mode empresa: enfocament en implementació',
+      companyBannerTitleDefault: 'Vols això funcionant a la teva empresa?',
+      companyBannerDesc: 'Puc adaptar aquests fluxos als teus processos, equip i pipeline comercial.',
+      companyBannerCta: 'Parlar d\'implementació',
       presupuestoOrientativo: {
         title: 'Pressupostos en 30 segons',
         description: 'Genera pressupostos professionals des del mòbil o l\'ordinador. Sense Excel. Sense oficina. Sense hores perdudes.',

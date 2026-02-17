@@ -243,6 +243,10 @@ function ScrollAnimatedProjectRight({ children, delay = 0, className = "" }) {
 
 export default function Home() {
   const { t } = useLanguage()
+  const getText = (key, fallback) => {
+    const value = t(key)
+    return value === key ? fallback : value
+  }
   const featuredProjects = projects.filter(project => project.featured).slice(0, 3)
   const [expandedProjects, setExpandedProjects] = useState({})
   const [backgroundPosition, setBackgroundPosition] = useState('center 30%')
@@ -371,17 +375,17 @@ export default function Home() {
                 className="flex flex-col sm:flex-row gap-4"
               >
                 <Link
-                  to="/projects"
+                  to="/resume?intent=recruiter"
                   className="btn-primary group inline-flex items-center justify-center"
                 >
-                  {t('home.hero.cta.viewProjects')}
+                  {getText('home.hero.cta.forRecruiters', 'I am recruiting')}
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
-                  to="/contact"
+                  to="/demos?intent=company"
                   className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-colors bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
                 >
-                  {t('nav.contact')}
+                  {getText('home.hero.cta.forCompanies', 'I need AI solutions')}
                 </Link>
               </motion.div>
 
@@ -917,11 +921,11 @@ export default function Home() {
               {t('home.cta.description')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/resume" className="btn-secondary bg-white/20 border-white/30 text-white hover:bg-white hover:text-primary-600 transition-all duration-300">
-                {t('home.cta.viewResume')}
+              <Link to="/resume?intent=recruiter" className="btn-secondary bg-white/20 border-white/30 text-white hover:bg-white hover:text-primary-600 transition-all duration-300">
+                {getText('home.cta.forRecruiters', 'I am recruiting')}
               </Link>
-              <Link to="/contact" className="btn-secondary bg-white text-primary-600 hover:bg-gray-50 hover:text-primary-700 transition-all duration-300">
-                {t('home.cta.startProject')}
+              <Link to="/contact?intent=company" className="btn-secondary bg-white text-primary-600 hover:bg-gray-50 hover:text-primary-700 transition-all duration-300">
+                {getText('home.cta.forCompanies', 'I need AI solutions')}
               </Link>
             </div>
           </motion.div>

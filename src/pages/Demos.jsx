@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { FileText, ArrowRight, MessageSquare } from 'lucide-react'
 import { useLanguage } from '../hooks/useLanguage.jsx'
 import budgetImg from '../assets/budget.jpg'
@@ -7,6 +7,12 @@ import leadImg from '../assets/leadq.jpg'
 
 export default function Demos() {
   const { t } = useLanguage()
+  const [searchParams] = useSearchParams()
+  const intent = searchParams.get('intent')
+  const getText = (key, fallback) => {
+    const value = t(key)
+    return value === key ? fallback : value
+  }
 
   const demos = [
     {
@@ -110,10 +116,40 @@ export default function Demos() {
                       })()}
                       <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </span>
+                    <p className="mt-4 inline-flex items-center text-xs font-semibold text-gray-700 dark:text-gray-200">
+                      {getText('solutions.implementCta', 'Implement this in my company')}
+                    </p>
                   </div>
                 </div>
               </Link>
             ))}
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35 }}
+            className="max-w-4xl mx-auto mt-8"
+          >
+            <div className="rounded-lg border border-primary-200 dark:border-primary-700 bg-primary-50/70 dark:bg-primary-900/20 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold text-primary-700 dark:text-primary-300">
+                  {intent === 'company'
+                    ? getText('solutions.companyBannerTitle', 'Company mode: implementation-focused')
+                    : getText('solutions.companyBannerTitleDefault', 'Want this running in your company?')}
+                </p>
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  {getText('solutions.companyBannerDesc', 'I can adapt these workflows to your process, team, and sales pipeline.')}
+                </p>
+              </div>
+              <Link
+                to="/contact?intent=company"
+                className="btn-primary inline-flex items-center whitespace-nowrap"
+              >
+                {getText('solutions.companyBannerCta', 'Talk implementation')}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>

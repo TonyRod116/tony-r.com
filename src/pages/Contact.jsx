@@ -1,12 +1,21 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Github, Linkedin, Mail, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react'
+import { useSearchParams } from 'react-router-dom'
 import { profile } from '../data/profile'
 import { useLanguage } from '../hooks/useLanguage.jsx'
 import { trackContactForm } from '../components/GoogleAnalytics'
 
 export default function Contact() {
   const { t } = useLanguage()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const initialIntent = searchParams.get('intent') === 'recruiter' ? 'recruiter' : 'company'
+  const solution = searchParams.get('solution') || ''
+  const [intent, setIntent] = useState(initialIntent)
+  const getText = (key, fallback) => {
+    const value = t(key)
+    return value === key ? fallback : value
+  }
   
   const [formData, setFormData] = useState({
     name: '',
@@ -81,7 +90,9 @@ export default function Contact() {
           >
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('contact.title')}</h1>
             <p className="text-lg text-gray-600 dark:text-gray-300">
-              {t('contact.subtitle')}
+              {intent === 'recruiter'
+                ? getText('contact.subtitleRecruiter', 'Recruiter? I am open to roles in Solutions Engineering, AI automation, and product-focused software.')
+                : getText('contact.subtitleCompany', 'Company? Let\'s talk about implementing AI and automation solutions tailored to your business.')}
             </p>
           </motion.div>
 
@@ -98,6 +109,40 @@ export default function Contact() {
                 method="POST"
                 className="space-y-6"
               >
+                <div className="space-y-3 pt-1">
+                  <label className="block text-sm font-medium text-gray-900 dark:text-white">
+                    {getText('contact.form.intentLabel', 'I am contacting you as')}
+                  </label>
+                  <div className="inline-flex rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIntent('recruiter')
+                        const nextParams = new URLSearchParams(searchParams)
+                        nextParams.set('intent', 'recruiter')
+                        setSearchParams(nextParams)
+                      }}
+                      className={`px-4 py-2 text-sm font-medium transition-colors ${intent === 'recruiter' ? 'bg-primary-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'}`}
+                    >
+                      {getText('contact.form.intentRecruiter', 'Recruiter')}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIntent('company')
+                        const nextParams = new URLSearchParams(searchParams)
+                        nextParams.set('intent', 'company')
+                        setSearchParams(nextParams)
+                      }}
+                      className={`px-4 py-2 text-sm font-medium transition-colors ${intent === 'company' ? 'bg-primary-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'}`}
+                    >
+                      {getText('contact.form.intentCompany', 'Company')}
+                    </button>
+                  </div>
+                  <input type="hidden" name="intent" value={intent} />
+                  <input type="hidden" name="solution" value={solution} />
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label htmlFor="name" className="text-sm font-medium text-gray-900 dark:text-white">
@@ -111,7 +156,7 @@ export default function Contact() {
                       onChange={handleChange}
                       required
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white"
-                      placeholder={t('contact.form.namePlaceholder')}
+                    placeholder={t('contact.form.namePlaceholder')}
                     />
                   </div>
 
@@ -127,7 +172,7 @@ export default function Contact() {
                       onChange={handleChange}
                       required
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white"
-                      placeholder={t('contact.form.emailPlaceholder')}
+                    placeholder={t('contact.form.emailPlaceholder')}
                     />
                   </div>
                 </div>
@@ -144,7 +189,9 @@ export default function Contact() {
                     required
                     rows={6}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white"
-                    placeholder={t('contact.form.messagePlaceholder')}
+                    placeholder={intent === 'recruiter'
+                      ? getText('contact.form.messagePlaceholderRecruiter', 'Share role, team, location/remote policy, and hiring timeline...')
+                      : getText('contact.form.messagePlaceholderCompany', 'Share your process, goals, bottlenecks, and what you want to automate...')}
                   />
                 </div>
 
