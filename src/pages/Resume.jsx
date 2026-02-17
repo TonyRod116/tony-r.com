@@ -65,6 +65,99 @@ const skillFallbackLabels = {
   'NLTK': 'NLTK'
 }
 
+const experienceBreakdownFallbacks = {
+  en: {
+    totalhomes: {
+      responsibilities: [
+        'Prepared detailed renovation budgets and scope documents across residential projects.',
+        'Managed the full project lifecycle from discovery and technical planning to final handover.',
+        'Led client acquisition and relationship management, aligning design, budget, and timelines.',
+        'Coordinated suppliers, contractors, and technical partners to maintain quality and delivery targets.',
+        'Designed tailored, high-performance renovation solutions, including Passivhaus-informed recommendations.'
+      ],
+      achievements: [
+        'Delivered end-to-end projects ranging from EUR20K to EUR500K with high client satisfaction and repeat referrals.',
+        'Implemented custom energy-efficiency solutions using Passivhaus expertise, helping clients significantly reduce utility costs.',
+        'Introduced digital workflows for budgeting, progress tracking, and client communication, improving transparency and execution speed.'
+      ]
+    },
+    casex: {
+      responsibilities: [
+        'Led new-build development projects from planning and on-site execution through final delivery.',
+        'Managed the commercial side of premium homes, from client qualification and visits to negotiation and closing.',
+        'Coordinated construction, technical, and sales teams to align product quality, delivery timing, and market positioning.',
+        'Oversaw budgeting, purchasing, and materials strategy to improve cost control without compromising finish quality.',
+        'Worked directly with clients and stakeholders to translate requirements into buildable and sellable products.'
+      ],
+      achievements: [
+        'Delivered and sold high-end new-build homes priced between EUR500K and EUR1.2M.',
+        'Significantly reduced construction costs across a full development by redesigning structural systems from reticular to unidirectional slabs, optimizing materials, and simplifying site execution.',
+        'Upgraded one of the developments to Energy Certificate A while lowering build costs, a key factor in maintaining sales and business continuity during the 2008 market crisis.'
+      ]
+    }
+  },
+  es: {
+    totalhomes: {
+      responsibilities: [
+        'Preparación de presupuestos detallados y definición de alcance para proyectos de reforma residencial.',
+        'Gestión integral del ciclo de proyecto: descubrimiento, planificación técnica, ejecución y entrega final.',
+        'Captación y gestión de clientes, alineando diseño, presupuesto y plazos con expectativas reales.',
+        'Coordinación de proveedores, industriales y colaboradores técnicos para asegurar calidad y cumplimiento.',
+        'Diseño de soluciones a medida y de alto rendimiento, incluyendo recomendaciones basadas en criterios Passivhaus.'
+      ],
+      achievements: [
+        'Gestión integral de proyectos de extremo a extremo entre 20.000EUR y 500.000EUR, con alta satisfacción del cliente y recurrencia.',
+        'Implementación de soluciones personalizadas de eficiencia energética, apoyadas en mi experiencia como consultor Passivhaus, generando ahorros significativos en la factura eléctrica.',
+        'Digitalización de procesos de presupuesto, seguimiento de obra y comunicación con cliente, mejorando transparencia y velocidad de ejecución.'
+      ]
+    },
+    casex: {
+      responsibilities: [
+        'Dirección de promociones de obra nueva desde la planificación hasta la ejecución y entrega final.',
+        'Gestión comercial y venta de viviendas de alto standing, desde la captación y visitas hasta la negociación y cierre.',
+        'Coordinación entre equipos de obra, técnicos y comerciales para alinear calidad, plazos y posicionamiento de producto.',
+        'Gestión de presupuestos, compras y estrategia de materiales para mejorar control de costes sin perder nivel de acabados.',
+        'Interlocución directa con clientes y stakeholders para convertir necesidades en producto ejecutable y vendible.'
+      ],
+      achievements: [
+        'Entrega y comercialización de viviendas de obra nueva de alto standing con precios entre 500.000EUR y 1.200.000EUR.',
+        'Reducción significativa del coste de construcción en toda una urbanización al cambiar la estructura de reticular a unidireccional, optimizar materiales y simplificar la ejecución en obra.',
+        'Mejora del desempeño energético hasta Certificación A en una de las urbanizaciones, reduciendo coste de ejecución y fortaleciendo la capacidad de venta y supervivencia del negocio en plena crisis de 2008.'
+      ]
+    }
+  },
+  ca: {
+    totalhomes: {
+      responsibilities: [
+        'Preparació de pressupostos detallats i definició d\'abast per a projectes de reforma residencial.',
+        'Gestió integral del cicle de projecte: descobriment, planificació tècnica, execució i lliurament final.',
+        'Captació i gestió de clients, alineant disseny, pressupost i terminis amb expectatives reals.',
+        'Coordinació de proveïdors, industrials i col·laboradors tècnics per assegurar qualitat i compliment.',
+        'Disseny de solucions a mida i d\'alt rendiment, incloent recomanacions basades en criteris Passivhaus.'
+      ],
+      achievements: [
+        'Gestió integral de projectes de cap a cap entre 20.000EUR i 500.000EUR, amb alta satisfacció del client i recurrència.',
+        'Implementació de solucions personalitzades d\'eficiència energètica, recolzades en la meva experiència com a consultor Passivhaus, generant estalvis significatius en la factura elèctrica.',
+        'Digitalització de processos de pressupost, seguiment d\'obra i comunicació amb client, millorant transparència i velocitat d\'execució.'
+      ]
+    },
+    casex: {
+      responsibilities: [
+        'Direcció de promocions d\'obra nova des de la planificació fins a l\'execució i el lliurament final.',
+        'Gestió comercial i venda d\'habitatges d\'alt standing, des de la captació i visites fins a la negociació i el tancament.',
+        'Coordinació entre equips d\'obra, tècnics i comercials per alinear qualitat, terminis i posicionament del producte.',
+        'Gestió de pressupostos, compres i estratègia de materials per millorar el control de costos sense perdre nivell d\'acabats.',
+        'Interlocució directa amb clients i stakeholders per convertir necessitats en producte executable i vendible.'
+      ],
+      achievements: [
+        'Lliurament i comercialització d\'habitatges d\'obra nova d\'alt standing amb preus entre 500.000EUR i 1.200.000EUR.',
+        'Reducció significativa del cost de construcció en tota una urbanització en canviar l\'estructura de reticular a unidireccional, optimitzar materials i simplificar l\'execució a obra.',
+        'Millora del rendiment energètic fins a Certificació A en una de les urbanitzacions, reduint cost d\'execució i reforçant la capacitat de venda i supervivència del negoci en plena crisi del 2008.'
+      ]
+    }
+  }
+}
+
 export default function Resume() {
   const { t, language } = useLanguage()
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null)
@@ -181,6 +274,11 @@ export default function Resume() {
     return translation !== key ? translation : fallback
   }
 
+  const getTranslationValue = (key, fallback) => {
+    const translation = t(key)
+    return translation !== key ? translation : fallback
+  }
+
   return (
     <div className="pt-16">
       {/* Hero Section */}
@@ -283,8 +381,21 @@ export default function Resume() {
                 </h2>
                 <div className="space-y-6 space-y-4">
                   {profile.experience.map((exp) => {
+                    const baseExperienceKey = `resume.experienceDetails.${exp.id}`
+                    const translatedDescription = getText(`${baseExperienceKey}.description`, exp.description)
+                    const translatedResponsibilities = getTranslationValue(`${baseExperienceKey}.responsibilities`, [])
+                    const translatedAchievements = getTranslationValue(`${baseExperienceKey}.achievements`, [])
+                    const languageFallback = experienceBreakdownFallbacks[language] || experienceBreakdownFallbacks.es
+                    const roleFallback = languageFallback[exp.id]
+                    const responsibilities = Array.isArray(translatedResponsibilities) && translatedResponsibilities.length > 0
+                      ? translatedResponsibilities
+                      : (roleFallback?.responsibilities || [])
+                    const roleAchievements = Array.isArray(translatedAchievements) && translatedAchievements.length > 0
+                      ? translatedAchievements
+                      : (roleFallback?.achievements || [])
+                    const showKeySkills = exp.id !== 'totalhomes' && exp.id !== 'casex'
                     const hasStack = Array.isArray(exp.stack) && exp.stack.length > 0
-                    const keySkillsBlock = hasStack && (
+                    const keySkillsBlock = showKeySkills && hasStack && (
                       <div>
                         <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">
                           {getText('resume.keySkills', 'Key Skills')}:
@@ -348,7 +459,7 @@ export default function Resume() {
                         </span>
                       </div>
                       <div className="text-gray-600 dark:text-gray-300 mb-3 text-sm space-y-3">
-                        {getText(`resume.experienceDetails.${exp.id}.description`, exp.description).split('\n\n').map((paragraph, index) => (
+                        {translatedDescription.split('\n\n').map((paragraph, index) => (
                           paragraph.trim() && (
                             <p key={index} className="mb-3 last:mb-0">
                               {paragraph.trim()}
@@ -356,6 +467,36 @@ export default function Resume() {
                           )
                         ))}
                       </div>
+                      {Array.isArray(responsibilities) && responsibilities.length > 0 && (
+                        <div className="mb-3">
+                          <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">
+                            {getText('resume.responsibilities', 'Responsibilities')}:
+                          </h4>
+                          <ul className="text-gray-600 dark:text-gray-300 text-sm space-y-1">
+                            {responsibilities.map((item, index) => (
+                              <li key={`${exp.id}-responsibility-${index}`} className="flex items-start">
+                                <span className="text-primary-600 mr-2 mt-0.5">•</span>
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {Array.isArray(roleAchievements) && roleAchievements.length > 0 && (
+                        <div className="mb-3">
+                          <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">
+                            {getText('resume.experienceAchievements', 'Achievements')}:
+                          </h4>
+                          <ul className="text-gray-600 dark:text-gray-300 text-sm space-y-1">
+                            {roleAchievements.map((item, index) => (
+                              <li key={`${exp.id}-achievement-${index}`} className="flex items-start">
+                                <span className="text-primary-600 mr-2 mt-0.5">•</span>
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                       {keySkillsBlock}
                       {exp.id === 'totalhomes' && totalhomesGallery.length > 0 && (
                         <div className="mt-5">

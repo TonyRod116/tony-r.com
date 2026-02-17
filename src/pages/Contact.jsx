@@ -11,52 +11,50 @@ export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: '',
-    budget: '',
-    availability: ''
+    message: ''
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState('idle')
-
-  const budgetOptions = [
-    { value: 'under5k', label: t('contact.budget.under5k') },
-    { value: '5k10k', label: t('contact.budget.5k10k') },
-    { value: '10k25k', label: t('contact.budget.10k25k') },
-    { value: '25k50k', label: t('contact.budget.25k50k') },
-    { value: 'over50k', label: t('contact.budget.over50k') },
-  ]
-
-  const availabilityOptions = [
-    { value: 'immediate', label: t('contact.availabilityOptions.immediate') },
-    { value: '1month', label: t('contact.availabilityOptions.1month') },
-    { value: '3months', label: t('contact.availabilityOptions.3months') },
-    { value: 'flexible', label: t('contact.availabilityOptions.flexible') },
-  ]
+  const [submitError, setSubmitError] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
     setSubmitStatus('idle')
+    setSubmitError('')
+    const form = e.currentTarget
 
     try {
-      const response = await fetch('https://formspree.io/f/mvgbjbvw', {
-        method: 'POST',
+      const response = await fetch(form.action, {
+        method: form.method,
         headers: {
-          'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: new FormData(form)
       })
 
-      if (response.ok) {
+      let responseData = null
+      const contentType = response.headers.get('content-type') || ''
+      if (contentType.includes('application/json')) {
+        responseData = await response.json()
+      }
+
+      const hasApiErrors = Array.isArray(responseData?.errors) && responseData.errors.length > 0
+
+      if (response.ok && !hasApiErrors) {
         setSubmitStatus('success')
-        setFormData({ name: '', email: '', message: '', budget: '', availability: '' })
+        setFormData({ name: '', email: '', message: '' })
         trackContactForm() // Track successful form submission
       } else {
         setSubmitStatus('error')
+        if (hasApiErrors) {
+          setSubmitError(responseData.errors.map((err) => err.message).join(', '))
+        }
       }
     } catch (error) {
       console.error('Error sending message:', error)
       setSubmitStatus('error')
+      setSubmitError(t('contact.form.networkError', 'Network error. Please try again.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -94,7 +92,12 @@ export default function Contact() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form
+                onSubmit={handleSubmit}
+                action="https://formspree.io/f/mvgbjbvw"
+                method="POST"
+                className="space-y-6"
+              >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label htmlFor="name" className="text-sm font-medium text-gray-900 dark:text-white">
@@ -126,48 +129,6 @@ export default function Contact() {
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white"
                       placeholder={t('contact.form.emailPlaceholder')}
                     />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label htmlFor="budget" className="text-sm font-medium text-gray-900 dark:text-white">
-                      {t('contact.form.budget')}
-                    </label>
-                    <select
-                      id="budget"
-                      name="budget"
-                      value={formData.budget}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white"
-                    >
-                      <option value="">{t('contact.form.selectRange')}</option>
-                      {budgetOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label htmlFor="availability" className="text-sm font-medium text-gray-900 dark:text-white">
-                      {t('contact.form.availability')}
-                    </label>
-                    <select
-                      id="availability"
-                      name="availability"
-                      value={formData.availability}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white"
-                    >
-                      <option value="">{t('contact.form.whenStart')}</option>
-                      {availabilityOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
                   </div>
                 </div>
 
@@ -206,7 +167,7 @@ export default function Contact() {
                     className="flex items-center space-x-2 text-red-600 bg-red-50 dark:bg-red-900/20 p-4 rounded-lg"
                   >
                     <AlertCircle className="h-5 w-5" />
-                    <span>{t('contact.form.errorMessage')}</span>
+                    <span>{submitError || t('contact.form.errorMessage')}</span>
                   </motion.div>
                 )}
 

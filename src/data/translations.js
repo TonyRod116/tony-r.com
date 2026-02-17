@@ -825,10 +825,34 @@ export const translations = {
           description: 'Completed an intensive 420+ hour Software Engineering bootcamp with a strong focus on end-to-end product development and real-world problem solving.\n\nBuilt multiple full-stack applications applying clean architecture, API design, data modeling, authentication, and applied AI. Worked across the full lifecycle from discovery and solution design to implementation and iteration, with a strong emphasis on product thinking and usability.\n\nMy final project, TradeLab, a trading strategy backtesting platform, was publicly recognized by my instructor as one of the best projects he had seen in his years teaching at General Assembly.'
         },
         totalhomes: {
-          description: 'Founded and led a boutique construction and renovation company delivering premium residential projects. Managed the full business lifecycle, from client discovery and requirements definition to execution, delivery, and post-project follow-up.\n\nWorked closely with clients to translate ambiguous needs into clear, executable solutions—an approach directly transferable to solution design in technology. Led multidisciplinary teams, managed budgets and timelines, and made high-stakes decisions in complex, real-world environments.\n\nIntroduced digital workflows and process improvements that increased transparency, efficiency, and operational control. This role shaped a strong business, product, and customer mindset that I now apply when designing technical and AI-driven solutions.'
+          description: 'Founded and led a boutique construction and renovation company delivering premium residential projects.',
+          responsibilities: [
+            'Prepared detailed renovation budgets and scope documents across residential projects.',
+            'Managed the full project lifecycle from discovery and technical planning to final handover.',
+            'Led client acquisition and relationship management, aligning design, budget, and timelines.',
+            'Coordinated suppliers, contractors, and technical partners to maintain quality and delivery targets.',
+            'Designed tailored, high-performance renovation solutions, including Passivhaus-informed recommendations.'
+          ],
+          achievements: [
+            'Delivered end-to-end projects ranging from €20K to €500K with high client satisfaction and repeat referrals.',
+            'Implemented custom energy-efficiency solutions using Passivhaus expertise, helping clients significantly reduce utility costs.',
+            'Introduced digital workflows for budgeting, progress tracking, and client communication, improving transparency and execution speed.'
+          ]
         },
         casex: {
-          description: 'Managed residential real estate projects across their full lifecycle, combining technical coordination, client management, budgeting, and commercial decision-making.\n\nWorked closely with clients to define requirements, align expectations, and translate needs into clear execution plans. Supported sales strategy, market analysis, and new client acquisition, contributing to business growth in a highly competitive environment.\n\nThis role strengthened my ability to operate at the intersection of business, customers, and technical constraints—skills that now directly support my work in solution design, discovery, and stakeholder alignment as a Solutions Engineer.'
+          description: 'Managed a new-build residential developer operation, leading both construction execution and sales of premium homes.',
+          responsibilities: [
+            'Led new-build development projects from planning and on-site execution through final delivery.',
+            'Managed the commercial side of premium homes, from client qualification and visits to negotiation and closing.',
+            'Coordinated construction, technical, and sales teams to align product quality, delivery timing, and market positioning.',
+            'Oversaw budgeting, purchasing, and materials strategy to improve cost control without compromising finish quality.',
+            'Worked directly with clients and stakeholders to translate requirements into buildable and sellable products.'
+          ],
+          achievements: [
+            'Delivered and sold high-end new-build homes priced between EUR500K and EUR1.2M.',
+            'Significantly reduced construction costs across a full development by redesigning structural systems from reticular to unidirectional slabs, optimizing materials, and simplifying site execution.',
+            'Upgraded one of the developments to Energy Certificate A while lowering build costs, a key factor in maintaining sales and business continuity during the 2008 market crisis.'
+          ]
         }
       },
       skills: 'Technical Skills',
@@ -894,6 +918,8 @@ export const translations = {
         'NLTK': 'NLTK'
       },
       keySkills: 'Key Skills',
+      responsibilities: 'Responsibilities',
+      experienceAchievements: 'Achievements',
       achievements: 'Key Achievements',
       achievement1: 'Designed and implemented an AI-driven system to generate construction cost estimates instantly, with the ability to review, adjust, and refine budgets manually—reducing turnaround time and improving decision-making.',
       achievement2: 'Designed and delivered AI- and automation-driven solutions applied to real operational use cases, including lead qualification, data extraction, and process optimization.',
@@ -960,22 +986,22 @@ export const translations = {
     // Contact Page
     contact: {
       title: 'Contact',
-      subtitle: "Have a project in mind? I'd love to hear about it and how I can help you bring it to life.",
+      subtitle: 'Recruiter or company? Let\'s talk about hiring me or implementing AI and automation solutions for your business.',
       form: {
         name: 'Name',
         email: 'Email',
         message: 'Message',
         budget: 'Budget (Optional)',
-        availability: 'Availability',
+        availability: 'Hiring / Project Timeline',
         sendMessage: 'Send message',
         successMessage: "Message sent successfully! I'll get back to you soon.",
         errorMessage: 'Error sending message. Please try again.',
         sending: 'Sending message...',
         namePlaceholder: 'Your name',
         emailPlaceholder: 'tu@email.com',
-        messagePlaceholder: 'Tell me about your project, goals, timeline...',
+        messagePlaceholder: 'Tell me about the role, team, project scope, or which solution you want to implement...',
         selectRange: 'Select a range',
-        whenStart: 'When do you need to start?'
+        whenStart: 'When are you planning to start?'
       },
       info: {
         title: 'Contact Information',
@@ -1021,16 +1047,6 @@ export const translations = {
       decline: 'Decline'
     },
 
-    // Resume Page
-    resume: {
-      title: 'Resume',
-      subtitle: 'Solutions Engineer | AI & Automation | Turning Business Problems into Scalable Solutions',
-      nameTitle: 'Solutions Engineer focused on AI, automation, and business impact',
-      aboutMe: 'About Me',
-      aboutMeContent: "I am a Solutions Engineer focused on using software, AI, and automation to solve real business problems and drive measurable outcomes.",
-      experience: 'Professional Experience',
-      skills: 'Technical Skills'
-    }
   },
 
   es: {
@@ -1521,10 +1537,34 @@ export const translations = {
           description: 'Completé un bootcamp intensivo de Ingeniería de Software de más de 420 horas con un fuerte enfoque en desarrollo de productos de extremo a extremo y resolución de problemas del mundo real.\n\nConstruí múltiples aplicaciones full-stack aplicando arquitectura limpia, diseño de APIs, modelado de datos, autenticación e IA aplicada. Trabajé en todo el ciclo de vida desde el descubrimiento y diseño de soluciones hasta la implementación e iteración, con un fuerte énfasis en pensamiento de producto y usabilidad.\n\nMi proyecto final, TradeLab, una plataforma de backtesting de estrategias de trading, fue reconocido públicamente por mi instructor como uno de los mejores proyectos que había visto en sus años enseñando en General Assembly.'
         },
         totalhomes: {
-          description: 'Fundé y dirigí una empresa boutique de construcción y reformas entregando proyectos residenciales premium. Gestioné todo el ciclo de vida del negocio, desde el descubrimiento de clientes y definición de requisitos hasta la ejecución, entrega y seguimiento post-proyecto.\n\nTrabajé estrechamente con clientes para traducir necesidades ambiguas en soluciones claras y ejecutables—un enfoque directamente transferible al diseño de soluciones en tecnología. Lideré equipos multidisciplinares, gestioné presupuestos y cronogramas, y tomé decisiones de alto riesgo en entornos complejos del mundo real.\n\nIntroduje flujos digitales y mejoras de procesos que aumentaron la transparencia, eficiencia y control operativo. Este rol moldeó una mentalidad sólida de negocio, producto y cliente que ahora aplico al diseñar soluciones técnicas e impulsadas por IA.'
+          description: 'Fundé y dirigí una empresa boutique de construcción y reformas, entregando proyectos residenciales premium.',
+          responsibilities: [
+            'Preparación de presupuestos detallados y definición de alcance para proyectos de reforma residencial.',
+            'Gestión integral del ciclo de proyecto: descubrimiento, planificación técnica, ejecución y entrega final.',
+            'Captación y gestión de clientes, alineando diseño, presupuesto y plazos con expectativas reales.',
+            'Coordinación de proveedores, industriales y colaboradores técnicos para asegurar calidad y cumplimiento.',
+            'Diseño de soluciones a medida y de alto rendimiento, incluyendo recomendaciones basadas en criterios Passivhaus.'
+          ],
+          achievements: [
+            'Gestión integral de proyectos de extremo a extremo entre 20.000€ y 500.000€, con alta satisfacción del cliente y recurrencia.',
+            'Implementación de soluciones personalizadas de eficiencia energética, apoyadas en mi experiencia como consultor Passivhaus, generando ahorros significativos en la factura eléctrica.',
+            'Digitalización de procesos de presupuesto, seguimiento de obra y comunicación con cliente, mejorando transparencia y velocidad de ejecución.'
+          ]
         },
         casex: {
-          description: 'Gestioné proyectos inmobiliarios residenciales en todo su ciclo de vida, combinando coordinación técnica, gestión de clientes, presupuestos y toma de decisiones comerciales.\n\nTrabajé estrechamente con clientes para definir requisitos, alinear expectativas y traducir necesidades en planes de ejecución claros. Apoyé la estrategia de ventas, análisis de mercado y adquisición de nuevos clientes, contribuyendo al crecimiento del negocio en un entorno altamente competitivo.\n\nEste rol fortaleció mi capacidad para operar en la intersección de negocio, clientes y restricciones técnicas—habilidades que ahora apoyan directamente mi trabajo en diseño de soluciones, descubrimiento y alineación de stakeholders como Ingeniero de Soluciones.'
+          description: 'Gestioné una promotora constructora de obra nueva, liderando tanto la ejecución de obra como la venta de viviendas premium.',
+          responsibilities: [
+            'Dirección de promociones de obra nueva desde la planificación hasta la ejecución y entrega final.',
+            'Gestión comercial y venta de viviendas de alto standing, desde la captación y visitas hasta la negociación y cierre.',
+            'Coordinación entre equipos de obra, técnicos y comerciales para alinear calidad, plazos y posicionamiento de producto.',
+            'Gestión de presupuestos, compras y estrategia de materiales para mejorar control de costes sin perder nivel de acabados.',
+            'Interlocución directa con clientes y stakeholders para convertir necesidades en producto ejecutable y vendible.'
+          ],
+          achievements: [
+            'Entrega y comercialización de viviendas de obra nueva de alto standing con precios entre 500.000EUR y 1.200.000EUR.',
+            'Reducción significativa del coste de construcción en toda una urbanización al cambiar la estructura de reticular a unidireccional, optimizar materiales y simplificar la ejecución en obra.',
+            'Mejora del desempeño energético hasta Certificación A en una de las urbanizaciones, reduciendo coste de ejecución y fortaleciendo la capacidad de venta y supervivencia del negocio en plena crisis de 2008.'
+          ]
         }
       },
       skills: 'Habilidades Técnicas',
@@ -1590,6 +1630,8 @@ export const translations = {
         'NLTK': 'NLTK'
       },
       keySkills: 'Habilidades Clave',
+      responsibilities: 'Responsabilidades',
+      experienceAchievements: 'Logros',
       achievements: 'Logros Clave',
       achievement1: 'Diseñé e implementé un sistema impulsado por IA para generar estimaciones de costos de construcción instantáneamente, con la capacidad de revisar, ajustar y refinar presupuestos manualmente—reduciendo el tiempo de respuesta y mejorando la toma de decisiones.',
       achievement2: 'Diseñé y entregué soluciones impulsadas por IA y automatización aplicadas a casos de uso operativos reales, incluyendo calificación de leads, extracción de datos y optimización de procesos.',
@@ -1656,22 +1698,22 @@ export const translations = {
     // Contact Page
     contact: {
       title: 'Contacto',
-      subtitle: '¿Tienes un proyecto en mente? Me encantaría escucharlo y cómo puedo ayudarte a darle vida.',
+      subtitle: '¿Eres recruiter o empresa? Hablemos sobre cómo incorporarme o cómo implementar soluciones de IA y automatización en tu negocio.',
       form: {
         name: 'Nombre',
         email: 'Email',
         message: 'Mensaje',
         budget: 'Presupuesto (Opcional)',
-        availability: 'Disponibilidad',
+        availability: 'Timeline de contratación / proyecto',
         sendMessage: 'Enviar mensaje',
         successMessage: '¡Mensaje enviado con éxito! Te responderé pronto.',
         errorMessage: 'Error al enviar el mensaje. Por favor, inténtalo de nuevo.',
         sending: 'Enviando mensaje...',
         namePlaceholder: 'Tu nombre',
         emailPlaceholder: 'tu@email.com',
-        messagePlaceholder: 'Cuéntame sobre tu proyecto, objetivos, cronograma...',
+        messagePlaceholder: 'Cuéntame sobre el rol, equipo, alcance del proyecto o qué solución quieres implementar...',
         selectRange: 'Selecciona un rango',
-        whenStart: '¿Cuándo necesitas empezar?'
+        whenStart: '¿Cuándo tenéis previsto empezar?'
       },
       info: {
         title: 'Información de Contacto',
@@ -2526,10 +2568,34 @@ export const translations = {
           description: 'Vaig completar un bootcamp intensiu d\'Enginyeria de Programari de més de 420 hores amb un fort enfocament en desenvolupament de productes d\'extrem a extrem i resolució de problemes del món real.\n\nVaig construir múltiples aplicacions full-stack aplicant arquitectura neta, disseny d\'APIs, modelatge de dades, autenticació i IA aplicada. Vaig treballar en tot el cicle de vida des del descobriment i disseny de solucions fins a la implementació i iteració, amb un fort èmfasi en pensament de producte i usabilitat.\n\nEl meu projecte final, TradeLab, una plataforma de backtesting d\'estratègies de trading, va ser reconegut públicament pel meu instructor com un dels millors projectes que havia vist en els seus anys ensenyant a General Assembly.'
         },
         totalhomes: {
-          description: 'Vaig fundar i dirigir una empresa boutique de construcció i reformes lliurant projectes residencials premium. Vaig gestionar tot el cicle de vida del negoci, des del descobriment de clients i definició de requisits fins a l\'execució, lliurament i seguiment post-projecte.\n\nVaig treballar estretament amb clients per traduir necessitats ambigües en solucions clares i executables—un enfocament directament transferible al disseny de solucions en tecnologia. Vaig liderar equips multidisciplinaris, vaig gestionar pressupostos i cronogrames, i vaig prendre decisions d\'alt risc en entorns complexos del món real.\n\nVaig introduir fluxos digitals i millores de processos que van augmentar la transparència, eficiència i control operatiu. Aquest rol va modelar una mentalitat sòlida de negoci, producte i client que ara aplico al dissenyar solucions tècniques i impulsades per IA.'
+          description: 'Vaig fundar i dirigir una empresa boutique de construcció i reformes, lliurant projectes residencials premium.',
+          responsibilities: [
+            'Preparació de pressupostos detallats i definició d\'abast per a projectes de reforma residencial.',
+            'Gestió integral del cicle de projecte: descobriment, planificació tècnica, execució i lliurament final.',
+            'Captació i gestió de clients, alineant disseny, pressupost i terminis amb expectatives reals.',
+            'Coordinació de proveïdors, industrials i col·laboradors tècnics per assegurar qualitat i compliment.',
+            'Disseny de solucions a mida i d\'alt rendiment, incloent recomanacions basades en criteris Passivhaus.'
+          ],
+          achievements: [
+            'Gestió integral de projectes de cap a cap entre 20.000€ i 500.000€, amb alta satisfacció del client i recurrència.',
+            'Implementació de solucions personalitzades d\'eficiència energètica, recolzades en la meva experiència com a consultor Passivhaus, generant estalvis significatius en la factura elèctrica.',
+            'Digitalització de processos de pressupost, seguiment d\'obra i comunicació amb client, millorant transparència i velocitat d\'execució.'
+          ]
         },
         casex: {
-          description: 'Vaig gestionar projectes immobiliaris residencials en tot el seu cicle de vida, combinant coordinació tècnica, gestió de clients, pressupostos i presa de decisions comercials.\n\nVaig treballar estretament amb clients per definir requisits, alinear expectatives i traduir necessitats en plans d\'execució clars. Vaig donar suport a l\'estratègia de vendes, anàlisi de mercat i adquisició de nous clients, contribuint al creixement del negoci en un entorn altament competitiu.\n\nAquest rol va enfortir la meva capacitat per operar en la intersecció de negoci, clients i restriccions tècniques—habilitats que ara donen suport directament al meu treball en disseny de solucions, descobriment i alineació de stakeholders com a Enginyer de Solucions.'
+          description: 'Vaig gestionar una promotora constructora d\'obra nova, liderant tant l\'execució d\'obra com la venda d\'habitatges premium.',
+          responsibilities: [
+            'Direcció de promocions d\'obra nova des de la planificació fins a l\'execució i el lliurament final.',
+            'Gestió comercial i venda d\'habitatges d\'alt standing, des de la captació i visites fins a la negociació i el tancament.',
+            'Coordinació entre equips d\'obra, tècnics i comercials per alinear qualitat, terminis i posicionament del producte.',
+            'Gestió de pressupostos, compres i estratègia de materials per millorar el control de costos sense perdre nivell d\'acabats.',
+            'Interlocució directa amb clients i stakeholders per convertir necessitats en producte executable i vendible.'
+          ],
+          achievements: [
+            'Lliurament i comercialització d\'habitatges d\'obra nova d\'alt standing amb preus entre 500.000EUR i 1.200.000EUR.',
+            'Reducció significativa del cost de construcció en tota una urbanització en canviar l\'estructura de reticular a unidireccional, optimitzar materials i simplificar l\'execució a obra.',
+            'Millora del rendiment energètic fins a Certificació A en una de les urbanitzacions, reduint cost d\'execució i reforçant la capacitat de venda i supervivència del negoci en plena crisi del 2008.'
+          ]
         }
       },
       skills: 'Habilitats Tècniques',
@@ -2595,6 +2661,8 @@ export const translations = {
         'NLTK': 'NLTK'
       },
       keySkills: 'Habilitats Clau',
+      responsibilities: 'Responsabilitats',
+      experienceAchievements: 'Assoliments',
       achievements: 'Assoliments Clau',
       achievement1: 'Vaig dissenyar i implementar un sistema impulsat per IA per generar estimacions de costos de construcció instantàniament, amb la capacitat de revisar, ajustar i refinar pressupostos manualment—reduint el temps de resposta i millorant la presa de decisions.',
       achievement2: 'Vaig dissenyar i lliurar solucions impulsades per IA i automatització aplicades a casos d\'ús operatius reals, incloent qualificació de leads, extracció de dades i optimització de processos.',
@@ -2661,22 +2729,22 @@ export const translations = {
     // Contact Page
     contact: {
       title: 'Contacte',
-      subtitle: 'Tens un projecte en ment? M\'encantaria escoltar-lo i com puc ajudar-te a donar-li vida.',
+      subtitle: 'Ets recruiter o empresa? Parlem de com incorporar-me o d\'implementar solucions d\'IA i automatització al teu negoci.',
       form: {
         name: 'Nom',
         email: 'Email',
         message: 'Missatge',
         budget: 'Pressupost (Opcional)',
-        availability: 'Disponibilitat',
+        availability: 'Timeline de contractació / projecte',
         sendMessage: 'Enviar missatge',
         successMessage: 'Missatge enviat amb èxit! Et respondré aviat.',
         errorMessage: 'Error en enviar el missatge. Si us plau, torna-ho a intentar.',
         sending: 'Enviant missatge...',
         namePlaceholder: 'El teu nom',
         emailPlaceholder: 'tu@email.com',
-        messagePlaceholder: 'Explica\'m sobre el teu projecte, objectius, cronograma...',
+        messagePlaceholder: 'Explica\'m el rol, l\'equip, l\'abast del projecte o quina solució vols implementar...',
         selectRange: 'Selecciona un rang',
-        whenStart: 'Quan necessites començar?'
+        whenStart: 'Quan teniu previst començar?'
       },
       info: {
         title: 'Informació de Contacte',
