@@ -1,0 +1,27 @@
+{
+  "output": {
+    "filePath": "repomix-output.txt",
+    "style": "markdown",
+    "removeComments": false,
+    "removeEmptyLines": false,
+    "topFilesLength": 5
+  },
+  "include": ["**/*"],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "dist",
+      "node_modules",
+      ".git",
+      "package-lock.json",
+      "repomix-output.txt",
+      "dist - copia",
+      "dist - copia ene 26",
+      "dist - copia feb26"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true
+  }
+}

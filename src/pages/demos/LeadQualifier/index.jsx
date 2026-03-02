@@ -11,18 +11,25 @@ import { DEFAULT_CONFIG } from './utils/config'
 import { useLanguage } from '../../../hooks/useLanguage'
 import { translations } from '../../../data/translations'
 
-// Mensaje de bienvenida del chat siempre en español al cargar
-const WELCOME_MESSAGE_ES = translations?.es?.solutions?.leadQualifier?.ui?.welcomeMessage ?? '¡Hola! Soy el asistente de proyectos. Estoy aquí para ayudarte a definir tu reforma y resolver cualquier duda. ¿Qué tipo de proyecto tienes en mente?'
-
 export default function LeadQualifier() {
   const { t, language } = useLanguage()
 
   const [messages, setMessages] = useState(() => [{
     id: 'welcome',
     role: 'assistant',
-    content: WELCOME_MESSAGE_ES,
+    content: t('solutions.leadQualifier.ui.welcomeMessage'),
     timestamp: new Date().toISOString(),
   }])
+
+  // Actualizar el mensaje de bienvenida si cambia el idioma y no hay más mensajes
+  useEffect(() => {
+    if (messages.length === 1 && messages[0].role === 'assistant') {
+      setMessages([{
+        ...messages[0],
+        content: t('solutions.leadQualifier.ui.welcomeMessage')
+      }])
+    }
+  }, [language, t])
   const [input, setInput] = useState('')
   const [config, setConfig] = useState(DEFAULT_CONFIG)
   const [showConfig, setShowConfig] = useState(false)
@@ -182,7 +189,7 @@ export default function LeadQualifier() {
     setMessages([{
       id: `welcome-${Date.now()}`,
       role: 'assistant',
-      content: WELCOME_MESSAGE_ES,
+      content: t('solutions.leadQualifier.ui.welcomeMessage'),
       timestamp: new Date().toISOString(),
     }])
     setLeadData({})
