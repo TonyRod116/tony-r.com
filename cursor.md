@@ -1,473 +1,236 @@
-# Cursor / Agent Instructions
+# Shared AI Agent Instructions (Tony's Personal Site)
 
-This file is the **source of truth** for how the agent must work in this project. The same content is loaded via `.cursor/rules/` so it applies to every conversation. Follow these instructions on every response.
+> Source of truth: `AI_SHARED_INSTRUCTIONS.md`
+> Root AI files must stay identical: `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `CODEX.md`, `CURSOR.md`
+> Legacy compatibility file: `cursor.md` must mirror the same instructions while it still exists
+> Sync command: `./scripts/sync-ai-instructions.sh`
+> Validation command: `./scripts/check-ai-instructions.sh`
 
----
+This file defines how AI agents should operate in this repository.
 
-# General instructions
+## Terminology
 
-1. "Before writing any code, describe your approach and wait for approval. Always ask clarifying questions before writing any code if requirements are ambiguous."
+- **AI files / archivos de IA**: `AI_SHARED_INSTRUCTIONS.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `CODEX.md`, `CURSOR.md`, `cursor.md`
 
-2. "If a task requires changes to more than 3 files, stop and break it into smaller tasks first."
+## Shared Repo Skills (Cross-IA)
 
-3. "After writing code, list what could break and suggest tests to cover it."
+This repository keeps cross-IA skill workflows in:
 
-4. "When there's a bug, start by writing a test that reproduces it, then fix it until the test passes."
+- `docs/ai-skills/browser-qa.md`
+- `docs/ai-skills/codebase-onboarding.md`
+- `docs/ai-skills/marketing-ops.md`
 
-5. "Every time I correct you, add a new rule to the cursor.md (and CLAUDE.md) file so it never happens again, make sure something similar is not there already, so check the contents first."
+Rules:
 
+- These skill docs are shared operating instructions for Codex, Claude, Gemini, Cursor, and compatible agents working in this repo.
+- If Codex also has a globally installed skill with the same name, prefer the repo-local document when project-specific rules differ.
+- Keep these skill docs concise and repo-specific. Do not duplicate generic upstream content unless it is adapted to this project.
 
-# Issue Tracking: Use Beads
+Trigger rules:
 
-All projects use **beads** (`bd`) for issue tracking.
+- Use `codebase-onboarding` when entering the repo for the first time, when a task is broad/architectural, or when the user asks for a codebase walkthrough, onboarding, or updated AI instructions.
+- Use `browser-qa` after UI, layout, navigation, route, translation, or demo-flow changes, and before closing visual tasks when practical.
+- Use `marketing-ops` when the task touches homepage/landing copy, portfolio positioning, SEO/discoverability, Meta Ads, ASO, emails, pricing, launch planning, or marketing experimentation.
 
-## Required Workflow
+## Marketing Skill Stack (Mandatory)
 
-Before starting any work:
+This repo adopts a reusable marketing/copy system inspired by the more mature BuildApp workflow, but adapted to this portfolio's simpler architecture.
 
-1. Check for ready work:
-   ```
-   bd ready
-   ```
+Primary external bases:
 
-2. Pick a task and claim it:
-   ```
-   bd update <issue-id> --status=in_progress
-   ```
+1. `coreyhaines31/marketingskills`
+   Primary base for copywriting, landing pages, CRO, Meta Ads, ASO, email sequences, pricing, and launch work.
+2. `ericosiu/ai-marketing-skills`
+   Complement for growth experimentation, content ops, SEO iteration, distribution, and measurement-oriented workflows.
+3. `kostja94/marketing-skills`
+   Complement for SEO/discoverability, page structure, metadata, organic visibility, and route/page planning.
 
-3. Work on the task (code, tests, docs)
+Local operating rules:
 
-4. When done, close it:
-   ```
-   bd close <issue-id>
-   ```
+- Start marketing work from `.agents/product-marketing-context.md` so external skills do not operate on vague assumptions.
+- Prefer the minimum relevant subset of upstream skills instead of importing whole frameworks into every task.
+- For real site changes, edit the actual source in `src/`, `public/`, `docs/`, or repo config files, not generated `dist*` output.
+- Do not run upstream automation scripts that require third-party API keys or external accounts unless the task explicitly needs that execution path.
+- When several upstream skill libraries overlap, default to:
+  - Corey for copy/CRO/pricing/launch
+  - Eric for experiments/content ops/iteration
+  - Kostja for SEO structure/discoverability/templates
 
-## Creating New Issues
+## Repository Scope Model (Mandatory)
 
-If you discover new work while implementing:
-```
-bd create --title="Issue title" --type=task|bug|feature --priority=2
-```
+This repository is not split into `frontend/` and `backend/` apps. The operational areas are:
 
-## Rules
+1. `src/`
+   Main React/Vite application and UI source of truth.
+2. `api/`
+   Vercel serverless endpoints used in production and preview deployments.
+3. `server/`
+   Local Express server used for development flows and local persistence.
+4. `/.memory/`, `memory-bank/`, and `PROJECT_STATE.md`
+   Persistent project memory and handoff context.
+5. `.agents/` and `ai/tools/`
+   Local marketing context and reusable AI tooling/bootstrap helpers.
+6. `public/`
+   Static assets and public demo data.
 
-- ALWAYS check `bd ready` before asking "what should I work on?"
-- ALWAYS update issue status to `in_progress` when you start working
-- ALWAYS close issues when you complete them
-- NEVER use markdown TODO lists for tracking work
+Rules:
 
----
+- Keep changes scoped to the area required by the task.
+- Do not move logic between `api/` and `server/` unless the task explicitly requires it.
+- If a frontend change depends on an API contract, verify whether the source of truth is `api/`, `server/`, or both.
 
-# Branch Strategy
+## Current Architecture Truths (Mandatory)
 
-When starting work on an issue:
-1. Create a branch using worktree: `git worktree add <path_to_new_worktree> <issue-id>-short-description`
-2. Do the work on that worktree/branch
-3. Commit frequently with meaningful messages
-4. When complete: push and note the branch in the close message
+- The main app lives in `src/` and is built with Vite.
+- Production API behavior is defined by `api/` serverless functions.
+- Local persistence and local development API behavior live in `server/`.
+- `Lead Qualifier` depends on `/api/chat`.
+- `Presupuestos Reformas` depends on `/api/generate-quote`.
+- Local lead persistence exists in `server/data/leads.json`.
+- Vercel production/serverless flows do not provide durable persistence equivalent to the local Express server unless explicitly implemented.
+- `/.memory/*`, `memory-bank/`, and `PROJECT_STATE.md` are the repo memory sources for future AI sessions.
+- `.agents/product-marketing-context.md` is the local source of truth for positioning, audiences, proof points, and marketing constraints.
 
----
+## Memory Hierarchy (Mandatory)
 
-# Verification
+Use repo memory in this order:
 
-## Backend Verification
+1. Current code and repo state
+2. `/.memory/*` for durable operating context, glossary, and startup handoff
+3. `PROJECT_STATE.md` for recent project-level status changes
+4. Relevant `memory-bank/*` entries for broader continuity
+5. `bd` only when the task is explicitly issue-driven
 
-After making changes in the backend:
-1. Make sure there are integration tests in place
-2. Spin up containers as needed via testcontainers or Localstack (depending on what to test)
-3. If tests don't pass, fix it before marking the task as complete
+Rules:
 
-## Visual Verification
+- If memory conflicts with the current code, trust the code and update the durable memory layer.
+- Keep `/.memory/todo.md` short; long backlogs belong in `bd` or task-specific docs, not startup handoff.
+- Marketing context belongs in `.agents/product-marketing-context.md`, not scattered across random notes.
 
-After making UI changes:
-1. Use Playwright MCP to take screenshots of affected pages
-2. Verify the changes match the expected design
-3. Check both desktop and mobile viewports
-4. If something looks wrong, fix it before marking the task complete
+## Asset Location Conventions
 
----
+- When the user refers to "capturas" or screenshots for BuildApp-related visual updates, first check `C:\Users\toni_\OneDrive\Imágenes\Capturas de pantalla` (WSL path: `/mnt/c/Users/toni_/OneDrive/Imágenes/Capturas de pantalla`).
+- If a requested screenshot asset is not yet inside this repo, agents may copy it from that location into the appropriate source folder before wiring it into the UI.
 
-# Commit
+## Core Working Rules
 
-Create well-formatted commits with conventional commit messages and emojis.
+1. Before implementing non-trivial changes, describe the approach. Ask clarifying questions only if the requirement is materially ambiguous.
+2. If a task needs changes across more than 3 manually edited files, split the work into smaller reviewable steps when practical.
+3. For bug fixes, reproduce with a test or a concrete failing scenario when practical, then implement the fix.
+4. After code changes, report regression risks and the checks performed.
+5. Never add `Co-authored-by:` trailers in commits.
 
-## Features:
-- Runs pre-commit checks by default (lint, build, generate docs)
-- Automatically stages files if none are staged
-- Uses conventional commit format with descriptive emojis
-- Suggests splitting commits for different concerns
+## Cross-Area Coordination (Mandatory)
 
-## Usage:
-- `/commit` - Standard commit with pre-commit checks
-- `/commit --no-verify` - Skip pre-commit checks
-
-## Commit Types:
-- ✨ feat: New features
-- 🐛 fix: Bug fixes
-- 📝 docs: Documentation changes
-- ♻️ refactor: Code restructuring without changing functionality
-- 🎨 style: Code formatting, missing semicolons, etc.
-- ⚡️ perf: Performance improvements
-- ✅ test: Adding or correcting tests
-- 🧑‍💻 chore: Tooling, configuration, maintenance
-- 🚧 wip: Work in progress
-- 🔥 remove: Removing code or files
-- 🚑 hotfix: Critical fixes
-- 🔒 security: Security improvements
-
-## Process:
-1. Check for staged changes (`git status`)
-2. If no staged changes, review and stage appropriate files
-3. Run pre-commit checks (unless --no-verify)
-4. Analyze changes to determine commit type
-5. Generate descriptive commit message
-6. Include scope if applicable: `type(scope): description`
-7. Add body for complex changes explaining why
-8. Execute commit
-
-## Rules:
-- **NEVER** add `Co-authored-by:` to commit messages — not for Cursor, not for any AI, not for anyone. Only the user must appear as author; do not append any co-author trailers.
-
-## Best Practices:
-- Keep commits atomic and focused
-- Write in imperative mood ("Add feature" not "Added feature")
-- Explain why, not just what
-- Reference issues/PRs when relevant
-- Split unrelated changes into separate commits
-
----
-
-# Add to Changelog
-
-Update the project's CHANGELOG.md file with a new entry.
-
-## Usage:
-`/add-to-changelog <version> <change_type> <message>`
-
-## Parameters:
-- `<version>`: Version number (e.g., "1.1.0")
-- `<change_type>`: One of: "added", "changed", "deprecated", "removed", "fixed", "security"
-- `<message>`: Description of the change
-
-## Examples:
-- `/add-to-changelog 1.1.0 added "New markdown to BlockDoc conversion feature"`
-- `/add-to-changelog 1.0.2 fixed "Bug in HTML renderer causing incorrect output"`
-
-## Steps:
-1. Check for existing CHANGELOG.md or create if missing
-2. Find or create section for the specified version
-3. Add the new entry under the appropriate change type
-4. Format according to Keep a Changelog conventions
-5. Write the updated changelog back to file
-6. Optionally commit the changes with appropriate message
-
-## Format:
-Follow [Keep a Changelog](https://keepachangelog.com) format:
-- Group changes by type
-- List changes as bullet points
-- Include date for version sections
-- Keep entries concise but descriptive
-
----
-
-# Check
-
-Perform comprehensive code quality and security checks.
-
-## Primary Task:
-Run `npm run check` (or project-specific check command) and resolve any resulting errors.
-
-## Important:
-- DO NOT commit any code during this process
-- DO NOT change version numbers
-- Focus only on fixing issues identified by checks
-
-## Common Checks Include:
-1. **Linting**: Code style and syntax errors
-2. **Type Checking**: TypeScript/Flow type errors
-3. **Unit Tests**: Failing test cases
-4. **Security Scan**: Vulnerability detection
-5. **Code Formatting**: Style consistency
-6. **Build Verification**: Compilation errors
-
-## Process:
-1. Run the check command
-2. Analyze output for errors and warnings
-3. Fix issues in priority order:
-   - Build-breaking errors first
-   - Test failures
-   - Linting errors
-   - Warnings
-4. Re-run checks after each fix
-5. Continue until all checks pass
-
-## For Different Project Types:
-- **JavaScript/TypeScript**: `npm run check` or `yarn check`
-- **Python**: `black`, `isort`, `flake8`, `mypy`
-- **Rust**: `cargo check`, `cargo clippy`
-- **Go**: `go vet`, `golint`
-- **Swift**: `swift-format`, `swiftlint`
-
----
-
-# Clean
-
-Fix all code formatting and quality issues in the entire codebase.
-
-## Python Projects:
-Fix all `black`, `isort`, `flake8`, and `mypy` issues
-
-### Steps:
-1. **Format with Black**: `black .`
-2. **Sort imports with isort**: `isort .`
-3. **Fix flake8 issues**: `flake8 . --extend-ignore=E203`
-4. **Resolve mypy type errors**: `mypy .`
-
-## JavaScript/TypeScript Projects:
-Fix all ESLint, Prettier, and TypeScript issues
-
-### Steps:
-1. **Format with Prettier**: `npx prettier --write .`
-2. **Fix ESLint issues**: `npx eslint . --fix`
-3. **Check TypeScript**: `npx tsc --noEmit`
-
-## General Process:
-1. Run automated formatters first
-2. Fix remaining linting issues manually
-3. Resolve type checking errors
-4. Verify all tools pass with no errors
-5. Review changes before committing
-
-## Common Issues:
-- Import order conflicts between tools
-- Line length violations
-- Unused imports/variables
-- Type annotation requirements
-- Missing return types
-- Inconsistent quotes/semicolons
-
----
-
-# Design and Architecture
-
-## ADR
-
-- Use ADRs whenever there's a significant change in current architecture
-- Use ADRs when designing a new system or service
-- Use Markdown format and version those files
-- Use Google's ADR format
-
----
-
-# Code Analysis
-
-Perform advanced code analysis with multiple inspection options.
-
-## Analysis Menu:
-
-### 1. Knowledge Graph Generation
-- Map relationships between components
-- Visualize dependencies
-- Identify architectural patterns
-
-### 2. Code Quality Evaluation
-- Complexity metrics
-- Maintainability index
-- Technical debt assessment
-- Code duplication detection
-
-### 3. Performance Analysis
-- Identify bottlenecks
-- Memory usage patterns
-- Algorithm complexity
-- Database query optimization
-
-### 4. Security Review
-- Vulnerability scanning
-- Input validation checks
-- Authentication/authorization review
-- Sensitive data handling
-
-### 5. Architecture Review
-- Design pattern adherence
-- SOLID principles compliance
-- Coupling and cohesion analysis
-- Module boundaries
-
-### 6. Test Coverage Analysis
-- Coverage percentages
-- Untested code paths
-- Test quality assessment
-- Missing edge cases
-
-## Process:
-1. Select analysis type based on need
-2. Run appropriate tools and inspections
-3. Generate comprehensive report
-4. Provide actionable recommendations
-5. Prioritize improvements by impact
-
-## Output Format:
-- Executive summary
-- Detailed findings
-- Risk assessment
-- Improvement roadmap
-- Code examples where relevant
-
----
-
-# Implement Task
-
-Approach task implementation methodically with careful planning and execution.
-
-## Process:
-
-### 1. Think Through Strategy
-- Understand the complete requirement
-- Identify key components needed
-- Consider dependencies and constraints
-- Plan the implementation approach
-
-### 2. Evaluate Approaches
-- List possible implementation strategies
-- Compare pros and cons of each
-- Consider:
-  - Performance implications
-  - Maintainability
-  - Scalability
-  - Code reusability
-  - Testing complexity
-
-### 3. Consider Tradeoffs
-- Short-term vs long-term benefits
-- Complexity vs simplicity
-- Performance vs readability
-- Flexibility vs focused solution
-- Time to implement vs perfect solution
-
-### 4. Implementation Steps
-1. Break down into subtasks
-2. Start with core functionality
-3. Implement incrementally
-4. Test each component
-5. Integrate components
-6. Add error handling
-7. Optimize if needed
-8. Document decisions
-
-### 5. Best Practices
-- Write tests first (TDD approach)
-- Keep functions small and focused
-- Use meaningful names
-- Comment complex logic
-- Handle edge cases
-- Consider future maintenance
-
-## Checklist:
-- [ ] Requirements fully understood
-- [ ] Approach documented
-- [ ] Tests written
-- [ ] Code implemented
-- [ ] Edge cases handled
-- [ ] Documentation updated
-- [ ] Code reviewed
-- [ ] Performance acceptable
-
----
-
-# Five Whys Analysis
-
-Use the "Five Whys" root cause analysis technique to deeply understand problems.
-
-## Process:
-
-### 1. Define the Problem
-Clearly state the issue or symptom
-
-### 2. Ask "Why?" Five Times
-- Why did this problem occur? → Answer 1
-- Why did Answer 1 happen? → Answer 2
-- Why did Answer 2 happen? → Answer 3
-- Why did Answer 3 happen? → Answer 4
-- Why did Answer 4 happen? → Answer 5 (Root Cause)
-
-### 3. Validate Root Cause
-- Verify the logical chain
-- Check if addressing root cause prevents recurrence
-- Consider multiple root causes if applicable
-
-### 4. Develop Solutions
-- Address the root cause, not just symptoms
-- Create preventive measures
-- Consider systemic improvements
-
-## Example:
-**Problem**: Application crashes when processing large files
-
-1. **Why?** → The application runs out of memory
-2. **Why?** → It loads entire file into memory at once
-3. **Why?** → The file parser wasn't designed for streaming
-4. **Why?** → Initial requirements only specified small files
-5. **Why?** → Requirements gathering didn't consider future growth
-
-**Root Cause**: Incomplete requirements gathering process
-**Solution**: Implement streaming parser and improve requirements process
-
-## Best Practices:
-- Focus on process, not people
-- Look for systemic issues
-- Document the analysis
-- Involve relevant stakeholders
-- Test solutions address root cause
-
----
-
-# Context Prime
-
-Prime Claude with comprehensive project understanding.
-
-## Standard Context Loading:
-1. Read README.md for project overview
-2. Read cursor.md (or CLAUDE.md) for AI-specific instructions
-3. List project files excluding ignored paths
-4. Review key configuration files
-5. Understand project structure and conventions
-
-## Steps:
-1. **Project Overview**:
-   - Read README.md
-   - Identify project type and purpose
-   - Note key technologies and dependencies
-
-2. **AI Guidelines**:
-   - Read cursor.md or CLAUDE.md if present
-   - Load project-specific AI instructions
-   - Note coding standards and preferences
-
-3. **Repository Structure**:
-   - Run: `git ls-files | head -50` for initial structure
-   - Identify main directories and their purposes
-   - Note naming conventions
-
-4. **Configuration Review**:
-   - Package manager files (package.json, Cargo.toml, etc.)
-   - Build configuration
-   - Environment setup
-
-5. **Development Context**:
-   - Identify test framework
-   - Note CI/CD configuration
-   - Review contribution guidelines
-
-## Advanced Options:
-- Load specific subsystem context
-- Focus on particular technology stack
-- Include recent commit history
-- Load custom command definitions
-
-## Output:
-Establish clear understanding of:
-- Project goals and constraints
-- Technical architecture
-- Development workflow
-- Collaboration parameters
+- `src/` changes must not silently break `api/` or `server/` consumers.
+- `api/` changes must mention frontend impact when request/response shape, validation, auth, or persistence behavior changes.
+- `server/` changes must mention whether they affect only local development or also require matching `api/` changes.
+- If a task changes an important repo workflow, architecture rule, or integration contract, update `AI_SHARED_INSTRUCTIONS.md` and synchronize the AI files in the same change set.
+
+## Generated Artifacts and No-Touch Areas
+
+Treat these as generated, copied, or non-source artifacts unless the user explicitly asks otherwise:
+
+- `dist/`
+- `dist - copia/`
+- `dist - copia ene 26/`
+- other `dist*` backup/copy folders
+- `node_modules/`
+- `server/node_modules/`
+- `*.Zone.Identifier`
+
+Rules:
+
+- Do not edit generated build output instead of source files.
+- Prefer fixing the source in `src/`, `api/`, `server/`, `public/`, or scripts.
+- If generated artifacts are stale, regenerate them instead of hand-editing them.
+
+## Issue Workflow (Beads)
+
+Use `bd` for issue tracking when the task is issue-driven.
+
+- Start: `bd ready`
+- Claim: `bd update <id> --status in_progress`
+- Inspect: `bd show <id>`
+- Create follow-up: `bd create --title="..." --type=task|bug|feature --priority=2`
+- Close: `bd close <id>`
+- Sync: `bd sync`
+
+Operational fallback:
+
+- If `bd ready` reports the database is out of sync, run `bd sync --import-only`.
+- If sandbox/daemon mode is unreliable, use `bd --sandbox ready`.
+- Do not use markdown TODO lists as the source of truth for tracked work.
+
+## Branch and Commit Hygiene
+
+- Prefer one branch or worktree per issue when the task is substantial.
+- Keep commits small and atomic.
+- Use conventional commit format.
+- Do not amend existing commits unless the user explicitly asks for it.
+
+## Cross-Agent Continuity (Handoff / Memory)
+
+At session start:
+
+- Read `README.md`.
+- Read `AI_SHARED_INSTRUCTIONS.md`.
+- Read `PROJECT_STATE.md` if present.
+- Read relevant files in `/.memory/` when the task touches architecture, workflow, copy strategy, or repo operating context.
+- Read relevant files in `memory-bank/` when the task touches architecture, product behavior, or repo workflow.
+- Read `.agents/product-marketing-context.md` when the task touches copy, SEO, landing pages, positioning, emails, launch, or growth.
+- Check `bd ready` when working from tracked issues.
+
+At session end:
+
+- Update `PROJECT_STATE.md` when the task changes architecture, workflow, important integrations, or project status.
+- Update `/.memory/` entries when the change should persist as startup context for future sessions.
+- Update `memory-bank/` entries when the change should persist as future operating context.
+- Track meaningful follow-up work in `bd`.
+
+## Mandatory Cross-CLI Sync Rule
+
+Any change to project instructions must keep all AI files aligned.
+
+Process:
+
+1. Edit `AI_SHARED_INSTRUCTIONS.md`.
+2. Run `./scripts/sync-ai-instructions.sh`.
+3. Run `./scripts/check-ai-instructions.sh`.
+4. Commit `AI_SHARED_INSTRUCTIONS.md` and all synchronized AI files together.
+
+## Verification
+
+Use the checks that actually exist in this repository.
+
+Frontend and shared UI changes:
+
+1. Run `npm run build`.
+2. Follow `docs/ai-skills/browser-qa.md` for route and viewport verification when the task changes UI or navigation.
+
+`api/` changes:
+
+1. Validate the affected endpoint contract and expected environment assumptions.
+2. Confirm whether the change applies only to Vercel/serverless behavior or also requires local `server/` parity.
+
+`server/` changes:
+
+1. Run or smoke-test the local Express server path affected by the change.
+2. Confirm whether local persistence behavior changed.
+
+Docs and AI-instruction changes:
+
+1. Run `./scripts/check-ai-instructions.sh`.
+2. Confirm the synchronized AI files match the source of truth.
+
+## Prohibited Changes Without Explicit Request
+
+- Do not modify secrets, credentials, deployment settings, or unrelated environment files.
+- Do not refactor unrelated app sections while touching instructions or tooling.
+- Do not rewrite production behavior in `api/` when the task is only about local `server/`, or vice versa.
+- Do not delete backup or copied folders unless the user explicitly asks for cleanup.
+
+## Recent Important Changes
+
+- 2026-03-27: AI instruction policy tightened around the real repo structure: `src/`, `api/`, `server/`, `memory-bank/`, and generated `dist*` artifacts.
+- 2026-03-27: Cross-CLI sync now explicitly includes legacy `cursor.md` while that file still exists, to avoid Cursor drift from the root source of truth.

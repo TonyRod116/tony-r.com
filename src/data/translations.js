@@ -15,15 +15,15 @@ export const translations = {
     // Home Page
     home: {
       hero: {
-        titlePart1: 'Solutions Engineer',
-        titlePart2: 'AI & Automation for Business Growth',
-        subtitle: 'From founder with real operational experience to designing AI-driven solutions that save time and drive revenue.',
+        titlePart1: 'CEO & Founder of BuildApp',
+        titlePart2: 'AI Products, Automation, and Solutions Engineering',
+        subtitle: 'I turn complex business problems into shipped products, from product strategy and UX to AI workflows, web and mobile delivery, and operational automation.',
         cta: {
           viewProjects: 'View Projects',
           viewResume: 'View Resume',
           startProject: 'Start project',
-          forRecruiters: 'I am recruiting',
-          forCompanies: 'I need AI solutions'
+          forRecruiters: 'View Resume & Experience',
+          forCompanies: 'See AI Demos'
         },
         scrollDown: 'Scroll down'
       },
@@ -36,8 +36,8 @@ export const translations = {
         drivenBy: 'Driven by'
       },
       about: {
-        title: 'From construction entrepreneur to Software Engineer',
-        description: "At General Assembly, I stood out for consistently going beyond project requirements, adding creative, functional, and product-oriented features that elevated each build. My final project, TradeLab, was publicly recognized by my instructor as one of the best projects he had ever seen in his years of teaching at GA. I continue to expand my knowledge through ongoing study, with a particular passion for Artificial Intelligence and its potential to transform how we solve complex problems.",
+        title: 'Founder mindset. Hands-on execution.',
+        description: 'Before software, I led real-world projects in construction. Today, as CEO & Founder of BuildApp, I stay hands-on across product, engineering, AI workflows, and AWS S3-backed media systems, building tools that save teams time and help them move faster with more confidence.',
         moreAboutMe: 'More about me'
       },
       skills: {
@@ -47,12 +47,13 @@ export const translations = {
       },
       projects: {
         title: 'Featured Projects',
-        subtitle: 'A selection of my most recent work, from value propositions to complete implementation.',
+        subtitle: 'Selected work across AI-assisted renovation, marketplaces, and trading tools, where strategy, product thinking, and end-to-end implementation all had to work together.',
         readMore: 'Read more',
         readLess: 'Read less',
         live: 'Live',
         backend: 'Backend',
         frontend: 'Frontend',
+        mobile: 'Mobile',
         github: 'GitHub',
         viewAll: 'View all projects'
       },
@@ -92,12 +93,12 @@ export const translations = {
         cta: 'Explore AI Lab'
       },
       cta: {
-        title: 'Ready to build something incredible?',
-        description: 'I have real experience building products that people use. From construction to software, I combine technical depth with strategic thinking.',
+        title: 'Need product and AI execution that ships?',
+        description: 'I work best where business goals, customer needs, and technical delivery have to move together, from founder-led product strategy to hands-on implementation.',
         viewResume: 'View Resume',
         startProject: 'Start project',
-        forRecruiters: 'I am recruiting',
-        forCompanies: 'I need AI solutions'
+        forRecruiters: 'View Resume & Experience',
+        forCompanies: 'See AI Demos'
       }
     },
 
@@ -105,10 +106,10 @@ export const translations = {
     about: {
       hero: {
         title: 'About Me',
-        description1: "I am a Solutions Engineer focused on designing AI and automation solutions that help companies save time, improve lead quality, and increase revenue.",
-        description2: "Before moving into tech, I spent over 20 years in real estate and construction as a founder and operator, leading client-facing, high-value projects. That experience taught me how to understand business problems deeply, often before they are clearly defined, and translate ambiguity into clear, effective solutions.",
-        description3: "After completing General Assembly's 420+ hour Software Engineering bootcamp, I built multiple end-to-end applications with a strong product and architecture mindset. My final project, TradeLab, was publicly recognized by my instructor as one of the best projects he had seen at GA. I later expanded my focus into applied AI through Harvard's CS50 AI and Stanford / DeepLearning.AI's Machine Learning specialization, applying AI to real operational use cases such as automation, data extraction, lead qualification, and decision support.",
-        description4: "What drives me is impact. I enjoy working at the intersection of business, customers, and technology—designing solutions that reduce friction, automate repetitive work, and deliver measurable results. I bring a founder mindset, strong communication skills, and real-world execution experience to every problem I work on."
+        description1: 'I am the CEO & Founder of BuildApp and a solutions engineer focused on building AI products and automation that solve real business problems.',
+        description2: 'Before moving into tech, I spent over 20 years in real estate and construction as a founder and operator, leading client-facing, high-value projects. That experience taught me how to understand business problems deeply, often before they are clearly defined, and turn ambiguity into clear, workable solutions.',
+        description3: "After completing General Assembly's 420+ hour Software Engineering bootcamp, I built multiple end-to-end applications with a strong product and architecture mindset. My final project, TradeLab, was publicly recognized by my instructor as one of the best projects he had seen at GA. I later expanded that foundation through Harvard's CS50 AI and Stanford / DeepLearning.AI's Machine Learning specialization, applying AI to real operational use cases such as automation, data extraction, lead qualification, and decision support.",
+        description4: 'At BuildApp, I lead the company while staying hands-on in the product: AI-assisted quote workflows, CRM, cross-device experiences, Android and iPhone delivery, and AWS S3 storage/media workflows. That combination—founder, operator, and builder—is where I add the most value.'
       },
       technical: {
         title: 'Technical Expertise',
@@ -147,9 +148,9 @@ export const translations = {
         }
       },
       lookingFor: {
-        title: 'What I\'m Looking For',
-        description: 'I am excited to join teams where I can combine technical depth with strategic thinking, helping to build scalable products that make a real impact while continuing to grow as a developer.',
-        quote: 'I bring expertise in JavaScript, React, Node.js, Python, Django, MongoDB, PostgreSQL, and REST APIs, with experience deploying applications on Netlify, Heroku, and Render.'
+        title: 'Where I Add the Most Value',
+        description: 'I do my best work where product strategy, customer understanding, and technical execution need to move together, whether that means leading from the front, building hands-on, or helping teams turn operational complexity into software that ships.',
+        quote: 'CEO & Founder of BuildApp with hands-on depth in React, TypeScript, FastAPI collaboration, mobile delivery, AWS S3 storage/media flows, AI workflows, observability, and production tooling.'
       },
       cta: {
         title: 'Ready to work together?',
@@ -162,51 +163,93 @@ export const translations = {
     // Projects Page
     projects: {
       title: 'Projects',
-      subtitle: 'A selection of my most recent work, from value propositions to complete implementation. Each project represents a unique challenge and an opportunity to learn and grow.',
+      subtitle: 'A selection of products across BuildApp and earlier work, showing how I take product thinking, workflow design, and execution through to production on web and mobile.',
       overview: 'Project Overview',
       features: 'Key Features',
       challenges: 'Technical Challenges',
       techStack: 'Technologies Used',
+      featuredProject: 'Featured Project',
+      moreProjectsTitle: 'More Projects',
+      moreProjectsDescription: 'BuildApp Pro is the live product. BuildApp explains the broader market thesis. The rest shows earlier range across marketplaces and data-heavy tools.',
       backend: 'Backend',
       frontend: 'Frontend',
+      mobile: 'Mobile',
       github: 'GitHub',
+      appStore: 'App Store',
+      appStoreTop: 'Download on',
+      googlePlay: 'Google Play',
+      googlePlayTop: 'Available on',
+      samplePdf: 'Sample Quote',
       live: 'Live',
       projects: {
         buildapp: {
-          description: 'Comprehensive platform connecting clients with construction professionals. Project management, portfolios and review system.',
-          longDescription: 'BuildAPP is a comprehensive web platform connecting clients with construction professionals. Built with Node.js, Express.js and MongoDB, includes dual authentication, project management, professional portfolios and review system. Deployed on Netlify with serverless architecture and Cloudinary for images.',
+          badge: 'Website & positioning',
+          description: 'Public website and launch layer for BuildApp, clarifying the category thesis and routing professionals, followers, and investors into the right next step.',
+          longDescription: 'I designed and built buildapp.es as the public face of the company: a landing page that explains the bigger BuildApp vision without sounding abstract, while making BuildApp Pro feel concrete and available today. The job was not just frontend execution. It was positioning, messaging hierarchy, proof selection, multilingual copy, CTA structure, and giving the company a credible story that works for professionals, early supporters, and strategic conversations.',
           highlights: [
-            'Real solution for construction sector',
-            'Role-differentiated user experience',
-            'Integration with management tools'
+            'Explains the wedge clearly: useful product today, larger platform thesis tomorrow',
+            'Turns market insight into a launch-ready website instead of a vague vision deck',
+            'Creates a clean path into BuildApp Pro, waitlist interest, and strategic conversations'
           ],
           challenges: [
-            'Complex serverless architecture',
-            'Dual user management (clients/professionals)',
-            'Intelligent matching system'
+            'Balancing a bigger platform story without overselling what already exists',
+            'Speaking to professionals, future users, and investors on the same surface',
+            'Keeping the page clear, visual, and trustworthy instead of startup-hype heavy'
+          ]
+        },
+        'buildapp-pro': {
+          badge: 'Current flagship',
+          description: 'AI-assisted renovation product already shipped on web, iPhone, and Android for faster quotes, client follow-up, and visual proposals.',
+          longDescription: 'I founded BuildApp, defined the product vision, brought in a CTO to co-lead the harder backend architecture, and still built most of the shipped experience myself: web frontend, Android and iPhone apps, a substantial part of the backend flows, CI/CD, observability, and AWS S3 storage/media workflows. BuildApp Pro helps renovation professionals capture site visits, prepare clearer budgets, generate visual before/after proposals, manage CRM context, and send everything fast enough to improve the sales moment.',
+          highlights: [
+            'Built and shipped the user-facing product across web, Android, and iPhone',
+            'Turned photos, notes, AI budgets, visual proposals, CRM, and PDF delivery into one professional workflow',
+            'Owned CI/CD, observability, and AWS S3 media/storage flows for real production use'
+          ],
+          challenges: [
+            'Keeping one credible workflow across browser and native mobile contexts',
+            'Making AI output useful for real quoting and presentation, not just demo-worthy',
+            'Collaborating with the CTO through a PR-based multi-endpoint backend workflow without losing delivery speed'
+          ]
+        },
+        'buildapp-marketplace': {
+          badge: 'Early build',
+          description: 'Early construction marketplace prototype that first proved my product instincts in this space.',
+          longDescription: 'Before the current company version of BuildApp, this was my first end-to-end marketplace for the construction sector. Built with Node.js, Express, and MongoDB, it handled dual authentication, project management, professional portfolios, and reviews. More importantly, it showed an early but real product instinct: solving a sector problem with role-specific UX and operational workflows instead of a generic CRUD app.',
+          highlights: [
+            'First serious proof that I could translate construction pain into software',
+            'Role-specific UX for homeowners and professionals',
+            'End-to-end marketplace flows with portfolios, projects, and reviews'
+          ],
+          challenges: [
+            'Designing a two-sided marketplace without bloating the UX',
+            'Managing dual authentication and role-based permissions',
+            'Turning a real sector pain point into product logic, not just CRUD screens'
           ]
         },
         're-lux': {
-          description: 'Second-hand luxury e-commerce platform. Premium marketplace with authentication, favorites, reviews and shopping cart.',
-          longDescription: 'Re-Lux is a second-hand luxury e-commerce platform built with React, Node.js and MongoDB. Includes JWT authentication, favorites system, product reviews, Cloudinary integration for images and complete shopping cart. I overcame challenges like frontend-backend refactoring and CSS optimization.',
+          badge: 'Marketplace build',
+          description: 'Luxury resale marketplace focused on trust, browsing quality, and polished purchase flows.',
+          longDescription: 'Re-Lux is a premium second-hand luxury marketplace built with React, Node.js, and MongoDB. It includes JWT authentication, favourites, reviews, Cloudinary image handling, and a full cart flow. The main challenge was keeping the experience polished while untangling frontend-backend responsibilities and improving performance.',
           highlights: [
-            'Exceptional UX for luxury products',
-            'Robust authentication system',
-            'Perfect integration with external services'
+            'Polished browsing, favourites, reviews, and cart flow',
+            'JWT auth plus Cloudinary-based image handling',
+            'Good proof of product finish, not just implementation completeness'
           ],
           challenges: [
-            'Complete frontend-backend refactoring',
-            'Image optimization with Cloudinary',
-            'Payment system implementation'
+            'Keeping premium-brand polish while refactoring frontend/backend responsibilities',
+            'Managing image-heavy browsing without slowing the experience',
+            'Connecting trust signals, cart behaviour, and account flows into one purchase journey'
           ]
         },
         tradelab: {
-          description: 'Professional trading strategy backtesting platform. Convert ideas into executable strategies and run complete backtests.',
-          longDescription: 'TradeLab is a full-stack trading strategy backtesting platform built in 8 days using React, Django, PostgreSQL (Neon.tech) and REST APIs. I converted Databento market data to Parquet format using Pandas for efficient processing. Includes JWT authentication, strategy builder, real historical data integration and advanced metrics (Sharpe ratio, drawdown). Deployed on Netlify/Heroku, fully responsive.',
+          badge: 'Final project',
+          description: 'Trading strategy backtesting platform built in 8 days, turning ideas into executable rules and measurable results.',
+          longDescription: 'TradeLab is a full-stack backtesting platform built in 8 days with React, Django, PostgreSQL, and REST APIs. I converted Databento market data into Parquet with Pandas for efficient processing, then built strategy creation, historical testing, and performance metrics such as Sharpe ratio and drawdown. It was an early proof that I could combine product thinking, technical depth, and speed.',
           highlights: [
-            'Recognized by instructor as one of the best projects',
-            'Real-time data processing',
-            'Intuitive interface for professional traders'
+            'Built in 8 days and recognized by my instructor as one of the strongest projects in the cohort',
+            'Real-time data processing with strategy creation and historical testing',
+            'Good proof of speed, product judgement, and quantitative tooling'
           ],
           challenges: [
             'Efficient conversion of massive market data',
@@ -807,7 +850,7 @@ export const translations = {
 
     // Footer
     footer: {
-      description: 'I build products that are understood and used. Software engineer and founder with real construction experience.',
+      description: 'CEO & Founder of BuildApp. I build software, AI workflows, AWS S3-backed systems, and products people actually use.',
       quickLinks: 'Quick Links',
       connect: 'Connect with me',
       copyright: '© 2025 Tony Rodríguez. All rights reserved.'
@@ -824,19 +867,35 @@ export const translations = {
     // Resume Page
     resume: {
       title: 'Resume',
-      subtitle: 'Solutions Engineer | AI & Automation | Turning Business Problems into Scalable Solutions',
-      nameTitle: 'Solutions Engineer focused on AI, automation, and business impact',
+      subtitle: 'CEO & Founder of BuildApp | Solutions Engineering | AI Products & Automation',
+      nameTitle: 'CEO & Founder of BuildApp, building AI products and automation that ship',
       aboutMe: 'About Me',
       recruiterSnapshot: {
         title: 'Recruiter Snapshot',
-        point1: 'Solutions Engineer bridging business, product, and technical execution.',
-        point2: 'Founder-operator background with high-stakes project delivery and client ownership.',
-        point3: 'Hands-on in AI automation, full-stack implementation, and customer-facing discovery.',
+        point1: 'CEO & Founder of BuildApp with hands-on product and engineering execution.',
+        point2: 'Founder-operator background across construction, software, and high-stakes customer delivery.',
+        point3: 'Hands-on in AI workflows, full-stack implementation, native mobile delivery, and product strategy.',
         cta: 'Contact me for hiring'
       },
-      aboutMeContent: "I am a Solutions Engineer focused on using software, AI, and automation to solve real business problems and drive measurable outcomes.\n\nBefore transitioning into tech, I spent over a decade as Founder & CEO in the construction sector, leading client-facing, high-stakes projects. That experience shaped my strongest advantage today: understanding business and user needs deeply, often before they are clearly articulated, and turning ambiguity into clear, effective solutions.\n\nAfter graduating from General Assembly's 420+ hour Software Engineering Immersive, I built multiple end-to-end applications with a strong product and architecture mindset. My final project, TradeLab, a trading strategy backtesting platform, was publicly recognized by my instructor as one of the best projects he had seen at GA.\n\nI later expanded my technical scope through Harvard's CS50 AI and Stanford / DeepLearning.AI's Machine Learning specialization, applying AI to practical use cases such as automation, data extraction, lead qualification, and decision support.\n\nWhat drives me is impact. I enjoy working at the intersection of business, customers, and technology—designing solutions that save time, reduce friction, and help companies grow. I bring a founder mindset, strong communication skills, and real-world execution experience to every project.",
+      aboutMeContent: "I am the CEO & Founder of BuildApp and a solutions engineer focused on turning business complexity into useful software, AI workflows, and automation.\n\nBefore moving into tech, I spent over a decade as Founder & CEO in the construction sector, leading client-facing, high-stakes projects. That experience shaped my strongest advantage today: understanding business and user needs deeply, often before they are clearly articulated, and turning ambiguity into clear, workable solutions.\n\nAfter graduating from General Assembly's 420+ hour Software Engineering Immersive, I built multiple end-to-end applications with a strong product and architecture mindset. My final project, TradeLab, a trading strategy backtesting platform, was publicly recognized by my instructor as one of the best projects he had seen at GA.\n\nAt BuildApp, I lead the company while staying deeply hands-on in the professional product across web, mobile, AI-assisted workflows, observability, and delivery tooling. That includes React and TypeScript frontend architecture, Capacitor-based Android and iPhone delivery, backend collaboration with FastAPI/PostgreSQL, and AWS S3 storage/media flows, plus Sentry instrumentation, CI, and end-to-end testing.\n\nWhat drives me is impact. I enjoy working at the intersection of business, customers, and technology—designing systems that save time, reduce friction, and help teams deliver faster with more confidence.",
       experience: 'Professional Experience',
       experienceDetails: {
+        buildapp: {
+          description: 'I founded BuildApp and lead it as CEO, while staying deeply hands-on in the professional product across web, backend integrations, mobile delivery, and AWS S3-backed storage/media workflows.\n\nThat meant shaping product strategy and workflow design, then helping build the system itself: field capture, AI renders and budgets, CRM, quote sharing, cross-device continuity, observability, and delivery tooling. The result was a product ready for real renovation professionals, not just a prototype.',
+          responsibilities: [
+            'Founded and led the company while owning major parts of the professional web experience in React and TypeScript, from capture and quote generation to CRM and quote detail flows.',
+            'Ported the product to Android and iPhone with Capacitor, native Google and Apple auth, native HTTP/storage bridges, and platform-specific configuration.',
+            'Collaborated on FastAPI/PostgreSQL backend contracts for CRM, quotes, express sessions, public quote sharing, and quota/idempotency flows.',
+            'Owned AWS S3-backed storage, file handling, and cross-device sync patterns for media and sessions.',
+            'Integrated observability and delivery safeguards including Sentry tracing/replay, CI quality gates, Playwright E2E coverage, and Slack failure notifications.'
+          ],
+          achievements: [
+            'Founded and helped turn BuildApp into a real cross-device product, aligning web, Android, and iPhone behavior around a backend source of truth.',
+            'Shipped AI-assisted renovation workflows that reduced the time from site visit to shareable budget and visual proposal.',
+            'Built mobile-ready auth and networking layers that preserved web parity while supporting native platform requirements.',
+            'Added reliability improvements across observability, AWS S3 media delivery, automated tests, CI, and deployment/debugging workflows.'
+          ]
+        },
         generalassembly: {
           description: 'Completed an intensive 420+ hour Software Engineering bootcamp with a strong focus on end-to-end product development and real-world problem solving.\n\nBuilt multiple full-stack applications applying clean architecture, API design, data modeling, authentication, and applied AI. Worked across the full lifecycle from discovery and solution design to implementation and iteration, with a strong emphasis on product thinking and usability.\n\nMy final project, TradeLab, a trading strategy backtesting platform, was publicly recognized by my instructor as one of the best projects he had seen in his years teaching at General Assembly.'
         },
@@ -1002,9 +1061,9 @@ export const translations = {
     // Contact Page
     contact: {
       title: 'Contact',
-      subtitle: 'Recruiter or company? Let\'s talk about hiring me or implementing AI and automation solutions for your business.',
-      subtitleRecruiter: 'Recruiter? I am open to roles in Solutions Engineering, AI automation, and product-focused software.',
-      subtitleCompany: 'Company? Let\'s talk about implementing AI and automation solutions tailored to your business.',
+      subtitle: 'Recruiter, founder, or company? Let\'s talk about product leadership, hands-on engineering, or AI and automation for your business.',
+      subtitleRecruiter: 'Recruiter? If you\'re hiring for founder-minded product, solutions engineering, or AI automation leadership, let\'s talk.',
+      subtitleCompany: 'Company? Let\'s talk about AI workflows, automation, or hands-on product execution tailored to your business.',
       form: {
         name: 'Name',
         email: 'Email',
@@ -1056,7 +1115,7 @@ export const translations = {
 
     // Footer
     footer: {
-      description: 'I build products that are understood and used. Software engineer and founder with real construction experience.',
+      description: 'CEO & Founder of BuildApp. I build software, AI workflows, AWS S3-backed systems, and products people actually use.',
       quickLinks: 'Quick Links',
       connect: 'Connect with me',
       copyright: '© 2025 Tony Rodríguez. All rights reserved.'
@@ -1088,15 +1147,15 @@ export const translations = {
     // Home Page
     home: {
       hero: {
-        titlePart1: 'Ingeniero de Soluciones',
-        titlePart2: 'IA y Automatización para el Crecimiento Empresarial',
-        subtitle: 'De fundador con experiencia operativa real a diseñar soluciones impulsadas por IA que ahorran tiempo e impulsan ingresos.',
+        titlePart1: 'CEO y fundador de BuildApp',
+        titlePart2: 'Productos con IA, automatización e ingeniería de soluciones',
+        subtitle: 'Convierto problemas complejos de negocio en productos reales: desde estrategia y UX hasta flujos con IA, entrega web y mobile, y automatización operativa.',
         cta: {
           viewProjects: 'Ver Proyectos',
           viewResume: 'Ver CV',
           startProject: 'Iniciar proyecto',
-          forRecruiters: 'Estoy contratando',
-          forCompanies: 'Quiero soluciones de IA'
+          forRecruiters: 'Ver CV y experiencia',
+          forCompanies: 'Ver demos de IA'
         },
         scrollDown: 'Desplázate hacia abajo'
       },
@@ -1109,8 +1168,8 @@ export const translations = {
         drivenBy: 'Impulsado por'
       },
       about: {
-        title: 'De emprendedor de construcción a Software Engineer',
-        description: 'En General Assembly, me destaqué por ir consistentemente más allá de los requisitos del proyecto, añadiendo características creativas, funcionales y orientadas al producto que elevaron cada construcción. Mi proyecto final, TradeLab, fue públicamente reconocido por mi instructor como uno de los mejores proyectos que había visto en sus años de enseñanza en GA. Continúo expandiendo mi conocimiento a través del estudio continuo, con una pasión particular por la Inteligencia Artificial y su potencial para transformar cómo resolvemos problemas complejos.',
+        title: 'Mentalidad de fundador. Ejecución hands-on.',
+        description: 'Antes del software lideré proyectos reales en construcción. Hoy, como CEO y fundador de BuildApp, sigo muy hands-on en producto, ingeniería, flujos con IA y sistemas de media sobre AWS S3, construyendo herramientas que ahorran tiempo y permiten a los equipos avanzar más rápido y con más confianza.',
         moreAboutMe: 'Más sobre mí'
       },
       skills: {
@@ -1120,12 +1179,13 @@ export const translations = {
       },
       projects: {
         title: 'Proyectos Destacados',
-        subtitle: 'Una selección de mi trabajo más reciente, desde propuestas de valor hasta implementación completa.',
+        subtitle: 'Trabajo seleccionado en reformas asistidas por IA, marketplaces y herramientas de trading, donde estrategia, pensamiento de producto e implementación end-to-end tenían que funcionar juntos.',
         readMore: 'Leer más',
         readLess: 'Leer menos',
         live: 'Live',
         backend: 'Backend',
         frontend: 'Frontend',
+        mobile: 'Mobile',
         github: 'GitHub',
         viewAll: 'Ver todos los proyectos'
       },
@@ -1165,12 +1225,12 @@ export const translations = {
         cta: 'Explorar Lab de IA'
       },
       cta: {
-        title: '¿Listo para construir algo increíble?',
-        description: 'Tengo experiencia real construyendo productos que la gente usa. De la construcción al software, combino profundidad técnica con pensamiento estratégico.',
+        title: '¿Necesitas ejecución real en producto e IA?',
+        description: 'Trabajo mejor donde objetivos de negocio, necesidades de cliente y entrega técnica tienen que avanzar juntos: desde estrategia de producto liderada por el fundador hasta implementación hands-on.',
         viewResume: 'Ver CV',
         startProject: 'Iniciar proyecto',
-        forRecruiters: 'Estoy contratando',
-        forCompanies: 'Quiero soluciones de IA'
+        forRecruiters: 'Ver CV y experiencia',
+        forCompanies: 'Ver demos de IA'
       }
     },
 
@@ -1178,10 +1238,10 @@ export const translations = {
     about: {
       hero: {
         title: 'Sobre Mí',
-        description1: 'Soy un Ingeniero de Soluciones enfocado en diseñar soluciones de IA y automatización que ayudan a las empresas a ahorrar tiempo, mejorar la calidad de los leads e incrementar los ingresos.',
-        description2: 'Antes de entrar en tecnología, pasé más de 20 años en bienes raíces y construcción como fundador y operador, liderando proyectos de alto valor orientados al cliente. Esa experiencia me enseñó a entender profundamente los problemas empresariales, a menudo antes de que estén claramente definidos, y a traducir la ambigüedad en soluciones claras y efectivas.',
-        description3: 'Después de completar el bootcamp de Software Engineering de General Assembly de más de 420 horas, construí múltiples aplicaciones de extremo a extremo con una mentalidad sólida de producto y arquitectura. Mi proyecto final, TradeLab, fue reconocido públicamente por mi instructor como uno de los mejores proyectos que había visto en GA. Más tarde expandí mi enfoque hacia la IA aplicada a través de CS50 AI de Harvard y la especialización en Machine Learning de Stanford / DeepLearning.AI, aplicando IA a casos de uso operativos reales como automatización, extracción de datos, calificación de leads y soporte para la toma de decisiones.',
-        description4: 'Lo que me impulsa es el impacto. Disfruto trabajando en la intersección de negocios, clientes y tecnología—diseñando soluciones que reducen la fricción, automatizan el trabajo repetitivo y ofrecen resultados medibles. Traigo una mentalidad de fundador, fuertes habilidades de comunicación y experiencia de ejecución en el mundo real a cada problema en el que trabajo.'
+        description1: 'Soy el CEO y fundador de BuildApp y un ingeniero de soluciones enfocado en construir productos con IA y automatización que resuelven problemas reales de negocio.',
+        description2: 'Antes de entrar en tecnología, pasé más de 20 años en bienes raíces y construcción como fundador y operador, liderando proyectos de alto valor orientados al cliente. Esa experiencia me enseñó a entender profundamente los problemas empresariales, a menudo antes de que estén claramente definidos, y a convertir la ambigüedad en soluciones claras y viables.',
+        description3: 'Después de completar el bootcamp de Software Engineering de General Assembly de más de 420 horas, construí múltiples aplicaciones de extremo a extremo con una mentalidad sólida de producto y arquitectura. Mi proyecto final, TradeLab, fue reconocido públicamente por mi instructor como uno de los mejores proyectos que había visto en GA. Más tarde amplié esa base con CS50 AI de Harvard y la especialización en Machine Learning de Stanford / DeepLearning.AI, aplicando IA a casos de uso operativos reales como automatización, extracción de datos, calificación de leads y soporte a la decisión.',
+        description4: 'En BuildApp lidero la empresa mientras sigo muy hands-on en el producto: flujos de presupuestos asistidos por IA, CRM, experiencias multidispositivo, entrega mobile para Android y iPhone, y storage/media workflows sobre AWS S3. Esa combinación — fundador, operador y builder — es donde más valor aporto.'
       },
       technical: {
         title: 'Experiencia Técnica',
@@ -1220,9 +1280,9 @@ export const translations = {
         }
       },
       lookingFor: {
-        title: 'Lo Que Busco',
-        description: 'Estoy emocionado de unirme a equipos donde pueda combinar profundidad técnica con pensamiento estratégico, ayudando a construir productos escalables que generen un impacto real mientras continúo creciendo como desarrollador.',
-        quote: 'Traigo experiencia en JavaScript, React, Node.js, Python, Django, MongoDB, PostgreSQL y REST APIs, con experiencia desplegando aplicaciones en Netlify, Heroku y Render.'
+        title: 'Dónde aporto más valor',
+        description: 'Rindo mejor donde la estrategia de producto, el entendimiento del cliente y la ejecución técnica tienen que avanzar juntos, ya sea liderando desde delante, construyendo hands-on o ayudando a equipos a convertir complejidad operativa en software que se usa de verdad.',
+        quote: 'CEO y fundador de BuildApp con profundidad hands-on en React, TypeScript, colaboración con FastAPI, entrega mobile, storage/media sobre AWS S3, flujos con IA, observabilidad y tooling de producción.'
       },
       cta: {
         title: '¿Listo para trabajar juntos?',
@@ -1235,51 +1295,93 @@ export const translations = {
     // Projects Page
     projects: {
       title: 'Proyectos',
-      subtitle: 'Una selección de mi trabajo más reciente, desde propuestas de valor hasta implementación completa. Cada proyecto representa un desafío único y una oportunidad para aprender y crecer.',
+      subtitle: 'Una selección de productos entre BuildApp y trabajos anteriores que muestra cómo llevo criterio de producto, diseño de workflows y ejecución hasta producción en web y móvil.',
       overview: 'Resumen del Proyecto',
       features: 'Características Clave',
       challenges: 'Desafíos Técnicos',
       techStack: 'Tecnologías Utilizadas',
+      featuredProject: 'Proyecto Destacado',
+      moreProjectsTitle: 'Más Proyectos',
+      moreProjectsDescription: 'BuildApp Pro es el producto vivo. BuildApp explica la tesis de mercado y captación. El resto enseña rango con marketplaces y herramientas intensivas en datos.',
       backend: 'Backend',
       frontend: 'Frontend',
+      mobile: 'Mobile',
       github: 'GitHub',
+      appStore: 'App Store',
+      appStoreTop: 'Descargar en',
+      googlePlay: 'Google Play',
+      googlePlayTop: 'Disponible en',
+      samplePdf: 'Presupuesto de ejemplo',
       live: 'En vivo',
       projects: {
         buildapp: {
-          description: 'Plataforma integral que conecta clientes con profesionales de la construcción. Gestión de proyectos, portafolios y sistema de reseñas.',
-          longDescription: 'BuildAPP es una plataforma web integral que conecta clientes con profesionales de la construcción. Construida con Node.js, Express.js y MongoDB, incluye autenticación dual, gestión de proyectos, portafolios profesionales y sistema de reseñas. Desplegada en Netlify con arquitectura serverless y Cloudinary para imágenes.',
+          badge: 'Web y posicionamiento',
+          description: 'Web pública y capa de lanzamiento de BuildApp, pensada para explicar la tesis de categoría y llevar a profesionales, seguidores e inversores al siguiente paso correcto.',
+          longDescription: 'Diseñé y construí buildapp.es como la cara pública de la empresa: una landing que explica la visión grande de BuildApp sin sonar abstracta, mientras hace que BuildApp Pro se sienta concreto y disponible hoy. El trabajo no fue solo frontend. Fue posicionamiento, jerarquía de mensajes, selección de pruebas, copy multilingüe, estructura de CTAs y darle a la empresa un relato creíble para profesionales, early supporters y conversaciones estratégicas.',
           highlights: [
-            'Solución real para el sector de la construcción',
-            'Experiencia de usuario diferenciada por roles',
-            'Integración con herramientas de gestión'
+            'Explica bien la cuña inicial: producto útil hoy, tesis de plataforma más grande mañana',
+            'Convierte insight de mercado en una web de lanzamiento, no en una vision deck vaga',
+            'Crea un camino claro hacia BuildApp Pro, interés en lista de espera y conversaciones estratégicas'
           ],
           challenges: [
-            'Arquitectura serverless compleja',
-            'Gestión dual de usuarios (clientes/profesionales)',
-            'Sistema de emparejamiento inteligente'
+            'Equilibrar una historia de plataforma más grande sin vender de más lo que ya existe',
+            'Hablar a profesionales, futuros usuarios e inversores en la misma superficie',
+            'Mantener la página clara, visual y fiable en lugar de cargada de hype'
+          ]
+        },
+        'buildapp-pro': {
+          badge: 'Proyecto bandera actual',
+          description: 'Producto de reformas asistido por IA ya enviado en web, iPhone y Android para presupuestar más rápido, hacer mejor seguimiento y presentar propuestas visuales.',
+          longDescription: 'Fundé BuildApp, definí la visión de producto, incorporé a un CTO para codirigir la parte más difícil de la arquitectura backend y aun así construí yo mismo gran parte de lo que se ha enviado: frontend web, apps de Android y iPhone, una parte importante de los flujos backend, CI/CD, observabilidad y storage/media workflows sobre AWS S3. BuildApp Pro ayuda a profesionales de reformas a capturar visitas a obra, preparar presupuestos más claros, generar propuestas visuales antes/después, mantener el contexto de CRM y enviar todo con la velocidad que exige el momento comercial.',
+          highlights: [
+            'Construí y saqué a producción el producto de cara al usuario en web, Android e iPhone',
+            'Unifiqué fotos, notas, presupuestos con IA, propuestas visuales, CRM y PDF en un mismo workflow profesional',
+            'Lideré CI/CD, observabilidad y flujos de storage/media sobre AWS S3 para uso real en producción'
+          ],
+          challenges: [
+            'Mantener un mismo workflow creíble entre navegador y contextos mobile nativos',
+            'Conseguir que la IA sea útil para presupuestar y presentar, no solo vistosa en una demo',
+            'Coordinar el trabajo con el CTO en una arquitectura backend multi-endpoint basada en PRs sin perder velocidad de entrega'
+          ]
+        },
+        'buildapp-marketplace': {
+          badge: 'Proyecto temprano',
+          description: 'Prototipo temprano de marketplace para construcción que fue la primera prueba seria de mi criterio de producto en este espacio.',
+          longDescription: 'Antes de la versión empresa actual de BuildApp, este fue mi primer marketplace end-to-end para el sector de la construcción. Construido con Node.js, Express y MongoDB, resolvía autenticación dual, gestión de proyectos, portafolios profesionales y reseñas. Más importante aún, mostró un instinto de producto temprano pero real: resolver un problema sectorial con UX por roles y workflows operativos, no con un CRUD genérico.',
+          highlights: [
+            'Primera prueba seria de que podía traducir dolor del sector construcción a software',
+            'UX específica por roles para propietarios y profesionales',
+            'Flujos marketplace end-to-end con portafolios, proyectos y reseñas'
+          ],
+          challenges: [
+            'Diseñar un marketplace de dos caras sin inflar la UX',
+            'Gestionar autenticación dual y permisos por rol',
+            'Convertir un dolor real del sector en lógica de producto, no solo en pantallas CRUD'
           ]
         },
         're-lux': {
-          description: 'Plataforma de e-commerce de lujo de segunda mano. Marketplace premium con autenticación, favoritos, reseñas y carrito de compras.',
-          longDescription: 'Re-Lux es una plataforma de e-commerce de lujo de segunda mano construida con React, Node.js y MongoDB. Incluye autenticación JWT, sistema de favoritos, reseñas de productos, integración con Cloudinary para imágenes y carrito de compras completo. Superé desafíos como la refactorización frontend-backend y la optimización de CSS.',
+          badge: 'Marketplace',
+          description: 'Marketplace de reventa de lujo centrado en confianza, calidad de browsing y un flujo de compra pulido.',
+          longDescription: 'Re-Lux es un marketplace premium de lujo de segunda mano construido con React, Node.js y MongoDB. Incluye autenticación JWT, favoritos, reseñas, gestión de imágenes con Cloudinary y un flujo completo de carrito. El reto principal fue mantener una experiencia pulida mientras ordenaba las responsabilidades frontend-backend y mejoraba el rendimiento.',
           highlights: [
-            'UX excepcional para productos de lujo',
-            'Sistema de autenticación robusto',
-            'Integración perfecta con servicios externos'
+            'Browsing pulido, favoritos, reseñas y flujo de carrito bien resuelto',
+            'Autenticación JWT y manejo de imágenes con Cloudinary',
+            'Buen ejemplo de acabado de producto, no solo de implementación técnica'
           ],
           challenges: [
-            'Refactorización completa frontend-backend',
-            'Optimización de imágenes con Cloudinary',
-            'Implementación del sistema de pagos'
+            'Mantener el nivel de pulido premium mientras refactorizaba responsabilidades frontend/backend',
+            'Gestionar navegación intensiva en imágenes sin ralentizar la experiencia',
+            'Conectar señales de confianza, carrito y cuenta en un mismo recorrido de compra'
           ]
         },
         tradelab: {
-          description: 'Plataforma profesional de backtesting de estrategias de trading. Convierte ideas en estrategias ejecutables y ejecuta backtests completos.',
-          longDescription: 'TradeLab es una plataforma full-stack de backtesting de estrategias de trading construida en 8 días usando React, Django, PostgreSQL (Neon.tech) y REST APIs. Convertí datos de mercado de Databento al formato Parquet usando Pandas para procesamiento eficiente. Incluye autenticación JWT, constructor de estrategias, integración de datos históricos reales y métricas avanzadas (ratio Sharpe, drawdown). Desplegada en Netlify/Heroku, completamente responsive.',
+          badge: 'Proyecto final',
+          description: 'Plataforma de backtesting de estrategias de trading construida en 8 días para convertir ideas en reglas ejecutables y resultados medibles.',
+          longDescription: 'TradeLab es una plataforma full-stack de backtesting construida en 8 días con React, Django, PostgreSQL y REST APIs. Convertí datos de mercado de Databento a Parquet con Pandas para procesarlos de forma eficiente, y luego construí creación de estrategias, testing histórico y métricas de rendimiento como Sharpe ratio y drawdown. Fue una prueba temprana de que podía combinar criterio de producto, profundidad técnica y velocidad.',
           highlights: [
-            'Reconocido por el instructor como uno de los mejores proyectos',
-            'Procesamiento de datos en tiempo real',
-            'Interfaz intuitiva para traders profesionales'
+            'Construido en 8 días y reconocido por mi instructor como uno de los proyectos más fuertes de la promoción',
+            'Procesamiento de datos en tiempo real con creación de estrategias y testing histórico',
+            'Buena prueba de velocidad, criterio de producto y tooling cuantitativo'
           ],
           challenges: [
             'Conversión eficiente de datos masivos de mercado',
@@ -1537,7 +1639,7 @@ export const translations = {
 
     // Footer
     footer: {
-      description: 'Construyo productos que se entienden y se usan. Ingeniero de software y fundador con experiencia real en construcción.',
+      description: 'CEO y fundador de BuildApp. Construyo software, flujos con IA, sistemas sobre AWS S3 y productos que la gente usa de verdad.',
       quickLinks: 'Enlaces Rápidos',
       connect: 'Conéctate conmigo',
       copyright: '© 2025 Tony Rodríguez. Todos los derechos reservados.'
@@ -1554,19 +1656,35 @@ export const translations = {
     // Resume Page
     resume: {
       title: 'CV',
-      subtitle: 'Ingeniero de Soluciones | IA y Automatización | Convirtiendo Problemas Empresariales en Soluciones Escalables',
-      nameTitle: 'Ingeniero de Soluciones enfocado en IA, automatización e impacto empresarial',
+      subtitle: 'CEO y fundador de BuildApp | Ingeniería de Soluciones | Productos con IA y Automatización',
+      nameTitle: 'CEO y fundador de BuildApp, construyendo productos con IA y automatización que llegan a producción',
       aboutMe: 'Sobre Mí',
       recruiterSnapshot: {
         title: 'Resumen para Recruiters',
-        point1: 'Ingeniero de Soluciones que conecta negocio, producto y ejecución técnica.',
-        point2: 'Perfil founder-operator con experiencia en entrega de proyectos complejos y gestión de cliente.',
-        point3: 'Hands-on en automatización con IA, implementación full-stack y discovery con stakeholders.',
+        point1: 'CEO y fundador de BuildApp con ejecución hands-on en producto e ingeniería.',
+        point2: 'Perfil founder-operator entre construcción, software y entrega de alto impacto al cliente.',
+        point3: 'Hands-on en flujos con IA, implementación full-stack, entrega mobile nativa y estrategia de producto.',
         cta: 'Contactar para contratación'
       },
-      aboutMeContent: 'Soy un Ingeniero de Soluciones enfocado en usar software, IA y automatización para resolver problemas empresariales reales e impulsar resultados medibles.\n\nAntes de hacer la transición a la tecnología, pasé más de una década como Fundador y CEO en el sector de la construcción, liderando proyectos de alto riesgo orientados al cliente. Esa experiencia moldeó mi mayor ventaja hoy: entender profundamente las necesidades empresariales y de los usuarios, a menudo antes de que estén claramente articuladas, y convertir la ambigüedad en soluciones claras y efectivas.\n\nDespués de graduarme del programa inmersivo de Software Engineering de General Assembly de más de 420 horas, construí múltiples aplicaciones de extremo a extremo con una mentalidad sólida de producto y arquitectura. Mi proyecto final, TradeLab, una plataforma de backtesting de estrategias de trading, fue reconocido públicamente por mi instructor como uno de los mejores proyectos que había visto en GA.\n\nMás tarde expandí mi alcance técnico a través de CS50 AI de Harvard y la especialización en Machine Learning de Stanford / DeepLearning.AI, aplicando IA a casos de uso prácticos como automatización, extracción de datos, calificación de leads y soporte para la toma de decisiones.\n\nLo que me impulsa es el impacto. Disfruto trabajando en la intersección de negocios, clientes y tecnología—diseñando soluciones que ahorran tiempo, reducen la fricción y ayudan a las empresas a crecer. Traigo una mentalidad de fundador, fuertes habilidades de comunicación y experiencia de ejecución en el mundo real a cada proyecto.',
+      aboutMeContent: 'Soy el CEO y fundador de BuildApp y un ingeniero de soluciones enfocado en convertir complejidad de negocio en software útil, flujos con IA y automatización.\n\nAntes de hacer la transición a la tecnología, pasé más de una década como Fundador y CEO en el sector de la construcción, liderando proyectos de alto riesgo orientados al cliente. Esa experiencia moldeó mi mayor ventaja hoy: entender profundamente las necesidades empresariales y de los usuarios, a menudo antes de que estén claramente articuladas, y convertir la ambigüedad en soluciones claras y viables.\n\nDespués de graduarme del programa inmersivo de Software Engineering de General Assembly de más de 420 horas, construí múltiples aplicaciones de extremo a extremo con una mentalidad sólida de producto y arquitectura. Mi proyecto final, TradeLab, una plataforma de backtesting de estrategias de trading, fue reconocido públicamente por mi instructor como uno de los mejores proyectos que había visto en GA.\n\nEn BuildApp lidero la empresa mientras sigo profundamente hands-on en el producto profesional en web, mobile, flujos asistidos por IA, observabilidad y tooling de entrega. Eso incluye arquitectura frontend en React y TypeScript, entrega Android e iPhone con Capacitor, colaboración backend con FastAPI/PostgreSQL, y storage/media sobre AWS S3, además de instrumentación con Sentry, CI y testing end-to-end.\n\nLo que me impulsa es el impacto. Disfruto trabajando en la intersección de negocios, clientes y tecnología—diseñando sistemas que ahorran tiempo, reducen la fricción y ayudan a los equipos a avanzar más rápido y con más confianza.',
       experience: 'Experiencia Profesional',
       experienceDetails: {
+        buildapp: {
+          description: 'Fundé BuildApp y la lidero como CEO, manteniéndome al mismo tiempo profundamente hands-on en el producto profesional entre web, integraciones backend, entrega mobile y storage/media workflows sobre AWS S3.\n\nEso implicó definir estrategia de producto y diseño de workflows, y después ayudar a construir el sistema en sí: captura en obra, renders y presupuestos con IA, CRM, compartición de presupuestos, continuidad multidispositivo, observabilidad y tooling de entrega. El resultado fue un producto listo para profesionales reales de la reforma, no solo un prototipo.',
+          responsibilities: [
+            'Fundé y lideré la compañía mientras asumía partes clave de la experiencia profesional en web con React y TypeScript, desde captura y generación de presupuestos hasta CRM y detalle de presupuesto.',
+            'Porté el producto a Android e iPhone con Capacitor, auth nativa de Google y Apple, bridges nativos de HTTP/storage y configuración específica por plataforma.',
+            'Colaboré en contratos backend con FastAPI/PostgreSQL para CRM, presupuestos, express sessions, compartición pública de presupuestos y flujos de cuota/idempotencia.',
+            'Lideré storage, gestión de archivos y patrones de sincronización multidispositivo sobre AWS S3 para media y sesiones.',
+            'Integré observabilidad y salvaguardas de entrega con tracing/replay en Sentry, quality gates en CI, cobertura E2E con Playwright y notificaciones de fallo en Slack.'
+          ],
+          achievements: [
+            'Fundé y ayudé a convertir BuildApp en un producto real multidispositivo, alineando web, Android e iPhone sobre un backend como fuente de verdad.',
+            'Lancé flujos de reformas asistidos por IA que reducen el tiempo desde la visita a obra hasta un presupuesto y propuesta visual compartibles.',
+            'Construí capas de auth y networking preparadas para mobile que preservan la paridad con web soportando requisitos nativos.',
+            'Añadí mejoras de fiabilidad en observabilidad, delivery de media sobre AWS S3, tests automáticos, CI y flujos de despliegue/debug.'
+          ]
+        },
         generalassembly: {
           description: 'Completé un bootcamp intensivo de Ingeniería de Software de más de 420 horas con un fuerte enfoque en desarrollo de productos de extremo a extremo y resolución de problemas del mundo real.\n\nConstruí múltiples aplicaciones full-stack aplicando arquitectura limpia, diseño de APIs, modelado de datos, autenticación e IA aplicada. Trabajé en todo el ciclo de vida desde el descubrimiento y diseño de soluciones hasta la implementación e iteración, con un fuerte énfasis en pensamiento de producto y usabilidad.\n\nMi proyecto final, TradeLab, una plataforma de backtesting de estrategias de trading, fue reconocido públicamente por mi instructor como uno de los mejores proyectos que había visto en sus años enseñando en General Assembly.'
         },
@@ -1732,9 +1850,9 @@ export const translations = {
     // Contact Page
     contact: {
       title: 'Contacto',
-      subtitle: '¿Eres recruiter o empresa? Hablemos sobre cómo incorporarme o cómo implementar soluciones de IA y automatización en tu negocio.',
-      subtitleRecruiter: '¿Eres recruiter? Estoy abierto a roles de Solutions Engineering, automatización con IA y software orientado a producto.',
-      subtitleCompany: '¿Eres empresa? Hablemos de cómo implementar soluciones de IA y automatización adaptadas a tu negocio.',
+      subtitle: '¿Eres recruiter, founder o empresa? Hablemos de liderazgo de producto, ejecución hands-on o IA y automatización para tu negocio.',
+      subtitleRecruiter: '¿Eres recruiter? Si buscas liderazgo hands-on en producto, solutions engineering o automatización con IA, hablemos.',
+      subtitleCompany: '¿Eres empresa? Hablemos de flujos con IA, automatización o ejecución de producto hands-on adaptada a tu negocio.',
       form: {
         name: 'Nombre',
         email: 'Email',
@@ -2154,7 +2272,7 @@ export const translations = {
 
     // Footer
     footer: {
-      description: 'Construyo productos que se entienden y se usan. Ingeniero de software y fundador con experiencia real en construcción.',
+      description: 'CEO y fundador de BuildApp. Construyo software, flujos con IA, sistemas sobre AWS S3 y productos que la gente usa de verdad.',
       quickLinks: 'Enlaces Rápidos',
       connect: 'Conéctate conmigo',
       copyright: '© 2025 Tony Rodríguez. Todos los derechos reservados.'
@@ -2177,15 +2295,15 @@ export const translations = {
     // Home Page
     home: {
       hero: {
-        titlePart1: 'Enginyer de Solucions',
-        titlePart2: 'IA i Automatització per al Creixement Empresarial',
-        subtitle: 'De fundador amb experiència operativa real a dissenyar solucions impulsades per IA que estalvien temps i impulsen ingressos.',
+        titlePart1: 'CEO i fundador de BuildApp',
+        titlePart2: 'Productes amb IA, automatització i enginyeria de solucions',
+        subtitle: 'Converteixo problemes complexos de negoci en productes reals: des d\'estratègia i UX fins a fluxos amb IA, entrega web i mobile, i automatització operativa.',
         cta: {
           viewProjects: 'Veure Projectes',
           viewResume: 'Veure CV',
           startProject: 'Iniciar projecte',
-          forRecruiters: 'Estic contractant',
-          forCompanies: 'Vull solucions d\'IA'
+          forRecruiters: 'Veure CV i experiència',
+          forCompanies: 'Veure demos d\'IA'
         },
         scrollDown: 'Desplaça\'t cap avall'
       },
@@ -2198,8 +2316,8 @@ export const translations = {
         drivenBy: 'Impulsat per'
       },
       about: {
-        title: 'D\'emprenedor de construcció a Software Engineer',
-        description: 'A General Assembly, em vaig destacar per anar consistentment més enllà dels requisits de cada projecte, afegint característiques creatives, funcionals i orientades al producte que van elevar cada construcció. El meu projecte final, TradeLab, va ser públicament reconegut pel meu instructor com un dels millors projectes que havia vist en els seus anys d\'ensenyament a GA. Continúo expandint el meu coneixement a través de l\'estudi continu, amb una passió particular per la Intel·ligència Artificial i el seu potencial per transformar com resolem problemes complexos.',
+        title: 'Mentalitat de fundador. Execució hands-on.',
+        description: 'Abans del programari vaig liderar projectes reals en construcció. Avui, com a CEO i fundador de BuildApp, continuo molt hands-on en producte, enginyeria, fluxos amb IA i sistemes de media sobre AWS S3, construint eines que estalvien temps i permeten als equips avançar més ràpid i amb més confiança.',
         moreAboutMe: 'Més sobre mí'
       },
       skills: {
@@ -2209,12 +2327,13 @@ export const translations = {
       },
       projects: {
         title: 'Projectes Destacats',
-        subtitle: 'Una selecció del meu treball més recent, des de propostes de valor fins a implementació completa.',
+        subtitle: 'Treball seleccionat en reformes assistides per IA, marketplaces i eines de trading, on estratègia, pensament de producte i implementació end-to-end havien de funcionar junts.',
         readMore: 'Llegir més',
         readLess: 'Llegir menys',
         live: 'Live',
         backend: 'Backend',
         frontend: 'Frontend',
+        mobile: 'Mobile',
         github: 'GitHub',
         viewAll: 'Veure tots els projectes'
       },
@@ -2254,12 +2373,12 @@ export const translations = {
         cta: 'Explorar Lab d\'IA'
       },
       cta: {
-        title: 'Llest per construir alguna cosa increïble?',
-        description: 'Tinc experiència real construint productes que la gent usa. De la construcció al programari, combino profunditat tècnica amb pensament estratègic.',
+        title: 'Necessites execució real en producte i IA?',
+        description: 'Treballo millor on objectius de negoci, necessitats de client i entrega tècnica han d\'avançar junts: des d\'estratègia de producte liderada pel fundador fins a implementació hands-on.',
         viewResume: 'Veure CV',
         startProject: 'Iniciar projecte',
-        forRecruiters: 'Estic contractant',
-        forCompanies: 'Vull solucions d\'IA'
+        forRecruiters: 'Veure CV i experiència',
+        forCompanies: 'Veure demos d\'IA'
       }
     },
 
@@ -2267,10 +2386,10 @@ export const translations = {
     about: {
       hero: {
         title: 'Sobre Mi',
-        description1: 'Soc un Enginyer de Solucions enfocat en dissenyar solucions d\'IA i automatització que ajuden a les empreses a estalviar temps, millorar la qualitat dels leads i incrementar els ingressos.',
-        description2: 'Abans d\'entrar en tecnologia, vaig passar més de 20 anys en béns immobles i construcció com a fundador i operador, liderant projectes d\'alt valor orientats al client. Aquesta experiència em va ensenyar a entendre profundament els problemes empresarials, sovint abans que estiguin clarament definits, i a traduir l\'ambigüitat en solucions clares i efectives.',
-        description3: 'Després de completar el bootcamp de Software Engineering de General Assembly de més de 420 hores, vaig construir múltiples aplicacions d\'extrem a extrem amb una mentalitat sòlida de producte i arquitectura. El meu projecte final, TradeLab, va ser reconegut públicament pel meu instructor com un dels millors projectes que havia vist a GA. Més tard vaig expandir el meu enfocament cap a la IA aplicada a través de CS50 AI de Harvard i l\'especialització en Machine Learning de Stanford / DeepLearning.AI, aplicant IA a casos d\'ús operatius reals com automatització, extracció de dades, qualificació de leads i suport per a la presa de decisions.',
-        description4: 'El que em impulsa és l\'impacte. Gaudeixo treballant en la intersecció de negocis, clients i tecnologia—dissenyant solucions que redueixen la fricció, automatitzen la feina repetitiva i ofereixen resultats mesurables. Porto una mentalitat de fundador, forts habilitats de comunicació i experiència d\'execució en el món real a cada problema en què treballo.'
+        description1: 'Soc el CEO i fundador de BuildApp i un enginyer de solucions enfocat en construir productes amb IA i automatització que resolen problemes reals de negoci.',
+        description2: 'Abans d\'entrar en tecnologia, vaig passar més de 20 anys en béns immobles i construcció com a fundador i operador, liderant projectes d\'alt valor orientats al client. Aquesta experiència em va ensenyar a entendre profundament els problemes empresarials, sovint abans que estiguin clarament definits, i a convertir l\'ambigüitat en solucions clares i viables.',
+        description3: 'Després de completar el bootcamp de Software Engineering de General Assembly de més de 420 hores, vaig construir múltiples aplicacions d\'extrem a extrem amb una mentalitat sòlida de producte i arquitectura. El meu projecte final, TradeLab, va ser reconegut públicament pel meu instructor com un dels millors projectes que havia vist a GA. Més tard vaig ampliar aquesta base amb CS50 AI de Harvard i l\'especialització en Machine Learning de Stanford / DeepLearning.AI, aplicant IA a casos d\'ús operatius reals com automatització, extracció de dades, qualificació de leads i suport per a la presa de decisions.',
+        description4: 'A BuildApp lidero l\'empresa mentre continuo molt hands-on en el producte: fluxos de pressupostos assistits per IA, CRM, experiències multidispositiu, entrega mobile per a Android i iPhone, i storage/media workflows sobre AWS S3. Aquesta combinació — fundador, operador i builder — és on aporto més valor.'
       },
       technical: {
         title: 'Experiència Tècnica',
@@ -2309,9 +2428,9 @@ export const translations = {
         }
       },
       lookingFor: {
-        title: 'El Que Busco',
-        description: 'Estic emocionat d\'unir-me a equips on pugui combinar profunditat tècnica amb pensament estratègic, ajudant a construir productes escalables que generin un impacte real mentre continuo creixent com a desenvolupador.',
-        quote: 'Porto experiència en JavaScript, React, Node.js, Python, Django, MongoDB, PostgreSQL i REST APIs, amb experiència desplegant aplicacions a Netlify, Heroku i Render.'
+        title: 'On aporto més valor',
+        description: 'Rendeixo millor on l\'estratègia de producte, l\'enteniment del client i l\'execució tècnica han d\'avançar junts, ja sigui liderant des de davant, construint hands-on o ajudant equips a convertir complexitat operativa en programari que s\'usa de veritat.',
+        quote: 'CEO i fundador de BuildApp amb profunditat hands-on en React, TypeScript, col·laboració amb FastAPI, entrega mobile, storage/media sobre AWS S3, fluxos amb IA, observabilitat i tooling de producció.'
       },
       cta: {
         title: 'Llest per treballar junts?',
@@ -2324,51 +2443,93 @@ export const translations = {
     // Projects Page
     projects: {
       title: 'Projectes',
-      subtitle: 'Una selecció del meu treball més recent, des de propostes de valor fins a implementació completa. Cada projecte representa un desafiament únic i una oportunitat per aprendre i créixer.',
+      subtitle: 'Una selecció de productes entre BuildApp i treballs anteriors que mostra com porto criteri de producte, disseny de workflows i execució fins a producció en web i mòbil.',
       overview: 'Resum del Projecte',
       features: 'Característiques Clau',
       challenges: 'Desafiaments Tècnics',
       techStack: 'Tecnologies Utilitzades',
+      featuredProject: 'Projecte Destacat',
+      moreProjectsTitle: 'Més Projectes',
+      moreProjectsDescription: 'BuildApp Pro és el producte viu. BuildApp explica la tesi de mercat i captació. La resta ensenya rang amb marketplaces i eines intensives en dades.',
       backend: 'Backend',
       frontend: 'Frontend',
+      mobile: 'Mobile',
       github: 'GitHub',
+      appStore: 'App Store',
+      appStoreTop: 'Descarrega a',
+      googlePlay: 'Google Play',
+      googlePlayTop: 'Disponible a',
+      samplePdf: 'Pressupost d\'exemple',
       live: 'En viu',
       projects: {
         buildapp: {
-          description: 'Plataforma integral que connecta clients amb professionals de la construcció. Gestió de projectes, portafolis i sistema de ressenyes.',
-          longDescription: 'BuildAPP és una plataforma web integral que connecta clients amb professionals de la construcció. Construïda amb Node.js, Express.js i MongoDB, inclou autenticació dual, gestió de projectes, portafolis professionals i sistema de ressenyes. Desplegada a Netlify amb arquitectura serverless i Cloudinary per a imatges.',
+          badge: 'Web i posicionament',
+          description: 'Web pública i capa de llançament de BuildApp, pensada per explicar la tesi de categoria i portar professionals, seguidors i inversors al següent pas correcte.',
+          longDescription: 'Vaig dissenyar i construir buildapp.es com la cara pública de l\'empresa: una landing que explica la visió gran de BuildApp sense sonar abstracta, mentre fa que BuildApp Pro es percebi com una cosa concreta i disponible avui. La feina no va ser només frontend. Va ser posicionament, jerarquia de missatges, selecció de proves, copy multilingüe, estructura de CTAs i donar a l\'empresa un relat creïble per a professionals, early supporters i converses estratègiques.',
           highlights: [
-            'Solució real per al sector de la construcció',
-            'Experiència d\'usuari diferenciada per rols',
-            'Integració amb eines de gestió'
+            'Explica bé la falca inicial: producte útil avui, tesi de plataforma més gran demà',
+            'Converteix insight de mercat en una web de llançament, no en una vision deck vaga',
+            'Crea un camí net cap a BuildApp Pro, interès de llista d\'espera i converses estratègiques'
           ],
           challenges: [
-            'Arquitectura serverless complexa',
-            'Gestió dual d\'usuaris (clients/professionals)',
-            'Sistema d\'emparellament intel·ligent'
+            'Equilibrar una història de plataforma més gran sense vendre de més el que ja existeix',
+            'Parlar a professionals, futurs usuaris i inversors a la mateixa superfície',
+            'Mantenir la pàgina clara, visual i fiable en lloc de plena d\'hype'
+          ]
+        },
+        'buildapp-pro': {
+          badge: 'Projecte bandera actual',
+          description: 'Producte de reformes assistit per IA ja enviat en web, iPhone i Android per pressupostar més ràpid, fer millor seguiment i presentar propostes visuals.',
+          longDescription: 'Vaig fundar BuildApp, vaig definir la visió de producte, vaig incorporar un CTO per codirigir la part més difícil de l\'arquitectura backend i tot i així vaig construir jo mateix gran part del que s\'ha enviat: frontend web, apps d\'Android i iPhone, una part important dels fluxos backend, CI/CD, observabilitat i storage/media workflows sobre AWS S3. BuildApp Pro ajuda professionals de reformes a capturar visites d\'obra, preparar pressupostos més clars, generar propostes visuals abans/després, mantenir el context de CRM i enviar-ho tot amb la velocitat que exigeix el moment comercial.',
+          highlights: [
+            'Vaig construir i portar a producció el producte de cara a l\'usuari en web, Android i iPhone',
+            'Vaig unificar fotos, notes, pressupostos amb IA, propostes visuals, CRM i PDF en un mateix workflow professional',
+            'Vaig liderar CI/CD, observabilitat i fluxos de storage/media sobre AWS S3 per a ús real en producció'
+          ],
+          challenges: [
+            'Mantenir un mateix workflow creïble entre navegador i contextos mobile natius',
+            'Aconseguir que la IA sigui útil per pressupostar i presentar, no només lluïda en una demo',
+            'Coordinar la feina amb el CTO en una arquitectura backend multi-endpoint basada en PRs sense perdre velocitat d\'entrega'
+          ]
+        },
+        'buildapp-marketplace': {
+          badge: 'Projecte primerenc',
+          description: 'Prototip primerenc de marketplace per a construcció que va ser la primera prova seriosa del meu criteri de producte en aquest espai.',
+          longDescription: 'Abans de la versió empresa actual de BuildApp, aquest va ser el meu primer marketplace end-to-end per al sector de la construcció. Construït amb Node.js, Express i MongoDB, resolia autenticació dual, gestió de projectes, portafolis professionals i ressenyes. Més important encara, va mostrar un instint de producte primerenc però real: resoldre un problema sectorial amb UX per rols i workflows operatius, no amb un CRUD genèric.',
+          highlights: [
+            'Primera prova seriosa que podia traduir dolor del sector construcció a programari',
+            'UX específica per rols per a propietaris i professionals',
+            'Fluxos marketplace end-to-end amb portafolis, projectes i ressenyes'
+          ],
+          challenges: [
+            'Dissenyar un marketplace de dues cares sense inflar la UX',
+            'Gestionar autenticació dual i permisos per rol',
+            'Convertir un dolor real del sector en lògica de producte, no només en pantalles CRUD'
           ]
         },
         're-lux': {
-          description: 'Plataforma d\'e-commerce de luxe de segona mà. Marketplace premium amb autenticació, favorits, ressenyes i carretó de compres.',
-          longDescription: 'Re-Lux és una plataforma d\'e-commerce de luxe de segona mà construïda amb React, Node.js i MongoDB. Inclou autenticació JWT, sistema de favorits, ressenyes de productes, integració amb Cloudinary per a imatges i carretó de compres complet. Vaig superar desafiaments com la refactorització frontend-backend i l\'optimització de CSS.',
+          badge: 'Marketplace',
+          description: 'Marketplace de revenda de luxe centrat en confiança, qualitat de browsing i un flux de compra polit.',
+          longDescription: 'Re-Lux és un marketplace premium de luxe de segona mà construït amb React, Node.js i MongoDB. Inclou autenticació JWT, favorits, ressenyes, gestió d\'imatges amb Cloudinary i un flux complet de carretó. El repte principal va ser mantenir una experiència polida mentre ordenava les responsabilitats frontend-backend i millorava el rendiment.',
           highlights: [
-            'UX excepcional per a productes de luxe',
-            'Sistema d\'autenticació robust',
-            'Integració perfecta amb serveis externs'
+            'Browsing polit, favorits, ressenyes i flux de carretó ben resolt',
+            'Autenticació JWT i gestió d\'imatges amb Cloudinary',
+            'Bon exemple d\'acabament de producte, no només d\'implementació tècnica'
           ],
           challenges: [
-            'Refactorització completa frontend-backend',
-            'Optimització d\'imatges amb Cloudinary',
-            'Implementació del sistema de pagaments'
+            'Mantenir el nivell de poliment premium mentre refactoritzava responsabilitats frontend/backend',
+            'Gestionar navegació intensiva en imatges sense alentir l\'experiència',
+            'Connectar senyals de confiança, carretó i compte en un mateix recorregut de compra'
           ]
         },
         tradelab: {
-          description: 'Plataforma professional de backtesting d\'estratègies de trading. Converteix idees en estratègies executables i executa backtests complets.',
-          longDescription: 'TradeLab és una plataforma full-stack de backtesting d\'estratègies de trading construïda en 8 dies usant React, Django, PostgreSQL (Neon.tech) i REST APIs. Vaig convertir dades de mercat de Databento al format Parquet usant Pandas per a processament eficient. Inclou autenticació JWT, constructor d\'estratègies, integració de dades històriques reals i mètriques avançades (ratio Sharpe, drawdown). Desplegada a Netlify/Heroku, completament responsive.',
+          badge: 'Projecte final',
+          description: 'Plataforma de backtesting d\'estratègies de trading construïda en 8 dies per convertir idees en regles executables i resultats mesurables.',
+          longDescription: 'TradeLab és una plataforma full-stack de backtesting construïda en 8 dies amb React, Django, PostgreSQL i REST APIs. Vaig convertir dades de mercat de Databento a Parquet amb Pandas per processar-les de manera eficient, i després vaig construir creació d\'estratègies, testing històric i mètriques de rendiment com Sharpe ratio i drawdown. Va ser una prova primerenca que podia combinar criteri de producte, profunditat tècnica i velocitat.',
           highlights: [
-            'Reconegut per l\'instructor com un dels millors projectes',
-            'Processament de dades en temps real',
-            'Interfície intuïtiva per a traders professionals'
+            'Construït en 8 dies i reconegut pel meu instructor com un dels projectes més forts de la promoció',
+            'Processament de dades en temps real amb creació d\'estratègies i testing històric',
+            'Bona prova de velocitat, criteri de producte i tooling quantitatiu'
           ],
           challenges: [
             'Conversió eficient de dades massives de mercat',
@@ -2599,7 +2760,7 @@ export const translations = {
 
     // Footer
     footer: {
-      description: 'Construeixo productes que s\'entenen i s\'usen. Enginyer de programari i fundador amb experiència real en construcció.',
+      description: 'CEO i fundador de BuildApp. Construeixo programari, fluxos amb IA, sistemes sobre AWS S3 i productes que la gent usa de veritat.',
       quickLinks: 'Enllaços Ràpids',
       connect: 'Connecta\'m amb mi',
       copyright: '© 2025 Tony Rodríguez. Tots els drets reservats.'
@@ -2608,19 +2769,35 @@ export const translations = {
     // Resume Page
     resume: {
       title: 'CV',
-      subtitle: 'Enginyer de Solucions | IA i Automatització | Convertint Problemes Empresarials en Solucions Escalables',
-      nameTitle: 'Enginyer de Solucions enfocat en IA, automatització i impacte empresarial',
+      subtitle: 'CEO i fundador de BuildApp | Enginyeria de Solucions | Productes amb IA i Automatització',
+      nameTitle: 'CEO i fundador de BuildApp, construint productes amb IA i automatització que arriben a producció',
       aboutMe: 'Sobre Mi',
       recruiterSnapshot: {
         title: 'Resum per Recruiters',
-        point1: 'Enginyer de Solucions que connecta negoci, producte i execució tècnica.',
-        point2: 'Perfil founder-operator amb experiència en lliurament de projectes complexos i gestió de client.',
-        point3: 'Hands-on en automatització amb IA, implementació full-stack i discovery amb stakeholders.',
+        point1: 'CEO i fundador de BuildApp amb execució hands-on en producte i enginyeria.',
+        point2: 'Perfil founder-operator entre construcció, programari i entrega d\'alt impacte al client.',
+        point3: 'Hands-on en fluxos amb IA, implementació full-stack, entrega mobile nativa i estratègia de producte.',
         cta: 'Contactar per contractació'
       },
-      aboutMeContent: 'Soc un Enginyer de Solucions enfocat en usar programari, IA i automatització per resoldre problemes empresarials reals i impulsar resultats mesurables.\n\nAbans de fer la transició a la tecnologia, vaig passar més d\'una dècada com a Fundador i CEO en el sector de la construcció, liderant projectes d\'alt risc orientats al client. Aquesta experiència va modelar el meu major avantatge avui: entendre profundament les necessitats empresarials i dels usuaris, sovint abans que estiguin clarament articulades, i convertir l\'ambigüitat en solucions clares i efectives.\n\nDesprés de graduar-me del programa immersiu d\'Enginyeria de Programari de General Assembly de més de 420 hores, vaig construir múltiples aplicacions d\'extrem a extrem amb una mentalitat sòlida de producte i arquitectura. El meu projecte final, TradeLab, una plataforma de backtesting d\'estratègies de trading, va ser reconegut públicament pel meu instructor com un dels millors projectes que havia vist a GA.\n\nMés tard vaig expandir el meu abast tècnic a través de CS50 AI de Harvard i l\'especialització en Machine Learning de Stanford / DeepLearning.AI, aplicant IA a casos d\'ús pràctics com automatització, extracció de dades, qualificació de leads i suport per a la presa de decisions.\n\nEl que em impulsa és l\'impacte. Gaudeixo treballant en la intersecció de negocis, clients i tecnologia—dissenyant solucions que estalvien temps, redueixen la fricció i ajuden a les empreses a créixer. Porto una mentalitat de fundador, forts habilitats de comunicació i experiència d\'execució en el món real a cada projecte.',
+      aboutMeContent: 'Soc el CEO i fundador de BuildApp i un enginyer de solucions enfocat a convertir complexitat de negoci en programari útil, fluxos amb IA i automatització.\n\nAbans de fer la transició a la tecnologia, vaig passar més d\'una dècada com a Fundador i CEO en el sector de la construcció, liderant projectes d\'alt risc orientats al client. Aquesta experiència va modelar el meu avantatge més fort avui: entendre profundament les necessitats empresarials i dels usuaris, sovint abans que estiguin clarament articulades, i convertir l\'ambigüitat en solucions clares i viables.\n\nDesprés de graduar-me del programa immersiu d\'Enginyeria de Programari de General Assembly de més de 420 hores, vaig construir múltiples aplicacions d\'extrem a extrem amb una mentalitat sòlida de producte i arquitectura. El meu projecte final, TradeLab, una plataforma de backtesting d\'estratègies de trading, va ser reconegut públicament pel meu instructor com un dels millors projectes que havia vist a GA.\n\nA BuildApp lidero l\'empresa mentre continuo profundament hands-on en el producte professional a web, mobile, fluxos assistits per IA, observabilitat i tooling d\'entrega. Això inclou arquitectura frontend en React i TypeScript, entrega Android i iPhone amb Capacitor, col·laboració backend amb FastAPI/PostgreSQL, i storage/media sobre AWS S3, a més d\'instrumentació amb Sentry, CI i testing end-to-end.\n\nEl que m\'impulsa és l\'impacte. Gaudeixo treballant en la intersecció de negocis, clients i tecnologia—dissenyant sistemes que estalvien temps, redueixen la fricció i ajuden els equips a avançar més ràpid i amb més confiança.',
       experience: 'Experiència Professional',
       experienceDetails: {
+        buildapp: {
+          description: 'Vaig fundar BuildApp i la lidero com a CEO, mantenint-me al mateix temps profundament hands-on en el producte professional entre web, integracions backend, entrega mobile i storage/media workflows sobre AWS S3.\n\nAixò va implicar definir estratègia de producte i disseny de workflows, i després ajudar a construir el sistema en si: captura a obra, renders i pressupostos amb IA, CRM, compartició de pressupostos, continuïtat multidispositiu, observabilitat i tooling d\'entrega. El resultat va ser un producte llest per a professionals reals de la reforma, no només un prototip.',
+          responsibilities: [
+            'Vaig fundar i liderar la companyia mentre assumia parts clau de l\'experiència professional a web amb React i TypeScript, des de captura i generació de pressupostos fins a CRM i detall de pressupost.',
+            'Vaig portar el producte a Android i iPhone amb Capacitor, auth nativa de Google i Apple, bridges natius d\'HTTP/storage i configuració específica per plataforma.',
+            'Vaig col·laborar en contractes backend amb FastAPI/PostgreSQL per a CRM, pressupostos, express sessions, compartició pública de pressupostos i fluxos de quota/idempotència.',
+            'Vaig liderar storage, gestió de fitxers i patrons de sincronització multidispositiu sobre AWS S3 per a media i sessions.',
+            'Vaig integrar observabilitat i salvaguardes d\'entrega amb tracing/replay a Sentry, quality gates a CI, cobertura E2E amb Playwright i notificacions de fallada a Slack.'
+          ],
+          achievements: [
+            'Vaig fundar i ajudar a convertir BuildApp en un producte real multidispositiu, alineant web, Android i iPhone sobre un backend com a font de veritat.',
+            'Vaig llançar fluxos de reformes assistits per IA que redueixen el temps des de la visita d\'obra fins a un pressupost i proposta visual compartibles.',
+            'Vaig construir capes d\'auth i networking preparades per a mobile que preserven la paritat amb web suportant requisits natius.',
+            'Vaig afegir millores de fiabilitat en observabilitat, delivery de media sobre AWS S3, tests automàtics, CI i fluxos de desplegament/debug.'
+          ]
+        },
         generalassembly: {
           description: 'Vaig completar un bootcamp intensiu d\'Enginyeria de Programari de més de 420 hores amb un fort enfocament en desenvolupament de productes d\'extrem a extrem i resolució de problemes del món real.\n\nVaig construir múltiples aplicacions full-stack aplicant arquitectura neta, disseny d\'APIs, modelatge de dades, autenticació i IA aplicada. Vaig treballar en tot el cicle de vida des del descobriment i disseny de solucions fins a la implementació i iteració, amb un fort èmfasi en pensament de producte i usabilitat.\n\nEl meu projecte final, TradeLab, una plataforma de backtesting d\'estratègies de trading, va ser reconegut públicament pel meu instructor com un dels millors projectes que havia vist en els seus anys ensenyant a General Assembly.'
         },
@@ -2786,9 +2963,9 @@ export const translations = {
     // Contact Page
     contact: {
       title: 'Contacte',
-      subtitle: 'Ets recruiter o empresa? Parlem de com incorporar-me o d\'implementar solucions d\'IA i automatització al teu negoci.',
-      subtitleRecruiter: 'Ets recruiter? Estic obert a rols de Solutions Engineering, automatització amb IA i software orientat a producte.',
-      subtitleCompany: 'Ets empresa? Parlem de com implementar solucions d\'IA i automatització adaptades al teu negoci.',
+      subtitle: 'Ets recruiter, founder o empresa? Parlem de lideratge de producte, execució hands-on o IA i automatització per al teu negoci.',
+      subtitleRecruiter: 'Ets recruiter? Si busques lideratge hands-on en producte, solutions engineering o automatització amb IA, parlem.',
+      subtitleCompany: 'Ets empresa? Parlem de fluxos amb IA, automatització o execució de producte hands-on adaptada al teu negoci.',
       form: {
         name: 'Nom',
         email: 'Email',
@@ -3210,7 +3387,7 @@ export const translations = {
 
     // Footer
     footer: {
-      description: 'Construeixo productes que s\'entenen i s\'usen. Enginyer de programari i fundador amb experiència real en construcció.',
+      description: 'CEO i fundador de BuildApp. Construeixo programari, fluxos amb IA, sistemes sobre AWS S3 i productes que la gent usa de veritat.',
       quickLinks: 'Enllaços Ràpids',
       connect: 'Connecta\'m amb mi',
       copyright: '© 2025 Tony Rodríguez. Tots els drets reservats.'

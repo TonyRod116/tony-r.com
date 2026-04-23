@@ -1,6 +1,6 @@
 export const profile = {
   name: 'Tony Rodríguez',
-  title: 'Solutions Engineer focused on AI, automation, and business impact',
+  title: 'CEO & Founder of BuildApp | Solutions Engineer focused on AI, product delivery, and automation',
   email: 'tony.rod.bcn@gmail.com',
   location: 'Barcelona, Spain',
   github: 'https://github.com/TonyRod116',
@@ -9,17 +9,35 @@ export const profile = {
   facebook: 'https://www.facebook.com/toni.rodriguez.torrents',
   website: 'https://tony-r.com',
   bio: {
-    es: 'Soy un Full Stack Software Engineer con experiencia previa como emprendedor en el sector de la construcción y la digitalización. Mi camino hacia la programación comenzó en General Assembly, donde destaqué por ir siempre más allá de lo requerido en cada proyecto—añadiendo funcionalidades creativas, útiles y con visión de producto. Mi proyecto final, TradeLab, fue reconocido públicamente por mi profesor como uno de los mejores que había visto nunca en su experiencia docente en GA.',
-    en: "I am a Full Stack Software Engineer with an entrepreneurial background in the construction and digitalization sector. My journey into software engineering began at General Assembly, where I stood out for consistently going beyond project requirements, adding creative, functional, and product-oriented features that elevated each build. My final project, TradeLab, was publicly recognized by my instructor as one of the best projects he had ever seen in his years of teaching at GA."
+    es: 'Soy el CEO y fundador de BuildApp, además de un ingeniero full-stack con recorrido real en construcción. Mi ventaja es convertir problemas operativos en productos digitales útiles, combinando visión de negocio, criterio de producto y ejecución técnica hands-on. Esa forma de trabajar empezó en General Assembly, donde destaqué por ir más allá de lo requerido en cada proyecto, y sigue definiendo cómo construyo hoy.',
+    en: "I am the CEO & Founder of BuildApp, and a hands-on full-stack engineer with real construction-sector experience. My edge is turning operational problems into useful digital products by combining business context, product thinking, and technical execution. That way of working started at General Assembly, where I stood out for going beyond project requirements, and it still defines how I build today."
   },
-  currentBio: "I'm a full stack software engineer who recently graduated from General Assembly, after several years leading projects and running client-centered businesses in real estate and construction. At GA I built four complete applications: my final project, TradeLab, was highlighted by my instructor as one of the best he had seen, and I found that what drives me most is using code creatively to solve problems. I enjoy looking beyond the obvious, understanding what people really need, and turning that into innovative, practical solutions. I bring curiosity, creativity, and a collaborative spirit to every project, and I'm excited to keep growing as an engineer while building products that genuinely improve the way people live and work.",
+  currentBio: "I'm the CEO & Founder of BuildApp, and I stay hands-on across product, AI workflows, and technical delivery. My edge is moving from messy business problems to shipped systems: shaping the opportunity, defining the workflow, and helping build the product end to end.\n\nAt BuildApp, that has meant leading the professional product across React and TypeScript frontend architecture, Capacitor-based Android and iPhone delivery, backend collaboration with FastAPI and PostgreSQL, native auth, AWS S3 storage and media handling, Sentry observability, CI, and end-to-end testing.\n\nBefore software, I spent years as a founder and operator in construction, where I learned to work close to customers, budgets, timelines, and real operational constraints. What drives me most is building products that save time, reduce friction, and create clear business value.",
   skills: {
-    languages: ['JavaScript', 'Python', 'SQL'],
-    frameworks: ['React', 'Node.js', 'Express', 'Django', 'MongoDB', 'PostgreSQL', 'TensorFlow', 'scikit-learn', 'pandas', 'numpy'],
-    tools: ['Git', 'GitHub', 'REST APIs', 'Postman', 'Netlify', 'Heroku', 'Neon.tech', 'Agile/Scrum', 'OpenCV', 'NLTK'],
+    languages: ['JavaScript', 'TypeScript', 'Python', 'SQL'],
+    frameworks: ['React', 'FastAPI', 'Node.js', 'Express', 'Django', 'PostgreSQL', 'MongoDB', 'Capacitor', 'TensorFlow', 'scikit-learn', 'pandas', 'numpy'],
+    tools: ['Git', 'GitHub', 'REST APIs', 'Postman', 'Render', 'Neon.tech', 'AWS S3', 'Sentry', 'Playwright', 'Agile/Scrum', 'OpenCV', 'NLTK'],
     soft: ['creativity', 'problemSolving', 'projectManagement', 'leadership', 'clientRelations']
   },
   experience: [
+    {
+      id: 'buildapp',
+      company: 'BuildApp',
+      position: 'CEO & Founder | Product & Engineering',
+      period: '2026 – Present',
+      description: 'Founded and lead BuildApp, an AI-assisted renovation platform, while staying hands-on across product strategy, professional workflows, web/mobile delivery, AWS S3 storage, and AI-assisted experiences.',
+      stack: [
+        'React',
+        'TypeScript',
+        'FastAPI',
+        'PostgreSQL',
+        'Capacitor',
+        'AWS S3',
+        'Sentry',
+        'Playwright',
+        'CI/CD'
+      ]
+    },
     {
       id: 'generalassembly',
       company: 'General Assembly (generalassemb.ly)',

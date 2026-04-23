@@ -40,7 +40,21 @@ if [[ -d "./backend" ]]; then
   )
 fi
 
+failed=0
+
 for target in "${TARGETS[@]}"; do
-  cp "$SOURCE" "$target"
-  echo "synced: $target"
+  if [[ ! -f "$target" ]]; then
+    echo "missing: $target"
+    failed=1
+    continue
+  fi
+
+  if cmp -s "$SOURCE" "$target"; then
+    echo "ok: $target"
+  else
+    echo "mismatch: $target"
+    failed=1
+  fi
 done
+
+exit "$failed"

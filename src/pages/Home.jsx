@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Github, Linkedin, Mail, Star, Users, ChevronDown, ChevronUp, Brain } from 'lucide-react'
+import { ArrowRight, Github, Linkedin, Mail, Users, ChevronDown, ChevronUp, Brain } from 'lucide-react'
 import tttIcon from '../assets/tictactoe.png'
 import msIcon from '../assets/buscaminas.png'
 import nimIcon from '../assets/nim.png'
 import tetrisIcon from '../assets/ttris.png'
 import nnIcon from '../assets/NN.png'
+import buildappProHomeCardImg from '../assets/projects/buildapp-pro-home-card-2026-03-29-012230.png'
 import { profile } from '../data/profile'
 import { projects } from '../data/projects'
 import { useLanguage } from '../hooks/useLanguage.jsx'
@@ -247,7 +248,11 @@ export default function Home() {
     const value = t(key)
     return value === key ? fallback : value
   }
-  const featuredProjects = projects.filter(project => project.featured).slice(0, 3)
+  const featuredProjects = [
+    projects.find(project => project.id === 're-lux'),
+    projects.find(project => project.id === 'buildapp-pro'),
+    projects.find(project => project.id === 'tradelab')
+  ].filter(Boolean)
   const [expandedProjects, setExpandedProjects] = useState({})
   const [backgroundPosition, setBackgroundPosition] = useState('center 30%')
 
@@ -378,14 +383,14 @@ export default function Home() {
                   to="/resume?intent=recruiter"
                   className="btn-primary group inline-flex items-center justify-center"
                 >
-                  {getText('home.hero.cta.forRecruiters', 'I am recruiting')}
+                  {getText('home.hero.cta.forRecruiters', 'View Resume & Experience')}
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
                   to="/demos?intent=company"
                   className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-colors bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
                 >
-                  {getText('home.hero.cta.forCompanies', 'I need AI solutions')}
+                  {getText('home.hero.cta.forCompanies', 'See AI Demos')}
                 </Link>
               </motion.div>
 
@@ -574,6 +579,7 @@ export default function Home() {
               const ProjectComponent = index === 0 ? ScrollAnimatedProjectLeft : 
                                      index === 1 ? ScrollAnimatedProjectCenter : 
                                      ScrollAnimatedProjectRight
+              const cardImage = project.id === 'buildapp-pro' ? buildappProHomeCardImg : project.image
               
               return (
                 <ProjectComponent
@@ -581,22 +587,14 @@ export default function Home() {
                   className="group"
                   delay={index * 0.1}
                 >
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl hover:shadow-primary-500/10 hover:-translate-y-2 hover:border-primary-500/30 transition-all duration-300">
+                  <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl hover:shadow-primary-500/10 hover:-translate-y-2 hover:border-primary-500/30 transition-all duration-300 ${project.id === 'buildapp-pro' ? 'ring-1 ring-blue-200 dark:ring-blue-500/30 lg:scale-[1.02]' : ''}`}>
                     <div className="relative h-80 bg-gradient-to-br from-primary-900/20 to-blue-900/20 overflow-hidden">
                       <img 
-                        src={project.image} 
+                        src={cardImage} 
                         alt={project.title}
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute inset-0 bg-black/20" />
-                      {project.featured && (
-                        <div className="absolute top-4 left-4">
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/20 dark:text-primary-300">
-                            <Star className="h-3 w-3 mr-1" />
-                            Featured
-                          </span>
-                        </div>
-                      )}
                     </div>
                     <div className="p-6">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{project.title}</h3>
@@ -632,57 +630,49 @@ export default function Home() {
                     </div>
                     <div className="flex flex-col gap-2">
                       {/* Backend and Frontend buttons row */}
-                      <div className="flex gap-2">
-                        {project.id === 'tradelab' && (
+                      <div className="flex flex-wrap gap-2">
+                        {(project.backendUrl || project.frontendUrl || project.mobileUrl) ? (
                           <>
-                            <a
-                              href="https://github.com/TonyRod116/TradingLab-Backend"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex-1 px-4 py-2 text-sm font-medium text-gray-200 hover:text-blue-600 border border-gray-200 hover:border-gray-200 rounded-md transition-colors flex items-center justify-center gap-1"
-                            >
-                              <Github className="h-4 w-4" />
-                              {t('home.projects.backend')}
-                            </a>
-                            <a
-                              href="https://github.com/TonyRod116/TradingLab"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex-1 px-4 py-2 text-sm font-medium text-gray-200 hover:text-blue-600 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
-                            >
-                              <Github className="h-4 w-4" />
-                              {t('home.projects.frontend')}
-                            </a>
+                            {project.backendUrl && (
+                              <a
+                                href={project.backendUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
+                              >
+                                <Github className="h-4 w-4" />
+                                {t('home.projects.backend')}
+                              </a>
+                            )}
+                            {project.frontendUrl && (
+                              <a
+                                href={project.frontendUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
+                              >
+                                <Github className="h-4 w-4" />
+                                {t('home.projects.frontend')}
+                              </a>
+                            )}
+                            {project.mobileUrl && (
+                              <a
+                                href={project.mobileUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
+                              >
+                                <Github className="h-4 w-4" />
+                                {t('home.projects.mobile')}
+                              </a>
+                            )}
                           </>
-                        )}
-                        {project.id === 're-lux' && (
-                          <>
-                            <a
-                              href="https://github.com/TonyRod116/Re-Lux-backend"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex-1 px-4 py-2 text-sm font-medium text-gray-200 hover:text-blue-600 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
-                            >
-                              <Github className="h-4 w-4" />
-                              {t('home.projects.backend')}
-                            </a>
-                            <a
-                              href="https://github.com/TonyRod116/Re-Lux-frontend"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex-1 px-4 py-2 text-sm font-medium text-gray-200 hover:text-blue-600 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
-                            >
-                              <Github className="h-4 w-4" />
-                              {t('home.projects.frontend')}
-                            </a>
-                          </>
-                        )}
-                        {project.id === 'buildapp' && (
+                        ) : project.githubUrl && (
                           <a
                             href={project.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex-1 px-4 py-2 text-sm font-medium text-gray-200 hover:text-blue-600 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
+                            className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
                           >
                             <Github className="h-4 w-4" />
                             {t('home.projects.github')}
@@ -922,10 +912,10 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/resume?intent=recruiter" className="btn-secondary bg-white/20 border-white/30 text-white hover:bg-white hover:text-primary-600 transition-all duration-300">
-                {getText('home.cta.forRecruiters', 'I am recruiting')}
+                {getText('home.cta.forRecruiters', 'View Resume & Experience')}
               </Link>
               <Link to="/contact?intent=company" className="btn-secondary bg-white text-primary-600 hover:bg-gray-50 hover:text-primary-700 transition-all duration-300">
-                {getText('home.cta.forCompanies', 'I need AI solutions')}
+                {getText('home.cta.forCompanies', 'See AI Demos')}
               </Link>
             </div>
           </motion.div>

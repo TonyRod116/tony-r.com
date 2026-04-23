@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MNIST Neural Network Visualization</title>
+  <title>See How a Neural Network Reads Digits</title>
   <link rel="icon" type="image/svg+xml" href="/src/assets/tr-favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
@@ -17,12 +17,89 @@
       padding: 0;
       box-sizing: border-box;
     }
+    :root {
+      --nn-bg: #08111f;
+      --nn-bg-secondary: rgba(8, 17, 31, 0.8);
+      --nn-surface: rgba(10, 20, 36, 0.78);
+      --nn-surface-strong: rgba(11, 22, 38, 0.92);
+      --nn-surface-soft: rgba(20, 34, 55, 0.7);
+      --nn-border: rgba(148, 163, 184, 0.14);
+      --nn-border-strong: rgba(125, 211, 252, 0.28);
+      --nn-text: #ecf6ff;
+      --nn-text-muted: #9ab0c8;
+      --nn-text-soft: #c7d7ea;
+      --nn-accent: #4cc9f0;
+      --nn-accent-strong: #22d3ee;
+      --nn-accent-alt: #34d399;
+      --nn-warning: #f59e0b;
+      --nn-shadow: 0 28px 80px rgba(2, 12, 27, 0.45);
+      --nn-shadow-soft: 0 18px 40px rgba(2, 12, 27, 0.28);
+      --nn-radius-xl: 28px;
+      --nn-radius-lg: 22px;
+      --nn-radius-md: 16px;
+      --nn-radius-sm: 12px;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-      background: #111827;
-      color: white;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(34, 211, 238, 0.12), transparent 28%),
+        radial-gradient(circle at 82% 18%, rgba(52, 211, 153, 0.12), transparent 24%),
+        linear-gradient(180deg, #08111f 0%, #091525 42%, #07101c 100%);
+      color: var(--nn-text);
       overflow-x: hidden;
       letter-spacing: -0.02em;
+      min-height: 100vh;
+      position: relative;
+    }
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::before {
+      background:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.02), transparent 24%),
+        radial-gradient(circle at 50% 10%, rgba(76, 201, 240, 0.08), transparent 34%);
+      opacity: 0.9;
+    }
+    body::after {
+      background-image:
+        linear-gradient(rgba(154, 176, 200, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(154, 176, 200, 0.025) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.36), transparent 82%);
+    }
+    ::selection {
+      background: rgba(76, 201, 240, 0.28);
+      color: #fff;
+    }
+    a, button {
+      cursor: pointer;
+    }
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+      outline: 2px solid rgba(76, 201, 240, 0.95);
+      outline-offset: 3px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
     }
     /* Site header - matches main app header (dark) */
     .site-header {
@@ -367,54 +444,310 @@
     .header { display: none; }
     .header-content { display: none; }
     .main-content {
-      padding-top: 80px;
+      padding-top: 96px;
       min-height: 100vh;
       position: relative;
       z-index: 10;
       pointer-events: none;
     }
     /* Only specific interactive elements block events */
-    .panel, .title, .education-section {
+    .panel, .title, .education-section, .hero-shell, .stage-card {
       pointer-events: auto;
     }
     .container {
-      max-width: 1400px;
+      max-width: 1540px;
       margin: 0 auto;
       padding: 24px;
       position: relative;
       z-index: 10;
       pointer-events: none;
     }
-    .title {
-      text-align: center;
-      margin-bottom: 32px;
+    .hero-shell {
+      margin-bottom: 28px;
       position: relative;
-      z-index: 10;
+      z-index: 12;
+      padding: 28px;
+      border: 1px solid var(--nn-border);
+      border-radius: var(--nn-radius-xl);
+      background:
+        linear-gradient(145deg, rgba(12, 24, 42, 0.86), rgba(8, 18, 31, 0.72)),
+        radial-gradient(circle at top right, rgba(76, 201, 240, 0.09), transparent 32%);
+      box-shadow: var(--nn-shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      overflow: hidden;
+    }
+    .hero-shell::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.04), transparent 28%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 56%);
       pointer-events: none;
     }
     .title * {
       pointer-events: auto;
     }
+    .hero-topline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .eyebrow-pill,
+    .eyebrow-meta,
+    .panel-kicker,
+    .stage-chip,
+    .usage-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 34px;
+      padding: 0 14px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      color: var(--nn-text-soft);
+      background: rgba(12, 24, 42, 0.56);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .eyebrow-pill {
+      color: #072236;
+      background: linear-gradient(135deg, rgba(76, 201, 240, 0.92), rgba(104, 231, 196, 0.92));
+      border-color: rgba(255, 255, 255, 0.16);
+      box-shadow: 0 10px 30px rgba(76, 201, 240, 0.24);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.75fr);
+      gap: 24px;
+      align-items: stretch;
+      position: relative;
+    }
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .hero-kicker {
+      color: var(--nn-accent-strong);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
     .title h1 {
-      font-size: 2rem;
-      font-weight: bold;
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      font-size: clamp(2.6rem, 5vw, 4.7rem);
+      line-height: 0.95;
+      font-weight: 700;
+      max-width: 11ch;
+      text-wrap: balance;
+    }
+    .hero-subtitle {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: var(--nn-text-muted);
+      max-width: 60ch;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 0 18px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, color 0.22s ease;
+      border: 1px solid transparent;
+    }
+    .hero-btn:hover {
+      transform: translateY(-2px);
+    }
+    .hero-btn-primary {
+      color: #05131f;
+      background: linear-gradient(135deg, #4cc9f0, #34d399);
+      box-shadow: 0 16px 34px rgba(52, 211, 153, 0.2);
+    }
+    .hero-btn-secondary {
+      color: var(--nn-text);
+      background: rgba(15, 28, 46, 0.75);
+      border-color: rgba(125, 211, 252, 0.22);
+    }
+    .hero-signals {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .signal-card,
+    .usage-card,
+    .stage-card {
+      position: relative;
+      background: linear-gradient(180deg, rgba(12, 23, 40, 0.84), rgba(9, 18, 32, 0.72));
+      border: 1px solid var(--nn-border);
+      border-radius: var(--nn-radius-lg);
+      box-shadow: var(--nn-shadow-soft);
+      overflow: hidden;
+      transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
+    }
+    .signal-card::before,
+    .usage-card::before,
+    .stage-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(140deg, rgba(255, 255, 255, 0.05), transparent 40%);
+      pointer-events: none;
+    }
+    .signal-card:hover,
+    .usage-card:hover,
+    .stage-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(125, 211, 252, 0.26);
+    }
+    .signal-card {
+      padding: 18px;
+      text-align: left;
+    }
+    .signal-label {
+      display: block;
+      color: var(--nn-text-muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .signal-value {
+      display: block;
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.15;
+      margin-bottom: 8px;
+      color: var(--nn-text);
+    }
+    .signal-copy {
+      color: var(--nn-text-muted);
+      font-size: 0.9rem;
+      line-height: 1.65;
+    }
+    .usage-card {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-height: 100%;
+    }
+    .usage-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .usage-kicker,
+    .stage-chip {
+      font-size: 0.7rem;
+    }
+    .usage-title,
+    .stage-title {
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      font-size: 1.5rem;
+      line-height: 1.05;
+      color: var(--nn-text);
+    }
+    .usage-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .usage-step {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 12px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      background: rgba(18, 31, 50, 0.62);
+    }
+    .usage-step-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      font-weight: 700;
+      color: #05131f;
+      background: linear-gradient(135deg, #4cc9f0, #34d399);
+      box-shadow: 0 10px 24px rgba(76, 201, 240, 0.18);
+    }
+    .usage-step-copy h3 {
+      color: var(--nn-text);
+      font-size: 0.98rem;
+      margin-bottom: 6px;
+    }
+    .usage-step-copy p,
+    .usage-summary p,
+    .stage-text,
+    .panel-subtext {
+      color: var(--nn-text-muted);
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+    .usage-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .usage-stat {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(14, 28, 46, 0.78);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+    }
+    .usage-stat span {
+      display: block;
+      color: var(--nn-text-muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
       margin-bottom: 8px;
     }
-    .title p {
-      color: #9ca3af;
+    .usage-stat strong {
+      display: block;
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      font-size: 1.06rem;
+      color: var(--nn-text);
     }
     .layout {
       display: grid;
-      grid-template-columns: 320px 1fr 320px;
-      gap: 24px;
-      margin-bottom: 24px;
+      grid-template-columns: minmax(300px, 360px) minmax(0, 1fr) minmax(300px, 360px);
+      grid-template-rows: auto auto;
+      gap: 22px;
+      margin-bottom: 28px;
+      min-height: clamp(760px, 84vh, 1040px);
+      align-items: stretch;
+      align-content: start;
       position: relative;
       z-index: 10;
       pointer-events: none;
     }
     @media (min-width: 1280px) {
       .layout {
-        width: min(100vw - 48px, 1800px);
+        width: min(100vw - 48px, 1820px);
         margin-left: 0;
         margin-right: 0;
         position: relative;
@@ -422,57 +755,229 @@
         transform: translateX(-50%);
       }
     }
-    .layout > div:nth-child(2) {
-      /* Middle column - empty, 3D visualization is in background */
-      pointer-events: none;
+    .control-column,
+    .stage-column {
+      display: contents;
+    }
+    .control-column,
+    .stage-column {
+      pointer-events: auto;
+    }
+    .layout-panel,
+    .stage-card {
+      align-self: stretch;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .panel-drawing {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    .panel-epoch {
+      grid-column: 1;
+      grid-row: 2;
+    }
+    .panel-prediction {
+      grid-column: 3;
+      grid-row: 1;
+    }
+    .panel-capacity {
+      grid-column: 3;
+      grid-row: 2;
+    }
+    .stage-card {
+      grid-column: 2;
+      grid-row: 2;
+      align-self: end;
+      height: auto;
+      padding: 22px;
+      background:
+        linear-gradient(180deg, rgba(8, 19, 33, 0.76), rgba(8, 18, 31, 0.38)),
+        radial-gradient(circle at top, rgba(76, 201, 240, 0.14), transparent 48%);
+      border-color: rgba(125, 211, 252, 0.22);
+      pointer-events: auto;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .stage-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .stage-chip.subtle {
+      background: rgba(16, 29, 47, 0.7);
+      color: var(--nn-text-soft);
+    }
+    .stage-text {
+      margin-top: 12px;
+      margin-bottom: 18px;
+    }
+    .mini-architecture {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .mini-arch-node {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(13, 26, 44, 0.76);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+    }
+    .mini-arch-node span {
+      display: block;
+      color: var(--nn-text-muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+    .mini-arch-node strong {
+      display: block;
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      font-size: 1.24rem;
+      color: var(--nn-text);
     }
     .panel {
-      background: rgba(31, 41, 55, 0.95);
-      backdrop-filter: blur(8px);
-      border-radius: 12px;
-      padding: 16px;
+      background: linear-gradient(180deg, rgba(10, 21, 37, 0.88), rgba(12, 23, 40, 0.72));
+      backdrop-filter: blur(14px);
+      border-radius: var(--nn-radius-lg);
+      padding: 20px;
       position: relative;
       z-index: 10;
-      border: 1px solid rgba(55, 65, 81, 0.5);
+      border: 1px solid var(--nn-border);
+      box-shadow: var(--nn-shadow-soft);
+      transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
+    }
+    .panel:hover {
+      transform: translateY(-2px);
+      border-color: rgba(125, 211, 252, 0.24);
     }
     .panel h2 {
-      font-size: 1.125rem;
-      font-weight: 600;
-      margin-bottom: 16px;
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      font-size: 1.3rem;
+      line-height: 1.05;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--nn-text);
+    }
+    .panel-header {
+      margin-bottom: 18px;
+    }
+    .panel-kicker {
+      margin-bottom: 12px;
+    }
+    .panel-subtext {
+      max-width: 34ch;
     }
     #gridContainer {
       margin-bottom: 16px;
     }
+    .grid-caption {
+      font-size: 0.78rem;
+      color: var(--nn-text-muted);
+      margin-bottom: 10px;
+      letter-spacing: 0.02em;
+    }
+    .grid-shell {
+      display: flex;
+      justify-content: center;
+    }
+    .digit-grid {
+      width: 292px;
+      height: 292px;
+      border: 1px solid rgba(125, 211, 252, 0.18);
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(8, 14, 24, 0.92);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        0 18px 30px rgba(2, 12, 27, 0.24);
+    }
+    .prediction-panel-body {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .prediction-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .prediction-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .prediction-label {
+      width: 24px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--nn-text-soft);
+    }
+    .prediction-track {
+      flex: 1;
+      height: 24px;
+      background: rgba(31, 45, 67, 0.92);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(148, 163, 184, 0.08);
+    }
+    .prediction-bar {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      transition: width 0.3s ease, background 0.3s ease;
+      background: linear-gradient(90deg, rgba(96, 165, 250, 0.38), rgba(148, 163, 184, 0.34));
+    }
+    .prediction-value {
+      width: 54px;
+      text-align: right;
+      font-size: 0.875rem;
+      color: var(--nn-text-soft);
+    }
     .btn {
       width: 100%;
-      padding: 8px 16px;
-      background: #374151;
-      border: none;
-      border-radius: 8px;
-      color: white;
+      min-height: 46px;
+      padding: 10px 16px;
+      background: rgba(31, 45, 67, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      border-radius: 14px;
+      color: var(--nn-text);
       cursor: pointer;
-      font-weight: 500;
-      transition: background 0.2s;
+      font-weight: 700;
+      transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
     }
     .btn:hover {
-      background: #4b5563;
+      background: rgba(39, 54, 79, 0.95);
+      border-color: rgba(148, 163, 184, 0.2);
+      transform: translateY(-1px);
     }
     .btn.btn-primary {
-      background: #2563eb;
+      color: #05131f;
+      background: linear-gradient(135deg, #4cc9f0, #34d399);
+      border-color: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 16px 32px rgba(52, 211, 153, 0.18);
     }
     .btn.btn-primary:hover {
-      background: #1d4ed8;
+      background: linear-gradient(135deg, #5ed6f6, #4ce0ab);
     }
     .btn.btn-disabled,
     .btn.btn-disabled:hover {
-      background: #374151;
-      color: #9ca3af;
+      background: rgba(30, 41, 59, 0.74);
+      border-color: rgba(148, 163, 184, 0.08);
+      color: #7f93ab;
       cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
     .hint {
-      font-size: 0.75rem;
-      color: #9ca3af;
-      margin-top: 8px;
+      font-size: 0.78rem;
+      color: var(--nn-text-muted);
+      margin-top: 10px;
+      line-height: 1.55;
     }
     #threeContainer {
       position: fixed;
@@ -480,23 +985,96 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: #111827;
+      background:
+        radial-gradient(circle at center, rgba(21, 45, 76, 0.45), transparent 44%),
+        linear-gradient(180deg, rgba(5, 12, 24, 0.18), rgba(5, 12, 24, 0.88));
       z-index: 1;
       overflow: hidden;
+    }
+    #threeContainer::before,
+    #threeContainer::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+    #threeContainer::before {
+      background:
+        radial-gradient(circle at 50% 42%, rgba(76, 201, 240, 0.06), transparent 28%),
+        radial-gradient(circle at 50% 60%, rgba(52, 211, 153, 0.05), transparent 36%);
+    }
+    #threeContainer::after {
+      background: linear-gradient(180deg, rgba(6, 13, 24, 0.1) 0%, rgba(6, 13, 24, 0.58) 100%);
     }
     #threeContainer canvas {
       pointer-events: auto !important;
       touch-action: none;
     }
-    #predictionChart {
-      margin-top: 24px;
+    @media (max-width: 1100px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-signals,
+      .usage-stats {
+        grid-template-columns: 1fr;
+      }
+      .title h1 {
+        max-width: none;
+      }
     }
     @media (max-width: 1024px) {
       .layout {
         grid-template-columns: 1fr;
+        grid-template-rows: auto;
       }
-      .layout > div:nth-child(2) {
+      .control-column {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+      }
+      .stage-column {
         display: none;
+      }
+      .layout-panel {
+        align-self: auto;
+      }
+      .panel-drawing,
+      .panel-epoch,
+      .panel-prediction,
+      .panel-capacity {
+        grid-column: auto;
+        grid-row: auto;
+      }
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 16px;
+      }
+      .hero-shell {
+        padding: 20px;
+      }
+      .hero-topline {
+        gap: 8px;
+      }
+      .eyebrow-pill,
+      .eyebrow-meta,
+      .panel-kicker,
+      .stage-chip,
+      .usage-kicker {
+        min-height: 32px;
+        padding: 0 12px;
+      }
+      .hero-signals {
+        grid-template-columns: 1fr;
+      }
+      .mini-architecture {
+        grid-template-columns: 1fr;
+      }
+      .digit-grid {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1 / 1;
       }
     }
     /* Educational Section Styles */
@@ -531,14 +1109,17 @@
       margin-bottom: 80px;
     }
     .section-title {
-      font-size: 1.875rem;
-      font-weight: bold;
-      color: white;
-      margin-bottom: 8px;
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      font-size: clamp(1.9rem, 3vw, 2.8rem);
+      font-weight: 700;
+      color: var(--nn-text);
+      margin-bottom: 10px;
     }
     .section-subtitle {
-      color: #9ca3af;
+      color: var(--nn-text-muted);
       margin-bottom: 32px;
+      max-width: 62ch;
+      line-height: 1.7;
     }
     .section-grid {
       display: grid;
@@ -551,18 +1132,19 @@
       }
     }
     .code-block {
-      background: #0d1117;
-      border: 1px solid rgba(55, 65, 81, 0.5);
-      border-radius: 12px;
+      background: rgba(8, 14, 24, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      border-radius: 20px;
       overflow: hidden;
       min-width: 0;
+      box-shadow: var(--nn-shadow-soft);
     }
     .code-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 8px 16px;
-      border-bottom: 1px solid rgba(55, 65, 81, 0.5);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
     }
     .code-dots {
       display: flex;
@@ -578,19 +1160,19 @@
     .code-dot.green { background: rgba(34, 197, 94, 0.7); }
     .code-lang {
       font-size: 0.75rem;
-      color: #6b7280;
-      font-family: monospace;
+      color: var(--nn-text-muted);
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
     }
     .code-content {
       padding: 20px;
       overflow-x: auto;
       font-size: 0.875rem;
       line-height: 1.625;
-      font-family: monospace;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
       -webkit-overflow-scrolling: touch;
     }
     .code-line {
-      color: #d1d5db;
+      color: #dbeafe;
       min-height: 22px;
       white-space: pre;
     }
@@ -598,15 +1180,15 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      background: rgba(59, 130, 246, 0.05);
+      background: rgba(76, 201, 240, 0.06);
       margin: 0 -20px;
       padding: 0 20px;
-      border-left: 2px solid rgba(59, 130, 246, 0.4);
+      border-left: 2px solid rgba(76, 201, 240, 0.35);
     }
-    .code-kw { color: #c084fc; }
-    .code-fn { color: #60a5fa; }
-    .code-str { color: #34d399; }
-    .code-num { color: #fb923c; }
+    .code-kw { color: #7dd3fc; }
+    .code-fn { color: #4cc9f0; }
+    .code-str { color: #6ee7b7; }
+    .code-num { color: #fbbf24; }
     .badge {
       display: inline-flex;
       align-items: center;
@@ -614,23 +1196,24 @@
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: rgba(59, 130, 246, 0.2);
-      color: #60a5fa;
+      background: rgba(76, 201, 240, 0.18);
+      color: #7dd3fc;
       font-size: 0.75rem;
       font-weight: bold;
       flex-shrink: 0;
     }
     .annotation-card {
-      background: rgba(17, 24, 39, 0.86);
-      backdrop-filter: blur(4px);
-      border-radius: 8px;
+      background: rgba(10, 20, 36, 0.86);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
       padding: 16px;
-      border: 1px solid rgba(75, 85, 99, 0.78);
+      border: 1px solid rgba(148, 163, 184, 0.12);
       border-left-width: 4px;
+      box-shadow: var(--nn-shadow-soft);
     }
     .annotation-card.blue { border-left-color: #3b82f6; }
     .annotation-card.green { border-left-color: #10b981; }
-    .annotation-card.purple { border-left-color: #a855f7; }
+    .annotation-card.purple { border-left-color: #22d3ee; }
     .annotation-card.orange { border-left-color: #f97316; }
     .annotation-card.red { border-left-color: #ef4444; }
     .annotation-content {
@@ -640,12 +1223,12 @@
     }
     .annotation-text h4 {
       font-weight: 600;
-      color: white;
+      color: var(--nn-text);
       font-size: 0.875rem;
       margin-bottom: 4px;
     }
     .annotation-text p {
-      color: #9ca3af;
+      color: var(--nn-text-muted);
       font-size: 0.875rem;
       line-height: 1.625;
     }
@@ -658,37 +1241,39 @@
       margin-bottom: 48px;
     }
     .arch-box {
-      background: linear-gradient(to bottom, rgba(37, 99, 235, 0.2), rgba(30, 64, 175, 0.2));
-      border: 1px solid rgba(59, 130, 246, 0.5);
-      border-radius: 12px;
+      background: linear-gradient(to bottom, rgba(76, 201, 240, 0.16), rgba(26, 42, 68, 0.72));
+      border: 1px solid rgba(76, 201, 240, 0.24);
+      border-radius: 18px;
       padding: 20px;
       text-align: center;
       min-width: 140px;
+      box-shadow: var(--nn-shadow-soft);
     }
     .arch-box.green {
-      background: linear-gradient(to bottom, rgba(22, 163, 74, 0.2), rgba(20, 83, 45, 0.2));
-      border-color: rgba(34, 197, 94, 0.5);
+      background: linear-gradient(to bottom, rgba(52, 211, 153, 0.16), rgba(20, 43, 39, 0.7));
+      border-color: rgba(52, 211, 153, 0.24);
     }
     .arch-box.purple {
-      background: linear-gradient(to bottom, rgba(147, 51, 234, 0.2), rgba(88, 28, 135, 0.2));
-      border-color: rgba(168, 85, 247, 0.5);
+      background: linear-gradient(to bottom, rgba(245, 158, 11, 0.16), rgba(56, 37, 9, 0.7));
+      border-color: rgba(245, 158, 11, 0.24);
     }
     .arch-label {
       font-size: 0.75rem;
-      color: #9ca3af;
+      color: var(--nn-text-muted);
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-bottom: 4px;
     }
     .arch-neurons {
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
       font-size: 1.875rem;
-      font-weight: bold;
-      color: white;
+      font-weight: 700;
+      color: var(--nn-text);
       margin-bottom: 4px;
     }
     .arch-sub {
       font-size: 0.875rem;
-      color: #d1d5db;
+      color: var(--nn-text-soft);
     }
     .arch-arrow {
       display: flex;
@@ -698,14 +1283,14 @@
       transform: rotate(90deg);
     }
     .arch-arrow-line {
-      width: 24px;
+      width: 28px;
       height: 2px;
-      background: linear-gradient(to right, #3b82f6, #a855f7);
+      background: linear-gradient(to right, #4cc9f0, #34d399);
     }
     .arch-arrow-icon {
       width: 16px;
       height: 16px;
-      color: #a855f7;
+      color: #34d399;
       margin-left: -4px;
     }
     .concept-grid {
@@ -714,11 +1299,20 @@
       gap: 24px;
     }
     .concept-card {
-      background: rgba(17, 24, 39, 0.86);
-      backdrop-filter: blur(4px);
-      border-radius: 12px;
+      background: rgba(10, 20, 36, 0.84);
+      backdrop-filter: blur(8px);
+      border-radius: 18px;
       padding: 24px;
-      border: 1px solid rgba(75, 85, 99, 0.78);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      box-shadow: var(--nn-shadow-soft);
+      transition: transform 0.24s ease, border-color 0.24s ease;
+    }
+    .concept-card:hover,
+    .formula-card:hover,
+    .pipeline-step:hover,
+    .expandable-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(125, 211, 252, 0.22);
     }
     .concept-icon {
       width: 40px;
@@ -735,11 +1329,11 @@
     }
     .concept-title {
       font-weight: 600;
-      color: white;
+      color: var(--nn-text);
       margin-bottom: 8px;
     }
     .concept-text {
-      color: #9ca3af;
+      color: var(--nn-text-muted);
       font-size: 0.875rem;
       line-height: 1.625;
     }
@@ -754,38 +1348,60 @@
       }
     }
     .formula-card {
-      background: rgba(17, 24, 39, 0.9);
-      border: 1px solid rgba(75, 85, 99, 0.82);
-      border-radius: 12px;
+      background: rgba(10, 20, 36, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      border-radius: 18px;
       padding: 18px;
+      box-shadow: var(--nn-shadow-soft);
     }
     .formula-title {
-      color: #fff;
+      color: var(--nn-text);
       font-weight: 600;
       margin-bottom: 10px;
     }
     .formula-math {
       display: block;
-      background: rgba(13, 17, 23, 0.95);
-      border: 1px solid rgba(55, 65, 81, 0.5);
-      border-radius: 8px;
+      background: rgba(8, 14, 24, 0.94);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      border-radius: 12px;
       padding: 12px 14px;
       margin-bottom: 10px;
-      color: #e5e7eb;
+      color: #e5f0fb;
       overflow-x: auto;
       text-align: center;
     }
     .formula-math .katex {
       font-size: 1.08rem;
     }
+    .formula-math-inline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .formula-math-inline .formula-symbol {
+      font-family: 'JetBrains Mono', 'Inter', monospace;
+      color: #7dd3fc;
+      font-size: 1.05rem;
+    }
+    .formula-math-inline .formula-arrow {
+      color: var(--nn-accent-alt);
+      font-size: 1rem;
+    }
+    .formula-math-inline .formula-sep {
+      color: rgba(154, 176, 200, 0.5);
+    }
     .formula-text {
-      color: #9ca3af;
+      color: var(--nn-text-muted);
       font-size: 0.875rem;
       line-height: 1.6;
     }
     .reg-checklist {
       margin-top: 8px;
-      color: #d1d5db;
+      color: var(--nn-text-soft);
       font-size: 0.875rem;
       line-height: 1.6;
       padding-left: 18px;
@@ -799,15 +1415,16 @@
       gap: 16px;
     }
     .pipeline-step {
-      background: rgba(17, 24, 39, 0.86);
-      backdrop-filter: blur(4px);
-      border-radius: 12px;
+      background: rgba(10, 20, 36, 0.86);
+      backdrop-filter: blur(8px);
+      border-radius: 18px;
       padding: 16px;
-      border: 1px solid rgba(75, 85, 99, 0.78);
+      border: 1px solid rgba(148, 163, 184, 0.12);
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
+      box-shadow: var(--nn-shadow-soft);
     }
     .pipeline-icon {
       width: 40px;
@@ -824,27 +1441,28 @@
     }
     .pipeline-num {
       font-size: 0.75rem;
-      color: #6b7280;
+      color: var(--nn-text-muted);
       margin-bottom: 4px;
     }
     .pipeline-title {
       font-weight: 600;
-      color: white;
+      color: var(--nn-text);
       font-size: 0.875rem;
       margin-bottom: 8px;
     }
     .pipeline-text {
-      color: #6b7280;
+      color: var(--nn-text-muted);
       font-size: 0.75rem;
       line-height: 1.5;
     }
     .expandable-card {
-      background: rgba(17, 24, 39, 0.86);
-      backdrop-filter: blur(4px);
-      border-radius: 12px;
-      border: 1px solid rgba(75, 85, 99, 0.78);
+      background: rgba(10, 20, 36, 0.86);
+      backdrop-filter: blur(8px);
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.12);
       border-left-width: 4px;
       overflow: hidden;
+      box-shadow: var(--nn-shadow-soft);
     }
     .expandable-header {
       width: 100%;
@@ -855,55 +1473,58 @@
       text-align: left;
       background: transparent;
       border: none;
-      color: white;
+      color: var(--nn-text);
       cursor: pointer;
       transition: background 0.2s;
     }
     .expandable-header:hover {
-      background: rgba(55, 65, 81, 0.2);
+      background: rgba(23, 37, 60, 0.55);
     }
     .expandable-title {
       font-weight: 600;
-      color: white;
+      color: var(--nn-text);
     }
     .expandable-icon {
       width: 16px;
       height: 16px;
-      color: #9ca3af;
+      color: var(--nn-text-muted);
       flex-shrink: 0;
     }
     .expandable-content {
-      padding: 0 20px 20px 20px;
-      color: #d1d5db;
+      padding: 14px 20px 22px 20px;
+      color: var(--nn-text-soft);
       font-size: 0.875rem;
       line-height: 1.625;
+      min-height: 96px;
+      align-content: center;
     }
     .activation-table {
-      background: rgba(13, 17, 23, 0.9);
-      border: 1px solid rgba(55, 65, 81, 0.5);
-      border-radius: 12px;
+      background: rgba(8, 14, 24, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      border-radius: 18px;
       overflow: hidden;
+      box-shadow: var(--nn-shadow-soft);
     }
     .activation-row {
       display: grid;
       grid-template-columns: 120px 1fr 1fr;
       gap: 12px;
       padding: 12px 16px;
-      border-top: 1px solid rgba(55, 65, 81, 0.4);
+      border-top: 1px solid rgba(148, 163, 184, 0.1);
       align-items: start;
     }
     .activation-row:first-child {
       border-top: none;
-      background: rgba(55, 65, 81, 0.2);
+      background: rgba(21, 35, 58, 0.72);
       font-weight: 600;
-      color: #e5e7eb;
+      color: #e5f0fb;
     }
     .activation-name {
-      color: #93c5fd;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      color: #7dd3fc;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
     }
     .activation-note {
-      color: #d1d5db;
+      color: var(--nn-text-soft);
       font-size: 0.875rem;
       line-height: 1.5;
     }
@@ -912,7 +1533,7 @@
       appearance: none;
       width: 100% !important;
       height: 8px !important;
-      background: #374151 !important;
+      background: rgba(31, 45, 67, 0.92) !important;
       border-radius: 4px;
       outline: none;
       margin: 12px 0;
@@ -925,20 +1546,20 @@
       appearance: none;
       width: 20px;
       height: 20px;
-      background: #3b82f6;
+      background: #4cc9f0;
       border-radius: 50%;
       cursor: pointer;
       transition: background 0.2s, transform 0.2s;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
     #epochSlider::-webkit-slider-thumb:hover {
-      background: #60a5fa;
+      background: #7dd3fc;
       transform: scale(1.1);
     }
     #epochSlider::-moz-range-thumb {
       width: 20px;
       height: 20px;
-      background: #3b82f6;
+      background: #4cc9f0;
       border-radius: 50%;
       cursor: pointer;
       border: none;
@@ -946,12 +1567,12 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
     #epochSlider::-moz-range-thumb:hover {
-      background: #60a5fa;
+      background: #7dd3fc;
       transform: scale(1.1);
     }
     #epochSlider::-moz-range-track {
       height: 8px;
-      background: #374151;
+      background: rgba(31, 45, 67, 0.92);
       border-radius: 4px;
     }
     #hiddenNodesSlider {
@@ -959,7 +1580,7 @@
       appearance: none;
       width: 100% !important;
       height: 8px !important;
-      background: #374151 !important;
+      background: rgba(31, 45, 67, 0.92) !important;
       border-radius: 4px;
       outline: none;
       margin: 12px 0;
@@ -972,20 +1593,20 @@
       appearance: none;
       width: 20px;
       height: 20px;
-      background: #10b981;
+      background: #34d399;
       border-radius: 50%;
       cursor: pointer;
       transition: background 0.2s, transform 0.2s;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
     #hiddenNodesSlider::-webkit-slider-thumb:hover {
-      background: #34d399;
+      background: #6ee7b7;
       transform: scale(1.1);
     }
     #hiddenNodesSlider::-moz-range-thumb {
       width: 20px;
       height: 20px;
-      background: #10b981;
+      background: #34d399;
       border-radius: 50%;
       cursor: pointer;
       border: none;
@@ -993,12 +1614,12 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
     #hiddenNodesSlider::-moz-range-thumb:hover {
-      background: #34d399;
+      background: #6ee7b7;
       transform: scale(1.1);
     }
     #hiddenNodesSlider::-moz-range-track {
       height: 8px;
-      background: #374151;
+      background: rgba(31, 45, 67, 0.92);
       border-radius: 4px;
     }
     @media (min-width: 1024px) {
@@ -1158,33 +1779,127 @@
         a.addEventListener('click', closeMenu)
       })
     })()
+    window.toggleExpandable = function (button) {
+      if (!button) return
+      var content = button.nextElementSibling
+      if (!content) return
+      var isOpen = content.style.display === 'grid'
+      content.style.display = isOpen ? 'none' : 'grid'
+      var icon = button.querySelector('.expandable-icon')
+      if (icon) icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)'
+    }
   </script>
 
   <!-- Main Content -->
   <div class="main-content">
     <div class="container">
       <!-- Title -->
-      <div class="title">
-        <h1 data-i18n="heroTitle">MNIST Neural Network Visualization</h1>
-        <p data-i18n="heroSubtitle">Draw a digit and watch how activations propagate through the network</p>
+      <div class="title hero-shell">
+        <div class="hero-topline">
+          <span class="eyebrow-pill" data-i18n="heroEyebrow">Interactive AI demo</span>
+          <span class="eyebrow-meta">MNIST · TensorFlow · Three.js</span>
+          <span class="eyebrow-meta">784 → 64 → 32 → 10</span>
+        </div>
+
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="hero-kicker" data-i18n="heroKicker">See how a trained model turns a sketch into a decision.</p>
+            <h1 data-i18n="heroTitle">Watch a neural network read your drawing</h1>
+            <p class="hero-subtitle" data-i18n="heroSubtitle">Draw a number and follow the path from pixels to prediction, with live probabilities and a 3D view of what the model reacts to.</p>
+
+            <div class="hero-actions">
+              <a href="#interactiveStudio" class="hero-btn hero-btn-primary" data-i18n="heroPrimaryCta">Try the live demo</a>
+              <a href="#learnMoreSection" class="hero-btn hero-btn-secondary" data-i18n="heroSecondaryCta">See how it works</a>
+            </div>
+
+            <div class="hero-signals">
+              <div class="signal-card">
+                <span class="signal-label" data-i18n="signal1Label">What happens live</span>
+                <strong class="signal-value" data-i18n="signal1Value">Your browser runs the finished model</strong>
+                <p class="signal-copy" data-i18n="signal1Text">The training happened earlier. This page uses the trained model instantly on what you draw and updates the result in real time.</p>
+              </div>
+              <div class="signal-card">
+                <span class="signal-label" data-i18n="signal2Label">What you can change</span>
+                <strong class="signal-value" data-i18n="signal2Value">Your drawing, training stage, and model size</strong>
+                <p class="signal-copy" data-i18n="signal2Text">A clearer sketch usually gives a clearer answer. The sliders help you compare training progress and model size without hiding the mechanics.</p>
+              </div>
+              <div class="signal-card">
+                <span class="signal-label" data-i18n="signal3Label">Why it helps</span>
+                <strong class="signal-value" data-i18n="signal3Value">You see the decision, not just the digit</strong>
+                <p class="signal-copy" data-i18n="signal3Text">The demo shows confidence, activations, and network structure so the result feels explainable instead of magical.</p>
+              </div>
+            </div>
+          </div>
+
+          <aside class="usage-card">
+            <div class="usage-card-header">
+              <span class="usage-kicker" data-i18n="usageKicker">Quick start</span>
+              <span class="stage-chip subtle" data-i18n="usageChip">Learning controls</span>
+            </div>
+            <h2 class="usage-title" data-i18n="usageTitle">Understand the demo in under 30 seconds</h2>
+            <div class="usage-steps">
+              <div class="usage-step">
+                <div class="usage-step-index">1</div>
+                <div class="usage-step-copy">
+                  <h3 data-i18n="usageStep1Title">Draw one digit clearly</h3>
+                  <p data-i18n="usageStep1Text">Keep the shape centered and readable. Cleaner strokes make it easier for the model to recognise the number.</p>
+                </div>
+              </div>
+              <div class="usage-step">
+                <div class="usage-step-index">2</div>
+                <div class="usage-step-copy">
+                  <h3 data-i18n="usageStep2Title">Read the bars, not just the answer</h3>
+                  <p data-i18n="usageStep2Text">If one bar clearly leads, the model is more confident. If several bars are close, the result is less certain.</p>
+                </div>
+              </div>
+              <div class="usage-step">
+                <div class="usage-step-index">3</div>
+                <div class="usage-step-copy">
+                  <h3 data-i18n="usageStep3Title">Use the sliders to compare behavior</h3>
+                  <p data-i18n="usageStep3Text">They do not retrain the model live. They help you see how training progress and model size change the output.</p>
+                </div>
+              </div>
+            </div>
+            <div class="usage-stats">
+              <div class="usage-stat">
+                <span data-i18n="usageStat1Label">Peak accuracy</span>
+                <strong>96.2%</strong>
+              </div>
+              <div class="usage-stat">
+                <span data-i18n="usageStat2Label">Default epoch</span>
+                <strong>40</strong>
+              </div>
+              <div class="usage-stat">
+                <span data-i18n="usageStat3Label">3D view</span>
+                <strong>Orbit 3D</strong>
+              </div>
+            </div>
+          </aside>
+        </div>
       </div>
 
       <!-- Main Layout -->
-      <div class="layout">
+      <div class="layout" id="interactiveStudio">
         <!-- Left: Drawing Canvas and Epoch Slider -->
-        <div>
-          <div class="panel">
-            <h2 data-i18n="drawing">Drawing</h2>
+        <div class="control-column">
+          <div class="panel layout-panel panel-drawing">
+            <div class="panel-header">
+              <h2 data-i18n="drawing">Drawing</h2>
+              <p class="panel-subtext" data-i18n="drawingSubtitle">Sketch a number, clear it, and compare how cleaner input changes the prediction.</p>
+            </div>
             <div id="gridContainer"></div>
             <div style="margin-top: 16px;">
               <button id="resetBtn" class="btn" data-i18n="clear">Clear</button>
             </div>
-            <p class="hint" data-i18n="hintDraw">Click and drag to draw (right-click to erase)</p>
+            <p class="hint" data-i18n="hintDraw">Click and drag to draw. Right-click to erase.</p>
           </div>
 
           <!-- Epoch Slider -->
-          <div class="panel" style="margin-top: 24px; background: #1f2937; border-radius: 12px; padding: 16px;">
-            <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 16px; color: white;" data-i18n="trainingEpoch">Training Epoch</h2>
+          <div class="panel layout-panel panel-epoch">
+            <div class="panel-header">
+              <h2 data-i18n="trainingEpoch">Training progress</h2>
+              <p class="panel-subtext" data-i18n="epochSubtitle">Move along the training timeline to see the model improve, then spot the point where extra training can start to hurt generalisation.</p>
+            </div>
             <div style="margin-bottom: 12px;">
               <input 
                 type="range" 
@@ -1205,23 +1920,49 @@
                 </div>
               </div>
             </div>
-            <p class="hint" id="epochHint" data-i18n="hintEpoch">Adjust the epoch to see how training improves accuracy</p>
+            <p class="hint" id="epochHint" data-i18n="hintEpoch">Learning aid: this slider does not retrain the model live. It highlights undertrained vs overfit ranges.</p>
           </div>
         </div>
 
-        <!-- Middle: 3D Visualization (background, handled by CSS) -->
-        <div></div>
+        <!-- Middle: 3D Visualization context card -->
+        <div class="stage-column">
+          <div class="stage-card">
+            <h3 class="stage-title" data-i18n="stageTitle">This view shows how the model reaches its answer</h3>
+            <p class="stage-text" data-i18n="stageText">As you draw, parts of the network light up based on how strongly they react. The side panels show the result; the center shows the path behind it.</p>
+            <div class="mini-architecture">
+              <div class="mini-arch-node">
+                <span data-i18n="stageInputLabel">Input</span>
+                <strong>784</strong>
+              </div>
+              <div class="mini-arch-node">
+                <span data-i18n="stageHiddenLabel">Hidden</span>
+                <strong>64 / 32</strong>
+              </div>
+              <div class="mini-arch-node">
+                <span data-i18n="stageOutputLabel">Output</span>
+                <strong>10</strong>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- Right: Prediction Chart and Hidden Nodes Slider -->
-        <div>
+        <div class="control-column">
           <!-- Prediction Chart -->
-          <div id="predictionChart" class="panel">
-            <h2 data-i18n="prediction">Prediction</h2>
+          <div class="panel layout-panel panel-prediction">
+            <div class="panel-header">
+              <h2 data-i18n="prediction">Prediction</h2>
+              <p class="panel-subtext" data-i18n="predictionSubtitle">Each bar shows how likely a digit is. A clear winner means a clearer decision; similar bars mean the model is unsure.</p>
+            </div>
+            <div id="predictionChart"></div>
           </div>
 
           <!-- Hidden Nodes Slider -->
-          <div class="panel" style="margin-top: 24px; background: #1f2937; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; min-height: 260px;">
-            <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 16px; color: white;" data-i18n="hiddenLayerNodes">Hidden Layer Nodes</h2>
+          <div class="panel layout-panel panel-capacity" style="display: flex; flex-direction: column;">
+            <div class="panel-header">
+              <h2 data-i18n="hiddenLayerNodes">Model size</h2>
+              <p class="panel-subtext" data-i18n="hiddenLayerSubtitle">Change how much capacity the model has, then reload the scene to compare confidence, accuracy, and overfitting risk.</p>
+            </div>
             <div style="margin-bottom: 12px;">
               <input 
                 type="range" 
@@ -1242,42 +1983,42 @@
                 </div>
               </div>
             </div>
-            <p class="hint" id="hiddenHint" data-i18n="hintHidden">Adjust hidden layer size to see its impact on accuracy</p>
+            <p class="hint" id="hiddenHint" data-i18n="hintHidden">Learning aid: this slider does not rebuild the model live. It marks when the model is too small or unnecessarily large.</p>
             <div style="margin-top: auto;">
-              <button id="applyModelBtn" class="btn btn-primary" style="margin-top: 12px;" data-i18n="updateBtn">Reload and Recalculate</button>
-              <p class="hint" id="updateHint" data-i18n="hintUpdate">Click to update the 3D visualization and recalculate predictions</p>
+              <button id="applyModelBtn" class="btn btn-primary" style="margin-top: 12px;" data-i18n="updateBtn">Reload and Compare</button>
+              <p class="hint" id="updateHint" data-i18n="hintUpdate">Refresh the 3D view and recalculate the prediction with the selected settings.</p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Educational Content -->
-      <div class="education-section">
+      <div class="education-section" id="learnMoreSection">
         <!-- Separator -->
         <div class="separator">
           <div class="separator-line"></div>
-          <span class="separator-text" data-i18n="learnMore">Learn More</span>
+          <span class="separator-text" data-i18n="learnMore">Learn How It Works</span>
           <div class="separator-line"></div>
         </div>
 
         <!-- SECTION 0: Live Reading Guide -->
         <section class="section">
           <div>
-            <h2 class="section-title" data-i18n="section0Title">How to Read This Demo</h2>
-            <p class="section-subtitle" data-i18n="section0Subtitle">What runs live, what was trained offline, and how to interpret the output</p>
+            <h2 class="section-title" data-i18n="section0Title">How to read this demo</h2>
+            <p class="section-subtitle" data-i18n="section0Subtitle">A plain-language guide to what changes live, what was prepared earlier, and how to read the result</p>
           </div>
           <div class="concept-grid">
             <div class="concept-card">
-              <h3 class="concept-title" data-i18n="liveCard1Title">Live = Inference</h3>
-              <p class="concept-text" data-i18n="liveCard1Text">When you draw, the page does inference with a pre-trained model. It does not perform full training on your device.</p>
+              <h3 class="concept-title" data-i18n="liveCard1Title">Live prediction in your browser</h3>
+              <p class="concept-text" data-i18n="liveCard1Text">The page is not training from scratch every time. It uses a model that was trained earlier and applies it instantly to what you draw.</p>
             </div>
             <div class="concept-card">
-              <h3 class="concept-title" data-i18n="liveCard2Title">Prediction Panel</h3>
-              <p class="concept-text" data-i18n="liveCard2Text">Look at top-1 class and also the margin to top-2. Small margin means uncertainty even if top-1 is high.</p>
+              <h3 class="concept-title" data-i18n="liveCard2Title">How to read the probability bars</h3>
+              <p class="concept-text" data-i18n="liveCard2Text">Each bar shows how likely the model thinks a digit is. One clear leader means more confidence; several similar bars mean ambiguity.</p>
             </div>
             <div class="concept-card">
-              <h3 class="concept-title" data-i18n="liveCard3Title">Didactic Controls</h3>
-              <p class="concept-text" data-i18n="liveCard3Text">Epoch and hidden-node sliders are pedagogical guides. They highlight high-bias and overfitting zones.</p>
+              <h3 class="concept-title" data-i18n="liveCard3Title">What the sliders really mean</h3>
+              <p class="concept-text" data-i18n="liveCard3Text">The sliders are teaching tools. They help you compare an undertrained, balanced, or overfit model, and a smaller or larger network.</p>
             </div>
           </div>
         </section>
@@ -1285,8 +2026,8 @@
         <!-- SECTION 1: Training Code -->
         <section class="section">
           <div>
-            <h2 class="section-title" data-i18n="section1Title">How This Network Was Trained</h2>
-            <p class="section-subtitle" data-i18n="section1Subtitle">The actual TensorFlow / Keras code used to build and train the model</p>
+            <h2 class="section-title" data-i18n="section1Title">What was trained before you arrived</h2>
+            <p class="section-subtitle" data-i18n="section1Subtitle">The heavy learning happened offline in TensorFlow/Keras. This page uses the finished model for live prediction and visual explanation.</p>
           </div>
 
           <div class="section-grid">
@@ -1401,8 +2142,8 @@
         <!-- SECTION 1.5: Gradient Descent -->
         <section class="section">
           <div>
-            <h2 class="section-title" data-i18n="sectionGradTitle">Gradient Descent (Core Optimization)</h2>
-            <p class="section-subtitle" data-i18n="sectionGradSubtitle">How we move parameters to get the best prediction possible</p>
+            <h2 class="section-title" data-i18n="sectionGradTitle">How the model learns during training</h2>
+            <p class="section-subtitle" data-i18n="sectionGradSubtitle">A simple view of the update rule behind better predictions</p>
           </div>
           <div class="formula-grid">
             <div class="formula-card">
@@ -1412,7 +2153,17 @@
             </div>
             <div class="formula-card">
               <h3 class="formula-title" data-i18n="lrTitle">Learning Rate</h3>
-              <div class="formula-math" data-i18n="lrFormula">$$\eta\ \text{small}\Rightarrow\text{slow learning},\qquad \eta\ \text{large}\Rightarrow\text{instability}$$</div>
+              <div class="formula-math formula-math-inline" aria-label="Learning rate tradeoff">
+                <span class="formula-symbol">η</span>
+                <span data-i18n="lrFormulaSmall">too low</span>
+                <span class="formula-arrow">→</span>
+                <span data-i18n="lrFormulaSlow">slow learning</span>
+                <span class="formula-sep">·</span>
+                <span class="formula-symbol">η</span>
+                <span data-i18n="lrFormulaLarge">too high</span>
+                <span class="formula-arrow">→</span>
+                <span data-i18n="lrFormulaInstability">instability</span>
+              </div>
               <p class="formula-text" data-i18n="lrText">The learning rate controls step size. Too low converges slowly; too high can overshoot and diverge.</p>
             </div>
             <div class="formula-card">
@@ -1431,13 +2182,13 @@
         <!-- SECTION 1.6: Regularization -->
         <section class="section">
           <div>
-            <h2 class="section-title" data-i18n="sectionRegTitle">Regularization and Overfitting</h2>
-            <p class="section-subtitle" data-i18n="sectionRegSubtitle">What overfitting is and the basic formulas used to reduce it</p>
+            <h2 class="section-title" data-i18n="sectionRegTitle">Why models can memorize too much</h2>
+            <p class="section-subtitle" data-i18n="sectionRegSubtitle">What overfitting means and the main tools used to reduce it</p>
           </div>
           <div class="formula-grid">
             <div class="formula-card">
               <h3 class="formula-title" data-i18n="overfitTitle">What is overfitting?</h3>
-              <p class="formula-text" data-i18n="overfitText">Overfitting happens when a model adapts too closely to the training data. It achieves low training error but loses accuracy on unseen examples.</p>
+              <p class="formula-text" data-i18n="overfitText">Overfitting happens when the model gets too attached to the training examples. It performs well on familiar data but worse on new drawings it has never seen.</p>
             </div>
             <div class="formula-card">
               <h3 class="formula-title" data-i18n="l2Title">L2 Regularization (Weight Decay)</h3>
@@ -1474,8 +2225,8 @@
         <!-- SECTION 2: Architecture -->
         <section class="section">
           <div>
-            <h2 class="section-title" data-i18n="section2Title">Understanding the Architecture</h2>
-            <p class="section-subtitle" data-i18n="section2Subtitle">A 4-layer neural network that recognizes handwritten digits</p>
+            <h2 class="section-title" data-i18n="section2Title">How the network is organized</h2>
+            <p class="section-subtitle" data-i18n="section2Subtitle">A small multilayer network that turns 28×28 pixels into one of 10 possible digits.</p>
           </div>
 
           <!-- Architecture Diagram -->
@@ -1528,8 +2279,8 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z" />
                 </svg>
               </div>
-              <h3 class="concept-title" data-i18n="conceptDenseTitle">What is Dense?</h3>
-              <p class="concept-text" data-i18n="conceptDenseText">In a Dense layer every neuron is connected to every neuron in the previous layer. With 784 inputs and 64 neurons, that means 50,176 individual connections — each with its own trainable weight.</p>
+              <h3 class="concept-title" data-i18n="conceptDenseTitle">Dense layer</h3>
+              <p class="concept-text" data-i18n="conceptDenseText">A dense layer connects every input to every neuron in the next layer. That gives the model flexibility, but it also means more values to learn.</p>
             </div>
             <div class="concept-card">
               <div class="concept-icon" style="background: rgba(34, 197, 94, 0.1); color: #34d399;">
@@ -1537,8 +2288,8 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 class="concept-title" data-i18n="conceptReLUTitle">What is ReLU?</h3>
-              <p class="concept-text" data-i18n="conceptReLUText">ReLU (Rectified Linear Unit) is a simple activation function: if the input is negative it outputs 0, otherwise it passes the value unchanged. This introduces non-linearity, allowing the network to learn complex patterns.</p>
+              <h3 class="concept-title" data-i18n="conceptReLUTitle">ReLU activation</h3>
+              <p class="concept-text" data-i18n="conceptReLUText">ReLU is a simple filter: negative values become 0, positive values keep going. This helps the network keep useful signals and ignore weaker ones.</p>
             </div>
             <div class="concept-card">
               <div class="concept-icon" style="background: rgba(168, 85, 247, 0.1); color: #a855f7;">
@@ -1546,8 +2297,8 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <h3 class="concept-title" data-i18n="conceptSoftmaxTitle">What is Softmax?</h3>
-              <p class="concept-text" data-i18n="conceptSoftmaxText">Softmax converts a vector of raw scores into probabilities. If the output is [2.1, 0.5, 8.3, …], softmax ensures all values are positive and sum to exactly 1.0 — a proper probability distribution.</p>
+              <h3 class="concept-title" data-i18n="conceptSoftmaxTitle">Probability output</h3>
+              <p class="concept-text" data-i18n="conceptSoftmaxText">Softmax turns raw scores into probabilities. The class with the highest probability becomes the model's prediction.</p>
             </div>
           </div>
         </section>
@@ -1632,7 +2383,7 @@
 
           <div style="display: flex; flex-direction: column; gap: 12px;">
             <div class="expandable-card" style="border-left-color: #3b82f6;">
-              <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
+              <button class="expandable-header" onclick="toggleExpandable(this)">
                 <span class="expandable-title" data-i18n="keyWeights">Weights & Biases</span>
                 <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -1641,7 +2392,7 @@
               <div class="expandable-content" style="display: none;" data-i18n="keyWeightsText">Weights are the learnable numbers on every connection between neurons. Each weight controls how much influence one neuron has on the next. Biases give each neuron an adjustable threshold — they shift the activation function left or right. Together, weights and biases are the "knowledge" the network acquires during training.</div>
             </div>
             <div class="expandable-card" style="border-left-color: #f97316;">
-              <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
+              <button class="expandable-header" onclick="toggleExpandable(this)">
                 <span class="expandable-title" data-i18n="keyLoss">Loss Function</span>
                 <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -1650,7 +2401,7 @@
               <div class="expandable-content" style="display: none;" data-i18n="keyLossText">Sparse Categorical Crossentropy measures how far the predicted probabilities are from the true label. If the correct digit is 7 and the model gives 90% confidence to 7, the loss is low. If it gives 10%, the loss is high. The goal of training is to minimize this number across all examples.</div>
             </div>
             <div class="expandable-card" style="border-left-color: #10b981;">
-              <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
+              <button class="expandable-header" onclick="toggleExpandable(this)">
                 <span class="expandable-title" data-i18n="keyAdam">Adam Optimizer</span>
                 <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -1659,7 +2410,7 @@
               <div class="expandable-content" style="display: none;" data-i18n="keyAdamText">Adam (Adaptive Moment Estimation) is a smart version of gradient descent. It maintains a moving average of both the gradients and their squared values, adapting the learning rate for each weight individually. This makes training faster and more stable than basic gradient descent.</div>
             </div>
             <div class="expandable-card" style="border-left-color: #a855f7;">
-              <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
+              <button class="expandable-header" onclick="toggleExpandable(this)">
                 <span class="expandable-title" data-i18n="keyEpochs">Epochs</span>
                 <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -1668,7 +2419,7 @@
               <div class="expandable-content" style="display: none;" data-i18n="keyEpochsText">One epoch means the model has seen every training example once. Training for 40 epochs means the model passes over the full dataset 40 times. With each pass, it refines its weights — but too many epochs can lead to overfitting, where the model memorizes training data instead of learning general patterns.</div>
             </div>
             <div class="expandable-card" style="border-left-color: #22c55e;">
-              <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
+              <button class="expandable-header" onclick="toggleExpandable(this)">
                 <span class="expandable-title" data-i18n="keyActivations">Common Activations</span>
                 <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -1677,22 +2428,22 @@
               <div class="expandable-content" style="display: none;" data-i18n="keyActivationsText">ReLU is the default in hidden layers. Leaky ReLU helps avoid dead neurons. Sigmoid is common for binary output. Tanh is zero-centered. GELU is frequent in transformers. Softmax is used for multiclass output.</div>
             </div>
             <div class="expandable-card" style="border-left-color: #06b6d4;">
-              <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
+              <button class="expandable-header" onclick="toggleExpandable(this)">
                 <span class="expandable-title" data-i18n="keyReadPrediction">How to Read Predictions</span>
                 <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <div class="expandable-content" style="display: none;" data-i18n="keyReadPredictionText">Use three checks: top-1 probability, gap to top-2, and visual plausibility of your stroke. A high score with tiny gap often means ambiguity, not certainty.</div>
+              <div class="expandable-content" style="display: none;" data-i18n="keyReadPredictionText">Use three checks: which bar is highest, how clearly it leads, and whether your drawing looks clean. If several bars are close, the model is unsure.</div>
             </div>
             <div class="expandable-card" style="border-left-color: #f59e0b;">
-              <button class="expandable-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.querySelector('.expandable-icon').style.transform = this.nextElementSibling.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0deg)'">
+              <button class="expandable-header" onclick="toggleExpandable(this)">
                 <span class="expandable-title" data-i18n="keyTroubleshoot">Quick Diagnosis Checklist</span>
                 <svg class="expandable-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transition: transform 0.2s;">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <div class="expandable-content" style="display: none;" data-i18n="keyTroubleshootText">If prediction is wrong: 1) center the digit, 2) avoid very thick strokes, 3) reduce extra marks, 4) compare top-1 vs top-2, 5) retry with cleaner shape.</div>
+              <div class="expandable-content" style="display: none;" data-i18n="keyTroubleshootText">If the prediction is wrong: 1) center the digit, 2) avoid very thick strokes, 3) remove extra marks, 4) check whether several bars are close, 5) try again with a cleaner shape.</div>
             </div>
           </div>
         </section>
@@ -1933,21 +2684,17 @@
 
       buildGrid() {
         this.gridElement = document.createElement('div')
+        this.gridElement.className = 'digit-grid'
         this.gridElement.style.display = 'grid'
         this.gridElement.style.gridTemplateColumns = `repeat(${this.cols}, 1fr)`
         this.gridElement.style.gridTemplateRows = `repeat(${this.rows}, 1fr)`
-        this.gridElement.style.width = '280px'
-        this.gridElement.style.height = '280px'
         this.gridElement.style.gap = '0'
-        this.gridElement.style.border = '2px solid #374151'
-        this.gridElement.style.borderRadius = '8px'
-        this.gridElement.style.overflow = 'hidden'
         this.gridElement.style.touchAction = 'none'
 
         for (let i = 0; i < this.values.length; i += 1) {
           const cell = document.createElement('div')
           cell.dataset.index = String(i)
-          cell.style.background = 'rgba(255, 255, 255, 0.05)'
+          cell.style.background = 'rgba(255, 255, 255, 0.04)'
           cell.style.border = 'none'
           cell.style.cursor = 'crosshair'
           this.gridElement.appendChild(cell)
@@ -1956,12 +2703,11 @@
 
         this.container.innerHTML = ''
         const title = document.createElement('div')
+        title.className = 'grid-caption'
         this.titleElement = title
         this.updateTitleText()
-        title.style.fontSize = '0.875rem'
-        title.style.color = '#9ca3af'
-        title.style.marginBottom = '8px'
         this.interactionRow = document.createElement('div')
+        this.interactionRow.className = 'grid-shell'
         this.interactionRow.appendChild(this.gridElement)
         this.container.appendChild(title)
         this.container.appendChild(this.interactionRow)
@@ -2203,45 +2949,31 @@
 
       build() {
         this.container.innerHTML = ''
+        const wrapper = document.createElement('div')
+        wrapper.className = 'prediction-panel-body'
+
         const chartElement = document.createElement('div')
-        chartElement.style.display = 'flex'
-        chartElement.style.flexDirection = 'column'
-        chartElement.style.gap = '8px'
-        this.container.appendChild(chartElement)
+        chartElement.className = 'prediction-bars'
+        wrapper.appendChild(chartElement)
+        this.container.appendChild(wrapper)
 
         for (let digit = 0; digit < 10; digit += 1) {
           const row = document.createElement('div')
-          row.style.display = 'flex'
-          row.style.alignItems = 'center'
-          row.style.gap = '12px'
+          row.className = 'prediction-row'
 
           const label = document.createElement('span')
-          label.style.width = '24px'
-          label.style.fontSize = '0.875rem'
-          label.style.fontWeight = '600'
-          label.style.color = '#d1d5db'
+          label.className = 'prediction-label'
           label.textContent = String(digit)
 
           const track = document.createElement('div')
-          track.style.flex = '1'
-          track.style.height = '24px'
-          track.style.background = '#374151'
-          track.style.borderRadius = '4px'
-          track.style.overflow = 'hidden'
-          track.style.position = 'relative'
+          track.className = 'prediction-track'
 
           const bar = document.createElement('div')
-          bar.style.height = '100%'
-          bar.style.width = '0%'
-          bar.style.transition = 'width 0.3s'
-          bar.style.background = 'linear-gradient(to right, #3b82f6, #8b5cf6)'
+          bar.className = 'prediction-bar'
           track.appendChild(bar)
 
           const value = document.createElement('span')
-          value.style.width = '48px'
-          value.style.textAlign = 'right'
-          value.style.fontSize = '0.875rem'
-          value.style.color = '#d1d5db'
+          value.className = 'prediction-value'
           value.textContent = '0.0%'
 
           row.appendChild(label)
@@ -2250,21 +2982,29 @@
           chartElement.appendChild(row)
           this.rows.push({ bar, value })
         }
+
+        if (window.applyNNTranslations && window.getNNLang) {
+          window.applyNNTranslations(window.getNNLang())
+        }
       }
 
-      update(probabilities) {
+      update(probabilities, options = {}) {
         if (!probabilities.length) return
         const maxProb = Math.max(...probabilities)
+        const isAwaitingInput = options.hasDrawing === false
+
         probabilities.forEach((prob, index) => {
           const clamped = Math.max(0, Math.min(1, prob))
           const entry = this.rows[index]
           if (!entry) return
           entry.bar.style.width = `${(clamped * 100).toFixed(1)}%`
           entry.value.textContent = `${(clamped * 100).toFixed(1)}%`
-          if (clamped === maxProb) {
-            entry.bar.style.background = 'linear-gradient(to right, #3b82f6, #8b5cf6)'
+          if (isAwaitingInput) {
+            entry.bar.style.background = 'linear-gradient(90deg, rgba(96, 165, 250, 0.2), rgba(148, 163, 184, 0.2))'
+          } else if (clamped === maxProb) {
+            entry.bar.style.background = 'linear-gradient(90deg, #4cc9f0, #34d399)'
           } else {
-            entry.bar.style.background = 'linear-gradient(to right, #4b5563, #6b7280)'
+            entry.bar.style.background = 'linear-gradient(90deg, rgba(96, 165, 250, 0.38), rgba(148, 163, 184, 0.34))'
           }
         })
       }
@@ -3326,7 +4066,7 @@
           }
 
           neuralScene.update(displayActivations, networkActivations)
-          probabilityPanel.update(Array.from(probabilities))
+          probabilityPanel.update(Array.from(probabilities), { hasDrawing })
         }
 
         digitCanvas.setChangeHandler(() => refreshNetworkState())
@@ -3362,29 +4102,72 @@
           navSolutions: 'Solutions',
           navResume: 'Resume',
           navContact: 'Contact',
-          pageTitle: 'MNIST Neural Network Visualization',
-          heroTitle: 'MNIST Neural Network Visualization',
-          heroSubtitle: 'Draw a digit and watch how activations propagate through the network',
+          pageTitle: 'See How a Neural Network Reads Digits',
+          heroEyebrow: 'Interactive AI demo',
+          heroKicker: 'See how a trained model turns a sketch into a decision.',
+          heroTitle: 'Watch a neural network read your drawing',
+          heroSubtitle: 'Draw a number and follow the path from pixels to prediction, with live probabilities and a 3D view of what the model reacts to.',
+          heroPrimaryCta: 'Try the live demo',
+          heroSecondaryCta: 'See how it works',
+          signal1Label: 'What happens live',
+          signal1Value: 'Your browser runs the finished model',
+          signal1Text: 'The training happened earlier. This page uses the trained model instantly on what you draw and updates the result in real time.',
+          signal2Label: 'What you can change',
+          signal2Value: 'Your drawing, training stage, and model size',
+          signal2Text: 'A clearer sketch usually gives a clearer answer. The sliders help you compare training progress and model size without hiding the mechanics.',
+          signal3Label: 'Why it helps',
+          signal3Value: 'You see the decision, not just the digit',
+          signal3Text: 'The demo shows confidence, activations, and network structure so the result feels explainable instead of magical.',
+          usageKicker: 'Quick start',
+          usageChip: 'Learning controls',
+          usageTitle: 'Understand the demo in under 30 seconds',
+          usageStep1Title: 'Draw one digit clearly',
+          usageStep1Text: 'Keep the shape centered and readable. Cleaner strokes make it easier for the model to recognise the number.',
+          usageStep2Title: 'Read the bars, not just the answer',
+          usageStep2Text: 'If one bar clearly leads, the model is more confident. If several bars are close, the result is less certain.',
+          usageStep3Title: 'Use the sliders to compare behavior',
+          usageStep3Text: 'They do not retrain the model live. They help you see how training progress and model size change the output.',
+          usageStat1Label: 'Peak accuracy',
+          usageStat2Label: 'Default epoch',
+          usageStat3Label: '3D view',
           drawing: 'Drawing',
+          drawingKicker: 'Draw a digit',
+          drawingSubtitle: 'Sketch a number, clear it, and compare how cleaner input changes the prediction.',
           clear: 'Clear',
-          hintDraw: 'Click and drag to draw (right-click to erase)',
+          hintDraw: 'Click and drag to draw. Right-click to erase.',
           prediction: 'Prediction',
-          trainingEpoch: 'Training Epoch',
+          predictionKicker: 'Probability view',
+          predictionSubtitle: 'Each bar shows how likely a digit is. A clear winner means a clearer decision; similar bars mean the model is unsure.',
+          predictionTopLabel: 'Top class',
+          predictionConfidenceLabel: 'Confidence',
+          predictionRunnerUpLabel: 'Runner-up',
+          trainingEpoch: 'Training progress',
+          epochKicker: 'Training progress',
+          epochSubtitle: 'Move along the training timeline to see the model improve, then spot the point where extra training can start to hurt generalisation.',
           epoch: 'Epoch',
           accuracy: 'Accuracy',
-          hintEpoch: 'Didactic control: this slider does not retrain live. It highlights high bias vs overfitting zones.',
-          hiddenLayerNodes: 'Hidden Layer Nodes',
+          hintEpoch: 'Learning aid: this slider does not retrain the model live. It highlights undertrained vs overfit ranges.',
+          hiddenLayerNodes: 'Model size',
+          hiddenLayerKicker: 'Model size',
+          hiddenLayerSubtitle: 'Change how much capacity the model has, then reload the scene to compare confidence, accuracy, and overfitting risk.',
           hiddenNodes: 'Hidden Nodes',
-          hintHidden: 'Didactic control: this slider does not rebuild the model live. It marks low/high capacity risk.',
-          updateBtn: 'Reload and Recalculate',
-          hintUpdate: 'Click to update the 3D visualization and recalculate predictions',
-          learnMore: 'Learn More',
-          section0Title: 'How to Read This Demo',
-          section0Subtitle: 'What runs live, what was trained offline, and how to interpret the output',
-          sectionRegTitle: 'Regularization and Overfitting',
-          sectionRegSubtitle: 'What overfitting is and the basic formulas used to reduce it',
+          hintHidden: 'Learning aid: this slider does not rebuild the model live. It marks when the model is too small or unnecessarily large.',
+          updateBtn: 'Reload and Compare',
+          hintUpdate: 'Refresh the 3D view and recalculate the prediction with the selected settings.',
+          stageChip: '3D decision map',
+          stageDrag: 'Drag to rotate',
+          stageTitle: 'This view shows how the model reaches its answer',
+          stageText: 'As you draw, parts of the network light up based on how strongly they react. The side panels show the result; the center shows the path behind it.',
+          stageInputLabel: 'Input',
+          stageHiddenLabel: 'Hidden',
+          stageOutputLabel: 'Output',
+          learnMore: 'Learn How It Works',
+          section0Title: 'How to read this demo',
+          section0Subtitle: 'A plain-language guide to what changes live, what was prepared earlier, and how to read the result',
+          sectionRegTitle: 'Why models can memorize too much',
+          sectionRegSubtitle: 'What overfitting means and the main tools used to reduce it',
           overfitTitle: 'What is overfitting?',
-          overfitText: 'Overfitting happens when a model adapts too closely to the training data. It achieves low training error but loses accuracy on unseen examples.',
+          overfitText: 'Overfitting happens when the model gets too attached to the training examples. It performs well on familiar data but worse on new drawings it has never seen.',
           l2Title: 'L2 Regularization (Weight Decay)',
           l2Text: 'Penalizes large weights, making the model smoother and less sensitive to noise.',
           l1Title: 'L1 Regularization',
@@ -3399,20 +4182,24 @@
           checkItem3: 'Use dropout in hidden layers.',
           checkItem4: 'Use early stopping with patience.',
           checkItem5: 'Prefer simpler architectures when possible.',
-          liveCard1Title: 'Live = Inference',
-          liveCard1Text: 'When you draw, the page does inference with a pre-trained model. It does not perform full training on your device.',
-          liveCard2Title: 'Prediction Panel',
-          liveCard2Text: 'Look at top-1 class and also the margin to top-2. Small margin means uncertainty even if top-1 is high.',
-          liveCard3Title: 'Didactic Controls',
-          liveCard3Text: 'Epoch and hidden-node sliders are pedagogical guides. They highlight high-bias and overfitting zones.',
-          section1Title: 'What Was Trained vs What Runs Live',
-          section1Subtitle: 'Training happened offline in TensorFlow/Keras. This page runs inference and visual explanation in real time.',
-          sectionGradTitle: 'Gradient Descent (Core Optimization)',
-          sectionGradSubtitle: 'How we move parameters to get the best prediction possible',
+          liveCard1Title: 'Live prediction in your browser',
+          liveCard1Text: 'The page is not training from scratch every time. It uses a model that was trained earlier and applies it instantly to what you draw.',
+          liveCard2Title: 'How to read the probability bars',
+          liveCard2Text: 'Each bar shows how likely the model thinks a digit is. One clear leader means more confidence; several similar bars mean ambiguity.',
+          liveCard3Title: 'What the sliders really mean',
+          liveCard3Text: 'The sliders are teaching tools. They help you compare an undertrained, balanced, or overfit model, and a smaller or larger network.',
+          section1Title: 'What was trained before you arrived',
+          section1Subtitle: 'The heavy learning happened offline in TensorFlow/Keras. This page uses the finished model for live prediction and visual explanation.',
+          sectionGradTitle: 'How the model learns during training',
+          sectionGradSubtitle: 'A simple view of the update rule behind better predictions',
           gdTitle: 'Update Rule',
           gdText: 'At each step, we move parameters in the opposite direction of the gradient to decrease loss.',
           lrTitle: 'Learning Rate',
           lrFormula: '$$\\eta\\ \\text{small}\\Rightarrow\\text{slow learning},\\qquad \\eta\\ \\text{large}\\Rightarrow\\text{instability}$$',
+          lrFormulaSmall: 'too low',
+          lrFormulaSlow: 'slow learning',
+          lrFormulaLarge: 'too high',
+          lrFormulaInstability: 'instability',
           lrText: 'The learning rate controls step size. Too low converges slowly; too high can overshoot and diverge.',
           linRegTitle: 'Linear Regression Example',
           linRegText: 'The same descent idea appears in linear models: minimize a cost, compute gradient, update parameters.',
@@ -3431,18 +4218,18 @@
           ann5Text: 'Defines the training objective: loss (error metric) and optimizer (how weights are updated).',
           ann6Title: 'Train',
           ann6Text: 'Offline phase: the model iterates over the dataset for multiple epochs, reducing loss and improving generalization.',
-          section2Title: 'Architecture at a Glance',
-          section2Subtitle: 'A compact MLP for handwritten digit classification',
+          section2Title: 'How the network is organized',
+          section2Subtitle: 'A small multilayer network that turns 28×28 pixels into one of 10 possible digits.',
           archInput: 'Input',
           archHidden1: 'Hidden 1',
           archHidden2: 'Hidden 2',
           archOutput: 'Output',
-          conceptDenseTitle: 'Dense Layer',
-          conceptDenseText: 'A dense layer connects every input to every neuron. This gives high flexibility, but also many parameters.',
-          conceptReLUTitle: 'ReLU',
-          conceptReLUText: 'ReLU introduces non-linearity with almost no extra cost. It is still the standard default in hidden layers.',
-          conceptSoftmaxTitle: 'Softmax Output',
-          conceptSoftmaxText: 'Softmax maps logits to probabilities over classes. The highest probability becomes the predicted class.',
+          conceptDenseTitle: 'Dense layer',
+          conceptDenseText: 'A dense layer connects every input to every neuron in the next layer. That gives the model flexibility, but it also means more values to learn.',
+          conceptReLUTitle: 'ReLU activation',
+          conceptReLUText: 'ReLU is a simple filter: negative values become 0, positive values keep going. This helps the network keep useful signals and ignore weaker ones.',
+          conceptSoftmaxTitle: 'Probability output',
+          conceptSoftmaxText: 'Softmax turns raw scores into probabilities. The class with the highest probability becomes the model\'s prediction.',
           section3Title: 'Inference Pipeline',
           section3Subtitle: 'From your pixels to a class probability distribution',
           pipe1Title: 'Draw',
@@ -3470,9 +4257,9 @@
           keyActivations: 'Common Activations',
           keyActivationsText: 'ReLU: fast default in hidden layers. Leaky ReLU: avoids dead neurons. Sigmoid: common for binary output but saturates in hidden layers. Tanh: zero-centered alternative. GELU: frequent in transformer models. Softmax: output activation for multiclass classification.',
           keyReadPrediction: 'How to Read Predictions',
-          keyReadPredictionText: 'Use three checks: top-1 probability, gap to top-2, and visual plausibility of your stroke. A high score with tiny gap often means ambiguity, not certainty.',
+          keyReadPredictionText: 'Use three checks: which bar is highest, how clearly it leads, and whether your drawing looks clean. If several bars are close, the model is unsure.',
           keyTroubleshoot: 'Quick Diagnosis Checklist',
-          keyTroubleshootText: 'If prediction is wrong: 1) center the digit, 2) avoid very thick strokes, 3) reduce extra marks, 4) compare top-1 vs top-2, 5) retry with cleaner shape.',
+          keyTroubleshootText: 'If the prediction is wrong: 1) center the digit, 2) avoid very thick strokes, 3) remove extra marks, 4) check whether several bars are close, 5) try again with a cleaner shape.',
           section5Title: 'Activation Quick Comparison',
           section5Subtitle: 'When to use each activation in practice',
           actCol1: 'Activation',
@@ -3498,29 +4285,72 @@
           navSolutions: 'Soluciones',
           navResume: 'CV',
           navContact: 'Contacto',
-          pageTitle: 'Visualización de red neuronal MNIST',
-          heroTitle: 'Visualización de red neuronal MNIST',
-          heroSubtitle: 'Dibuja un dígito y observa cómo se propagan las activaciones por la red',
+          pageTitle: 'Cómo una red neuronal lee tus dígitos',
+          heroEyebrow: 'Demo interactiva de IA',
+          heroKicker: 'Mira cómo un modelo entrenado convierte un trazo en una decisión.',
+          heroTitle: 'Mira cómo una red neuronal lee tu dibujo',
+          heroSubtitle: 'Dibuja un número y sigue el camino desde los píxeles hasta la predicción, con probabilidades en vivo y una vista 3D de lo que activa el modelo.',
+          heroPrimaryCta: 'Probar la demo en vivo',
+          heroSecondaryCta: 'Ver cómo funciona',
+          signal1Label: 'Qué pasa en vivo',
+          signal1Value: 'Tu navegador ejecuta el modelo ya entrenado',
+          signal1Text: 'El entrenamiento ocurrió antes. Esta página aplica el modelo al instante sobre tu dibujo y actualiza el resultado en tiempo real.',
+          signal2Label: 'Qué puedes cambiar',
+          signal2Value: 'Tu dibujo, la fase de entrenamiento y el tamaño del modelo',
+          signal2Text: 'Un trazo más limpio suele dar una respuesta más clara. Los sliders te ayudan a comparar progreso de entrenamiento y tamaño del modelo sin ocultar la mecánica.',
+          signal3Label: 'Por qué ayuda',
+          signal3Value: 'Ves la decisión, no solo el número',
+          signal3Text: 'La demo enseña confianza, activaciones y estructura de la red para que el resultado se entienda en vez de parecer magia.',
+          usageKicker: 'Inicio rápido',
+          usageChip: 'Controles de aprendizaje',
+          usageTitle: 'Entiende la demo en menos de 30 segundos',
+          usageStep1Title: 'Dibuja un dígito con claridad',
+          usageStep1Text: 'Mantén la forma centrada y legible. Un trazo más limpio facilita que el modelo reconozca el número.',
+          usageStep2Title: 'Lee las barras, no solo la respuesta',
+          usageStep2Text: 'Si una barra destaca claramente, el modelo está más seguro. Si varias quedan cerca, la salida es más ambigua.',
+          usageStep3Title: 'Usa los sliders para comparar comportamientos',
+          usageStep3Text: 'No reentrenan el modelo en vivo. Sirven para ver cómo cambian el resultado el progreso de entrenamiento y el tamaño del modelo.',
+          usageStat1Label: 'Precisión pico',
+          usageStat2Label: 'Época base',
+          usageStat3Label: 'Vista 3D',
           drawing: 'Dibujo',
+          drawingKicker: 'Dibuja un dígito',
+          drawingSubtitle: 'Dibuja un número, bórralo y compara cómo un input más limpio cambia la predicción.',
           clear: 'Borrar',
-          hintDraw: 'Haz clic y arrastra para dibujar (clic derecho para borrar)',
+          hintDraw: 'Haz clic y arrastra para dibujar. Clic derecho para borrar.',
           prediction: 'Predicción',
-          trainingEpoch: 'Época de entrenamiento',
+          predictionKicker: 'Vista de probabilidades',
+          predictionSubtitle: 'Cada barra muestra lo probable que es un dígito. Un ganador claro implica una decisión más clara; barras parecidas significan duda.',
+          predictionTopLabel: 'Clase top',
+          predictionConfidenceLabel: 'Confianza',
+          predictionRunnerUpLabel: 'Segunda opción',
+          trainingEpoch: 'Progreso del entrenamiento',
+          epochKicker: 'Progreso del entrenamiento',
+          epochSubtitle: 'Recorre la línea de entrenamiento para ver cómo mejora el modelo y en qué punto seguir entrenando puede empezar a perjudicar.',
           epoch: 'Época',
           accuracy: 'Precisión',
-          hintEpoch: 'Control didáctico: este slider no reentrena en vivo. Marca zonas de high bias y overfitting.',
-          hiddenLayerNodes: 'Nodos de la capa oculta',
+          hintEpoch: 'Ayuda didáctica: este slider no reentrena el modelo en vivo. Señala zonas de modelo poco entrenado y de overfitting.',
+          hiddenLayerNodes: 'Tamaño del modelo',
+          hiddenLayerKicker: 'Tamaño del modelo',
+          hiddenLayerSubtitle: 'Cambia la capacidad del modelo y recarga la escena para comparar confianza, precisión y riesgo de overfitting.',
           hiddenNodes: 'Nodos ocultos',
-          hintHidden: 'Control didáctico: este slider no reconstruye el modelo en vivo. Marca riesgo de capacidad baja/alta.',
-          updateBtn: 'Recargar y recalcular',
-          hintUpdate: 'Haz clic para actualizar la visualización 3D y recalcular las predicciones',
-          learnMore: 'Saber más',
+          hintHidden: 'Ayuda didáctica: este slider no reconstruye el modelo en vivo. Marca cuándo el modelo se queda corto o es más grande de lo necesario.',
+          updateBtn: 'Recargar y comparar',
+          hintUpdate: 'Actualiza la vista 3D y recalcula la predicción con la configuración elegida.',
+          stageChip: 'Mapa 3D de decisión',
+          stageDrag: 'Arrastra para girar',
+          stageTitle: 'Esta vista enseña cómo llega el modelo a su respuesta',
+          stageText: 'Mientras dibujas, partes de la red se iluminan según la fuerza con la que reaccionan. Los paneles laterales muestran el resultado; el centro muestra el camino que lo produce.',
+          stageInputLabel: 'Entrada',
+          stageHiddenLabel: 'Ocultas',
+          stageOutputLabel: 'Salida',
+          learnMore: 'Ver cómo funciona',
           section0Title: 'Cómo leer esta demo',
-          section0Subtitle: 'Qué corre en vivo, qué se entrenó offline y cómo interpretar la salida',
-          sectionRegTitle: 'Regularización y overfitting',
-          sectionRegSubtitle: 'Qué es el overfitting y fórmulas básicas para reducirlo',
+          section0Subtitle: 'Una guía clara de qué cambia en vivo, qué se preparó antes y cómo interpretar el resultado',
+          sectionRegTitle: 'Por qué un modelo puede memorizar demasiado',
+          sectionRegSubtitle: 'Qué significa overfitting y qué herramientas se usan para reducirlo',
           overfitTitle: '¿Qué es overfitting?',
-          overfitText: 'El overfitting ocurre cuando el modelo se ajusta demasiado a los datos de entrenamiento. Logra poco error en train, pero pierde precisión en ejemplos nuevos.',
+          overfitText: 'El overfitting ocurre cuando el modelo se pega demasiado a los ejemplos de entrenamiento. Va bien con datos conocidos, pero peor con dibujos nuevos.',
           l2Title: 'Regularización L2 (Weight Decay)',
           l2Text: 'Penaliza pesos grandes, haciendo el modelo más suave y menos sensible al ruido.',
           l1Title: 'Regularización L1',
@@ -3535,20 +4365,24 @@
           checkItem3: 'Usa dropout en capas ocultas.',
           checkItem4: 'Usa early stopping con paciencia.',
           checkItem5: 'Prefiere arquitecturas más simples cuando sea posible.',
-          liveCard1Title: 'En vivo = inferencia',
-          liveCard1Text: 'Cuando dibujas, la página ejecuta inferencia con un modelo ya entrenado. No hace entrenamiento completo en tu dispositivo.',
-          liveCard2Title: 'Panel de predicción',
-          liveCard2Text: 'Mira la clase top-1 y también la diferencia con top-2. Si el margen es pequeño, hay incertidumbre aunque top-1 sea alto.',
-          liveCard3Title: 'Controles didácticos',
-          liveCard3Text: 'Los sliders de época y nodos son guías pedagógicas. Marcan zonas de high bias y overfitting.',
-          section1Title: 'Qué se entrenó y qué corre en vivo',
-          section1Subtitle: 'El entrenamiento se hizo offline con TensorFlow/Keras. Esta página ejecuta inferencia y explicación visual en tiempo real.',
-          sectionGradTitle: 'Gradient Descent (optimización base)',
-          sectionGradSubtitle: 'Cómo movemos los parámetros para lograr la mejor predicción posible',
+          liveCard1Title: 'Predicción en vivo en tu navegador',
+          liveCard1Text: 'La página no entrena desde cero cada vez. Usa un modelo entrenado previamente y lo aplica al instante sobre tu dibujo.',
+          liveCard2Title: 'Cómo leer las barras de probabilidad',
+          liveCard2Text: 'Cada barra muestra la probabilidad que el modelo asigna a un dígito. Un líder claro implica más confianza; varias barras cercanas implican ambigüedad.',
+          liveCard3Title: 'Qué significan de verdad los sliders',
+          liveCard3Text: 'Los sliders son herramientas didácticas. Te ayudan a comparar un modelo poco entrenado, equilibrado o sobreajustado, y una red más pequeña o más grande.',
+          section1Title: 'Qué se entrenó antes de que llegaras',
+          section1Subtitle: 'El aprendizaje pesado ocurrió offline con TensorFlow/Keras. Esta página usa el modelo terminado para predecir y explicar visualmente el resultado.',
+          sectionGradTitle: 'Cómo aprende el modelo durante el entrenamiento',
+          sectionGradSubtitle: 'Una explicación sencilla de la regla que mejora las predicciones',
           gdTitle: 'Regla de actualización',
           gdText: 'En cada paso movemos los parámetros en dirección opuesta al gradiente para bajar la pérdida.',
           lrTitle: 'Learning Rate',
           lrFormula: '$$\\eta\\ \\text{pequeña}\\Rightarrow\\text{aprendizaje lento},\\qquad \\eta\\ \\text{grande}\\Rightarrow\\text{inestabilidad}$$',
+          lrFormulaSmall: 'demasiado baja',
+          lrFormulaSlow: 'aprendizaje lento',
+          lrFormulaLarge: 'demasiado alta',
+          lrFormulaInstability: 'inestabilidad',
           lrText: 'La tasa de aprendizaje controla el tamaño del paso. Muy baja: aprendizaje lento. Muy alta: inestabilidad.',
           linRegTitle: 'Ejemplo en regresión lineal',
           linRegText: 'La misma idea de descenso se usa en modelos lineales: minimizar coste, calcular gradiente y actualizar parámetros.',
@@ -3567,18 +4401,18 @@
           ann5Text: 'Define el objetivo de entrenamiento: pérdida (cómo medimos el error) y optimizador (cómo se actualizan los pesos).',
           ann6Title: 'Train',
           ann6Text: 'Fase offline: el modelo recorre el dataset varias épocas, reduce la pérdida y mejora su capacidad de generalizar.',
-          section2Title: 'Arquitectura en resumen',
-          section2Subtitle: 'Un MLP compacto para clasificar dígitos manuscritos',
+          section2Title: 'Cómo está organizada la red',
+          section2Subtitle: 'Una red multicapa pequeña que convierte 28×28 píxeles en una de 10 cifras posibles.',
           archInput: 'Entrada',
           archHidden1: 'Oculta 1',
           archHidden2: 'Oculta 2',
           archOutput: 'Salida',
-          conceptDenseTitle: 'Capa Dense',
-          conceptDenseText: 'Una capa densa conecta todas las entradas con todas las neuronas. Es flexible, pero también aumenta el número de parámetros.',
-          conceptReLUTitle: 'ReLU',
-          conceptReLUText: 'ReLU mete no linealidad con coste casi cero. Por eso sigue siendo la opción estándar en capas ocultas.',
-          conceptSoftmaxTitle: 'Salida Softmax',
-          conceptSoftmaxText: 'Softmax convierte logits en probabilidades por clase. La mayor probabilidad se toma como predicción.',
+          conceptDenseTitle: 'Capa densa',
+          conceptDenseText: 'Una capa densa conecta cada entrada con cada neurona de la siguiente capa. Eso le da flexibilidad al modelo, pero también más valores que aprender.',
+          conceptReLUTitle: 'Activación ReLU',
+          conceptReLUText: 'ReLU es un filtro simple: los valores negativos pasan a 0 y los positivos siguen adelante. Así la red conserva señales útiles y descarta parte del ruido.',
+          conceptSoftmaxTitle: 'Salida en probabilidades',
+          conceptSoftmaxText: 'Softmax convierte puntuaciones internas en probabilidades. La clase con la probabilidad más alta se convierte en la predicción.',
           section3Title: 'Pipeline de inferencia',
           section3Subtitle: 'De tus píxeles a una distribución de probabilidades',
           pipe1Title: 'Dibujar',
@@ -3606,9 +4440,9 @@
           keyActivations: 'Activaciones comunes',
           keyActivationsText: 'ReLU: rápida y estándar en ocultas. Leaky ReLU: reduce neuronas muertas. Sigmoid: útil en salida binaria, pero se satura en ocultas. Tanh: alternativa centrada en 0. GELU: frecuente en transformers. Softmax: salida para clasificación multiclase.',
           keyReadPrediction: 'Cómo leer la predicción',
-          keyReadPredictionText: 'Usa tres comprobaciones: probabilidad top-1, diferencia con top-2 y plausibilidad visual del trazo. Un valor alto con margen pequeño suele indicar ambigüedad, no certeza.',
+          keyReadPredictionText: 'Haz tres comprobaciones: qué barra es la más alta, cuánto se separa de las demás y si el trazo se ve limpio. Si varias barras quedan cerca, el modelo duda.',
           keyTroubleshoot: 'Checklist rápido de diagnóstico',
-          keyTroubleshootText: 'Si falla la predicción: 1) centra el dígito, 2) evita trazos muy gruesos, 3) elimina marcas extra, 4) compara top-1 vs top-2, 5) repite con forma más limpia.',
+          keyTroubleshootText: 'Si falla la predicción: 1) centra el dígito, 2) evita trazos muy gruesos, 3) elimina marcas extra, 4) comprueba si varias barras quedan cerca, 5) repite con una forma más limpia.',
           section5Title: 'Comparativa rápida de activaciones',
           section5Subtitle: 'Cuándo usar cada activación en la práctica',
           actCol1: 'Activación',
@@ -3634,29 +4468,72 @@
           navSolutions: 'Solucions',
           navResume: 'CV',
           navContact: 'Contacte',
-          pageTitle: 'Visualització de xarxa neuronal MNIST',
-          heroTitle: 'Visualització de xarxa neuronal MNIST',
-          heroSubtitle: 'Dibuixa un dígit i observa com es propaguen les activacions per la xarxa',
+          pageTitle: 'Com una xarxa neuronal llegeix els teus dígits',
+          heroEyebrow: 'Demo interactiva d\'IA',
+          heroKicker: 'Mira com un model entrenat converteix un traç en una decisió.',
+          heroTitle: 'Mira com una xarxa neuronal llegeix el teu dibuix',
+          heroSubtitle: 'Dibuixa un nombre i segueix el camí des dels píxels fins a la predicció, amb probabilitats en viu i una vista 3D del que activa el model.',
+          heroPrimaryCta: 'Provar la demo en viu',
+          heroSecondaryCta: 'Veure com funciona',
+          signal1Label: 'Què passa en viu',
+          signal1Value: 'El navegador executa el model ja entrenat',
+          signal1Text: 'L\'entrenament va passar abans. Aquesta pàgina aplica el model al moment sobre el que dibuixes i actualitza el resultat en temps real.',
+          signal2Label: 'Què pots canviar',
+          signal2Value: 'El dibuix, la fase d\'entrenament i la mida del model',
+          signal2Text: 'Un traç més net acostuma a donar una resposta més clara. Els sliders t\'ajuden a comparar el progrés d\'entrenament i la mida del model sense amagar la mecànica.',
+          signal3Label: 'Per què ajuda',
+          signal3Value: 'Veus la decisió, no només el dígit',
+          signal3Text: 'La demo mostra confiança, activacions i estructura de la xarxa perquè el resultat s\'entengui en lloc de semblar màgia.',
+          usageKicker: 'Inici ràpid',
+          usageChip: 'Controls d\'aprenentatge',
+          usageTitle: 'Entén la demo en menys de 30 segons',
+          usageStep1Title: 'Dibuixa un dígit amb claredat',
+          usageStep1Text: 'Mantén la forma centrada i llegible. Un traç més net facilita que el model reconegui el nombre.',
+          usageStep2Title: 'Llegeix les barres, no només la resposta',
+          usageStep2Text: 'Si una barra destaca clarament, el model està més segur. Si diverses queden a prop, la sortida és més ambigua.',
+          usageStep3Title: 'Fes servir els sliders per comparar comportaments',
+          usageStep3Text: 'No reentrenen el model en viu. Serveixen per veure com el progrés d\'entrenament i la mida del model canvien el resultat.',
+          usageStat1Label: 'Precisió pic',
+          usageStat2Label: 'Època base',
+          usageStat3Label: 'Vista 3D',
           drawing: 'Dibuix',
+          drawingKicker: 'Dibuixa un dígit',
+          drawingSubtitle: 'Dibuixa un nombre, esborra\'l i compara com un input més net canvia la predicció.',
           clear: 'Esborrar',
-          hintDraw: 'Clica i arrossega per dibuixar (clic dret per esborrar)',
+          hintDraw: 'Clica i arrossega per dibuixar. Clic dret per esborrar.',
           prediction: 'Predicció',
-          trainingEpoch: 'Època d\'entrenament',
+          predictionKicker: 'Vista de probabilitats',
+          predictionSubtitle: 'Cada barra mostra com de probable és un dígit. Un guanyador clar implica una decisió més clara; barres semblants indiquen dubte.',
+          predictionTopLabel: 'Classe top',
+          predictionConfidenceLabel: 'Confiança',
+          predictionRunnerUpLabel: 'Segona opció',
+          trainingEpoch: 'Progrés de l\'entrenament',
+          epochKicker: 'Progrés de l\'entrenament',
+          epochSubtitle: 'Recorre la línia d\'entrenament per veure com millora el model i en quin punt continuar entrenant pot començar a perjudicar.',
           epoch: 'Època',
           accuracy: 'Precisió',
-          hintEpoch: "Control didàctic: aquest slider no reentrena en viu. Marca zones de high bias i overfitting.",
-          hiddenLayerNodes: 'Nodes de la capa oculta',
+          hintEpoch: 'Ajuda didàctica: aquest slider no reentrena el model en viu. Assenyala zones de model poc entrenat i d\'overfitting.',
+          hiddenLayerNodes: 'Mida del model',
+          hiddenLayerKicker: 'Mida del model',
+          hiddenLayerSubtitle: 'Canvia la capacitat del model i recarrega l\'escena per comparar confiança, precisió i risc d\'overfitting.',
           hiddenNodes: 'Nodes ocults',
-          hintHidden: 'Control didàctic: aquest slider no reconstrueix el model en viu. Marca risc de capacitat baixa/alta.',
-          updateBtn: 'Recarregar i recalcular',
-          hintUpdate: 'Clica per actualitzar la visualització 3D i recalcular les prediccions',
-          learnMore: 'Saber-ne més',
+          hintHidden: 'Ajuda didàctica: aquest slider no reconstrueix el model en viu. Marca quan el model es queda curt o és més gran del necessari.',
+          updateBtn: 'Recarregar i comparar',
+          hintUpdate: 'Actualitza la vista 3D i recalcula la predicció amb la configuració escollida.',
+          stageChip: 'Mapa 3D de decisió',
+          stageDrag: 'Arrossega per girar',
+          stageTitle: 'Aquesta vista ensenya com el model arriba a la resposta',
+          stageText: 'Mentre dibuixes, parts de la xarxa s\'il·luminen segons la força amb què reaccionen. Els panells laterals mostren el resultat; el centre mostra el camí que el produeix.',
+          stageInputLabel: 'Entrada',
+          stageHiddenLabel: 'Ocultes',
+          stageOutputLabel: 'Sortida',
+          learnMore: 'Veure com funciona',
           section0Title: 'Com llegir aquesta demo',
-          section0Subtitle: 'Què corre en viu, què es va entrenar offline i com interpretar la sortida',
-          sectionRegTitle: 'Regularització i overfitting',
-          sectionRegSubtitle: "Què és l'overfitting i fórmules bàsiques per reduir-lo",
+          section0Subtitle: 'Una guia clara sobre què canvia en viu, què s\'havia preparat abans i com interpretar el resultat',
+          sectionRegTitle: 'Per què un model pot memoritzar massa',
+          sectionRegSubtitle: 'Què vol dir overfitting i quines eines s\'utilitzen per reduir-lo',
           overfitTitle: "Què és l'overfitting?",
-          overfitText: "L'overfitting passa quan el model s'ajusta massa a les dades d'entrenament. Té poc error en train, però perd precisió en exemples nous.",
+          overfitText: "L'overfitting passa quan el model s'enganxa massa als exemples d'entrenament. Va bé amb dades conegudes, però pitjor amb dibuixos nous.",
           l2Title: 'Regularització L2 (Weight Decay)',
           l2Text: 'Penalitza pesos grans, fent el model més suau i menys sensible al soroll.',
           l1Title: 'Regularització L1',
@@ -3671,20 +4548,24 @@
           checkItem3: 'Fes servir dropout en capes ocultes.',
           checkItem4: 'Fes servir early stopping amb paciència.',
           checkItem5: 'Prioritza arquitectures més simples quan siga possible.',
-          liveCard1Title: 'En viu = inferència',
-          liveCard1Text: "Quan dibuixes, la pàgina executa inferència amb un model ja entrenat. No fa entrenament complet al teu dispositiu.",
-          liveCard2Title: 'Panell de predicció',
-          liveCard2Text: 'Mira la classe top-1 i també la diferència amb top-2. Si el marge és petit, hi ha incertesa encara que top-1 siga alt.',
-          liveCard3Title: 'Controls didàctics',
-          liveCard3Text: "Els sliders d'època i nodes són guies pedagògiques. Marquen zones de high bias i overfitting.",
-          section1Title: 'Què es va entrenar i què corre en viu',
-          section1Subtitle: "L'entrenament es va fer offline amb TensorFlow/Keras. Aquesta pàgina executa inferència i explicació visual en temps real.",
-          sectionGradTitle: 'Gradient Descent (optimització base)',
-          sectionGradSubtitle: 'Com movem els paràmetres per aconseguir la millor predicció possible',
+          liveCard1Title: 'Predicció en viu al teu navegador',
+          liveCard1Text: "La pàgina no entrena des de zero cada vegada. Fa servir un model entrenat prèviament i l'aplica al moment sobre el que dibuixes.",
+          liveCard2Title: 'Com llegir les barres de probabilitat',
+          liveCard2Text: 'Cada barra mostra la probabilitat que el model assigna a un dígit. Un líder clar implica més confiança; diverses barres properes impliquen ambigüitat.',
+          liveCard3Title: 'Què volen dir realment els sliders',
+          liveCard3Text: "Els sliders són eines didàctiques. T'ajuden a comparar un model poc entrenat, equilibrat o sobreajustat, i una xarxa més petita o més gran.",
+          section1Title: 'Què es va entrenar abans que arribessis',
+          section1Subtitle: "L'aprenentatge fort va passar offline amb TensorFlow/Keras. Aquesta pàgina fa servir el model acabat per predir i explicar visualment el resultat.",
+          sectionGradTitle: 'Com aprèn el model durant l\'entrenament',
+          sectionGradSubtitle: 'Una explicació senzilla de la regla que millora les prediccions',
           gdTitle: "Regla d'actualització",
           gdText: "A cada pas movem els paràmetres en direcció oposada al gradient per reduir la pèrdua.",
           lrTitle: 'Learning Rate',
           lrFormula: '$$\\eta\\ \\text{petita}\\Rightarrow\\text{aprenentatge lent},\\qquad \\eta\\ \\text{gran}\\Rightarrow\\text{inestabilitat}$$',
+          lrFormulaSmall: 'massa baixa',
+          lrFormulaSlow: 'aprenentatge lent',
+          lrFormulaLarge: 'massa alta',
+          lrFormulaInstability: 'inestabilitat',
           lrText: "La taxa d'aprenentatge controla la mida del pas. Massa baixa: aprenentatge lent. Massa alta: inestabilitat.",
           linRegTitle: 'Exemple en regressió lineal',
           linRegText: 'La mateixa idea de descens s\'aplica en models lineals: minimitzar cost, calcular gradient i actualitzar paràmetres.',
@@ -3703,18 +4584,18 @@
           ann5Text: "Defineix l'objectiu d'entrenament: pèrdua (com mesurem l'error) i optimitzador (com s'actualitzen els pesos).",
           ann6Title: 'Train',
           ann6Text: "Fase offline: el model recorre el dataset en diverses èpoques, redueix la pèrdua i millora la generalització.",
-          section2Title: "Arquitectura d'un cop d'ull",
-          section2Subtitle: 'Un MLP compacte per classificar dígits manuscrits',
+          section2Title: 'Com està organitzada la xarxa',
+          section2Subtitle: 'Una xarxa multicapa petita que converteix 28×28 píxels en una de 10 xifres possibles.',
           archInput: 'Entrada',
           archHidden1: 'Oculta 1',
           archHidden2: 'Oculta 2',
           archOutput: 'Sortida',
-          conceptDenseTitle: 'Capa Dense',
-          conceptDenseText: 'Una capa densa connecta totes les entrades amb totes les neurones. És flexible, però incrementa els paràmetres.',
-          conceptReLUTitle: 'ReLU',
-          conceptReLUText: 'ReLU introdueix no linealitat amb cost gairebé zero. Encara és l\'estàndard en capes ocultes.',
-          conceptSoftmaxTitle: 'Sortida Softmax',
-          conceptSoftmaxText: 'Softmax converteix logits en probabilitats per classe. La més alta és la predicció.',
+          conceptDenseTitle: 'Capa densa',
+          conceptDenseText: 'Una capa densa connecta cada entrada amb cada neurona de la capa següent. Això dona flexibilitat al model, però també més valors per aprendre.',
+          conceptReLUTitle: 'Activació ReLU',
+          conceptReLUText: 'ReLU és un filtre simple: els valors negatius passen a 0 i els positius continuen. Això ajuda la xarxa a conservar senyals útils i ignorar les més febles.',
+          conceptSoftmaxTitle: 'Sortida en probabilitats',
+          conceptSoftmaxText: 'Softmax converteix puntuacions internes en probabilitats. La classe amb la probabilitat més alta es converteix en la predicció.',
           section3Title: "Pipeline d'inferència",
           section3Subtitle: 'Dels teus píxels a una distribució de probabilitats',
           pipe1Title: 'Dibuixar',
@@ -3742,9 +4623,9 @@
           keyActivations: 'Activacions comunes',
           keyActivationsText: 'ReLU: ràpida i estàndard en ocultes. Leaky ReLU: redueix neurones mortes. Sigmoid: útil a sortida binària, però se satura en ocultes. Tanh: alternativa centrada en 0. GELU: freqüent en transformers. Softmax: sortida per classificació multiclasse.',
           keyReadPrediction: 'Com llegir la predicció',
-          keyReadPredictionText: 'Fes tres comprovacions: probabilitat top-1, diferència amb top-2 i plausibilitat visual del traç. Un valor alt amb marge petit sol indicar ambigüitat, no certesa.',
+          keyReadPredictionText: 'Fes tres comprovacions: quina barra és la més alta, com de clarament destaca i si el traç es veu net. Si diverses barres queden a prop, el model dubta.',
           keyTroubleshoot: 'Checklist ràpid de diagnosi',
-          keyTroubleshootText: 'Si falla la predicció: 1) centra el dígit, 2) evita traços massa gruixuts, 3) elimina marques extra, 4) compara top-1 vs top-2, 5) repeteix amb forma més neta.',
+          keyTroubleshootText: 'Si falla la predicció: 1) centra el dígit, 2) evita traços massa gruixuts, 3) elimina marques extra, 4) comprova si diverses barres queden a prop, 5) repeteix amb una forma més neta.',
           section5Title: "Comparativa ràpida d'activacions",
           section5Subtitle: "Quan utilitzar cada activació a la pràctica",
           actCol1: 'Activació',
