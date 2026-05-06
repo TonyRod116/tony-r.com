@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom'
 import { Download, Mail, MapPin, Github, Linkedin, ExternalLink, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { profile } from '../data/profile'
 import { useLanguage } from '../hooks/useLanguage.jsx'
-import cvPdfEn from '../assets/Tony_Rodriguez_Solutions_Engineer_EN.pdf'
-import cvPdfEs from '../assets/Tony_Rodriguez_Solutions_Engineer_ES.pdf'
+import cvPdfEn from '../assets/Tony_Rodriguez_CV_EN_Final.pdf'
+import cvPdfEs from '../assets/Tony_Rodriguez_CV_ES_Final.pdf'
 import cvThumbnail from '../assets/CVthumb.png'
 import cvThumbnailEs from '../assets/CVthumb_ES.png'
 import harvardAIPdf from '../assets/CS50_Harvard_AI.pdf'
@@ -223,7 +223,7 @@ export default function Resume() {
     switch(type) {
       case 'resume':
         pdf = (language === 'es' || language === 'ca') ? cvPdfEs : cvPdfEn
-        fileName = (language === 'es' || language === 'ca') ? 'Tony_Rodriguez_Solutions_Engineer_ES.pdf' : 'Tony_Rodriguez_Solutions_Engineer_EN.pdf'
+        fileName = (language === 'es' || language === 'ca') ? 'Tony_Rodriguez_CV_ES_Final.pdf' : 'Tony_Rodriguez_CV_EN_Final.pdf'
         thumbnail = (language === 'es' || language === 'ca') ? cvThumbnailEs : cvThumbnail
         break
       case 'harvard':
