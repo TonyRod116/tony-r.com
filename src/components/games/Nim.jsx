@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../../hooks/useLanguage';
-import { useNavigate } from 'react-router-dom';
+import AiExperimentLayout from '../ai/AiExperimentLayout';
+import { labCopy, playHints } from '../../data/aiExperiments';
 
 // Nim Game Logic
 class NimGame {
@@ -162,13 +163,16 @@ class NimAI {
 }
 
 const Nim = () => {
-    const { t } = useLanguage();
-    const navigate = useNavigate();
+    const { t, language } = useLanguage();
+    const copy = labCopy[language];
+    const aiTimer = useRef(null);
+    const mounted = useRef(true);
+    useEffect(() => { mounted.current = true; return () => { mounted.current = false; clearTimeout(aiTimer.current); } }, []);
     const [game, setGame] = useState(new NimGame());
     const [aiType, setAiType] = useState('novice'); // 'novice' or 'expert'
-    const [noviceAI, setNoviceAI] = useState(new NimAI());
+    const [noviceAI, setNoviceAI] = useState(() => { const ai = new NimAI(); ai.train(100); return ai; });
     const [expertAI, setExpertAI] = useState(new NimAI());
-    const [gameStatus, setGameStatus] = useState('');
+    const gameStatus = game.winner !== null ? t(game.winner === 0 ? 'aiLab.games.nim.youWin' : 'aiLab.games.nim.aiWins') : t(game.player === 0 ? 'aiLab.games.nim.yourTurn' : 'aiLab.games.nim.aiTurn');
     const [isTraining, setIsTraining] = useState(false);
     const [trainingProgress, setTrainingProgress] = useState(0);
     const [stats, setStats] = useState({
@@ -185,18 +189,16 @@ const Nim = () => {
     const updateGameStatus = () => {
         if (game.winner !== null) {
             if (game.winner === 0) {
-                setGameStatus(t('aiLab.games.nim.youWin'));
+
                 const newStats = { ...stats, humanWins: stats.humanWins + 1 };
                 setStats(newStats);
                 localStorage.setItem('nim_human_wins', newStats.humanWins.toString());
             } else {
-                setGameStatus(t('aiLab.games.nim.aiWins'));
+
                 const newStats = { ...stats, aiWins: stats.aiWins + 1 };
                 setStats(newStats);
                 localStorage.setItem('nim_ai_wins', newStats.aiWins.toString());
             }
-        } else {
-            setGameStatus(game.player === 0 ? t('aiLab.games.nim.yourTurn') : t('aiLab.games.nim.aiTurn'));
         }
     };
 
@@ -205,6 +207,8 @@ const Nim = () => {
         setTrainingProgress(0);
         
         // Train novice AI (100 games) - 0% to 20%
+        clearTimeout(aiTimer.current);
+        setGame(new NimGame());
         const noviceAI = new NimAI();
         noviceAI.train(100);
         setNoviceAI(noviceAI);
@@ -217,6 +221,7 @@ const Nim = () => {
         const chunkSize = 1000; // Process in chunks of 1000 games
         
         for (let i = 0; i < totalGames; i += chunkSize) {
+            if (!mounted.current) return;
             expertAI.train(chunkSize);
             const progress = 20 + ((i + chunkSize) / totalGames) * 80; // 20% to 100%
             setTrainingProgress(Math.min(100, progress));
@@ -225,18 +230,20 @@ const Nim = () => {
             await new Promise(resolve => setTimeout(resolve, 50));
         }
         
+        if (!mounted.current) return;
         setExpertAI(expertAI);
         setTrainingProgress(100);
         
         // Small delay to show completion
         await new Promise(resolve => setTimeout(resolve, 500));
         
+        if (!mounted.current) return;
         setIsTraining(false);
         setTrainingProgress(0);
     };
 
     const makeMove = (pile, count) => {
-        if (game.winner !== null || game.player !== 0) return;
+        if (isTraining || game.winner !== null || game.player !== 0) return;
         
         try {
             const newGame = new NimGame(game.piles);
@@ -247,7 +254,7 @@ const Nim = () => {
             
             // AI move after human move
             if (newGame.winner === null) {
-                setTimeout(() => {
+                aiTimer.current = setTimeout(() => {
                     const currentAI = aiType === 'novice' ? noviceAI : expertAI;
                     const aiMove = currentAI.chooseAction(newGame.piles, false);
                     if (aiMove) {
@@ -265,6 +272,7 @@ const Nim = () => {
     };
 
     const newGame = () => {
+        clearTimeout(aiTimer.current);
         setGame(new NimGame());
         const newStats = { ...stats, gamesPlayed: stats.gamesPlayed + 1 };
         setStats(newStats);
@@ -292,26 +300,11 @@ const Nim = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 pt-32 pb-8">
-            <div className="container mx-auto px-4 max-w-4xl">
-                <div className="bg-white/10 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-8 border border-blue-200/20 dark:border-blue-400/20">
-                    <div className="text-center mb-8">
-                        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                            {t('aiLab.games.nim.title')}
-                        </h1>
-                        <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-                            {t('aiLab.games.nim.subtitle')}
-                        </p>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-3xl mx-auto mb-4">
-                            {t('aiLab.games.nim.description')}
-                        </p>
-                        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 max-w-2xl mx-auto">
-                            <p className="text-sm text-blue-800 dark:text-blue-200 font-medium">
-                                {t('aiLab.games.nim.howToPlay')}
-                            </p>
-                        </div>
-                    </div>
+        <AiExperimentLayout id="nim">
+            <div className="ai-legacy-content">
 
+
+                    <p className="ai-help mb-6">{playHints[language].nim}</p>
                     {/* AI Selection */}
                     <div className="mb-8">
                         <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4 text-center">
@@ -355,12 +348,6 @@ const Nim = () => {
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
                         <button
-                            onClick={() => navigate('/ai')}
-                            className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors"
-                        >
-                            {t('aiLab.games.nim.backToAI')}
-                        </button>
-                        <button
                             onClick={newGame}
                             className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
                         >
@@ -377,7 +364,7 @@ const Nim = () => {
                                 ></div>
                             </div>
                             <p className="text-center text-sm text-gray-600 dark:text-gray-300 mt-2">
-                                {t('aiLab.games.nim.training')} {Math.round(trainingProgress)}% Complete
+                                {t('aiLab.games.nim.training')} {Math.round(trainingProgress)}%
                             </p>
                         </div>
                     )}
@@ -386,14 +373,14 @@ const Nim = () => {
                         <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
                             {t('aiLab.games.nim.piles')}
                         </h2>
-                        <div className="flex justify-center gap-4 mb-6">
+                        <div className="ai-nim-piles flex justify-center gap-4 mb-6">
                             {game.piles.map((count, index) => (
                                 <div key={index} className="text-center">
                                     <div className={`w-16 h-16 ${getPileColor(index)} rounded-lg flex items-center justify-center text-white font-bold text-xl mb-2`}>
                                         {count}
                                     </div>
                                     <p className="text-sm text-gray-600 dark:text-gray-300">
-                                        Pile {index}
+                                        {copy.pile} {index + 1}
                                     </p>
                                 </div>
                             ))}
@@ -405,23 +392,21 @@ const Nim = () => {
 
                         {game.winner === null && (
                             <div className="space-y-4">
-                                <p className="text-sm text-gray-600 dark:text-gray-300">
-                                    {game.player === 0 ? t('aiLab.games.nim.yourTurn') : t('aiLab.games.nim.aiTurn')}
-                                </p>
                                 <div className="flex flex-wrap justify-center gap-2">
                                     {game.piles.map((count, pileIndex) => (
                                         count > 0 && (
                                             <div key={pileIndex} className="flex flex-col gap-1">
                                                 <span className="text-xs text-gray-500 dark:text-gray-400">
-                                                    {t('aiLab.games.nim.selectPile')} {pileIndex}
+                                                    {t('aiLab.games.nim.selectPile')} {pileIndex + 1}
                                                 </span>
                                                 <div className="flex gap-1">
                                                     {Array.from({ length: count }, (_, i) => i + 1).map(num => (
                                                         <button
                                                             key={num}
                                                             onClick={() => makeMove(pileIndex, num)}
-                                                            disabled={game.player !== 0}
-                                                            className={`px-3 py-1 text-sm rounded transition-colors text-white font-bold ${
+                                                            disabled={game.player !== 0 || isTraining}
+                                                            aria-label={`${copy.remove} ${num} · ${copy.pile} ${pileIndex + 1}`}
+                                                            className={`ai-pile-move px-3 py-1 text-sm rounded transition-colors text-white font-bold ${
                                                                 game.player === 0 
                                                                     ? getButtonColor(pileIndex)
                                                                     : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
@@ -439,7 +424,7 @@ const Nim = () => {
                         )}
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-md mx-auto">
+                    <div className="ai-game-stats grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-md mx-auto">
                         <div className="bg-gray-800/50 p-3 sm:p-4 rounded-xl text-center border border-blue-400/20">
                             <div className="text-xl sm:text-2xl font-bold text-blue-400">{stats.gamesPlayed}</div>
                             <div className="text-xs sm:text-sm text-gray-300">{t('aiLab.games.nim.stats.games')}</div>
@@ -453,9 +438,8 @@ const Nim = () => {
                             <div className="text-xs sm:text-sm text-gray-300">{t('aiLab.games.nim.stats.humanWins')}</div>
                         </div>
                     </div>
-                </div>
             </div>
-        </div>
+        </AiExperimentLayout>
     );
 };
 

@@ -14,91 +14,69 @@ export const translations = {
     
     // Home Page
     home: {
-      hero: {
-        titlePart1: 'CEO & Founder of BuildApp',
-        titlePart2: 'AI Products, Automation, and Solutions Engineering',
-        subtitle: 'I turn complex business problems into shipped products, from product strategy and UX to AI workflows, web and mobile delivery, and operational automation.',
-        cta: {
-          viewProjects: 'View Projects',
-          viewResume: 'View Resume',
-          startProject: 'Start project',
-          forRecruiters: 'View Resume & Experience',
-          forCompanies: 'See AI Demos'
+      "hero": {
+        "title": "Tony Rodríguez.",
+        "role": "BuildApp founder · Product and development",
+        "intro": "I build web and mobile products. I also develop and run Python trading systems. Here you can explore my work and the experience behind it.",
+        "work": "Explore my work",
+        "story": "My story",
+        "portraitAlt": "Tony Rodríguez"
+      },
+      "work": {
+        "label": "Current work",
+        "title": "BuildApp",
+        "subtitle": "From a site visit to a clear proposal.",
+        "description": "An app for renovation professionals: site photos and notes, quotes, AI visual proposals and client follow-up. Available on web, iPhone and Android.",
+        "roleLabel": "My part",
+        "role": "I founded BuildApp and defined the product. I build the web and mobile experience, AI workflows and part of the integrations, alongside the CTO.",
+        "detail": "View the project",
+        "open": "Open BuildApp",
+        "imageAlt": "BuildApp renovation proposal with before-and-after visualization and quote",
+        "caption": "An example proposal prepared in BuildApp."
+      },
+      "trading": {
+        "label": "Personal project",
+        "title": "Trading in Python.",
+        "description": "I develop and run my own Python trading bots, which are already generating income. I have taken this project from code into real operation.",
+        "note": "This work is separate from TradeLab, the backtesting platform shown below.",
+        "tools": "Python · Automation · Trading"
+      },
+      "selected": {
+        "title": "Other projects",
+        "intro": "Two earlier projects from my journey.",
+        "relux": {
+          "title": "Re-Lux",
+          "body": "A resale marketplace with a catalogue, favourites and shopping cart. A complete React, Node.js and MongoDB project.",
+          "type": "Marketplace",
+          "link": "Open demo"
         },
-        scrollDown: 'Scroll down'
-      },
-      stats: {
-        repositories: 'GitHub Repositories',
-        problemSolving: 'Problem Solving',
-        orientedBy: 'Oriented by',
-        yearsLeading: 'Years leading teams',
-        continuousLearning: 'Continuous Learning',
-        drivenBy: 'Driven by'
-      },
-      about: {
-        title: 'Founder mindset. Hands-on execution.',
-        description: 'Before software, I led real-world projects in construction. Today, as CEO & Founder of BuildApp, I stay hands-on across product, engineering, AI workflows, and AWS S3-backed media systems, building tools that save teams time and help them move faster with more confidence.',
-        moreAboutMe: 'More about me'
-      },
-      skills: {
-        title: 'Technical Skills',
-        languages: 'Languages',
-        frameworks: 'Frameworks & Libraries'
-      },
-      projects: {
-        title: 'Featured Projects',
-        subtitle: 'Selected work across AI-assisted renovation, marketplaces, and trading tools, where strategy, product thinking, and end-to-end implementation all had to work together.',
-        readMore: 'Read more',
-        readLess: 'Read less',
-        live: 'Live',
-        backend: 'Backend',
-        frontend: 'Frontend',
-        mobile: 'Mobile',
-        github: 'GitHub',
-        viewAll: 'View all projects'
-      },
-      aiLab: {
-        title: 'AI Lab',
-        subtitle: 'Explore my AI experiments and algorithms',
-        description: 'Discover interactive demos showcasing my original AI implementations, from unbeatable Minimax algorithms to logical deduction systems.',
-        features: {
-          tictactoe: 'Unbeatable Tic-Tac-Toe AI',
-          minesweeper: 'Minesweeper AI',
-          algorithms: 'Original Algorithm Implementations'
+        "tradelab": {
+          "title": "TradeLab",
+          "body": "A backtesting platform built in eight days: market data, strategies and results analysis. React, Django and PostgreSQL.",
+          "type": "Backtesting",
+          "link": "Open demo"
         },
-        games: {
-          tictactoe: {
-            title: 'Tic-Tac-Toe AI',
-            description: 'Unbeatable Minimax algorithm'
-          },
-          minesweeper: {
-            title: 'Minesweeper AI',
-            description: 'Logical deduction system'
-          },
-          nim: {
-            title: 'Nim Q-Learning',
-            description: 'Reinforcement learning agent'
-          },
-          tetris: {
-            title: 'Tetris AI',
-            description: 'Heuristic bot'
-          },
-          neuralNetwork: {
-            title: 'Neural Network',
-            description: 'Draw & classify digits live'
-          }
-        },
-        playNow: 'Play Now',
-        explore: 'Explore',
-        cta: 'Explore AI Lab'
+        "all": "View all projects"
       },
-      cta: {
-        title: 'Need product and AI execution that ships?',
-        description: 'I work best where business goals, customer needs, and technical delivery have to move together, from founder-led product strategy to hands-on implementation.',
-        viewResume: 'View Resume',
-        startProject: 'Start project',
-        forRecruiters: 'View Resume & Experience',
-        forCompanies: 'See AI Demos'
+      "about": {
+        "title": "Before software, construction.",
+        "description": "For years I managed projects and a renovation company. I worked with clients, teams, budgets and deadlines. That experience still shapes how I build software: understand the work before choosing the tool.",
+        "more": "My story and experience"
+      },
+      "experiments": {
+        "title": "I experiment, too.",
+        "body": "Algorithms you can try: a neural network that recognises hand-drawn digits, and my version of Tetris with a piece that dissolves like sand.",
+        "neural": "Draw and classify",
+        "tetris": "Play Tetris",
+        "all": "Explore the lab",
+        "neuralAlt": "Interactive neural network demo",
+        "tetrisAlt": "Tetris with AI"
+      },
+      "contact": {
+        "title": "Let's talk.",
+        "body": "If a project or the way I work interests you, send me a message.",
+        "action": "Email me",
+        "cv": "View CV"
       }
     },
 
@@ -367,7 +345,7 @@ export const translations = {
           title: 'Nim AI',
           subtitle: 'Challenge the Q-Learning AI in the classic Nim game',
           description: 'This Nim AI was built from my own Q-learning implementation (originally in Python during Harvard\'s CS50 AI, later ported to JavaScript).\nThe agent learns from scratch via self-play: it explores with epsilon-greedy, updates a Q-table for each (state, action), and converges by temporal-difference learning toward a winning policy. You can train the agent (watch its win-rate grow) and then play against it to see policy improvement in action.\n\n"This isn\'t just a game — it\'s proof that I understand reinforcement learning, value functions, and exploration–exploitation, not just how to call an API."',
-          howToPlay: 'How to Play: Take turns removing objects from piles. You can take any number of objects from a single pile. The player who takes the last object wins!',
+          howToPlay: 'How to Play: Take turns removing objects from piles. You can take any number of objects from a single pile. The player who takes the last object loses!',
           newGame: 'New Game',
           training: 'Training Expert AI...',
           selectAI: 'Select AI Difficulty',
@@ -411,6 +389,11 @@ export const translations = {
           gamesWon: 'Games Won',
           newGame: 'New Game',
           backToAI: 'Back to AI Lab',
+          pause: 'Pause',
+          resume: 'Resume',
+          paused: 'Paused',
+          hardDrop: 'Hard drop',
+          softDrop: 'Soft drop',
           longDescription: 'AI Tetris — upgraded from my very first coding project. Back when I started programming at General Assembly, my first project was a vanilla JavaScript Tetris. This version is a re-edition with custom physics and an AI brain. One piece — the T\' block — has a special mechanic: when it lands, it dissolves and each cell falls straight down until it hits support, filling gaps like sand. You can play manually or enable AI Mode: it evaluates all possible placements using a feature-based heuristic + lookahead, choosing the most stable move (fewer holes, less bumpiness, more lines). Controls: ← → move | ↑ rotate | ↓ = drop. Toggle AI to see the AI Move button that chooses the best placement — try clicking it repeatedly to score points fast!'
         }
       }
@@ -1047,15 +1030,25 @@ export const translations = {
       catalan: 'Catalan',
       native: 'Native',
       advanced: 'Fluent',
-      downloads: 'Downloads',
-      downloadResume: 'Download Resume',
-      downloadHarvardAI: 'Download Harvard AI Certificate',
-      downloadGA: 'Download General Assembly Certificate',
-      downloadStanfordAdvancedAlgos: 'Download Stanford ML Advanced Algorithms Certificate',
-      downloadStanfordSupervisedLearning: 'Download Stanford ML Supervised Learning Certificate',
-      downloadStanfordUnsupervisedLearning: 'Download Stanford ML Unsupervised Learning Certificate',
-      downloadMLSpecialization: 'Download Stanford Machine Learning Specialization Certificate',
-      downloadText: 'Click to download PDF'
+      downloads: 'Documents',
+      documents: 'Documents',
+      downloadResume: 'View Resume',
+      downloadHarvardAI: 'View Harvard AI Certificate',
+      downloadGA: 'View General Assembly Certificate',
+      downloadStanfordAdvancedAlgos: 'View Stanford ML Advanced Algorithms Certificate',
+      downloadStanfordSupervisedLearning: 'View Stanford ML Supervised Learning Certificate',
+      downloadStanfordUnsupervisedLearning: 'View Stanford ML Unsupervised Learning Certificate',
+      downloadMLSpecialization: 'View Stanford Machine Learning Specialization Certificate',
+      downloadText: 'Click to view the document full-screen',
+      viewResume: 'View Resume',
+      viewHarvardAI: 'View Harvard AI Certificate',
+      viewGA: 'View General Assembly Certificate',
+      viewStanfordAdvancedAlgos: 'View Stanford ML Advanced Algorithms Certificate',
+      viewStanfordSupervisedLearning: 'View Stanford ML Supervised Learning Certificate',
+      viewStanfordUnsupervisedLearning: 'View Stanford ML Unsupervised Learning Certificate',
+      viewMLSpecialization: 'View Stanford Machine Learning Specialization Certificate',
+      documentText: 'Click to view the document full-screen',
+      closeDocument: 'Close document'
     },
 
     // Contact Page
@@ -1146,91 +1139,69 @@ export const translations = {
     
     // Home Page
     home: {
-      hero: {
-        titlePart1: 'CEO y fundador de BuildApp',
-        titlePart2: 'Productos con IA, automatización e ingeniería de soluciones',
-        subtitle: 'Convierto problemas complejos de negocio en productos reales: desde estrategia y UX hasta flujos con IA, entrega web y mobile, y automatización operativa.',
-        cta: {
-          viewProjects: 'Ver Proyectos',
-          viewResume: 'Ver CV',
-          startProject: 'Iniciar proyecto',
-          forRecruiters: 'Ver CV y experiencia',
-          forCompanies: 'Ver demos de IA'
+      "hero": {
+        "title": "Tony Rodríguez.",
+        "role": "Fundador de BuildApp · Producto y desarrollo",
+        "intro": "Construyo productos web y móviles. También desarrollo y opero sistemas de trading en Python. Aquí puedes ver mi trabajo y el recorrido que hay detrás.",
+        "work": "Explorar mi trabajo",
+        "story": "Mi recorrido",
+        "portraitAlt": "Tony Rodríguez"
+      },
+      "work": {
+        "label": "Trabajo en marcha",
+        "title": "BuildApp",
+        "subtitle": "De una visita de obra a una propuesta clara.",
+        "description": "Una aplicación para profesionales de reformas: fotos y notas de la visita, presupuestos, propuestas visuales con IA y seguimiento de clientes. Disponible en web, iPhone y Android.",
+        "roleLabel": "Mi parte",
+        "role": "Fundé BuildApp y definí el producto. Construyo la experiencia web y móvil, los flujos con IA y parte de las integraciones, junto al CTO.",
+        "detail": "Ver el proyecto",
+        "open": "Abrir BuildApp",
+        "imageAlt": "Propuesta de reforma en BuildApp con visualización antes y después y presupuesto",
+        "caption": "Ejemplo de una propuesta preparada en BuildApp."
+      },
+      "trading": {
+        "label": "Proyecto propio",
+        "title": "Trading en Python.",
+        "description": "Desarrollo y opero bots de trading propios en Python que ya generan ingresos. Es un proyecto que he llevado del código a la operación real.",
+        "note": "Este trabajo es distinto de TradeLab, la plataforma de backtesting que muestro más abajo.",
+        "tools": "Python · Automatización · Trading"
+      },
+      "selected": {
+        "title": "Otros proyectos",
+        "intro": "Dos trabajos anteriores que forman parte de mi recorrido.",
+        "relux": {
+          "title": "Re-Lux",
+          "body": "Un marketplace de segunda mano con catálogo, favoritos y carrito. Un proyecto completo de React, Node.js y MongoDB.",
+          "type": "Marketplace",
+          "link": "Abrir demo"
         },
-        scrollDown: 'Desplázate hacia abajo'
-      },
-      stats: {
-        repositories: 'Repositorios GitHub',
-        problemSolving: 'Resolución de Problemas',
-        orientedBy: 'Orientado por',
-        yearsLeading: 'Años liderando equipos',
-        continuousLearning: 'Aprendizaje Continuo',
-        drivenBy: 'Impulsado por'
-      },
-      about: {
-        title: 'Mentalidad de fundador. Ejecución hands-on.',
-        description: 'Antes del software lideré proyectos reales en construcción. Hoy, como CEO y fundador de BuildApp, sigo muy hands-on en producto, ingeniería, flujos con IA y sistemas de media sobre AWS S3, construyendo herramientas que ahorran tiempo y permiten a los equipos avanzar más rápido y con más confianza.',
-        moreAboutMe: 'Más sobre mí'
-      },
-      skills: {
-        title: 'Habilidades Técnicas',
-        languages: 'Lenguajes',
-        frameworks: 'Frameworks y Librerías'
-      },
-      projects: {
-        title: 'Proyectos Destacados',
-        subtitle: 'Trabajo seleccionado en reformas asistidas por IA, marketplaces y herramientas de trading, donde estrategia, pensamiento de producto e implementación end-to-end tenían que funcionar juntos.',
-        readMore: 'Leer más',
-        readLess: 'Leer menos',
-        live: 'Live',
-        backend: 'Backend',
-        frontend: 'Frontend',
-        mobile: 'Mobile',
-        github: 'GitHub',
-        viewAll: 'Ver todos los proyectos'
-      },
-      aiLab: {
-        title: 'Lab de IA',
-        subtitle: 'Explora mis experimentos y algoritmos de IA',
-        description: 'Descubre demos interactivos que muestran mis implementaciones originales de IA, desde algoritmos Minimax imbatibles hasta sistemas de deducción lógica.',
-        features: {
-          tictactoe: 'IA Tres en Raya Imbatible',
-          minesweeper: 'IA de Buscaminas',
-          algorithms: 'Implementaciones de Algoritmos Originales'
+        "tradelab": {
+          "title": "TradeLab",
+          "body": "Una plataforma de backtesting construida en ocho días: datos de mercado, estrategias y análisis de resultados. React, Django y PostgreSQL.",
+          "type": "Backtesting",
+          "link": "Abrir demo"
         },
-        games: {
-          tictactoe: {
-            title: 'IA Tres en Raya',
-            description: 'Algoritmo Minimax imbatible'
-          },
-          minesweeper: {
-            title: 'IA Buscaminas',
-            description: 'Sistema de deducción lógica'
-          },
-          nim: {
-            title: 'Nim Q-Learning',
-            description: 'Aprendizaje por refuerzo'
-          },
-          tetris: {
-            title: 'IA Tetris',
-            description: 'Bot heurístico'
-          },
-          neuralNetwork: {
-            title: 'Red Neuronal',
-            description: 'Dibuja y clasifica dígitos en vivo'
-          }
-        },
-        playNow: 'Jugar Ahora',
-        explore: 'Explorar',
-        cta: 'Explorar Lab de IA'
+        "all": "Ver todos los proyectos"
       },
-      cta: {
-        title: '¿Necesitas ejecución real en producto e IA?',
-        description: 'Trabajo mejor donde objetivos de negocio, necesidades de cliente y entrega técnica tienen que avanzar juntos: desde estrategia de producto liderada por el fundador hasta implementación hands-on.',
-        viewResume: 'Ver CV',
-        startProject: 'Iniciar proyecto',
-        forRecruiters: 'Ver CV y experiencia',
-        forCompanies: 'Ver demos de IA'
+      "about": {
+        "title": "Antes del software, la obra.",
+        "description": "Durante años dirigí proyectos y una empresa de reformas. Trabajé con clientes, equipos, presupuestos y plazos. Esa experiencia sigue presente cuando construyo software: entender el trabajo antes de decidir la herramienta.",
+        "more": "Mi historia y experiencia"
+      },
+      "experiments": {
+        "title": "También experimento.",
+        "body": "Algoritmos que puedes probar: una red neuronal que reconoce dígitos dibujados y mi versión de Tetris con una pieza que se disuelve como arena.",
+        "neural": "Dibujar y clasificar",
+        "tetris": "Jugar al Tetris",
+        "all": "Entrar al laboratorio",
+        "neuralAlt": "Demo interactiva de una red neuronal",
+        "tetrisAlt": "Tetris con IA"
+      },
+      "contact": {
+        "title": "Podemos hablar.",
+        "body": "Si te interesa alguno de estos proyectos o mi forma de trabajar, escríbeme.",
+        "action": "Escríbeme",
+        "cv": "Ver CV"
       }
     },
 
@@ -1478,7 +1449,7 @@ export const translations = {
           title: 'IA Nim',
           subtitle: 'Desafía a la IA de Q-Learning en el clásico juego de Nim',
           description: 'Esta IA de Nim parte de mi implementación propia de Q-learning (inicialmente en Python dentro del CS50 de IA de Harvard y después portada a JavaScript).\nEl agente aprende desde cero jugando contra sí mismo: explora con epsilon-greedy, actualiza una Q-table por cada (estado, acción) y converge mediante aprendizaje por diferencias temporales hacia una política ganadora. Puedes entrenarlo (ver crecer su tasa de victorias) y luego jugar contra él para observar la mejora de la política en tiempo real.\n\n«Esto no es solo un juego — es la prueba de que entiendo reinforcement learning, funciones de valor y el dilema exploración–explotación, no solo cómo usar una API.»',
-          howToPlay: 'Cómo Jugar: Tomen turnos removiendo objetos de las pilas. Puedes tomar cualquier cantidad de objetos de una sola pila. ¡El jugador que tome el último objeto gana!',
+          howToPlay: 'Cómo Jugar: Tomen turnos removiendo objetos de las pilas. Puedes tomar cualquier cantidad de objetos de una sola pila. ¡El jugador que tome el último objeto pierde!',
           newGame: 'Nuevo Juego',
           training: 'Entrenando IA Experta...',
           selectAI: 'Seleccionar Dificultad de IA',
@@ -1526,7 +1497,7 @@ export const translations = {
           title: 'IA Nim',
           subtitle: 'Desafía a la IA de Q-Learning en el clásico juego de Nim',
           description: 'Esta IA de Nim parte de mi implementación propia de Q-learning (inicialmente en Python dentro del CS50 de IA de Harvard y después portada a JavaScript).\nEl agente aprende desde cero jugando contra sí mismo: explora con epsilon-greedy, actualiza una Q-table por cada (estado, acción) y converge mediante aprendizaje por diferencias temporales hacia una política ganadora. Puedes entrenarlo (ver crecer su tasa de victorias) y luego jugar contra él para observar la mejora de la política en tiempo real.\n\n«Esto no es solo un juego — es la prueba de que entiendo reinforcement learning, funciones de valor y el dilema exploración–explotación, no solo cómo usar una API.»',
-          howToPlay: 'Cómo Jugar: Tomen turnos removiendo objetos de las pilas. Puedes tomar cualquier cantidad de objetos de una sola pila. ¡El jugador que tome el último objeto gana!',
+          howToPlay: 'Cómo Jugar: Tomen turnos removiendo objetos de las pilas. Puedes tomar cualquier cantidad de objetos de una sola pila. ¡El jugador que tome el último objeto pierde!',
           newGame: 'Nuevo Juego',
           training: 'Entrenando IA Experta...',
           selectAI: 'Seleccionar Dificultad de IA',
@@ -1570,6 +1541,11 @@ export const translations = {
           gamesWon: 'Juegos Ganados',
           newGame: 'Nuevo Juego',
           backToAI: 'Volver al Lab de IA',
+          pause: 'Pausa',
+          resume: 'Reanudar',
+          paused: 'En pausa',
+          hardDrop: 'Caída rápida',
+          softDrop: 'Bajar',
           longDescription: 'Tetris con IA — re-edición de mi primer proyecto en General Assembly. Cuando empecé a programar, mi primer juego fue un Tetris en JavaScript puro. Esta versión es una actualización con física personalizada y cerebro de IA. Una pieza — la T\' — tiene una mecánica especial: al tocar el suelo se "disuelve" y cada bloque cae en vertical hasta encontrar apoyo, rellenando huecos como arena. Puedes jugar tú o activar el Modo IA: evalúa todas las posiciones posibles con una heurística + lookahead y elige el movimiento más estable (menos huecos, menos irregularidad, más líneas). Controles: ← → mover | ↑ girar | ↓ = dejar caer. Activa AI para ver el botón AI Move que elige la mejor colocación — ¡prueba hacer clic repetidamente para puntuar rápido!'
         }
       }
@@ -1836,15 +1812,25 @@ export const translations = {
       catalan: 'Catalán',
       native: 'Nativo',
       advanced: 'Fluido',
-      downloads: 'Descargas',
-      downloadResume: 'Descargar CV',
-      downloadHarvardAI: 'Descargar Certificado Harvard IA',
-      downloadGA: 'Descargar Certificado General Assembly',
-      downloadStanfordAdvancedAlgos: 'Descargar Certificado Stanford ML Algoritmos Avanzados',
-      downloadStanfordSupervisedLearning: 'Descargar Certificado Stanford ML Aprendizaje Supervisado',
-      downloadStanfordUnsupervisedLearning: 'Descargar Certificado Stanford ML Aprendizaje No Supervisado',
-      downloadMLSpecialization: 'Descargar Certificado Stanford Especialización en Machine Learning',
-      downloadText: 'Haz clic para descargar PDF'
+      downloads: 'Documentos',
+      documents: 'Documentos',
+      downloadResume: 'Ver CV',
+      downloadHarvardAI: 'Ver Certificado Harvard IA',
+      downloadGA: 'Ver Certificado General Assembly',
+      downloadStanfordAdvancedAlgos: 'Ver Certificado Stanford ML Algoritmos Avanzados',
+      downloadStanfordSupervisedLearning: 'Ver Certificado Stanford ML Aprendizaje Supervisado',
+      downloadStanfordUnsupervisedLearning: 'Ver Certificado Stanford ML Aprendizaje No Supervisado',
+      downloadMLSpecialization: 'Ver Certificado Stanford Especialización en Machine Learning',
+      downloadText: 'Haz clic para ver el documento a pantalla completa',
+      viewResume: 'Ver CV',
+      viewHarvardAI: 'Ver Certificado Harvard IA',
+      viewGA: 'Ver Certificado General Assembly',
+      viewStanfordAdvancedAlgos: 'Ver Certificado Stanford ML Algoritmos Avanzados',
+      viewStanfordSupervisedLearning: 'Ver Certificado Stanford ML Aprendizaje Supervisado',
+      viewStanfordUnsupervisedLearning: 'Ver Certificado Stanford ML Aprendizaje No Supervisado',
+      viewMLSpecialization: 'Ver Certificado Stanford Especialización en Machine Learning',
+      documentText: 'Haz clic para ver el documento a pantalla completa',
+      closeDocument: 'Cerrar documento'
     },
 
     // Contact Page
@@ -2294,91 +2280,69 @@ export const translations = {
     
     // Home Page
     home: {
-      hero: {
-        titlePart1: 'CEO i fundador de BuildApp',
-        titlePart2: 'Productes amb IA, automatització i enginyeria de solucions',
-        subtitle: 'Converteixo problemes complexos de negoci en productes reals: des d\'estratègia i UX fins a fluxos amb IA, entrega web i mobile, i automatització operativa.',
-        cta: {
-          viewProjects: 'Veure Projectes',
-          viewResume: 'Veure CV',
-          startProject: 'Iniciar projecte',
-          forRecruiters: 'Veure CV i experiència',
-          forCompanies: 'Veure demos d\'IA'
+      "hero": {
+        "title": "Tony Rodríguez.",
+        "role": "Fundador de BuildApp · Producte i desenvolupament",
+        "intro": "Construeixo productes web i mòbils. També desenvolupo i opero sistemes de trading en Python. Aquí pots veure la meva feina i el recorregut que hi ha al darrere.",
+        "work": "Explora la meva feina",
+        "story": "El meu recorregut",
+        "portraitAlt": "Tony Rodríguez"
+      },
+      "work": {
+        "label": "Feina en marxa",
+        "title": "BuildApp",
+        "subtitle": "D'una visita d'obra a una proposta clara.",
+        "description": "Una aplicació per a professionals de reformes: fotos i notes de la visita, pressupostos, propostes visuals amb IA i seguiment de clients. Disponible en web, iPhone i Android.",
+        "roleLabel": "La meva part",
+        "role": "Vaig fundar BuildApp i definir el producte. Construeixo l'experiència web i mòbil, els fluxos amb IA i part de les integracions, juntament amb el CTO.",
+        "detail": "Veure el projecte",
+        "open": "Obrir BuildApp",
+        "imageAlt": "Proposta de reforma a BuildApp amb visualització abans i després i pressupost",
+        "caption": "Exemple d’una proposta preparada a BuildApp."
+      },
+      "trading": {
+        "label": "Projecte propi",
+        "title": "Trading en Python.",
+        "description": "Desenvolupo i opero bots de trading propis en Python que ja generen ingressos. És un projecte que he portat del codi a l’operació real.",
+        "note": "Aquesta feina és diferent de TradeLab, la plataforma de backtesting que mostro més avall.",
+        "tools": "Python · Automatització · Trading"
+      },
+      "selected": {
+        "title": "Altres projectes",
+        "intro": "Dues feines anteriors que formen part del meu recorregut.",
+        "relux": {
+          "title": "Re-Lux",
+          "body": "Un marketplace de segona mà amb catàleg, favorits i carret. Un projecte complet amb React, Node.js i MongoDB.",
+          "type": "Marketplace",
+          "link": "Obrir demo"
         },
-        scrollDown: 'Desplaça\'t cap avall'
-      },
-      stats: {
-        repositories: 'Repositoris GitHub',
-        problemSolving: 'Resolució de Problemes',
-        orientedBy: 'Orientat per',
-        yearsLeading: 'Anys liderant equips',
-        continuousLearning: 'Aprenentatge Continu',
-        drivenBy: 'Impulsat per'
-      },
-      about: {
-        title: 'Mentalitat de fundador. Execució hands-on.',
-        description: 'Abans del programari vaig liderar projectes reals en construcció. Avui, com a CEO i fundador de BuildApp, continuo molt hands-on en producte, enginyeria, fluxos amb IA i sistemes de media sobre AWS S3, construint eines que estalvien temps i permeten als equips avançar més ràpid i amb més confiança.',
-        moreAboutMe: 'Més sobre mí'
-      },
-      skills: {
-        title: 'Habilitats Tècniques',
-        languages: 'Llenguatges',
-        frameworks: 'Frameworks i Llibreries'
-      },
-      projects: {
-        title: 'Projectes Destacats',
-        subtitle: 'Treball seleccionat en reformes assistides per IA, marketplaces i eines de trading, on estratègia, pensament de producte i implementació end-to-end havien de funcionar junts.',
-        readMore: 'Llegir més',
-        readLess: 'Llegir menys',
-        live: 'Live',
-        backend: 'Backend',
-        frontend: 'Frontend',
-        mobile: 'Mobile',
-        github: 'GitHub',
-        viewAll: 'Veure tots els projectes'
-      },
-      aiLab: {
-        title: 'Lab d\'IA',
-        subtitle: 'Explora els meus experiments i algoritmes d\'IA',
-        description: 'Descobreix demos interactius que mostren les meves implementacions originals d\'IA, des d\'algoritmes Minimax imbatibles fins a sistemes de deducció lògica.',
-        features: {
-          tictactoe: 'IA Tres en Ratlla Imbatible',
-          minesweeper: 'IA de Buscamines',
-          algorithms: 'Implementacions d\'Algoritmes Originals'
+        "tradelab": {
+          "title": "TradeLab",
+          "body": "Una plataforma de backtesting construïda en vuit dies: dades de mercat, estratègies i anàlisi de resultats. React, Django i PostgreSQL.",
+          "type": "Backtesting",
+          "link": "Obrir demo"
         },
-        games: {
-          tictactoe: {
-            title: 'IA Tres en Ratlla',
-            description: 'Algoritme Minimax imbatible'
-          },
-          minesweeper: {
-            title: 'IA Buscamines',
-            description: 'Sistema de deducció lògica'
-          },
-          nim: {
-            title: 'Nim Q-Learning',
-            description: 'Aprenentatge per reforç'
-          },
-          tetris: {
-            title: 'IA Tetris',
-            description: 'Bot heurístic'
-          },
-          neuralNetwork: {
-            title: 'Xarxa Neuronal',
-            description: 'Dibuixa i classifica dígits en viu'
-          }
-        },
-        playNow: 'Jugar Ara',
-        explore: 'Explorar',
-        cta: 'Explorar Lab d\'IA'
+        "all": "Veure tots els projectes"
       },
-      cta: {
-        title: 'Necessites execució real en producte i IA?',
-        description: 'Treballo millor on objectius de negoci, necessitats de client i entrega tècnica han d\'avançar junts: des d\'estratègia de producte liderada pel fundador fins a implementació hands-on.',
-        viewResume: 'Veure CV',
-        startProject: 'Iniciar projecte',
-        forRecruiters: 'Veure CV i experiència',
-        forCompanies: 'Veure demos d\'IA'
+      "about": {
+        "title": "Abans del programari, l'obra.",
+        "description": "Durant anys vaig dirigir projectes i una empresa de reformes. Vaig treballar amb clients, equips, pressupostos i terminis. Aquesta experiència continua present quan construeixo programari: entendre la feina abans de decidir l’eina.",
+        "more": "La meva història i experiència"
+      },
+      "experiments": {
+        "title": "També experimento.",
+        "body": "Algoritmes que pots provar: una xarxa neuronal que reconeix dígits dibuixats i la meva versió de Tetris amb una peça que es dissol com la sorra.",
+        "neural": "Dibuixar i classificar",
+        "tetris": "Jugar al Tetris",
+        "all": "Entrar al laboratori",
+        "neuralAlt": "Demo interactiva d'una xarxa neuronal",
+        "tetrisAlt": "Tetris amb IA"
+      },
+      "contact": {
+        "title": "Podem parlar.",
+        "body": "Si t'interessa algun d'aquests projectes o la meva manera de treballar, escriu-me.",
+        "action": "Escriu-me",
+        "cv": "Veure CV"
       }
     },
 
@@ -2647,7 +2611,7 @@ export const translations = {
           title: 'IA Nim',
           subtitle: 'Desafia a la IA de Q-Learning en el clàssic joc de Nim',
           description: 'Aquesta IA de Nim neix de la meva implementació de Q-learning (primer en Python al CS50 d\'IA de Harvard i després portada a JavaScript).\nL\'agent aprèn des de zero amb auto-joc: explora amb epsilon-greedy, actualitza una taula Q per a cada (estat, acció) i convergeix mitjançant aprenentatge per diferències temporals cap a una política guanyadora. Pots entrenar-lo (veure com creix el win-rate) i jugar-hi per comprovar la millora de la política.\n\n«Això no és només un joc — és la prova que entenc reinforcement learning, funcions de valor i exploració–explotació, no només com fer servir una API.»',
-          howToPlay: 'Com Jugar: Prenen torns removent objectes de les piles. Pots agafar qualsevol quantitat d\'objectes d\'una sola pila. ¡El jugador que agafi l\'últim objecte guanya!',
+          howToPlay: 'Com Jugar: Prenen torns removent objectes de les piles. Pots agafar qualsevol quantitat d\'objectes d\'una sola pila. ¡El jugador que agafi l\'últim objecte perd!',
           newGame: 'Nou Joc',
           training: 'Entrenant IA Expert...',
           selectAI: 'Seleccionar Dificultat de IA',
@@ -2691,6 +2655,11 @@ export const translations = {
           gamesWon: 'Jocs Guanyats',
           newGame: 'Nou Joc',
           backToAI: 'Tornar al Lab d\'IA',
+          pause: 'Pausa',
+          resume: 'Reprèn',
+          paused: 'En pausa',
+          hardDrop: 'Caiguda ràpida',
+          softDrop: 'Baixar',
           longDescription: 'Tetris amb IA — re-edició del meu primer projecte a General Assembly. Quan vaig començar a programar, el meu primer joc va ser un Tetris en JavaScript pur. Aquesta versió és una actualització amb física personalitzada i cervell d\'IA. Una peça — la T\' — té una mecànica especial: quan toca el terra es "dissol" i cada bloc cau verticalment fins trobar suport, omplint forats com sorra. Pots jugar tu o activar el Mode IA: avalua totes les posicions possibles amb una heurística + lookahead i tria el moviment més estable (menys forats, menys irregularitat, més línies). Controls: ← → moure | ↑ girar | ↓ = deixar caure. Activa AI per veure el botó AI Move que tria la millor col·locació — prova fer clic repetidament per puntuar ràpid!'
         }
       }
@@ -2949,15 +2918,25 @@ export const translations = {
       catalan: 'Català',
       native: 'Natiu',
       advanced: 'Fluït',
-      downloads: 'Descàrregues',
-      downloadResume: 'Descarregar CV',
-      downloadHarvardAI: 'Descarregar Certificat Harvard IA',
-      downloadGA: 'Descarregar Certificat General Assembly',
-      downloadStanfordAdvancedAlgos: 'Descarregar Certificat Stanford ML Algoritmes Avançats',
-      downloadStanfordSupervisedLearning: 'Descarregar Certificat Stanford ML Aprenentatge Supervisat',
-      downloadStanfordUnsupervisedLearning: 'Descarregar Certificat Stanford ML Aprenentatge No Supervisat',
-      downloadMLSpecialization: 'Descarregar Certificat Stanford Especialització en Machine Learning',
-      downloadText: 'Fes clic per descarregar PDF'
+      downloads: 'Documents',
+      documents: 'Documents',
+      downloadResume: 'Veure CV',
+      downloadHarvardAI: 'Veure Certificat Harvard IA',
+      downloadGA: 'Veure Certificat General Assembly',
+      downloadStanfordAdvancedAlgos: 'Veure Certificat Stanford ML Algoritmes Avançats',
+      downloadStanfordSupervisedLearning: 'Veure Certificat Stanford ML Aprenentatge Supervisat',
+      downloadStanfordUnsupervisedLearning: 'Veure Certificat Stanford ML Aprenentatge No Supervisat',
+      downloadMLSpecialization: 'Veure Certificat Stanford Especialització en Machine Learning',
+      downloadText: 'Fes clic per veure el document a pantalla completa',
+      viewResume: 'Veure CV',
+      viewHarvardAI: 'Veure Certificat Harvard IA',
+      viewGA: 'Veure Certificat General Assembly',
+      viewStanfordAdvancedAlgos: 'Veure Certificat Stanford ML Algoritmes Avançats',
+      viewStanfordSupervisedLearning: 'Veure Certificat Stanford ML Aprenentatge Supervisat',
+      viewStanfordUnsupervisedLearning: 'Veure Certificat Stanford ML Aprenentatge No Supervisat',
+      viewMLSpecialization: 'Veure Certificat Stanford Especialització en Machine Learning',
+      documentText: 'Fes clic per veure el document a pantalla completa',
+      closeDocument: 'Tancar document'
     },
 
     // Contact Page

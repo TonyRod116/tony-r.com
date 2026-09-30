@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../hooks/useLanguage';
-import { useNavigate } from 'react-router-dom';
+import AiExperimentLayout from '../ai/AiExperimentLayout';
+import { labCopy, playHints } from '../../data/aiExperiments';
 
 // ==== helpers clave/coords ====
 const key = (r, c) => `${r},${c}`;
@@ -191,8 +192,9 @@ class MinesweeperAI {
 }
 
 const Minesweeper = () => {
-    const { t } = useLanguage();
-    const navigate = useNavigate();
+    const { t, language } = useLanguage();
+    const copy = labCopy[language];
+    const [flagMode, setFlagMode] = useState(false);
     const [board, setBoard] = useState([]);
     const [mines, setMines] = useState(new Set());
     const [revealed, setRevealed] = useState(new Set());
@@ -200,77 +202,12 @@ const Minesweeper = () => {
     const [gameOver, setGameOver] = useState(false);
     const [gameWon, setGameWon] = useState(false);
     const [ai, setAi] = useState(new MinesweeperAI());
-    const [canSolve, setCanSolve] = useState(false);
+    const canSolve = !gameOver && !gameWon && ai.hasSafeMove();
     const [stats, setStats] = useState({
         gamesPlayed: parseInt(localStorage.getItem('ms_games') || '0'),
         aiMoves: parseInt(localStorage.getItem('ms_ai_moves') || '0'),
         gamesWon: parseInt(localStorage.getItem('ms_gamesWon') || '0')
     });
-
-    const translations = {
-        en: {
-            title: "Minesweeper AI",
-            subtitle: "Watch the AI solve Minesweeper puzzles using logical deduction",
-            description: "This AI uses my original logical deduction implementation converted from Python to JavaScript. The algorithm analyzes patterns and probabilities to make safe moves and solve puzzles efficiently.",
-            newGame: "New Game",
-            enableAI: "Enable AI",
-            disableAI: "Disable AI",
-            aiSolveStep: "AI Solve Step",
-            aiSolveAll: "AI Solve All",
-            gameOver: "Game Over!",
-            gameWon: "You Win!",
-            aiThinking: "AI is thinking...",
-            stats: {
-                games: "Games Played",
-                aiMoves: "AI Moves",
-                winRate: "Win Rate"
-            }
-        },
-        es: {
-            title: "IA Buscaminas",
-            subtitle: "Observa cómo la IA resuelve puzzles de Buscaminas usando deducción lógica",
-            description: "Esta IA usa mi implementación original de deducción lógica convertida de Python a JavaScript. El algoritmo analiza patrones y probabilidades para hacer movimientos seguros y resolver puzzles eficientemente.",
-            newGame: "Nuevo Juego",
-            enableAI: "Activar IA",
-            disableAI: "Desactivar IA",
-            aiSolveStep: "IA Resolver Paso",
-            aiSolveAll: "IA Resolver Todo",
-            gameOver: "¡Juego Terminado!",
-            gameWon: "¡Ganaste!",
-            aiThinking: "La IA está pensando...",
-            stats: {
-                games: "Juegos Jugados",
-                aiMoves: "Movimientos IA",
-                winRate: "Tasa de Éxito"
-            }
-        },
-        ca: {
-            title: "IA Buscamines",
-            subtitle: "Observa com l'IA resol trencaclosques de Buscamines usant deducció lògica",
-            description: "Aquesta IA usa la meva implementació original de deducció lògica convertida de Python a JavaScript. L'algoritme analitza patrons i probabilitats per fer moviments segurs i resoldre trencaclosques eficientment.",
-            newGame: "Nou Joc",
-            enableAI: "Activar IA",
-            disableAI: "Desactivar IA",
-            aiSolveStep: "IA Resoldre Pas",
-            aiSolveAll: "IA Resoldre Tot",
-            gameOver: "Joc Acabat!",
-            gameWon: "Has guanyat!",
-            aiThinking: "L'IA està pensant...",
-            stats: {
-                games: "Jocs Jugats",
-                aiMoves: "Moviments IA",
-                winRate: "Taxa d'Èxit"
-            }
-        }
-    };
-
-    const currentLang = localStorage.getItem('language') || 'en';
-    const currentT = translations[currentLang];
-
-    const recomputeCanSolve = () => {
-        // AI is always active, only checks game state and if there are safe moves
-        setCanSolve(!gameOver && !gameWon && ai.hasSafeMove());
-    };
 
     const initializeGame = () => {
         const newBoard = Array(8).fill().map(() => Array(8).fill(false));
@@ -290,7 +227,7 @@ const Minesweeper = () => {
         setGameOver(false);
         setGameWon(false);
         setAi(new MinesweeperAI());
-        recomputeCanSolve();
+        setFlagMode(false);
     };
 
     useEffect(() => {
@@ -343,6 +280,7 @@ const Minesweeper = () => {
         };
         
         revealRecursive(row, col);
+        setRevealed(newRevealed);
         
         // Alimentar a la IA con todas las celdas seguras reveladas en este paso
         for (const cell of cellsToReveal) {
@@ -360,8 +298,6 @@ const Minesweeper = () => {
             }
         }
         
-        setRevealed(newRevealed);
-        recomputeCanSolve();
 
         // Check win condition
         if (newRevealed.size === 64 - mines.size) {
@@ -401,7 +337,6 @@ const Minesweeper = () => {
             localStorage.setItem('ms_ai_moves', newAiMoves.toString());
             return { ...prev, aiMoves: newAiMoves };
         });
-        recomputeCanSolve();
     };
 
     const newGame = () => {
@@ -414,6 +349,7 @@ const Minesweeper = () => {
     };
 
     const getCellContent = (row, col) => {
+        if (gameOver && mines.has(`${row},${col}`)) return '💣';
         if (flagged.has(`${row},${col}`)) {
             return '🚩';
         }
@@ -452,34 +388,14 @@ const Minesweeper = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 pt-32 pb-8">
-            <div className="container mx-auto px-4 max-w-4xl">
-                <div className="bg-white/10 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-8 border border-blue-200/20 dark:border-blue-400/20">
-                    <div className="text-center mb-8">
-                        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                            {t('aiLab.games.minesweeper.title')}
-                        </h1>
-                        <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-                            {t('aiLab.games.minesweeper.subtitle')}
-                        </p>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-3xl mx-auto">
-                            {t('aiLab.games.minesweeper.description')}
-                        </p>
-                    </div>
+        <AiExperimentLayout id="minesweeper">
+            <div className="ai-legacy-content">
 
-                    <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 max-w-2xl mx-auto mb-8">
-                        <p className="text-sm text-blue-800 dark:text-blue-200 font-medium">
-                            {t('aiLab.games.minesweeper.howToPlay')}
-                        </p>
-                    </div>
+
+                    <p className="ai-help mb-6">{playHints[language].minesweeper}</p>
 
                     <div className="flex justify-center gap-4 mb-8 flex-wrap">
-                        <button
-                            onClick={() => navigate('/ai')}
-                            className="px-4 py-2 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg text-sm"
-                        >
-                            {t('aiLab.games.minesweeper.backToAI')}
-                        </button>
+                        <button onClick={() => setFlagMode(value => !value)} aria-pressed={flagMode} className="ai-button ai-button-secondary">{flagMode ? copy.revealMode : copy.flagMode}</button>
                         <button
                             onClick={newGame}
                             className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg"
@@ -509,17 +425,18 @@ const Minesweeper = () => {
                     )}
 
                     <div className="flex justify-center mb-8">
-                        <div className="grid grid-cols-8 gap-0.5 sm:gap-1 bg-gray-800/50 p-2 sm:p-4 rounded-xl max-w-fit mx-auto">
+                        <div className="ai-mines-board">
                             {board.map((row, rowIndex) =>
                                 row.map((cell, colIndex) => (
                                     <button
                                         key={`${rowIndex}-${colIndex}`}
-                                        onClick={() => revealCell(rowIndex, colIndex)}
+                                        onClick={() => flagMode ? toggleFlag(rowIndex, colIndex) : revealCell(rowIndex, colIndex)}
+                                        aria-label={`${copy.cell} ${rowIndex + 1}, ${colIndex + 1}: ${getCellContent(rowIndex, colIndex) || "—"}`}
                                         onContextMenu={(e) => {
                                             e.preventDefault();
                                             toggleFlag(rowIndex, colIndex);
                                         }}
-                                        className={`w-6 h-6 sm:w-8 sm:h-8 ${getCellColor(rowIndex, colIndex)} border border-gray-500 rounded flex items-center justify-center text-xs sm:text-sm font-bold transition-all duration-200 hover:scale-105 ${getNumberColor(getNeighborMines(rowIndex, colIndex))}`}
+                                        className={`ai-cell w-6 h-6 sm:w-8 sm:h-8 ${getCellColor(rowIndex, colIndex)} border border-gray-500 rounded flex items-center justify-center text-xs sm:text-sm font-bold transition-all duration-200 hover:scale-105 ${getNumberColor(getNeighborMines(rowIndex, colIndex))}`}
                                         disabled={gameOver || gameWon}
                                     >
                                         {getCellContent(rowIndex, colIndex)}
@@ -529,7 +446,7 @@ const Minesweeper = () => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-md mx-auto">
+                    <div className="ai-game-stats grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-md mx-auto">
                         <div className="bg-gray-800/50 p-3 sm:p-4 rounded-xl text-center border border-blue-400/20">
                             <div className="text-xl sm:text-2xl font-bold text-blue-400">{stats.gamesPlayed}</div>
                             <div className="text-xs sm:text-sm text-gray-300">{t('aiLab.games.minesweeper.stats.games')}</div>
@@ -543,9 +460,8 @@ const Minesweeper = () => {
                             <div className="text-xs sm:text-sm text-gray-300">{t('aiLab.games.minesweeper.stats.gamesWon')}</div>
                         </div>
                     </div>
-                </div>
             </div>
-        </div>
+        </AiExperimentLayout>
     );
 };
 

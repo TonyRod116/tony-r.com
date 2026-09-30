@@ -10,7 +10,6 @@ function hasValue(val) {
 }
 
 export function parseStructuredResponse(response, t) {
-  console.log('[LeadQualifier] Raw response to parse:', response)
 
   // Try to extract JSON from markdown code block
   const jsonMatch = response.match(/```json\s*([\s\S]*?)\s*```/)
@@ -18,19 +17,17 @@ export function parseStructuredResponse(response, t) {
   if (jsonMatch) {
     try {
       const parsed = JSON.parse(jsonMatch[1])
-      console.log('[LeadQualifier] Parsed from JSON block:', parsed)
       return validateStructuredResponse(parsed, t)
-    } catch (e) {
-      console.warn('[LeadQualifier] Failed to parse JSON block:', e)
+    } catch {
+      console.warn('[LeadQualifier] Failed to parse JSON block:')
     }
   }
 
   // Try parsing the entire response as JSON
   try {
     const parsed = JSON.parse(response)
-    console.log('[LeadQualifier] Parsed as direct JSON:', parsed)
     return validateStructuredResponse(parsed, t)
-  } catch (e) {
+  } catch {
     // Not valid JSON
   }
 
@@ -39,10 +36,9 @@ export function parseStructuredResponse(response, t) {
   if (objectMatch) {
     try {
       const parsed = JSON.parse(objectMatch[0])
-      console.log('[LeadQualifier] Parsed from object match:', parsed)
       return validateStructuredResponse(parsed, t)
-    } catch (e) {
-      console.warn('[LeadQualifier] Failed to parse object match:', e)
+    } catch {
+      console.warn('[LeadQualifier] Failed to parse object match:')
     }
   }
 
@@ -59,7 +55,6 @@ function validateStructuredResponse(parsed, t) {
   // Handle new format with "state" object
   const state = parsed.state || parsed.leadFields || {}
 
-  console.log('[LeadQualifier] Extracted state:', state)
 
   // Map internal_disposition to tier/score for UI compatibility
   const disposition = state.internal_disposition || 'warm'
@@ -90,7 +85,6 @@ function validateStructuredResponse(parsed, t) {
     Object.entries(leadFields).filter(([_, v]) => v !== undefined)
   )
 
-  console.log('[LeadQualifier] Mapped leadFields:', cleanLeadFields)
 
   // Generate reasons from state
   const reasons = generateReasons(state, disposition, t)

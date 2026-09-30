@@ -1,0 +1,4 @@
+interface:
+  display_name: "analytics"
+  short_description: "Define eventos de conversión útiles y verifica su emisión."
+  default_prompt: "Usa $analytics para resolver este encargo en My Page con evidencia local."

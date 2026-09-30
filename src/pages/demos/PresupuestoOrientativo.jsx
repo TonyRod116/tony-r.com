@@ -1,445 +1,66 @@
 import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import {
-  Loader2,
-  AlertCircle,
-  FileText,
-  Calculator,
-  MapPin,
-  Ruler,
-  StickyNote,
-  Bath,
-  UtensilsCrossed,
-  Home,
-  Paintbrush,
-  Grid3X3,
-  Wrench,
-  Clock,
-  Package,
-  HardHat,
-  Boxes,
-  ChevronRight,
-  TrendingUp,
-  ArrowRight,
-  Check,
-  Info,
-  XCircle,
-  CheckCircle2,
-} from 'lucide-react'
+import { Clock, Package, HardHat, Boxes, ArrowRight, Info, XCircle, CheckCircle2 } from 'lucide-react'
 import { useLanguage } from '../../hooks/useLanguage.jsx'
-import LoadingProgressBar from '../../components/LoadingProgressBar.jsx'
+import { observeDemoRequest } from '../../utils/telemetry'
+import { readDemoResponse } from '../../utils/demoResponse'
+import { siteContent } from '../../data/siteContent'
+import DemoPage from '../../components/site/DemoPage'
 
-const BUILDAPP_BASE = 'https://buildapp-v1-backend.onrender.com'
-
-// Usar backend BuildApp siempre (env, producción por defecto, o desarrollo si no hay env)
-function getBuildappBudgetUrl() {
-  const base = import.meta.env.VITE_BUILDAPP_DEMO_API_URL || BUILDAPP_BASE
-  const url = base.replace(/\/$/, '')
-  return `${url}/api/v1/budget/generate-detailed`
-}
-
-const PROJECT_TYPE_ICONS = {
-  baño: Bath,
-  cocina: UtensilsCrossed,
-  integral: Home,
-  pintura: Paintbrush,
-  suelo: Grid3X3,
-  otros: Wrench,
-}
-
+const BASE = 'https://buildapp-v1-backend.onrender.com'
+const LOCALES = {es:'es-ES',en:'en-US',ca:'ca-ES'}
+const TYPES = ['baño','cocina','integral','pintura','suelo','otros']
+const PERIODS = {es:{days:'días',weeks:'semanas',months:'meses',day:'día',week:'semana',month:'mes'},en:{days:'days',weeks:'weeks',months:'months',day:'day',week:'week',month:'month'},ca:{days:'dies',weeks:'setmanes',months:'mesos',day:'dia',week:'setmana',month:'mes'}}
 export default function PresupuestoOrientativo() {
   const { t, language } = useLanguage()
-  
-  // Traducir periodType del backend
-  const translatePeriodType = (periodType) => {
-    if (!periodType) return ''
-    const translations = {
-      en: {
-        weeks: 'weeks',
-        days: 'days',
-        months: 'months',
-        week: 'week',
-        day: 'day',
-        month: 'month'
-      },
-      es: {
-        weeks: 'semanas',
-        days: 'días',
-        months: 'meses',
-        week: 'semana',
-        day: 'día',
-        month: 'mes'
-      },
-      ca: {
-        weeks: 'setmanes',
-        days: 'dies',
-        months: 'mesos',
-        week: 'setmana',
-        day: 'dia',
-        month: 'mes'
-      }
-    }
-    const lang = language || 'es'
-    return translations[lang]?.[periodType.toLowerCase()] || periodType
-  }
-
-  const PROJECT_TYPES = [
-    { value: 'baño', label: t('solutions.projectTypes.baño') },
-    { value: 'cocina', label: t('solutions.projectTypes.cocina') },
-    { value: 'integral', label: t('solutions.projectTypes.integral') },
-    { value: 'pintura', label: t('solutions.projectTypes.pintura') },
-    { value: 'suelo', label: t('solutions.projectTypes.suelo') },
-    { value: 'otros', label: t('solutions.projectTypes.otros') },
-  ]
-  const [formData, setFormData] = useState({
-    projectType: [],
-    sqm: '',
-    city: 'Barcelona',
-    notes: '',
-  })
-  const [loading, setLoading] = useState(false)
-  const [loadingStage, setLoadingStage] = useState(0)
-  const [error, setError] = useState(null)
-  const [result, setResult] = useState(null)
-  const progressTimeoutsRef = useRef([])
-  const abortControllerRef = useRef(null)
-
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    if (name === 'sqm') {
-      const numericValue = value === '' ? '' : value.replace(/\D/g, '')
-      setFormData((prev) => ({ ...prev, [name]: numericValue }))
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }))
-    }
-    setError(null)
-  }
-
-  const toggleProjectType = (value) => {
-    setFormData((prev) => ({
-      ...prev,
-      projectType: prev.projectType.includes(value)
-        ? prev.projectType.filter(v => v !== value)
-        : [...prev.projectType, value],
-    }))
-    setError(null)
-  }
-
-  const generateBudget = async () => {
-    // Prevent multiple simultaneous requests
-    if (loading) {
-      return
-    }
-
-    if (formData.projectType.length === 0) {
-      setError(t('solutions.presupuestoOrientativo.form.projectTypeRequired'))
-      return
-    }
-
-    // Clean up previous request if any
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort()
-    }
-    progressTimeoutsRef.current.forEach((timeout) => clearTimeout(timeout))
-    progressTimeoutsRef.current = []
-
-    setLoading(true)
-    setLoadingStage(0)
-    setError(null)
-    setResult(null)
-
-    abortControllerRef.current = new AbortController()
-
-    // Timings diferentes para cada paso: total ~10 segundos
-    // Stage 1 (analyzing): 1500ms - más lento al inicio
-    // Stage 2 (processing): 3000ms acumulado (1500 + 1500)
-    // Stage 3 (generating): 5500ms acumulado (3000 + 2500)
-    // Stage 4 (preparing): 8000ms acumulado (5500 + 2500)
-    // Stage 5 (finalizing): 10000ms acumulado (8000 + 2000)
-    const stages = [1500, 3000, 5500, 8000]
-    stages.forEach((delay, index) => {
-      const timeout = setTimeout(() => {
-        setLoadingStage(index + 1)
-      }, delay)
-      progressTimeoutsRef.current.push(timeout)
-    })
-
+  const copy = siteContent[language], locale = LOCALES[language]
+  const [formData,setFormData] = useState({projectType:[],sqm:'',city:'Barcelona',notes:''})
+  const [loading,setLoading] = useState(false)
+  const [error,setError] = useState(null)
+  const [result,setResult] = useState(null)
+  const request = useRef(null), version = useRef(0)
+  useEffect(() => () => {version.current++;request.current?.abort()},[])
+  const translatePeriodType = value => value ? PERIODS[language][String(value).toLowerCase()] || value : ''
+  const change = event => {setFormData(previous => ({...previous,[event.target.name]:event.target.value}));setError(null)}
+  const toggle = value => {setFormData(previous => ({...previous,projectType:previous.projectType.includes(value)?previous.projectType.filter(item=>item!==value):[...previous.projectType,value]}));setError(null)}
+  const cancel = () => {version.current++;request.current?.abort();setLoading(false);setError(null)}
+  const generate = async event => {
+    event.preventDefault()
+    if(loading)return
+    if(!formData.projectType.length){setError(copy.chooseType);return}
+    const id=++version.current, controller=new AbortController()
+    request.current=controller;setLoading(true);setError(null);setResult(null)
+    const timer=setTimeout(()=>controller.abort('timeout'),120000)
+    const projectType=formData.projectType.join(', ')
+    const description=formData.notes.trim() || [formData.projectType.map(type=>t(`solutions.projectTypes.${type}`)).join(', '),formData.sqm?`${formData.sqm} m²`:'',formData.city].filter(Boolean).join(' · ')
+    const body={projectType,locale,description}
+    if(formData.sqm)body.sqm=Number(formData.sqm)
+    if(formData.city.trim())body.city=formData.city.trim()
     try {
-      const selectedLabels = formData.projectType
-        .map(v => PROJECT_TYPES.find(p => p.value === v)?.label || v)
-        .join(', ')
-      const projectTypeValue = formData.projectType.length === 1 
-        ? formData.projectType[0] 
-        : formData.projectType.join(', ')
-      
-      const body = {
-        projectType: projectTypeValue,
-        locale: 'es-ES',
-        description: formData.notes?.trim() || t('solutions.presupuestoOrientativo.form.autoDescription')
-          .replace('{type}', selectedLabels)
-          .replace('{sqm}', formData.sqm ? ` de ${formData.sqm} m²` : '')
-          .replace('{city}', formData.city ? ` en ${formData.city}` : ''),
-      }
-      if (formData.sqm) body.sqm = Number(formData.sqm)
-      if (formData.city) body.city = formData.city
-      
-      // Debug: verificar que projectType se envía correctamente
-      console.log('Sending projectType to backend:', projectTypeValue, 'Selected types:', formData.projectType)
-
-      const res = await fetch(getBuildappBudgetUrl(), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-        signal: abortControllerRef.current.signal,
-      })
-
-      // Check content-type before parsing JSON
-      const contentType = res.headers.get('content-type')
-      let data
-      
-      if (contentType && contentType.includes('application/json')) {
-        data = await res.json()
-      } else {
-        // If not JSON, try to get text for error message
-        const text = await res.text()
-        throw new Error(`Server error (${res.status}): ${text.substring(0, 200)}`)
-      }
-
-      if (!res.ok) {
-        const errorMsg = data.message || data.detail || data.error || `Server error (${res.status})`
-        const validationDetails = data.details || data.errors || data.validation_errors
-        if (validationDetails && Array.isArray(validationDetails) && validationDetails.length > 0) {
-          const errorDetails = validationDetails
-            .map(e => `${e.field || t('solutions.presupuestoOrientativo.form.field')}: ${e.message || JSON.stringify(e)}`)
-            .join('; ')
-          throw new Error(`${errorMsg || t('solutions.presupuestoOrientativo.form.errorValidation')}. ${errorDetails}`)
-        }
-        throw new Error(errorMsg)
-      }
-
-      progressTimeoutsRef.current.forEach((timeout) => clearTimeout(timeout))
-      progressTimeoutsRef.current = []
-
-      setLoadingStage(4)
-      setResult(data)
-    } catch (err) {
-      if (err.name === 'AbortError') {
-        return
-      }
-      console.error('Error generating budget:', err)
-      setError(err.message || t('solutions.presupuestoOrientativo.form.errorGenerating'))
-    } finally {
-      progressTimeoutsRef.current.forEach((timeout) => clearTimeout(timeout))
-      progressTimeoutsRef.current = []
-      setLoading(false)
-      setLoadingStage(0)
-    }
+      const base=(import.meta.env.VITE_BUILDAPP_DEMO_API_URL || BASE).replace(/\/$/,'')
+      const response=await observeDemoRequest('budget',()=>fetch(`${base}/api/v1/budget/generate-detailed`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:controller.signal}))
+      const data=await readDemoResponse(response,copy.serviceError)
+      if(!['total','totalMin','totalMax','items','lineItems'].some(key=>data[key]!=null))throw new Error(copy.serviceError)
+      if(id===version.current)setResult(data)
+    }catch(problem){if(id===version.current)setError(controller.signal.reason==='timeout'?copy.timeout:controller.signal.aborted?null:problem.message || copy.serviceError)}
+    finally{clearTimeout(timer);if(id===version.current)setLoading(false)}
   }
-
-  useEffect(() => {
-    return () => {
-      progressTimeoutsRef.current.forEach((timeout) => clearTimeout(timeout))
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort()
-      }
-    }
-  }, [])
-
-  return (
-    <div className="min-h-screen bg-white dark:bg-gray-950">
-      {/* Page header */}
-      <div className="border-b border-gray-200 dark:border-gray-800 bg-gray-50/60 dark:bg-gray-900/40">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 pb-8 sm:pb-10">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <p className="text-xs font-medium text-primary-600 dark:text-primary-400 uppercase tracking-widest mb-2">Demo</p>
-            <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white">
-              {t('solutions.presupuestoOrientativo.pageTitle')}
-            </h1>
-            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 max-w-xl">
-              {t('solutions.presupuestoOrientativo.pageSubtitle')}
-            </p>
-            
-            {/* Bullets */}
-            <div className="mt-6 flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-gray-700 dark:text-gray-300">
-              <div className="flex items-center gap-1.5">
-                <Check className="h-4 w-4 text-green-600 dark:text-green-400" strokeWidth={3} />
-                <span className="font-medium">{t('solutions.presupuestoOrientativo.resultBullets.editable')}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Check className="h-4 w-4 text-green-600 dark:text-green-400" strokeWidth={3} />
-                <span className="font-medium">{t('solutions.presupuestoOrientativo.resultBullets.addMargin')}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Check className="h-4 w-4 text-green-600 dark:text-green-400" strokeWidth={3} />
-                <span className="font-medium">{t('solutions.presupuestoOrientativo.resultBullets.exportPdf')}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Check className="h-4 w-4 text-green-600 dark:text-green-400" strokeWidth={3} />
-                <span className="font-medium">{t('solutions.presupuestoOrientativo.resultBullets.readyWhatsApp')}</span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
+  return <DemoPage id="presupuesto-orientativo">
+    <form onSubmit={generate} className="site-budget-form">
+      <div><p className="site-kicker">{t('solutions.presupuestoOrientativo.form.projectType')}</p><div className="site-budget-types">{TYPES.map(type=><button type="button" key={type} aria-pressed={formData.projectType.includes(type)} disabled={loading} onClick={()=>toggle(type)}>{t(`solutions.projectTypes.${type}`)}</button>)}</div><p className="site-note">{copy.selectedTypes}: {formData.projectType.length}</p></div>
+      <div className="site-form">
+        <div className="site-field"><label htmlFor="budget-sqm">{t('solutions.presupuestoOrientativo.form.sqm')}</label><input id="budget-sqm" name="sqm" type="number" inputMode="numeric" min="1" max="100000" step="1" value={formData.sqm} onChange={change} disabled={loading} placeholder={t('solutions.presupuestoOrientativo.form.sqmPlaceholder')} /></div>
+        <div className="site-field"><label htmlFor="budget-city">{t('solutions.presupuestoOrientativo.form.city')}</label><input id="budget-city" name="city" value={formData.city} onChange={change} disabled={loading} /></div>
+        <div className="site-field"><label htmlFor="budget-notes">{t('solutions.presupuestoOrientativo.form.notes')}</label><textarea id="budget-notes" name="notes" rows={4} value={formData.notes} onChange={change} disabled={loading} placeholder={t('solutions.presupuestoOrientativo.form.notesPlaceholder')} /></div>
+        {error&&<p role="alert" className="site-message is-error">{error}</p>}
+        <button type="submit" className="site-button" disabled={loading}>{loading?copy.generating:t('solutions.presupuestoOrientativo.form.generate')}</button>
+        {loading&&<div><p role="status">{copy.generating}</p><button className="site-button site-button-secondary" type="button" onClick={cancel}>{copy.cancel}</button></div>}
+        <p className="site-note">{copy.serviceNote}</p>
       </div>
-
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-
-        {/* Form */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.05, duration: 0.4 }}
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-8 lg:gap-12">
-            {/* Left: Project type selection */}
-            <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-3">
-                {t('solutions.presupuestoOrientativo.form.projectType')}
-              </label>
-              <div className="space-y-2">
-                {PROJECT_TYPES.map((opt) => {
-                  const Icon = PROJECT_TYPE_ICONS[opt.value] || Wrench
-                  const isSelected = formData.projectType.includes(opt.value)
-                  return (
-                    <button
-                      key={opt.value}
-                      type="button"
-                      onClick={() => toggleProjectType(opt.value)}
-                      className={`
-                        w-full flex items-center gap-3 px-4 py-3 rounded-md border text-left text-sm transition-all duration-150
-                        ${isSelected
-                          ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/20 dark:border-primary-500 text-gray-900 dark:text-white'
-                          : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800/60'
-                        }
-                      `}
-                    >
-                      <div className={`
-                        flex items-center justify-center w-5 h-5 rounded border flex-shrink-0 transition-colors
-                        ${isSelected
-                          ? 'bg-primary-600 border-primary-600 dark:bg-primary-500 dark:border-primary-500'
-                          : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800'
-                        }
-                      `}>
-                        {isSelected && <Check className="h-3 w-3 text-white" strokeWidth={3} />}
-                      </div>
-                      <Icon className={`h-4 w-4 flex-shrink-0 ${isSelected ? 'text-primary-600 dark:text-primary-400' : 'text-gray-400 dark:text-gray-500'}`} />
-                      <span className="font-medium">{opt.label}</span>
-                    </button>
-                  )
-                })}
-              </div>
-              {formData.projectType.length > 0 && (
-                <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                  {formData.projectType.length} {formData.projectType.length === 1 ? 'tipo seleccionado' : 'tipos seleccionados'}
-                </p>
-              )}
-            </div>
-
-            {/* Right: Form details */}
-            <div className="space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-1.5">
-                    {t('solutions.presupuestoOrientativo.form.sqm')}
-                  </label>
-                  <div className="relative">
-                    <Ruler className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      pattern="[0-9]*"
-                      name="sqm"
-                      value={formData.sqm}
-                      onChange={handleChange}
-                      className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white pl-10 pr-3 py-2.5 text-sm focus:ring-2 focus:ring-primary-600/20 focus:border-primary-600 dark:focus:border-primary-400 outline-none transition-colors"
-                      placeholder={t('solutions.presupuestoOrientativo.form.sqmPlaceholder')}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-1.5">
-                    {t('solutions.presupuestoOrientativo.form.city')}
-                  </label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                    <input
-                      type="text"
-                      name="city"
-                      value={formData.city}
-                      onChange={handleChange}
-                      className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white pl-10 pr-3 py-2.5 text-sm focus:ring-2 focus:ring-primary-600/20 focus:border-primary-600 dark:focus:border-primary-400 outline-none transition-colors"
-                      placeholder={t('solutions.presupuestoOrientativo.form.cityPlaceholder')}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-1.5">
-                  {t('solutions.presupuestoOrientativo.form.notes')}
-                </label>
-                <textarea
-                  name="notes"
-                  value={formData.notes}
-                  onChange={handleChange}
-                  rows={4}
-                  className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white px-3 py-2.5 text-sm focus:ring-2 focus:ring-primary-600/20 focus:border-primary-600 dark:focus:border-primary-400 outline-none transition-colors resize-none"
-                  placeholder={t('solutions.presupuestoOrientativo.form.notesPlaceholder')}
-                />
-              </div>
-
-              {/* Error */}
-              <AnimatePresence>
-                {error && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="flex items-start gap-2.5 rounded-md bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/40 text-red-700 dark:text-red-300 px-3 py-2.5 text-sm"
-                  >
-                    <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
-                    <span>{error}</span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* CTA */}
-              <button
-                type="button"
-                onClick={generateBudget}
-                disabled={loading}
-                className="inline-flex items-center gap-2 rounded-md bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 dark:text-gray-900 disabled:opacity-40 disabled:cursor-not-allowed text-white px-5 py-2.5 text-sm font-medium transition-colors"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    {t('solutions.presupuestoOrientativo.form.generating')}
-                  </>
-                ) : (
-                  <>
-                    {t('solutions.presupuestoOrientativo.form.generate')}
-                    <ArrowRight className="h-4 w-4" />
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Divider */}
-        {result && <div className="border-t border-gray-200 dark:border-gray-800 my-10" />}
-
-        {/* Results */}
+    </form>
+    <div className="site-budget-result">
         {result && (
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
+          <div
           >
             {/* Results header row */}
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
@@ -459,7 +80,7 @@ export default function PresupuestoOrientativo() {
                 <div className="sm:text-right">
                   <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-0.5">{t('solutions.presupuestoOrientativo.result.total')}</p>
                   <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tabular-nums">
-                    {Number(result.total).toLocaleString('es-ES')} <span className="text-lg font-medium text-gray-400">{result.currency || '€'}</span>
+                    {Number(result.total).toLocaleString(locale)} <span className="text-lg font-medium text-gray-400">{result.currency || '€'}</span>
                   </p>
                 </div>
               )}
@@ -477,7 +98,7 @@ export default function PresupuestoOrientativo() {
                     <card.icon className={`h-5 w-5 ${card.color} flex-shrink-0`} />
                     <div className="min-w-0">
                       <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{t(`solutions.presupuestoOrientativo.result.${card.key}`)}</p>
-                      <p className="text-base font-semibold text-gray-900 dark:text-white tabular-nums">{Number(card.value).toLocaleString('es-ES')} €</p>
+                      <p className="text-base font-semibold text-gray-900 dark:text-white tabular-nums">{Number(card.value).toLocaleString(locale)} €</p>
                     </div>
                   </div>
                 ))}
@@ -512,8 +133,8 @@ export default function PresupuestoOrientativo() {
                           </td>
                           <td className="py-2.5 px-4 text-right text-gray-700 dark:text-gray-300 tabular-nums">{row.quantity ?? '-'}</td>
                           <td className="py-2.5 px-4 text-gray-500 dark:text-gray-400">{row.unit ?? '-'}</td>
-                          <td className="py-2.5 px-4 text-right text-gray-700 dark:text-gray-300 tabular-nums">{row.unitPrice != null ? `${Number(row.unitPrice).toLocaleString('es-ES')} €` : '-'}</td>
-                          <td className="py-2.5 px-4 text-right font-medium text-gray-900 dark:text-white tabular-nums">{row.total != null ? `${Number(row.total).toLocaleString('es-ES')} €` : '-'}</td>
+                          <td className="py-2.5 px-4 text-right text-gray-700 dark:text-gray-300 tabular-nums">{row.unitPrice != null ? `${Number(row.unitPrice).toLocaleString(locale)} €` : '-'}</td>
+                          <td className="py-2.5 px-4 text-right font-medium text-gray-900 dark:text-white tabular-nums">{row.total != null ? `${Number(row.total).toLocaleString(locale)} €` : '-'}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -521,7 +142,7 @@ export default function PresupuestoOrientativo() {
                       <tfoot>
                         <tr className="border-t-2 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                           <td colSpan={5} className="py-2.5 px-4 text-right text-sm font-medium text-gray-900 dark:text-white">{t('solutions.presupuestoOrientativo.result.total')}</td>
-                          <td className="py-2.5 px-4 text-right font-bold text-gray-900 dark:text-white tabular-nums">{Number(result.total).toLocaleString('es-ES')} €</td>
+                          <td className="py-2.5 px-4 text-right font-bold text-gray-900 dark:text-white tabular-nums">{Number(result.total).toLocaleString(locale)} €</td>
                         </tr>
                       </tfoot>
                     )}
@@ -619,7 +240,7 @@ export default function PresupuestoOrientativo() {
               <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
                 <p className="text-sm text-blue-800 dark:text-blue-300">
                   <Info className="h-4 w-4 inline-block mr-1.5 align-text-bottom" />
-                  {t('solutions.presupuestoOrientativo.result.editingNote')}
+                  {copy.resultNote}
                 </p>
               </div>
             )}
@@ -663,8 +284,8 @@ export default function PresupuestoOrientativo() {
                     <span className="text-sm text-gray-500 dark:text-gray-400 mr-2">{t('solutions.presupuestoOrientativo.result.total')}:</span>
                     <span className="text-base font-bold text-gray-900 dark:text-white tabular-nums">
                       {result.totalMin != null && result.totalMax != null
-                        ? `${Number(result.totalMin).toLocaleString('es-ES')} € – ${Number(result.totalMax).toLocaleString('es-ES')} €`
-                        : result.total != null ? `${Number(result.total).toLocaleString('es-ES')} €` : '—'}
+                        ? `${Number(result.totalMin).toLocaleString(locale)} € – ${Number(result.totalMax).toLocaleString(locale)} €`
+                        : result.total != null ? `${Number(result.total).toLocaleString(locale)} €` : '—'}
                     </span>
                   </div>
                 )}
@@ -673,10 +294,7 @@ export default function PresupuestoOrientativo() {
 
             {/* CTA After Result */}
             {result && (
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1, duration: 0.4 }}
+              <div
                 className="mt-12 p-6 sm:p-8 bg-gradient-to-br from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 border border-primary-200 dark:border-primary-800 rounded-lg"
               >
                 <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4">
@@ -687,53 +305,21 @@ export default function PresupuestoOrientativo() {
                     to="/contact"
                     className="inline-flex items-center justify-center gap-2 rounded-md bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 text-white px-6 py-3 text-sm font-medium transition-colors"
                   >
-                    {t('solutions.presupuestoOrientativo.ctaAfterResult.createAccount')}
+                    {copy.openBuildApp}
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                   <Link
                     to="/contact"
                     className="inline-flex items-center justify-center gap-2 rounded-md border border-primary-600 dark:border-primary-500 bg-white dark:bg-gray-900 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 px-6 py-3 text-sm font-medium transition-colors"
                   >
-                    {t('solutions.presupuestoOrientativo.ctaAfterResult.installCompany')}
+                    {copy.talk}
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
-              </motion.div>
+              </div>
             )}
-          </motion.div>
+          </div>
         )}
-      </div>
-
-      {/* Loading Modal */}
-      {loading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.97 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white dark:bg-gray-900 rounded-lg p-6 sm:p-8 mx-4 max-w-sm w-full shadow-xl border border-gray-200 dark:border-gray-700"
-          >
-            <LoadingProgressBar stage={loadingStage} t={t} />
-            <div className="mt-5 flex justify-center">
-              <button
-                type="button"
-                onClick={() => {
-                  if (abortControllerRef.current) {
-                    abortControllerRef.current.abort()
-                  }
-                  progressTimeoutsRef.current.forEach((timeout) => clearTimeout(timeout))
-                  progressTimeoutsRef.current = []
-                  setLoadingStage(0)
-                  setLoading(false)
-                  setError(null)
-                }}
-                className="px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm font-medium transition-colors"
-              >
-                {t('solutions.cancel')}
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      )}
     </div>
-  )
+  </DemoPage>
 }

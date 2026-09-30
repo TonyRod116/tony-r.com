@@ -1,0 +1,170 @@
+[
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996612/IMG_2886-HDR-scaled_bd1lwq.jpg",
+    "local": "/gallery/totalhomes-01.jpg",
+    "bytes": 392991,
+    "sha256": "e230a0afc7d2701121960215b42eb6a284eaf7115463c4e783abc410e93a8cd9",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996611/IMG_2776-HDR-scaled_qhhosl.jpg",
+    "local": "/gallery/totalhomes-02.jpg",
+    "bytes": 842894,
+    "sha256": "12cf5a78da6b48e751c8c6799b06671ca9ac8f692abfaa8ec33acf266a14e961",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996611/IMG_2806-HDR-scaled_dsivnp.jpg",
+    "local": "/gallery/totalhomes-03.jpg",
+    "bytes": 432237,
+    "sha256": "c2d72cae2ad101ba576ee152ee36241c1dbd1f3ef493f6a2c659faec9fa7d8f1",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996611/IMG_2781-HDR-scaled_iejtvh.jpg",
+    "local": "/gallery/totalhomes-04.jpg",
+    "bytes": 547720,
+    "sha256": "f631e1c67c3e03db2587f62071ffe7581b275082db589b67d8976e58d8f66f6d",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996610/IMG_2766-HDR-scaled_cd32uy.jpg",
+    "local": "/gallery/totalhomes-05.jpg",
+    "bytes": 947889,
+    "sha256": "0c60747d5d26710ad4a75b16704708d2663d9a8b8af1c8e6f2f3b9742a5c3f5e",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996610/IMG_2831-HDR-scaled_fvvdpq.jpg",
+    "local": "/gallery/totalhomes-06.jpg",
+    "bytes": 402078,
+    "sha256": "cda0f3ad3a91a3f7167ef14ccb575ed15792a9c3a801f5425033debf8ea410a6",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996610/IMG_2811-HDR-scaled_lmutq3.jpg",
+    "local": "/gallery/totalhomes-07.jpg",
+    "bytes": 570804,
+    "sha256": "a5209d1443db72e36d3c556d37c639e23fbb24be92d143b63754f3253bd6ae15",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996542/171824017_895573531017005_7784015358275798724_n_17915937343640851_ua5opa.jpg",
+    "local": "/gallery/totalhomes-08.jpg",
+    "bytes": 162595,
+    "sha256": "4f03cd83134d27b7785e98f54d32c5bccd9ddaa91ea18bfe37310623509c289d",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996541/293180330_721344662239585_1713005618099661733_n_18243293059107498_teceiv.jpg",
+    "local": "/gallery/totalhomes-09.jpg",
+    "bytes": 97935,
+    "sha256": "3b7fd2ed86b53ec7fc5fd01ccc24c7c6da1e15e6b01eb529deb2751b6dc9e94d",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996541/293074400_1178663579642506_992248577540266630_n_18166540426216089_qkncfn.jpg",
+    "local": "/gallery/totalhomes-10.jpg",
+    "bytes": 92319,
+    "sha256": "6cf6d3cf4b8cf57b2d421c2b3c97b6be742a1cbf9b5b115711adcba5648acd3c",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996541/468430067_18073248796719733_1747281771912578474_n_17952419735855257_1_hquone.jpg",
+    "local": "/gallery/totalhomes-11.jpg",
+    "bytes": 295194,
+    "sha256": "534e019425a357b3285cdeefcea24e0c94301dc6b2e3409148a777ee07af4b94",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996541/Cocina_1x1_01_zrkrso.jpg",
+    "local": "/gallery/totalhomes-12.jpg",
+    "bytes": 795699,
+    "sha256": "ab99dd41606a51c796d6940e72c5b3d57c0410ec5f3d9a4d3a4758b654fe10e5",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996540/251158214_612387496559337_4503979597741940012_n_18024637921325773_slfijz.jpg",
+    "local": "/gallery/totalhomes-13.jpg",
+    "bytes": 113671,
+    "sha256": "1087436fe7de54f884046fb2e7936edcd352d0ad744b4f320dbb9733a8fa798b",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996540/IMG_3253_r9ehr2.jpg",
+    "local": "/gallery/totalhomes-14.jpg",
+    "bytes": 2483205,
+    "sha256": "2dfa6123bd52c33ae1aaad5fe647ecaa3851d7d9194380be769dfb0f6e9dab24",
+    "status": "copied"
+  },
+  {
+    "original": "https://www.totalhomes.es/wp-content/uploads/2021/12/019_MGL9176-scaled.jpg",
+    "local": "/gallery/totalhomes-15.jpg",
+    "bytes": 436383,
+    "sha256": "735597ae995c0f0ac11e9cec6351c0fec2dd896049ebc5311603b0cb396bfe2a",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996540/169672644_441773263564249_1744394091368718959_n_17915287114651978_qn8vti.jpg",
+    "local": "/gallery/totalhomes-16.jpg",
+    "bytes": 133685,
+    "sha256": "d985769b0069063563d24b5e2ff0f25416f0c141a5f8188c95a22b89d5fb6590",
+    "status": "copied"
+  },
+  {
+    "original": "https://www.totalhomes.es/wp-content/uploads/2021/07/Imagen1-1536x1215.jpg",
+    "local": "/gallery/totalhomes-17.jpg",
+    "bytes": 163085,
+    "sha256": "5f2ed26711199acc6732977a143705c435d15f29cdda8dd2475401d414dbe3bc",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996539/168755517_129565675799249_8095128264506424193_n_18120244003207215_txzuf3.jpg",
+    "local": "/gallery/totalhomes-18.jpg",
+    "bytes": 129386,
+    "sha256": "a36be5b79bbfcd99bff804b4d86712542a0ea765b6c856c8f78d843ce724001e",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996539/298244950_1428471324340261_3198742836144046443_n_17958956008921687_xaarci.jpg",
+    "local": "/gallery/totalhomes-19.jpg",
+    "bytes": 107549,
+    "sha256": "ee1d3e9c6dbe072fcedcabe9fa1f6a1306b4b0fc8e48593d492607f66634da05",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996539/167689268_923173905134056_7535945953983148125_n_17899968709832729_vcxm7e.jpg",
+    "local": "/gallery/totalhomes-20.jpg",
+    "bytes": 163934,
+    "sha256": "efacd8b42ae039f0f11e1175824db49d28ec56ca7355a736e1f4ac04eee2d8b3",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996539/101865373_804468246748451_4755967608439305441_n_17882956138611262_ilveck.jpg",
+    "local": "/gallery/totalhomes-21.jpg",
+    "bytes": 83908,
+    "sha256": "ea3b926aa0f50d68d6fd8107d3f3e22490bfbe53d9698c0f60718f94d1dbaf4c",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996540/468295210_18073248790719733_7299729373361102705_n_18322804843086768_cmfsv0.jpg",
+    "local": "/gallery/totalhomes-22.jpg",
+    "bytes": 293130,
+    "sha256": "2d27e9f874e6a9ad973e500b62ee385301ba607ff143407bbe019a849ed22bc0",
+    "status": "copied"
+  },
+  {
+    "original": "https://www.totalhomes.es/wp-content/uploads/2021/07/Vista-1-scaled.jpg",
+    "local": "/gallery/totalhomes-23.jpg",
+    "bytes": 501198,
+    "sha256": "a2a8fbe85dfceab175bb33100bc8fd836f3ea2547d60ad5c49b78c4f5d77b16a",
+    "status": "copied"
+  },
+  {
+    "original": "https://res.cloudinary.com/dgu3pco4q/image/upload/v1763996611/IMG_2801-HDR-scaled_j4jile.jpg",
+    "local": "/gallery/totalhomes-24.jpg",
+    "bytes": 368712,
+    "sha256": "84ac8b97379c117cd22f2f16d9cb80a621f15fc9b167120a4fb805e6e22ca39d",
+    "status": "copied"
+  }
+]

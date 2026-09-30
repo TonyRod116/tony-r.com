@@ -243,7 +243,7 @@ Referencia completa (por si hace falta más detalle): en este repo, archivo `api
 El frontend usa el backend BuildApp **por defecto en producción** (base URL: `https://buildapp-v1-backend.onrender.com`).
 
 - **Producción:** sin configurar nada, las demos llaman a BuildApp. Para usar otro backend (staging, etc.), definir `VITE_BUILDAPP_DEMO_API_URL` en el proyecto (p. ej. en Vercel).
-- **Desarrollo:** sin variable, se usan las rutas relativas `/api/chat` y `/api/buildappBudget` (proxy local o Vercel). Para probar contra BuildApp en local, definir `VITE_BUILDAPP_DEMO_API_URL=https://buildapp-v1-backend.onrender.com` en `.env`.
+- **Desarrollo:** el cliente actual también usa BuildApp por defecto; no existe fallback automático a `/api/chat` o `/api/buildappBudget`. `VITE_BUILDAPP_DEMO_API_URL` permite seleccionar otra base. Estado verificado en código el 2026-09-30; disponibilidad externa no comprobada.
 
 Rutas usadas:
 - Lead Qualifier: `POST {BASE}/api/v1/demo/chat`

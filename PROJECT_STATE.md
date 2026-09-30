@@ -1,33 +1,48 @@
-# Project State - April 23, 2026
+# Project State — 2026-09-30
 
-## Current Status
-- **Homepage Positioning**: Reworked the core site copy to position Tony as **CEO & Founder of BuildApp**, not just a generic solutions engineer, with stronger emphasis on founder-led execution, AI product delivery, and hands-on ownership of AWS S3-backed storage/media workflows.
-- **Fix**: Resolved syntax error in `Tetris.jsx` (missing closing brace in AI logic) that was breaking the production build.
-- **MCP Servers**: Playwright, Context7, and Memory Bank (MCP) are installed and connected.
-- **Memory Bank**: A local `memory-bank/` directory has been created and populated with structured project documentation.
-- **Repo Memory Layer**: Added repo-local `/.memory/` files for architecture, decisions, glossary, and short startup handoff, adapting the more mature BuildApp system to this portfolio repo.
-- **Screenshot Convention**: BuildApp-related "capturas" requested by the user should be looked up first in `C:\Users\toni_\OneDrive\Imágenes\Capturas de pantalla` (WSL: `/mnt/c/Users/toni_/OneDrive/Imágenes/Capturas de pantalla`) before assuming they exist in-repo.
-- **AI Consistency**: Root AI files now use a repo-specific source of truth aligned with the real structure: `src/`, `api/`, `server/`, `memory-bank/`, and generated `dist*` artifacts.
-- **AI Validation**: Added `scripts/check-ai-instructions.sh` to verify `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `CODEX.md`, `CURSOR.md`, and legacy `cursor.md` remain synchronized with `AI_SHARED_INSTRUCTIONS.md`.
-- **Cursor Compatibility**: `.cursor/rules/project-instructions.mdc` now points back to `AI_SHARED_INSTRUCTIONS.md` instead of treating `cursor.md` as an independent rule set.
-- **Cross-IA Skills**: Added repo-local shared skill docs at `docs/ai-skills/browser-qa.md` and `docs/ai-skills/codebase-onboarding.md` so Codex, Claude, Gemini, and compatible agents can follow the same onboarding and visual QA workflow.
-- **Marketing Ops Stack**: Added repo-local marketing workflow support based on `coreyhaines31/marketingskills` (primary), `ericosiu/ai-marketing-skills` (growth/experimentation), and `kostja94/marketing-skills` (SEO/discoverability), plus local bootstrap files in `ai/tools/` and a tailored `.agents/product-marketing-context.md`.
-- **Repomix**: Installed and configured for clean repository bundling.
-- **Lead Qualifier**: Fixed bug where the welcome message was always in Spanish.
-- **Tetris AI**:
-  - Fixed piece wrap-around bug during movement/rotation and AI simulation.
-  - Improved AI heuristics (better weights for holes, bumpiness, and line clearing).
-  - Implemented an **animated dissolution ("sand") effect** for the Magic T piece.
-  - **AI Enabled for Special T**: The AI button now works with the special "T" piece, including the dissolution animation.
+Last updated: 2026-09-30
 
-## Pending Work
-- [ ] Verify Playwright screenshot capabilities in a real scenario.
-- [ ] Test the Tetris AI at very high levels to ensure stability.
-- [ ] Consider migrating Vercel leads to a persistent database (KV or Postgres).
-- [ ] Decide whether to keep or delete legacy `cursor.md` once all tooling reads from the shared root instructions.
+## Current state
 
-## Next Actions
-1. Monitor AI performance in Tetris to see if further heuristic tuning is needed.
-2. Explore adding more AI-powered games to the portfolio.
-3. Use the new marketing stack to tighten homepage/project copy, SEO structure, and portfolio discoverability in source files rather than ad-hoc prompts.
-4. If AI tooling changes again, update `AI_SHARED_INSTRUCTIONS.md`, re-run sync/check scripts, and keep `cursor.md` in lockstep until it is retired.
+Portfolio and AI demos in src/, Vercel functions in api/, local Express/persistence in server/. Lead Qualifier currently selects the BuildApp demo endpoint, including development. Availability of external services has not been tested by this tooling installation.
+
+## Agent and quality foundation
+
+- Repo-native skills in .agents/skills, including engineering, marketing, memory/evaluation/audit, observability and bounded autonomy; .claude/skills mirrors canonical source.
+- Selective local memory with current/historical status, authority/freshness and explicit sources; health and observed-outcome ledger with evidence hashes.
+- Global model policy reused through ai:route; no copied classifier, universal model switching or automatic provider disclosure.
+- Session brief and bounded Claude SessionStart hook; other clients use the explicit command.
+- Design context and regression gates for documented preexisting design/lint debt.
+- Local browser interactions/visual baselines, CI without deployment, telemetry with allowed fields and route loading on demand.
+- Complete adoption inventory: docs/ai/adoption.md. Final checks and limits: docs/ai/verification.md.
+- Verified closure: 23 tooling tests, 24 routing cases, 52 browser journeys and six screenshot comparisons pass. Main entry JS reduces 37%; total emitted JS grows slightly. User changes preserved. Follow-up redesign/debt is tracked in My Page-87.
+
+## Preserved work and limits
+
+Preexisting changes in Tetris, translations, Resume, Claude local settings and generated dist output are preserved. Build verification uses .artifacts/build. No production deploy, paid AI test, external review, real contact message, Sentry account or schedule was activated.
+
+## Current home and next product step
+
+Home showroom is implemented after Tony's approval and Sonnet 5.5 High design consultation. Scoped warm-paper layout and direct copy replace the old presentation; BuildApp is first, trading is a sober confirmed statement, and the lab is compact. Portrait scroll bug is removed, normal-size links meet the tested contrast threshold, and language selection works by keyboard and updates document lang. Header/footer variants are homepage-only.
+
+Tony's navigation follow-up keeps AI Lab prominent in the homepage header alongside Projects, About and Contact. Solutions is a translated secondary footer link. The homepage AI link retains the plain typography of the showroom.
+
+Build, 23 tooling tests, 24 routing cases, 68 browser journeys and six visual comparisons pass. Only the two home snapshots were updated after inspecting the new design; the four neighboring route references stayed unchanged. Verified local evidence: docs/ai/home-showroom-20260930.json. Preview captures: .artifacts/home-redesign-preview. The trading statement is user-confirmed, not independently audited performance. No deployment or publication occurred.
+
+Next: review the remaining site pages against the showroom direction. Existing unrelated work in Tetris, Resume, local settings and dist remains preserved. Frontend local proof does not establish external service availability or business impact.
+
+## AI laboratory — implemented locally 2026-09-30
+
+The /ai hub and all six experiments now share one layout, visual tokens, navigation and three-language catalog. Neural visualization is integrated into React with real local MNIST inference, pointer drawing, a rotatable vector view and explicit retry; the old HTML link redirects. T-Tris preserves its special T, music, ghost and records while using shared tested rules for rendering/manual/AI. Neighboring games get responsive controls, accessible labels, delay cancellation and clearer copy. Six Degrees uses a smaller curated, source-backed film graph instead of incorrect sample credits.
+
+Full browser suite passes 106 journeys; final AI/copy-specific recheck and visual results are recorded in docs/ai/lab-redesign-20260930.json. Build and 34 model/game/tooling tests pass; captured desktop/mobile/tablet routes show no overflow or runtime errors. Local UI proof does not establish model accuracy or production deployment. Remaining showroom work concerns other site pages; AI is completed within that larger follow-up.
+
+## Remaining showroom pages — implemented locally 2026-09-30
+
+About, Projects, Resume, Contact, Solutions and all three active solution demos now share a warm-paper system in src/components/site/. Header is consistent, with AI primary and Solutions/CV secondary. Copy is ES/EN/CA; project ownership is explicit and recruitment/investment framing does not lead. Original PDFs and24 gallery images are retained, captions corrected and gallery served locally. Dialogs, comparison controls, selected locale and asynchronous cancel/reset paths are verified. API/server/settings/dist and approved home/AI source remain preserved.
+
+Observed: isolated build, quality checks (38 tests,24 routing cases) and full140 browser journeys pass. The last budget CTA text adjustment is rechecked in10 specific journeys. Final images/comparisons and limitations: docs/ai/site-showroom-20260930.md and JSON; captures in .artifacts/site-rest-preview/. All remote demo/contact responses used for QA are fixtures; no production availability or generated-image accuracy is certified. Sonnet consultation fails without advice. Publishing remains outside this task.
+
+## Publication — 2026-09-30
+
+Tony authorizes publishing the completed showroom, AI lab, demos and repository tools. Current hosting confirmed: IONOS serves tony-r.com from its tony-r directory. Private backup precedes activation; public HTML SHA-256 matches the isolated production build. The historical GitHub → Vercel integration remains active separately. Online verification and recovery are recorded in docs/ai/publication-20260930.md/json; deployment verification blocks contact submissions and paid AI calls. Personal Claude settings and preexisting dist modifications are excluded from commits. Existing dependency audit debt is tracked in My Page-5lo, without automatic upgrades during publication.

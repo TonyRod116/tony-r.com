@@ -1,11 +1,48 @@
-# Tony's AI Games Portfolio
+# Tony Rodríguez — Portfolio, Projects and AI Demos
 
-A collection of AI-powered games implemented in JavaScript, converted from original Python implementations.
+React/Vite portfolio with project stories, CV, contact and interactive AI demos. The main domain [tony-r.com](https://tony-r.com) is hosted on IONOS; the existing Vercel Git integration also remains active. Publication evidence and recovery: [2026-09-30 release](docs/ai/publication-20260930.md). Source lives in `src/`; Vercel functions in `api/`; local Express/persistence in `server/`. Several demos call BuildApp directly: see [current contracts](docs/ai/api-contracts.md). Local source inspection does not certify production availability.
+
+## Completed showroom
+
+Home and AI keep their approved identities; About, Projects, Resume, Contact and the three Solutions demos share the warm-paper system in `src/components/site/`. Copy is in `src/data/siteContent.js` (ES/EN/CA). The header keeps Projects/AI/About/Contact; CV and Solutions are in the footer. Documents use native dialogs and original PDF assets. All 24 Total Homes images are cached unchanged in `public/gallery/`, with original source hashes and visually inspected descriptions.
+
+The three demos retain BuildApp request/response contracts. Budget supports both table and range replies; render comparison supports pointer/touch/keyboard; chat reset ignores obsolete replies. QA intercepts all remote generation/contact requests. Local verification and limits: `docs/ai/site-showroom-20260930.md` and its JSON companion. This implementation does not publish the site.
+
+## Development and quality
+
+Use Node.js 24 (the version validated by CI) and the checked-in lockfile. Existing dependencies are unchanged.
+
+```bash
+npm ci
+npm run dev
+npm run check
+npm run build -- --outDir .artifacts/build
+npm run test:e2e
+npm run test:visual
+npm run perf:report
+```
+
+Install Chromium for browser QA with `npx playwright install chromium` if the machine lacks it. Tests use local built output, simulated demo/contact responses and block external destinations. Visual baselines must use the same OS/browser; read [browser QA](docs/ai-skills/browser-qa.md). `npm run build` still produces deployable `dist/` with the demos compatibility copy; an explicit outDir preserves existing dist changes.
+
+## AI work system
+
+Start with `.agents/skills/my-page-agent/SKILL.md`. [Operation](docs/ai/operating-system.md), [complete adoption matrix](docs/ai/adoption.md), [design context](.agents/design-context.md) and [verification](docs/ai/verification.md) explain the local skills, memory, hooks, routing, checks and authority limits.
+
+```bash
+npm run ai:brief
+npm run ai:context -- --query "objective and constraints"
+npm run ai:health
+npm run ai:route -- --query "objective"
+```
+
+The model selector is the existing personal installation in `~/litellm`; its absence is reported, not replaced. CI works without it. Skills live in `.agents/skills` and are mirrored to `.claude/skills` using `ai:sync`; instructions use the existing sync/check scripts. Neither tooling installation nor green CI publishes or enables external services.
+
+The sections below describe the existing demos and algorithms. Treat older endpoint/deployment instructions as historical where the current contract page differs.
 
 ## 🎮 Games Included
 
 ### 1. Tic-Tac-Toe AI
-- **Algorithm**: Minimax with Alpha-Beta Pruning
+- **Algorithm**: Minimax
 - **Difficulty**: Impossible to beat (perfect play)
 - **Features**: 
   - Hard/Easy mode toggle
@@ -22,16 +59,22 @@ A collection of AI-powered games implemented in JavaScript, converted from origi
 
 ### 3. Six Degrees of Kevin Bacon
 - **Algorithm**: Breadth-First Search (BFS)
-- **Database**: Real IMDB data (10K+ actors, 5K+ movies)
+- **Active dataset**: A small curated graph of 10 actors and four films, with cast references in `src/data/actorGraph.js`. Older larger assets are retained but are not the active demo.
 - **Features**:
-  - Auto-correction for misspelled names
-  - Real-time path finding
-  - Actor statistics
+  - Suggested names, working examples and shortest-path search
+  - Linked film/cast sources and explicit sample scope
+  - Spanish, English and Catalan interface
+
+### Shared AI Lab and repaired demos
+
+The six `/ai/*` experiments share `src/components/ai/AiExperimentLayout.jsx` and scoped design tokens in `AiLab.css`. The hub and each experiment use the same navigation, interaction stage and method explanation. T-Tris keeps Magic T, manual/AI play, ghost placement, music and local records; pure rules and reachable-placement search live in `tetrisEngine.js`. Keyboard shortcuts operate on the focused board.
+
+`/ai/neural-network` performs local inference with the attributed pretrained MNIST artifact in `public/models/mnist/`. Drawing supports mouse/touch and scaled canvases; actual activations drive a rotatable vector projection. Failed or invalid model loading provides retry instead of random predictions. The old `/neural-network.html` link redirects to the integrated route. Original Apache-2.0 license and notice accompany the weights. See `docs/ai/lab-redesign-20260930.md` for checks and limits.
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+
+- Node.js 22+
 - npm or yarn
 
 ### Installation
@@ -47,7 +90,7 @@ A collection of AI-powered games implemented in JavaScript, converted from origi
 
 ### Deploy en Vercel (demos con IA en vivo)
 
-Para que **Lead Qualifier** y **Presupuestos Reformas** conecten con las IAs en producción:
+Las funciones propias usan las variables indicadas abajo. **Lead Qualifier actualmente llama al backend de BuildApp**, también en desarrollo; su flujo no depende automáticamente de `/api/chat`. Consulte `docs/ai/api-contracts.md` antes de configurar o probar una demo.
 
 1. **Variable de entorno obligatoria**  
    En Vercel: **Project → Settings → Environment Variables** añade:
@@ -210,13 +253,11 @@ public/demos/
 - **Styling**: Tailwind CSS
 - **Animations**: Framer Motion
 - **Icons**: Lucide React
-- **Deployment**: Hostinger
+- **Deployment configuration**: Vercel functions and SPA output; verify actual hosting/runtime before making availability claims.
 
 ## 📊 Performance Metrics
 
-- **Tic-Tac-Toe**: < 1ms move calculation
-- **Minesweeper**: < 100ms AI solving
-- **Six Degrees**: < 2s path finding (10K+ actors)
+`npm run perf:report` measures local build artifacts. Browser journeys and pure model/game regression tests verify behavior; they do not establish production latency, model accuracy or business impact. Historical latency estimates are not current guarantees.
 
 ## 🤝 Contributing
 

@@ -1,5 +1,9 @@
 # Codebase Onboarding
 
+Last updated: 2026-09-30
+
+Use `.agents/skills/my-page-agent/SKILL.md`, `npm run ai:brief` and `npm run ai:context -- --query "objective"` for bounded orientation. The status/authority registry is `.agents/memory/map.json`; only current sources are retrieved automatically. Open primary files for consequential claims. Full operation: `docs/ai/operating-system.md`.
+
 Repo-specific onboarding workflow shared across Codex, Claude, Gemini, Cursor, and similar agents.
 
 ## When to Use
@@ -79,7 +83,7 @@ Key demo and game routes:
 
 ## Important Integration Notes
 
-- `Lead Qualifier` uses `/api/chat`
+- `Lead Qualifier` selects the BuildApp `/api/v1/demo/chat` route in development and production; `/api/chat` remains a distinct compatibility function
 - `Presupuestos Reformas` uses `/api/generate-quote`
 - local lead persistence lives in `server/data/leads.json`
 - production/serverless persistence is not equivalent to the local Express server unless explicitly implemented

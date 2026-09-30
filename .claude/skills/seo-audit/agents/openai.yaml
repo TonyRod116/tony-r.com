@@ -1,0 +1,4 @@
+interface:
+  display_name: "seo-audit"
+  short_description: "Audita estructura, indexación y metadatos de las rutas del port"
+  default_prompt: "Usa $seo-audit para resolver este encargo en My Page con evidencia local."

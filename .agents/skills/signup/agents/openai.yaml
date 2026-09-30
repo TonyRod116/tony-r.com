@@ -1,0 +1,4 @@
+interface:
+  display_name: "signup"
+  short_description: "Mejora formularios de contacto o registro solicitados."
+  default_prompt: "Usa $signup para resolver este encargo en My Page con evidencia local."

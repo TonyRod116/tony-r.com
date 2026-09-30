@@ -1,5 +1,19 @@
 # Browser QA
 
+Last updated: 2026-09-30
+
+## Executable local checks
+
+- `npm run build -- --outDir .artifacts/build` preserves existing generated output.
+- `npm run test:e2e` checks built routes, languages, links, contact, chat success/error and telemetry on desktop/mobile. BuildApp/AI/Formspree are mocked; external network is blocked.
+- `npm run test:visual` compares home/projects/contact viewport screenshots, full AI lab/neural/T-Tris pages and the remaining portfolio/solution pages. CV coverage includes lazy-loaded local thumbnails. Chat visual timestamps use a fixed date/time zone; interaction tests use real timers. Updates require inspecting images; same OS and Chromium build are necessary. CI records screenshots as artifacts without silently accepting new references.
+- `npm run check:design` prevents new arbitrary token debt; it does not replace visual/keyboard/accessibility judgment.
+- `npm run perf:report` measures build artifacts, not runtime Core Web Vitals.
+
+Fixtures and routes live in `tests/e2e/`; reports in ignored `.artifacts/`. The QA path starts only a local Vite preview, never Express, production services or paid AI. Deep-link smoke of local preview does not certify Vercel middleware or external redirects.
+
+Configuration follows the official [local web server](https://playwright.dev/docs/test-webserver), [network mocking](https://playwright.dev/docs/network) and [visual comparison](https://playwright.dev/docs/test-snapshots) guidance, checked against installed Playwright 1.59.1. This machine's verified temporary browser path is `/tmp/my-page-playwright-browsers`; set `PLAYWRIGHT_BROWSERS_PATH` to that location while using it, or install the matching browser in your normal cache. The temporary cache is not committed.
+
 Repo-specific visual QA workflow shared across Codex, Claude, Gemini, Cursor, and similar agents.
 
 ## When to Use

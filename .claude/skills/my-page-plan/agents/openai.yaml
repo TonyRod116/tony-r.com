@@ -1,0 +1,4 @@
+interface:
+  display_name: "my-page-plan"
+  short_description: "Define alcance, pasos y criterios de aceptación para cambios am"
+  default_prompt: "Usa $my-page-plan para resolver este encargo en My Page con evidencia local."

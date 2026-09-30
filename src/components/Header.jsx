@@ -5,7 +5,7 @@ import { Menu, X } from 'lucide-react'
 import { cn } from '../utils/cn'
 import { useLanguage } from '../hooks/useLanguage.jsx'
 import LanguageSelector from './LanguageSelector'
-import NeuralParticles from './NeuralParticles'
+import './site/Site.css'
 
 const navigation = [
   { name: 'home', href: '/' },
@@ -20,16 +20,16 @@ const navigation = [
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [scrollPercentage, setScrollPercentage] = useState(0)
   const location = useLocation()
+  const isHome = location.pathname === '/'
+  const isAi = location.pathname === '/ai' || location.pathname.startsWith('/ai/')
   const { t } = useLanguage()
+
+  useEffect(() => { setIsOpen(false) }, [location.pathname])
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      const percent = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0
-      setScrollPercentage(Math.min(percent, 100))
     }
 
     window.addEventListener('scroll', handleScroll)
@@ -38,7 +38,8 @@ export default function Header() {
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
-  const translatedNavigation = navigation.map(item => {
+  const visibleNavigation = ['/projects', '/ai', '/about', '/contact'].map(href => navigation.find(item => item.href === href))
+  const translatedNavigation = visibleNavigation.map(item => {
     const translatedName = t(`nav.${item.name}`)
     // Fallback si la traducción falla
     const displayName = translatedName && translatedName !== `nav.${item.name}` ? translatedName : item.name
@@ -50,20 +51,18 @@ export default function Header() {
 
   return (
     <motion.header
-      initial={{ y: -100 }}
+      initial={false}
       animate={{ y: 0 }}
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-md',
+        !isHome && !isAi && 'site-header',
+        isHome && 'home-header',
+        isAi && 'ai-header',
         isScrolled
           ? 'bg-white/90 dark:bg-gray-900/90 border-b border-gray-200 dark:border-gray-700'
           : 'bg-white/70 dark:bg-gray-900/70'
       )}
     >
-      {/* Scroll Progress Bar */}
-      <div
-        className="absolute top-0 left-0 h-[3px] bg-primary-500 scroll-progress-glow z-[60] transition-[width] duration-100"
-        style={{ width: `${scrollPercentage}%` }}
-      />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -81,31 +80,6 @@ export default function Header() {
                   className="text-sm font-medium px-4 py-2 rounded-lg bg-primary-600 text-white hover:bg-primary-700 shadow-md hover:shadow-primary-500/25 transition-all duration-200"
                 >
                   {item.name}
-                </Link>
-              ) : item.href === '/ai' ? (
-                <Link
-                  key={item.href}
-                  to={item.href}
-                  className="relative text-sm font-medium px-3 py-1.5 rounded-lg overflow-hidden group"
-                >
-                  <NeuralParticles
-                    className="absolute inset-0 w-full h-full rounded-lg"
-                    particleCount={6}
-                    connectionDistance={45}
-                    lineWidth={0.8}
-                    dotSize={[0.5, 1.3]}
-                    lineOpacity={0.4}
-                    dotOpacity={0.6}
-                    speed={0.15}
-                  />
-                  <span className={cn(
-                    'relative z-10 transition-colors',
-                    location.pathname === item.href
-                      ? 'text-primary-400'
-                      : 'text-gray-200 group-hover:text-primary-400'
-                  )}>
-                    {item.name}
-                  </span>
                 </Link>
               ) : (
                 <Link
@@ -161,7 +135,7 @@ export default function Header() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'tween', duration: 0.3, ease: 'easeOut' }}
-              className="fixed top-16 right-0 w-64 max-w-[70vw] bg-white dark:bg-gray-900 backdrop-blur-md border-l border-gray-200 dark:border-gray-700 shadow-2xl z-[9999] md:hidden max-h-[calc(100vh-4rem)] flex flex-col"
+              className="site-mobile-panel fixed top-16 right-0 w-64 max-w-[70vw] bg-white dark:bg-gray-900 backdrop-blur-md border-l border-gray-200 dark:border-gray-700 shadow-2xl z-[9999] md:hidden max-h-[calc(100vh-4rem)] flex flex-col"
             >
               {/* Navigation */}
               <nav className="flex-1 py-4 space-y-2 overflow-y-auto min-h-0">
@@ -174,31 +148,6 @@ export default function Header() {
                       className="block px-4 py-2 text-sm font-medium rounded-md mx-2 bg-primary-600 text-white hover:bg-primary-700 transition-colors text-center"
                     >
                       {item.name}
-                    </Link>
-                  ) : item.href === '/ai' ? (
-                    <Link
-                      key={item.href}
-                      to={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className="relative block px-4 py-2 text-sm font-medium rounded-md mx-2 overflow-hidden"
-                    >
-                      <NeuralParticles
-                        className="absolute inset-0 w-full h-full rounded-md"
-                        particleCount={5}
-                        connectionDistance={35}
-                        lineWidth={0.5}
-                        dotSize={[0.3, 1]}
-                        lineOpacity={0.4}
-                        dotOpacity={0.6}
-                      />
-                      <span className={cn(
-                        'relative z-10',
-                        location.pathname === item.href
-                          ? 'text-primary-400'
-                          : 'text-gray-200'
-                      )}>
-                        {item.name}
-                      </span>
                     </Link>
                   ) : (
                     <Link

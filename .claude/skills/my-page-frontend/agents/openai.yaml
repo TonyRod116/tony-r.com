@@ -1,0 +1,4 @@
+interface:
+  display_name: "my-page-frontend"
+  short_description: "Construye y verifica interfaces, traducciones y rendimiento de "
+  default_prompt: "Usa $my-page-frontend para resolver este encargo en My Page con evidencia local."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "ads"
+  short_description: "Planifica campañas solicitadas y su medición sin gastar por def"
+  default_prompt: "Usa $ads para resolver este encargo en My Page con evidencia local."

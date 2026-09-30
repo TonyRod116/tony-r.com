@@ -1,0 +1,4 @@
+interface:
+  display_name: "copy-editing"
+  short_description: "Pule texto existente sin inventar hechos ni cambiar la promesa."
+  default_prompt: "Usa $copy-editing para resolver este encargo en My Page con evidencia local."

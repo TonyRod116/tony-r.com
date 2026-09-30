@@ -1,3 +1,5 @@
+import { observeDemoRequest } from '../../../../utils/telemetry'
+
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions'
 const TIMEOUT_MS = 30000
 
@@ -35,20 +37,19 @@ export async function callOpenAI(apiToken, systemPrompt, messages, config = {}, 
 }
 
 async function callViaProxy(endpoint, messages, config, signal, language) {
-  const response = await fetch(endpoint, {
+  const response = await observeDemoRequest('lead_qualifier', () => fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ messages, config, language }),
     signal,
-  })
+  }))
 
   // Verificar si la respuesta es JSON antes de parsear
   const contentType = response.headers.get('content-type')
   if (!contentType || !contentType.includes('application/json')) {
-    const text = await response.text()
-    console.error('[openai] Non-JSON response from', endpoint, ':', text.substring(0, 200))
+    console.error('Lead qualifier received a non-JSON response')
     throw new Error(`Invalid response format from server. Expected JSON but got ${contentType || 'unknown'}`)
   }
 

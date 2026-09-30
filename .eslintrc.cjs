@@ -13,8 +13,16 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['react-refresh'],
+  plugins: ['react', 'react-refresh'],
+  overrides: [
+    {
+      files: ['scripts/**/*.js', 'scripts/**/*.mjs', 'tests/**/*.mjs', 'playwright*.js'],
+      env: { node: true },
+    },
+  ],
   rules: {
+    'react/jsx-uses-vars': 'error',
+    'no-unused-vars': ['error', { ignoreRestSiblings: true }],
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },

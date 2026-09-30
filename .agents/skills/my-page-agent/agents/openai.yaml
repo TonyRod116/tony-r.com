@@ -1,0 +1,4 @@
+interface:
+  display_name: "my-page-agent"
+  short_description: "Conoce My Page y enruta tareas de web, demos, API, marketing y "
+  default_prompt: "Usa $my-page-agent para resolver este encargo en My Page con evidencia local."

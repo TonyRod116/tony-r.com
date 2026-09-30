@@ -4,8 +4,25 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && mkdir -p dist/demos && cp dist/index.html dist/demos/index.html",
-    "preview": "vite preview"
+    "build": "node scripts/build.mjs",
+    "preview": "vite preview",
+    "check": "node scripts/check.mjs",
+    "check:ai": "bash scripts/check-ai-instructions.sh",
+    "check:skills": "node scripts/check-skills.mjs",
+    "check:design": "node scripts/check-design.mjs",
+    "lint": "node scripts/check-lint.mjs",
+    "test:tooling": "node --test --test-isolation=none tests/tooling/*.test.mjs",
+    "test:e2e": "playwright test",
+    "test:visual": "playwright test --config playwright.visual.config.js",
+    "ai:context": "node scripts/ai-memory.mjs context",
+    "ai:health": "node scripts/ai-memory.mjs health",
+    "ai:outcome": "node scripts/ai-memory.mjs outcome",
+    "ai:route": "node scripts/ai-route.mjs",
+    "ai:brief": "node scripts/session-brief.mjs",
+    "ai:sync": "node scripts/sync-skills.mjs",
+    "ai:eval": "node scripts/check-agent-evals.mjs",
+    "ai:loop": "node scripts/ai-loop.mjs",
+    "perf:report": "node scripts/performance-report.mjs"
   },
   "dependencies": {
     "clsx": "^2.0.0",

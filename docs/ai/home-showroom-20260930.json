@@ -1,0 +1,167 @@
+{
+  "observed_at": "2026-09-30",
+  "task": "My Page-87",
+  "scope": "home_showroom_and_relevant_shared_navigation_accessibility",
+  "status": "verified_locally_not_published",
+  "review": {
+    "attempts": [
+      {
+        "status": "failed",
+        "provider": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "high",
+        "access": "subscription_cli",
+        "subscription_type": "max",
+        "observed_models": [
+          "claude-sonnet-5-5"
+        ],
+        "usage": {
+          "claude-sonnet-5-5": {
+            "inputTokens": 8,
+            "outputTokens": 16384,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 12548,
+            "costUSD": 0.21404799999999996,
+            "canonicalModel": "claude-sonnet-5-5",
+            "provider": "firstParty"
+          }
+        },
+        "input_sha256": "cbcf562f04d8fbfff38769af5edc25a1a349c507eecf966a6963e0de2824d4d4",
+        "input_bytes": 6845,
+        "authority": "proposal_only",
+        "fallback": "none"
+      },
+      {
+        "status": "completed_proposal",
+        "provider": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "high",
+        "access": "subscription_cli",
+        "subscription_type": "max",
+        "observed_models": [
+          "claude-sonnet-5-5"
+        ],
+        "usage": {
+          "claude-sonnet-5-5": {
+            "inputTokens": 2,
+            "outputTokens": 2912,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 1245,
+            "costUSD": 0.034104,
+            "canonicalModel": "claude-sonnet-5-5",
+            "provider": "firstParty"
+          }
+        },
+        "input_sha256": "243f67344ec01b06f01f0acf94c2c82f4858919e797ccb86e67b150d17438702",
+        "input_bytes": 2091,
+        "authority": "proposal_only",
+        "fallback": "none"
+      }
+    ],
+    "second_attempt_explicitly_authorized": true,
+    "evidence_mode": "inline_text_and_capture_descriptions_not_direct_image_review",
+    "accepted": [
+      "warm paper and charcoal",
+      "Inter only",
+      "thin rules and asymmetrical real product case",
+      "compact project and experiment rows",
+      "static portrait and no decorative scroll"
+    ],
+    "modified": [
+      "accent darkened to #A44726 for text contrast",
+      "name-led direct copy by principal",
+      "homepage-only compact header/footer"
+    ],
+    "rejected": [
+      "unconfirmed own-capital statement",
+      "unsolicited financial disclaimer",
+      "invented graphs/terminal/performance counters"
+    ]
+  },
+  "checks": {
+    "build": "pass",
+    "root_instructions_and_skills": "pass",
+    "tooling_tests": 23,
+    "routing_cases": 24,
+    "browser_journeys": 68,
+    "visual_comparisons": 6,
+    "other_route_snapshots_preserved": 4,
+    "home_snapshots_updated_after_inspection": 2,
+    "contrast_threshold": 4.5,
+    "languages": [
+      "es",
+      "en",
+      "ca"
+    ],
+    "real_fonts_captures": [
+      "desktop",
+      "mobile",
+      "tablet"
+    ]
+  },
+  "mobile": {
+    "before_height": 8562,
+    "after_height": 4184,
+    "viewport_height": 844,
+    "before_screens": 10.1,
+    "after_screens": 5.0
+  },
+  "preserved_preexisting_changes": {
+    ".agents/product-marketing-context.md": true,
+    ".claude/settings.local.json": true,
+    ".eslintrc.cjs": true,
+    ".gitignore": true,
+    "AGENTS.md": true,
+    "AI_SHARED_INSTRUCTIONS.md": true,
+    "CLAUDE.md": true,
+    "CODEX.md": true,
+    "CURSOR.md": true,
+    "GEMINI.md": true,
+    "README.md": true,
+    "cursor.md": true,
+    "dist/assets/Tony_Rodriguez_Solutions_Engineer_EN-NCyBn-5i.pdf": true,
+    "dist/assets/Tony_Rodriguez_Solutions_Engineer_ES-Bn_3cVGV.pdf": true,
+    "dist/assets/index-BStKES3G.css": true,
+    "dist/assets/index-BeDq8468.js": true,
+    "dist/assets/pic3-gLiy8LDs.jpg": true,
+    "dist/demos/index.html": true,
+    "dist/index.html": true,
+    "docs/BUILDAPP_DEMO_API.md": true,
+    "docs/ai-skills/browser-qa.md": true,
+    "docs/ai-skills/codebase-onboarding.md": true,
+    "docs/ai-skills/marketing-ops.md": true,
+    "memory-bank/activeContext.md": true,
+    "memory-bank/decisionLog.md": true,
+    "memory-bank/progress.md": true,
+    "package.json": true,
+    "src/App.jsx": true,
+    "src/components/GoogleAnalytics.jsx": true,
+    "src/components/games/Tetris.jsx": true,
+    "src/pages/Resume.jsx": true,
+    "src/pages/demos/LeadQualifier/index.jsx": true,
+    "src/pages/demos/LeadQualifier/utils/openai.js": true,
+    "src/pages/demos/PresupuestoOrientativo.jsx": true,
+    "src/pages/demos/ReformasDemo.jsx": true,
+    "src/pages/demos/RenderPresupuesto.jsx": true
+  },
+  "source_hashes": {
+    "src/pages/Home.jsx": "31b58a0f2222f46f30b8d63cf0ca9a24b9327d5e9a7412d9d367aa1bd66be518",
+    "src/pages/Home.css": "9b70bbc466f225d4674c628da9d1eb18640aa3c12e721c307dfc02115cda492f",
+    "src/data/translations.js": "299c3b5c7b24d9233345e97cf5d7e9c729a3cae56e0d4384e082fc37f24a5cbe",
+    "src/components/Header.jsx": "5f262f9c8f77118ee80c231a32e79e6e3eb106d03658ac1d2c7f9e00ea39b0eb",
+    "src/components/Footer.jsx": "65ce235e4741daba2e77b352a05029817d3b2c8ea28e04d3c3c76f43b6fdda4d",
+    "src/components/LanguageSelector.jsx": "b234c3019bc2b8677041304a46ede4eb45d3d515637a0de18e9bd96e6f3c3f77",
+    "src/hooks/useLanguage.jsx": "237e14b9deb924a536fbb15b0436abaee9f94818277c5b49e54b41ab5563d876",
+    "index.html": "daa02ee08ce2890f1fe23f44a402d031074b3ff478ebb54a52f49bce39f8f7d4",
+    "tests/e2e/home.spec.mjs": "1a42bf2449850fdef150d7cb5c8187b8898662d775ec6067b5bf18d3460f8e28",
+    "tests/e2e/visual/__screenshots__/desktop/home.png": "d96e029df919c030d6cac8f703a9d177c8366213a7042fe434d8466756e1e8a0",
+    "tests/e2e/visual/__screenshots__/mobile/home.png": "6d47df75ce25c80fa8fced1710e49c482e515d645aed89e1a8cf3508be59b5ff"
+  },
+  "limits": [
+    "no deployment or push",
+    "no paid AI demo request or real contact sent",
+    "trading income is user-confirmed not independently audited",
+    "no measured conversion or economic benefit",
+    "other pages keep their existing theme"
+  ]
+}

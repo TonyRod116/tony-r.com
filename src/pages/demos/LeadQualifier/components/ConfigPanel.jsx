@@ -1,174 +1,22 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { X, Save, MapPin, Banknote, AlertTriangle, TrendingUp } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import Modal from '../../../../components/site/Modal'
+import { useLanguage } from '../../../../hooks/useLanguage.jsx'
+import { siteContent } from '../../../../data/siteContent'
 
-export default function ConfigPanel({ config, onSave, onClose, t, inline = false }) {
-  const [localConfig, setLocalConfig] = useState({
-    coveredCities: config.coveredCities?.join(', ') || '',
-    budgetRanges: {
-      baño: config.budgetRanges?.baño?.min || 5000,
-      cocina: config.budgetRanges?.cocina?.min || 8000,
-      integral: config.budgetRanges?.integral?.min || 50000,
-      pintura: config.budgetRanges?.pintura?.min || 2500,
-    },
-    budgetBonusThreshold: config.budgetBonusThreshold ?? 50000,
-  })
-
-  const handleSave = () => {
-    const newConfig = {
-      ...config,
-      coveredCities: localConfig.coveredCities.split(',').map(c => c.trim()).filter(Boolean),
-      budgetRanges: {
-        baño: { min: localConfig.budgetRanges.baño },
-        cocina: { min: localConfig.budgetRanges.cocina },
-        integral: { min: localConfig.budgetRanges.integral },
-        pintura: { min: localConfig.budgetRanges.pintura },
-      },
-      budgetBonusThreshold: localConfig.budgetBonusThreshold,
-    }
-    onSave(newConfig)
-  }
-
-  const updateBudgetMin = (type, value) => {
-    setLocalConfig(prev => ({
-      ...prev,
-      budgetRanges: {
-        ...prev.budgetRanges,
-        [type]: parseInt(value, 10) || 0,
-      },
-    }))
-  }
-
-  const typeLabels = {
-    baño: t('solutions.leadQualifier.config.bathroom'),
-    cocina: t('solutions.leadQualifier.config.kitchen'),
-    integral: t('solutions.leadQualifier.config.fullRenovation'),
-    pintura: t('solutions.leadQualifier.config.painting'),
-  }
-
-  const content = (
-    <>
-      {/* Content */}
-      <div className={`${inline ? 'p-4' : 'p-6 overflow-y-auto max-h-[60vh]'} space-y-4`}>
-        {/* Covered Cities */}
-        <div>
-          <label className="flex items-center gap-2 text-sm font-medium text-white mb-2">
-            <MapPin className="h-4 w-4 text-primary-400" />
-            {t('solutions.leadQualifier.config.coveredCities')}
-          </label>
-          <textarea
-            value={localConfig.coveredCities}
-            onChange={(e) => setLocalConfig(prev => ({ ...prev, coveredCities: e.target.value }))}
-            className="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
-            rows={2}
-            placeholder={t('solutions.leadQualifier.config.citiesPlaceholder')}
-          />
-          <p className="text-xs text-gray-500 mt-1">{t('solutions.leadQualifier.config.citiesSeparator')}</p>
-        </div>
-
-        {/* Budget Minimums */}
-        <div>
-          <label className="flex items-center gap-2 text-sm font-medium text-white mb-2">
-            <Banknote className="h-4 w-4 text-primary-400" />
-            {t('solutions.leadQualifier.config.budgetMinimums')}
-          </label>
-          <p className="text-xs text-amber-400 flex items-center gap-1 mb-2">
-            <AlertTriangle className="h-3 w-3" />
-            {t('solutions.leadQualifier.config.budgetWarning')}
-          </p>
-
-          <div className="space-y-2">
-            {Object.entries(localConfig.budgetRanges).map(([type, minValue]) => (
-              <div key={type} className="flex items-center gap-2 bg-gray-700/50 rounded-lg p-2">
-                <span className="text-sm text-white w-28">{typeLabels[type]}</span>
-                <div className="flex-1 flex items-center gap-1">
-                  <input
-                    type="number"
-                    value={minValue}
-                    onChange={(e) => updateBudgetMin(type, e.target.value)}
-                    className="flex-1 px-2 py-1.5 rounded-lg bg-gray-700 border border-gray-600 text-white text-sm focus:ring-2 focus:ring-primary-500"
-                  />
-                  <span className="text-gray-400 text-sm">{'\u20AC'}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Budget bonus threshold */}
-        <div>
-          <label className="flex items-center gap-2 text-sm font-medium text-white mb-2">
-            <TrendingUp className="h-4 w-4 text-primary-400" />
-            {t('solutions.leadQualifier.config.budgetBonusLabel')}
-          </label>
-          <p className="text-xs text-gray-500 mb-2">
-            {t('solutions.leadQualifier.config.budgetBonusDesc')}
-          </p>
-          <div className="flex items-center gap-2">
-            <input
-              type="number"
-              value={localConfig.budgetBonusThreshold}
-              onChange={(e) => setLocalConfig(prev => ({ ...prev, budgetBonusThreshold: parseInt(e.target.value, 10) || 0 }))}
-              className="flex-1 px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white text-sm focus:ring-2 focus:ring-primary-500"
-            />
-            <span className="text-gray-400 text-sm">{'\u20AC'}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Footer */}
-      <div className={`flex justify-end gap-2 ${inline ? 'px-4 pb-4' : 'px-6 py-4 border-t border-gray-700'}`}>
-        {!inline && (
-          <button
-            onClick={onClose}
-            className="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium transition-colors"
-          >
-            {t('solutions.leadQualifier.config.cancel')}
-          </button>
-        )}
-        <button
-          onClick={handleSave}
-          className="px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium transition-colors flex items-center gap-2"
-        >
-          <Save className="h-4 w-4" />
-          {t('solutions.leadQualifier.config.save')}
-        </button>
-      </div>
-    </>
-  )
-
-  if (inline) {
-    return content
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-      onClick={onClose}
-    >
-      <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.95, opacity: 0 }}
-        className="bg-gray-800 rounded-2xl border border-gray-700 w-full max-w-lg max-h-[80vh] overflow-hidden"
-        onClick={e => e.stopPropagation()}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700">
-          <h2 className="text-lg font-semibold text-white">{t('solutions.leadQualifier.config.title')}</h2>
-          <button
-            onClick={onClose}
-            className="p-2 rounded-full hover:bg-gray-700 transition-colors"
-          >
-            <X className="h-5 w-5 text-gray-400" />
-          </button>
-        </div>
-
-        {content}
-      </motion.div>
-    </motion.div>
-  )
+const defaults=config=>({cities:config.coveredCities?.join(', ')||'',ranges:Object.fromEntries(['baño','cocina','integral','pintura'].map(type=>[type,config.budgetRanges?.[type]?.min??{baño:5000,cocina:8000,integral:50000,pintura:2500}[type]])),bonus:config.budgetBonusThreshold??50000})
+export default function ConfigPanel({config,onSave,onClose,t,open}) {
+  const {language}=useLanguage(),copy=siteContent[language]
+  const [values,setValues]=useState(()=>defaults(config))
+  useEffect(()=>{if(open)setValues(defaults(config))},[open,config])
+  const labels={baño:t('solutions.leadQualifier.config.bathroom'),cocina:t('solutions.leadQualifier.config.kitchen'),integral:t('solutions.leadQualifier.config.fullRenovation'),pintura:t('solutions.leadQualifier.config.painting')}
+  const save=event=>{event.preventDefault();onSave({...config,coveredCities:values.cities.split(',').map(city=>city.trim()).filter(Boolean),budgetRanges:Object.fromEntries(Object.entries(values.ranges).map(([type,value])=>[type,{min:Number(value)}])),budgetBonusThreshold:Number(values.bonus)})}
+  return <Modal open={open} title={copy.configuration} onClose={onClose} closeLabel={copy.close}>
+    <form className="site-config-content" onSubmit={save}>
+      <label>{t('solutions.leadQualifier.config.coveredCities')}<textarea required rows={3} value={values.cities} onChange={event=>setValues(previous=>({...previous,cities:event.target.value}))} /></label>
+      <p className="site-note">{t('solutions.leadQualifier.config.citiesSeparator')}</p>
+      {Object.entries(values.ranges).map(([type,value])=><label key={type}>{labels[type]} (€)<input type="number" min="0" required value={value} onChange={event=>setValues(previous=>({...previous,ranges:{...previous.ranges,[type]:event.target.value}}))} /></label>)}
+      <label>{t('solutions.leadQualifier.config.budgetBonusLabel')} (€)<input type="number" min="0" required value={values.bonus} onChange={event=>setValues(previous=>({...previous,bonus:event.target.value}))} /></label>
+      <div className="site-actions"><button className="site-button" type="submit">{t('solutions.leadQualifier.config.save')}</button><button className="site-button site-button-secondary" type="button" onClick={onClose}>{copy.cancel}</button></div>
+    </form>
+  </Modal>
 }

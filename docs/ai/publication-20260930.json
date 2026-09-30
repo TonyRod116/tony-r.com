@@ -1,0 +1,514 @@
+{
+  "origin": "https://tony-r.com",
+  "checked_at": "2026-09-30T21:03:29.137Z",
+  "routes": [
+    {
+      "viewport": 1440,
+      "route": "/",
+      "status": 200,
+      "h1": "Tony Rodríguez.",
+      "width": 1440,
+      "images": [
+        {
+          "src": "https://tony-r.com/assets/pic3%20(2)-rTR4IgeB.jpg",
+          "loaded": true
+        },
+        {
+          "src": "https://tony-r.com/assets/buildapp-pro-quote-visual-DwV90Vf3.png",
+          "loaded": true
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/about",
+      "status": 200,
+      "h1": "Mi recorrido.",
+      "width": 1440,
+      "images": [
+        {
+          "src": "https://tony-r.com/assets/surf-BeqcrBee.jpg",
+          "loaded": true
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/projects",
+      "status": 200,
+      "h1": "Proyectos.",
+      "width": 1440,
+      "images": [
+        {
+          "src": "https://tony-r.com/assets/buildapp-pro-quote-visual-DwV90Vf3.png",
+          "loaded": true
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/resume",
+      "status": 200,
+      "h1": "Currículum.",
+      "width": 1440,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/contact",
+      "status": 200,
+      "h1": "Contacto",
+      "width": 1440,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/demos",
+      "status": 200,
+      "h1": "Soluciones.",
+      "width": 1440,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/demos/presupuesto-orientativo",
+      "status": 200,
+      "h1": "Presupuesto orientativo",
+      "width": 1440,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/demos/render-presupuesto",
+      "status": 200,
+      "h1": "Una propuesta que se ve.",
+      "width": 1440,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/demos/lead-qualifier",
+      "status": 200,
+      "h1": "Una consulta, con contexto.",
+      "width": 1440,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/ai",
+      "status": 200,
+      "h1": "La inteligencia,a la vista.",
+      "width": 1440,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/ai/neural-network",
+      "status": 200,
+      "h1": "Red neuronal",
+      "width": 1440,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/ai/tetris",
+      "status": 200,
+      "h1": "T-Tris",
+      "width": 1440,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/ai/tictactoe",
+      "status": 200,
+      "h1": "Tres en raya",
+      "width": 1440,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/ai/minesweeper",
+      "status": 200,
+      "h1": "Buscaminas",
+      "width": 1440,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/ai/sixdegrees",
+      "status": 200,
+      "h1": "Seis grados",
+      "width": 1440,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/ai/nim",
+      "status": 200,
+      "h1": "Nim",
+      "width": 1440,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 390,
+      "route": "/",
+      "status": 200,
+      "h1": "Tony Rodríguez.",
+      "width": 390,
+      "images": [
+        {
+          "src": "https://tony-r.com/assets/pic3%20(2)-rTR4IgeB.jpg",
+          "loaded": true
+        },
+        {
+          "src": "https://tony-r.com/assets/buildapp-pro-quote-visual-DwV90Vf3.png",
+          "loaded": true
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 390,
+      "route": "/about",
+      "status": 200,
+      "h1": "Mi recorrido.",
+      "width": 390,
+      "images": [
+        {
+          "src": "https://tony-r.com/assets/surf-BeqcrBee.jpg",
+          "loaded": true
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 390,
+      "route": "/projects",
+      "status": 200,
+      "h1": "Proyectos.",
+      "width": 390,
+      "images": [
+        {
+          "src": "https://tony-r.com/assets/buildapp-pro-quote-visual-DwV90Vf3.png",
+          "loaded": true
+        },
+        {
+          "src": "https://tony-r.com/assets/buildapp-pro-quote-visual-DwV90Vf3.png",
+          "loaded": true
+        },
+        {
+          "src": "https://tony-r.com/assets/buildapp-pro-app-dashboard-2026-04-23-BjxncV2q.png",
+          "loaded": true
+        },
+        {
+          "src": "https://tony-r.com/assets/buildapp-pro-login-2026-04-23-132914-CC6Txbf7.png",
+          "loaded": true
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 390,
+      "route": "/resume",
+      "status": 200,
+      "h1": "Currículum.",
+      "width": 390,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 390,
+      "route": "/contact",
+      "status": 200,
+      "h1": "Contacto",
+      "width": 390,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 390,
+      "route": "/demos",
+      "status": 200,
+      "h1": "Soluciones.",
+      "width": 390,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 390,
+      "route": "/demos/presupuesto-orientativo",
+      "status": 200,
+      "h1": "Presupuesto orientativo",
+      "width": 390,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 390,
+      "route": "/demos/render-presupuesto",
+      "status": 200,
+      "h1": "Una propuesta que se ve.",
+      "width": 390,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 390,
+      "route": "/demos/lead-qualifier",
+      "status": 200,
+      "h1": "Una consulta, con contexto.",
+      "width": 390,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 390,
+      "route": "/ai",
+      "status": 200,
+      "h1": "La inteligencia,a la vista.",
+      "width": 390,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 390,
+      "route": "/ai/neural-network",
+      "status": 200,
+      "h1": "Red neuronal",
+      "width": 390,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 390,
+      "route": "/ai/tetris",
+      "status": 200,
+      "h1": "T-Tris",
+      "width": 390,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 390,
+      "route": "/ai/tictactoe",
+      "status": 200,
+      "h1": "Tres en raya",
+      "width": 390,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 390,
+      "route": "/ai/minesweeper",
+      "status": 200,
+      "h1": "Buscaminas",
+      "width": 390,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 390,
+      "route": "/ai/sixdegrees",
+      "status": 200,
+      "h1": "Seis grados",
+      "width": 390,
+      "images": [],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "viewport": 390,
+      "route": "/ai/nim",
+      "status": 200,
+      "h1": "Nim",
+      "width": 390,
+      "images": [],
+      "errors": [],
+      "failed": []
+    }
+  ],
+  "interactions": [
+    {
+      "viewport": "desktop",
+      "neural": "local model loads, real probabilities sum to 1, 986 nodes, reset works"
+    },
+    {
+      "viewport": "desktop",
+      "tetris": "drop, AI toggle, pause freezes position and AI, resume and restart work"
+    },
+    {
+      "viewport": "desktop",
+      "language": "en",
+      "route": "/",
+      "h1": "Tony Rodríguez."
+    },
+    {
+      "viewport": "desktop",
+      "language": "en",
+      "route": "/ai",
+      "h1": "Intelligence,\nin plain sight."
+    },
+    {
+      "viewport": "desktop",
+      "language": "en",
+      "route": "/contact",
+      "h1": "Contact"
+    },
+    {
+      "viewport": "desktop",
+      "language": "ca",
+      "route": "/",
+      "h1": "Tony Rodríguez."
+    },
+    {
+      "viewport": "desktop",
+      "language": "ca",
+      "route": "/ai",
+      "h1": "La intel·ligència,\na la vista."
+    },
+    {
+      "viewport": "desktop",
+      "language": "ca",
+      "route": "/contact",
+      "h1": "Contacte"
+    },
+    {
+      "viewport": "mobile",
+      "neural": "local model loads, real probabilities sum to 1, 986 nodes, reset works"
+    },
+    {
+      "viewport": "mobile",
+      "tetris": "drop, AI toggle, pause freezes position and AI, resume and restart work"
+    },
+    {
+      "viewport": "mobile",
+      "language": "en",
+      "route": "/",
+      "h1": "Tony Rodríguez."
+    },
+    {
+      "viewport": "mobile",
+      "language": "en",
+      "route": "/ai",
+      "h1": "Intelligence,\nin plain sight."
+    },
+    {
+      "viewport": "mobile",
+      "language": "en",
+      "route": "/contact",
+      "h1": "Contact"
+    },
+    {
+      "viewport": "mobile",
+      "language": "ca",
+      "route": "/",
+      "h1": "Tony Rodríguez."
+    },
+    {
+      "viewport": "mobile",
+      "language": "ca",
+      "route": "/ai",
+      "h1": "La intel·ligència,\na la vista."
+    },
+    {
+      "viewport": "mobile",
+      "language": "ca",
+      "route": "/contact",
+      "h1": "Contacte"
+    }
+  ],
+  "assets": [
+    {
+      "path": "/models/mnist/014_dataset-1x.json",
+      "status": 200,
+      "bytes": 292137,
+      "sha256": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b"
+    },
+    {
+      "path": "/projects/buildapp-pro-sample-quote.pdf",
+      "status": 200,
+      "bytes": 192780,
+      "sha256": "4ac605d56c9f5ea0f7c6104e605208b1f0a1f1aefd0a730a09dd1276457a716a"
+    },
+    {
+      "path": "/gallery/totalhomes-01.jpg",
+      "status": 200,
+      "bytes": 392991,
+      "sha256": "e230a0afc7d2701121960215b42eb6a284eaf7115463c4e783abc410e93a8cd9"
+    },
+    {
+      "path": "/gallery/totalhomes-24.jpg",
+      "status": 200,
+      "bytes": 368712,
+      "sha256": "84ac8b97379c117cd22f2f16d9cb80a621f15fc9b167120a4fb805e6e22ca39d"
+    }
+  ],
+  "external_mutations": "blocked; no contact or paid AI requests",
+  "status": "pass",
+  "hosting": "IONOS",
+  "release": "showroom-20260930-2100",
+  "public_entry_sha256": "ed94d3d5a6a6f03a01b425ca4ca9fa6c23725e9495032e736ad8693c63602084",
+  "rollback": {
+    "remote_backup": "/home/www/.tony-r-releases/before-20260930-2100.tar.gz",
+    "previous_git_sha": "ab0bfd2d8a88e3752b243002f86a0d65214ec378"
+  },
+  "local_checks": {
+    "build": "pass",
+    "check": "pass",
+    "tooling_tests": 38,
+    "routing_cases": 24,
+    "previous_browser_journeys": 140,
+    "visual_comparisons": 24
+  },
+  "repository": {
+    "url": "https://github.com/TonyRod116/tony-r.com",
+    "branch": "main",
+    "excluded": "personal Claude settings and preexisting generated dist changes"
+  }
+}

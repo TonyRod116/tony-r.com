@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "lanes": {
+    "ops": [
+      "skills",
+      "router",
+      "memoria",
+      "hooks",
+      "herramientas",
+      "continuidad",
+      "ci",
+      "tooling"
+    ],
+    "marketing": [
+      "copy",
+      "seo",
+      "posicionamiento",
+      "marketing",
+      "conversion"
+    ],
+    "design": [
+      "dise\u00f1o",
+      "visual",
+      "tipografia",
+      "estilo"
+    ],
+    "demos": [
+      "demo",
+      "chat",
+      "juego",
+      "tetris"
+    ],
+    "api": [
+      "endpoint",
+      "api",
+      "contrato",
+      "server",
+      "persistencia"
+    ],
+    "site": [
+      "portada",
+      "home",
+      "web",
+      "navegacion",
+      "cv"
+    ],
+    "explain": []
+  },
+  "sources": [
+    {
+      "id": "instructions",
+      "path": "AI_SHARED_INSTRUCTIONS.md",
+      "authority": 100,
+      "lanes": [
+        "all"
+      ],
+      "required": true,
+      "status": "current"
+    },
+    {
+      "id": "architecture",
+      "path": ".memory/architecture.md",
+      "authority": 95,
+      "lanes": [
+        "all"
+      ],
+      "required": true,
+      "status": "current"
+    },
+    {
+      "id": "state",
+      "path": "PROJECT_STATE.md",
+      "authority": 80,
+      "lanes": [
+        "ops",
+        "explain"
+      ],
+      "required": true,
+      "status": "current",
+      "freshness_days": 120
+    },
+    {
+      "id": "handoff",
+      "path": ".memory/todo.md",
+      "authority": 75,
+      "lanes": [
+        "ops",
+        "explain"
+      ],
+      "required": true,
+      "status": "current",
+      "freshness_days": 90
+    },
+    {
+      "id": "decisions",
+      "path": ".memory/decisions.md",
+      "authority": 90,
+      "lanes": [
+        "ops",
+        "design",
+        "api"
+      ],
+      "required": true,
+      "status": "current"
+    },
+    {
+      "id": "marketing",
+      "path": ".agents/product-marketing-context.md",
+      "authority": 95,
+      "lanes": [
+        "marketing",
+        "site"
+      ],
+      "required": true,
+      "status": "current",
+      "freshness_days": 180
+    },
+    {
+      "id": "design",
+      "path": ".agents/design-context.md",
+      "authority": 95,
+      "lanes": [
+        "design",
+        "site"
+      ],
+      "required": true,
+      "status": "current"
+    },
+    {
+      "id": "contracts",
+      "path": "docs/ai/api-contracts.md",
+      "authority": 95,
+      "lanes": [
+        "api",
+        "demos"
+      ],
+      "required": true,
+      "status": "current"
+    },
+    {
+      "id": "routes",
+      "path": "src/App.jsx",
+      "authority": 100,
+      "lanes": [
+        "site",
+        "demos"
+      ],
+      "required": true,
+      "status": "current"
+    },
+    {
+      "id": "demo-chat",
+      "path": "src/pages/demos/LeadQualifier/utils/openai.js",
+      "authority": 100,
+      "lanes": [
+        "api",
+        "demos"
+      ],
+      "required": true,
+      "status": "current"
+    },
+    {
+      "id": "operating",
+      "path": "docs/ai/operating-system.md",
+      "authority": 90,
+      "lanes": [
+        "ops",
+        "explain"
+      ],
+      "required": true,
+      "status": "current"
+    },
+    {
+      "id": "qa",
+      "path": "docs/ai-skills/browser-qa.md",
+      "authority": 90,
+      "lanes": [
+        "design",
+        "site",
+        "demos"
+      ],
+      "required": true,
+      "status": "current"
+    },
+    {
+      "id": "history",
+      "path": "memory-bank/activeContext.md",
+      "authority": 50,
+      "lanes": [
+        "all"
+      ],
+      "required": false,
+      "status": "historical"
+    }
+  ],
+  "contract_checks": [
+    {
+      "id": "lead_qualifier_endpoint",
+      "code": "src/pages/demos/LeadQualifier/utils/openai.js",
+      "documentation": "docs/ai/api-contracts.md",
+      "row_contains": "| Lead Qualifier |",
+      "expected_endpoint": "/api/v1/demo/chat",
+      "lanes": [
+        "api",
+        "demos"
+      ]
+    }
+  ]
+}

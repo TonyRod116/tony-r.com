@@ -1,69 +1,51 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
+import { classifyLink, recordEvent, captureRuntimeError } from '../utils/telemetry'
 
-// Replace with your actual Google Analytics ID
-const GA_TRACKING_ID = 'G-5EC5QCFG7L' // Your actual GA4 ID
+export const trackPageView = path => recordEvent('page_view', { path })
+export const trackContactForm = () => recordEvent('contact_success', { method: 'form' })
+export const trackProjectView = () => recordEvent('project_open', { target: 'project' })
+export const trackResumeDownload = () => recordEvent('cv_download', { language: 'unknown' })
+export const trackSocialClick = platform => recordEvent('social_click', { platform })
 
-// Initialize Google Analytics
-export const initGA = () => {
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('config', GA_TRACKING_ID, {
-      page_title: document.title,
-      page_location: window.location.href,
-    })
-  }
-}
-
-// Track page views
-export const trackPageView = (url) => {
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('config', GA_TRACKING_ID, {
-      page_path: url,
-    })
-  }
-}
-
-// Track custom events
-export const trackEvent = (action, category, label, value) => {
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', action, {
-      event_category: category,
-      event_label: label,
-      value: value,
-    })
-  }
-}
-
-// Google Analytics component
 export default function GoogleAnalytics() {
   const location = useLocation()
-
+  const lastPath = useRef(null)
   useEffect(() => {
-    // Initialize Google Analytics for all visitors
-    initGA()
+    if (lastPath.current !== location.pathname) trackPageView(location.pathname)
+    lastPath.current = location.pathname
+  }, [location.pathname])
+  useEffect(() => {
+    const onClick = event => {
+      const anchor = event.target.closest?.('a[href]')
+      if (!anchor) return
+      const classified = classifyLink(anchor.href, window.location.origin)
+      if (classified) recordEvent(classified.name === 'cv_open' && anchor.hasAttribute('download') ? 'cv_download' : classified.name, classified.parameters)
+    }
+    const onError = () => captureRuntimeError('runtime_error')
+    const onRejection = () => captureRuntimeError('unhandled_rejection')
+    // CV previews use an iframe; observe its source without changing Resume.
+    const seenFrames = new WeakMap()
+    const onFrames = () => {
+      document.querySelectorAll('iframe[src]').forEach(frame => {
+        if (seenFrames.get(frame) === frame.src) return
+        seenFrames.set(frame, frame.src)
+        const event = classifyLink(frame.src, window.location.origin)
+        if (event?.name === 'cv_open') recordEvent(event.name, event.parameters)
+      })
+    }
+    const observer = new MutationObserver(onFrames)
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['src'] })
+    onFrames()
+    document.addEventListener('click', onClick, true)
+    window.addEventListener('error', onError)
+    window.addEventListener('unhandledrejection', onRejection)
+    return () => {
+      observer.disconnect()
+      document.removeEventListener('click', onClick, true)
+      window.removeEventListener('error', onError)
+      window.removeEventListener('unhandledrejection', onRejection)
+    }
   }, [])
-
-  useEffect(() => {
-    // Track page views when route changes for all visitors
-    trackPageView(location.pathname + location.search)
-  }, [location])
-
-  return null // This component doesn't render anything
-}
-
-// Helper functions for tracking specific events
-export const trackContactForm = () => {
-  trackEvent('submit', 'contact', 'contact_form')
-}
-
-export const trackProjectView = (projectName) => {
-  trackEvent('view', 'project', projectName)
-}
-
-export const trackResumeDownload = () => {
-  trackEvent('download', 'resume', 'cv_download')
-}
-
-export const trackSocialClick = (platform) => {
-  trackEvent('click', 'social', platform)
+  return null
 }

@@ -1,0 +1,4 @@
+interface:
+  display_name: "my-page-review"
+  short_description: "Audita cambios o afirmaciones de My Page por corrección, contra"
+  default_prompt: "Usa $my-page-review para resolver este encargo en My Page con evidencia local."

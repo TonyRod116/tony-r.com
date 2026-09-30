@@ -1,29 +1,31 @@
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { LanguageProvider, useLanguage } from './hooks/useLanguage.jsx'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
 import GoogleAnalytics from './components/GoogleAnalytics'
-import Home from './pages/Home'
-import About from './pages/About'
-import Projects from './pages/Projects'
-import Contact from './pages/Contact'
-import Resume from './pages/Resume'
-import AiLab from './pages/AiLab'
-import Demos from './pages/Demos'
-import PresupuestoOrientativo from './pages/demos/PresupuestoOrientativo'
-import RenderPresupuesto from './pages/demos/RenderPresupuesto'
-import LeadQualifier from './pages/demos/LeadQualifier'
-import TicTacToe from './components/games/TicTacToe'
-import Minesweeper from './components/games/Minesweeper'
-import SixDegrees from './components/games/SixDegrees'
-import Nim from './components/games/Nim'
-import Tetris from './components/games/Tetris'
-import NeuralNetworkRedirect from './components/games/NeuralNetworkRedirect'
+import RouteBoundary from './components/RouteBoundary'
+const Home = lazy(() => import('./pages/Home'))
+const About = lazy(() => import('./pages/About'))
+const Projects = lazy(() => import('./pages/Projects'))
+const Contact = lazy(() => import('./pages/Contact'))
+const Resume = lazy(() => import('./pages/Resume'))
+const AiLab = lazy(() => import('./pages/AiLab'))
+const Demos = lazy(() => import('./pages/Demos'))
+const PresupuestoOrientativo = lazy(() => import('./pages/demos/PresupuestoOrientativo'))
+const RenderPresupuesto = lazy(() => import('./pages/demos/RenderPresupuesto'))
+const LeadQualifier = lazy(() => import('./pages/demos/LeadQualifier'))
+const TicTacToe = lazy(() => import('./components/games/TicTacToe'))
+const Minesweeper = lazy(() => import('./components/games/Minesweeper'))
+const SixDegrees = lazy(() => import('./components/games/SixDegrees'))
+const Nim = lazy(() => import('./components/games/Nim'))
+const Tetris = lazy(() => import('./components/games/Tetris'))
+const NeuralNetworkVisualization = lazy(() => import('./components/games/NeuralNetworkVisualization'))
 
 function AppContent() {
-  const { isTransitioning } = useLanguage()
+  const { isTransitioning, language } = useLanguage()
+  const loadingLabel = { es: 'Cargando…', en: 'Loading…', ca: 'Carregant…' }[language]
 
   // Prevenir overflow horizontal globalmente y forzar modo oscuro
   useEffect(() => {
@@ -49,6 +51,8 @@ function AppContent() {
         <main
           className={`min-h-[70vh] flex-1 transition-opacity duration-200 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
         >
+          <RouteBoundary language={language}>
+          <Suspense fallback={<div role="status" className="pt-24 px-6 text-gray-300">{loadingLabel}</div>}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
@@ -67,9 +71,11 @@ function AppContent() {
             <Route path="/ai/tetris" element={<Tetris />} />
             <Route
               path="/ai/neural-network"
-              element={<NeuralNetworkRedirect />}
+              element={<NeuralNetworkVisualization />}
             />
           </Routes>
+          </Suspense>
+          </RouteBoundary>
         </main>
         <Footer />
       </div>

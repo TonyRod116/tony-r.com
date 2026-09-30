@@ -1,0 +1,261 @@
+{
+  "date": "2026-09-30",
+  "status": "locally_verified",
+  "scope": [
+    "/ai",
+    "/ai/neural-network",
+    "/ai/tetris",
+    "/ai/tictactoe",
+    "/ai/minesweeper",
+    "/ai/nim",
+    "/ai/sixdegrees"
+  ],
+  "verification": {
+    "isolated_build": "pass",
+    "quality_gates": "pass",
+    "game_model_tooling_tests": 34,
+    "deterministic_routing_cases": 24,
+    "full_browser_suite": 106,
+    "final_ai_browser_suite": 34,
+    "final_ai_workers": 1,
+    "visual_comparisons": 12,
+    "new_visual_references": 6,
+    "prior_visual_references_preserved": 6,
+    "viewport_route_observations": 21
+  },
+  "viewports": [
+    {
+      "name": "desktop",
+      "id": "hub",
+      "width": 1440,
+      "documentWidth": 1440,
+      "height": 2194,
+      "errors": []
+    },
+    {
+      "name": "desktop",
+      "id": "neural-network",
+      "width": 1440,
+      "documentWidth": 1440,
+      "height": 1995,
+      "errors": []
+    },
+    {
+      "name": "desktop",
+      "id": "tetris",
+      "width": 1440,
+      "documentWidth": 1440,
+      "height": 1817,
+      "errors": []
+    },
+    {
+      "name": "desktop",
+      "id": "tictactoe",
+      "width": 1440,
+      "documentWidth": 1440,
+      "height": 1514,
+      "errors": []
+    },
+    {
+      "name": "desktop",
+      "id": "minesweeper",
+      "width": 1440,
+      "documentWidth": 1440,
+      "height": 1587,
+      "errors": []
+    },
+    {
+      "name": "desktop",
+      "id": "nim",
+      "width": 1440,
+      "documentWidth": 1440,
+      "height": 1562,
+      "errors": []
+    },
+    {
+      "name": "desktop",
+      "id": "sixdegrees",
+      "width": 1440,
+      "documentWidth": 1440,
+      "height": 1351,
+      "errors": []
+    },
+    {
+      "name": "mobile",
+      "id": "hub",
+      "width": 390,
+      "documentWidth": 390,
+      "height": 2299,
+      "errors": []
+    },
+    {
+      "name": "mobile",
+      "id": "neural-network",
+      "width": 390,
+      "documentWidth": 390,
+      "height": 2742,
+      "errors": []
+    },
+    {
+      "name": "mobile",
+      "id": "tetris",
+      "width": 390,
+      "documentWidth": 390,
+      "height": 2427,
+      "errors": []
+    },
+    {
+      "name": "mobile",
+      "id": "tictactoe",
+      "width": 390,
+      "documentWidth": 390,
+      "height": 1634,
+      "errors": []
+    },
+    {
+      "name": "mobile",
+      "id": "minesweeper",
+      "width": 390,
+      "documentWidth": 390,
+      "height": 1836,
+      "errors": []
+    },
+    {
+      "name": "mobile",
+      "id": "nim",
+      "width": 390,
+      "documentWidth": 390,
+      "height": 2079,
+      "errors": []
+    },
+    {
+      "name": "mobile",
+      "id": "sixdegrees",
+      "width": 390,
+      "documentWidth": 390,
+      "height": 1603,
+      "errors": []
+    },
+    {
+      "name": "tablet",
+      "id": "hub",
+      "width": 768,
+      "documentWidth": 768,
+      "height": 2589,
+      "errors": []
+    },
+    {
+      "name": "tablet",
+      "id": "neural-network",
+      "width": 768,
+      "documentWidth": 768,
+      "height": 1977,
+      "errors": []
+    },
+    {
+      "name": "tablet",
+      "id": "tetris",
+      "width": 768,
+      "documentWidth": 768,
+      "height": 1839,
+      "errors": []
+    },
+    {
+      "name": "tablet",
+      "id": "tictactoe",
+      "width": 768,
+      "documentWidth": 768,
+      "height": 1532,
+      "errors": []
+    },
+    {
+      "name": "tablet",
+      "id": "minesweeper",
+      "width": 768,
+      "documentWidth": 768,
+      "height": 1609,
+      "errors": []
+    },
+    {
+      "name": "tablet",
+      "id": "nim",
+      "width": 768,
+      "documentWidth": 768,
+      "height": 1677,
+      "errors": []
+    },
+    {
+      "name": "tablet",
+      "id": "sixdegrees",
+      "width": 768,
+      "documentWidth": 768,
+      "height": 1390,
+      "errors": []
+    }
+  ],
+  "model": {
+    "architecture": [
+      784,
+      128,
+      64,
+      10
+    ],
+    "origin": "https://github.com/DFin/Neural-Network-Visualisation",
+    "artifact": "public/models/mnist/014_dataset-1x.json",
+    "license": "Apache-2.0",
+    "inference": "local",
+    "random_fallback": false,
+    "normalization": {
+      "mean": 0.1307,
+      "std": 0.3081
+    },
+    "accuracy_evaluation": "not_performed"
+  },
+  "design_helper": {
+    "status": "failed",
+    "provider": "claude",
+    "model": "claude-sonnet-5-5",
+    "effort": "high",
+    "access": "subscription_cli",
+    "attempt": 1,
+    "subscription_type": "max",
+    "usage": {},
+    "observed_models": [],
+    "error": "Claude CLI failed; no automatic retry or provider fallback"
+  },
+  "design_helper_authority": "failed_attempt_no_advice_no_attestation_no_fallback",
+  "excluded_runs": [
+    "transient Chromium ERR_NETWORK_CHANGED during navigation and lazy chunk fetch",
+    "capture protocol error while browser checks overlapped",
+    "two overlapping builds; later isolated build completed before QA"
+  ],
+  "limits": [
+    "local Chromium/UI/rule proof only",
+    "no completed independent model review",
+    "model accuracy not evaluated",
+    "curated film graph deliberately partial",
+    "no production hosting/API/service proof",
+    "no deployment/publication"
+  ],
+  "source_sha256": {
+    "src/pages/AiLab.jsx": "54c158d39949769f307010f428aec6a51a624deb24d8569382175e7fa9150075",
+    "src/components/ai/AiLab.css": "3113a65a5c7cc7efe7e206218b6b8ee94038a23503c305b0671eae3e099fda73",
+    "src/components/ai/AiExperimentLayout.jsx": "52d4ae3581b355d3d6e9fabc182e6ff86b941c6085a024071a65757af2a9b4d9",
+    "src/components/ai/NetworkDiagram.jsx": "30b99e9d0a294c511adf4f972a647bfc85f7adba39c76df02237f0d63f535e02",
+    "src/data/aiExperiments.js": "315d495ec3aa863ce5bd056d177037f8f57e9dce53665e31e8a20e004b6f81e9",
+    "src/data/actorGraph.js": "ea9777dbe47ff608b7552307339d51ae06e866298855e0996c2931be03fa4679",
+    "src/components/games/Tetris.jsx": "0e3a2a94b30ea6b47bf5f509830ee09b8f2215751e4d10bb0fb598a998ccd7db",
+    "src/components/games/tetrisEngine.js": "7d6f6b000ff7b1f4eee12a3a0163f178f0661f415e9d1cdbbce69b3a34691bba",
+    "src/components/games/NeuralNetworkVisualization.jsx": "238371035f1570c309ed280f5f700293b0539009f0a1d1bc2c502d326ab56b2d",
+    "src/components/games/NeuralNetwork/DrawingCanvas.jsx": "8068866607aa53a1d5c8d4a2c09b9a6fc839a6d1065a6eeffcede127b7efdc1e",
+    "src/components/games/NeuralNetwork/mlp.js": "a7161ad9115b6d473687f3fd818b321f8ff7ee6912190d0b44fc63dcbe43974b",
+    "src/components/games/TicTacToe.jsx": "9718826fc58238cf842e13a74b33118a7b6693877c69aa2c7047086850f60211",
+    "src/components/games/Minesweeper.jsx": "1cc5e29d82689eee6b2e1df495d2ff6a5ed2cf9ff49337c02491df2197969fdc",
+    "src/components/games/Nim.jsx": "6619d817eab87636f34cdf6b060522a31af4d91e3a8561001f834e4e48ecbcb6",
+    "src/components/games/SixDegrees.jsx": "de8a03f40619e4e2dfc714bdd6f41a2397f39c4506db8458472066632e4257de",
+    "public/neural-network.html": "a137bb87d0c9a301a1f3a1d3545e6befaf6d180df4981b8a501e765cded79806",
+    "public/models/mnist/014_dataset-1x.json": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b"
+  },
+  "screenshots": ".artifacts/ai-lab-preview",
+  "report": "docs/ai/lab-redesign-20260930.md"
+}

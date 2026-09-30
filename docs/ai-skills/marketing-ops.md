@@ -1,5 +1,13 @@
 # Marketing Ops
 
+Last updated: 2026-09-30
+
+## Discoverable portfolio skills
+
+Start from `.agents/skills/my-page-marketing/SKILL.md`. The local static selection includes product-marketing, copywriting, copy-editing, cro, seo-audit, schema, analytics, signup, onboarding, programmatic-seo, ad-creative and ads. Their instructions are adapted to `.agents/product-marketing-context.md`; no second marketing canon is needed.
+
+The downloaded libraries below remain reference material, not installers to execute. Provenance/license are in `.agents/adoption-manifest.json`. Events and limits: `docs/ai/observability.md`. Installing a campaign skill does not authorize account connections, publication or spending.
+
 Repo-specific marketing and copy workflow shared across Codex, Claude, Gemini, Cursor, and similar agents.
 
 ## When to Use

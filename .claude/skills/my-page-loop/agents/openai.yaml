@@ -1,0 +1,4 @@
+interface:
+  display_name: "my-page-loop"
+  short_description: "Organiza encargos autónomos o repetidos con evidencia y límites"
+  default_prompt: "Usa $my-page-loop para resolver este encargo en My Page con evidencia local."

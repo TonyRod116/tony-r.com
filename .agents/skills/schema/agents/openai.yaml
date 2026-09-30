@@ -1,0 +1,4 @@
+interface:
+  display_name: "schema"
+  short_description: "Diseña datos estructurados honestos para Tony y sus proyectos."
+  default_prompt: "Usa $schema para resolver este encargo en My Page con evidencia local."

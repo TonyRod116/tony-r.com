@@ -8,6 +8,21 @@
 
 This file defines how AI agents should operate in this repository.
 
+## Repo-Native Agent System (2026-09-30)
+
+- Start non-trivial work with `.agents/skills/my-page-agent/SKILL.md`; select only the relevant local skills from `.agents/skills/catalog.json`.
+- Recover selective current context with `npm run ai:context -- --query "actual objective and constraints"`; open primary sources for material claims. `npm run ai:brief` supports startup/resume; Claude SessionStart invokes a bounded local brief.
+- The document registry is `.agents/memory/map.json`: current/historical/snapshot, authority and freshness. `npm run ai:health` reports missing/invalid/stale memory and changed outcome evidence. Context and heuristics never grant permission.
+- Model routing delegates to the single global `~/litellm/ai_route.py` through `npm run ai:route -- --query "objective"`. It plans only; no new classifier, automatic external call, universal client dispatcher or model switch inside an open chat. If absent, state the limitation and continue locally when appropriate.
+- Source skills live only in `.agents/skills`; `.claude/skills` mirrors them. After skill edits use `npm run ai:sync` and `npm run check:skills`; do not edit mirrors or import installers/hooks/credentials from other repos. Provenance/license: `.agents/adoption-manifest.json`.
+- Use `my-page-plan`, `my-page-implement`, `my-page-frontend`, `my-page-api`, `my-page-marketing`, `my-page-review`, `my-page-release` and `my-page-explain` for their actual scopes; memory/evaluation/audit/loop/observability/engineering overlays apply only when useful. Tactical marketing skills are discoverable locally.
+- Design work starts from `.agents/design-context.md`. Quality checks tolerate documented preexisting lint/design debt and reject increases; never renew baselines to hide failures. `npm run check`, `npm run build -- --outDir .artifacts/build`, `npm run test:e2e`, `npm run test:visual` and `npm run perf:report` are the local proof path.
+- Browser QA mocks AI/BuildApp/Formspree and blocks external traffic. Mock PASS proves UI behavior only. Production availability, persisted data, remote telemetry and business impact require their own evidence.
+- External review uses the currently authorized global provider skill/runner only when requested. Autonomy preserves the session scope; `npm run ai:loop -- state.json` advises stopping on completion/budget/no-progress/owner gate, but schedules or executes nothing itself.
+- Record outcomes only after observed local evidence: `ai:outcome` previews; `--record` explicitly appends hashes to `.agents/memory/outcomes.jsonl` as `proposal_only`. It never rewrites canonical memory or creates publication authority.
+- Preserve existing user changes. CI in `.github/workflows/quality.yml` validates; it does not deploy. No push/PR/publication, live trading, payment, messaging or external account setup follows from skill installation alone.
+- Detailed operation, contracts, adoption and limits: `docs/ai/operating-system.md`, `docs/ai/api-contracts.md`, `docs/ai/adoption.md`.
+
 ## Terminology
 
 - **AI files / archivos de IA**: `AI_SHARED_INSTRUCTIONS.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `CODEX.md`, `CURSOR.md`, `cursor.md`
@@ -81,10 +96,16 @@ Rules:
 
 ## Current Architecture Truths (Mandatory)
 
+- Non-AI pages share the warm-paper layouts/tokens in `src/components/site/` and ES/EN/CA copy in `src/data/siteContent.js`. `DemoPage` owns the shared shell of the three active `/demos/*` flows; keep their BuildApp transports and ownership distinct from layout.
+- Header uses Projects, AI Lab, About and Contact on every route; Solutions and CV remain secondary footer links. Preserve the approved home and AI visual identities when changing shared surfaces.
+- CV PDFs/certificates remain source assets in `src/assets/`; `src/data/documents.js` owns their references. `public/gallery/` caches all 24 existing Total Homes images without pixel changes, records source URLs/hashes in its manifest and uses inspected descriptive captions. Do not infer locations, dates or real construction from a visualization.
+- AI routes share `src/components/ai/AiExperimentLayout.jsx` and scoped `AiLab.css`; experiment metadata/copy is in `src/data/aiExperiments.js` (ES/EN/CA).
+- `/ai/neural-network` is an integrated React demo using validated local MNIST weights in `public/models/mnist/`; `/neural-network.html` preserves old links by redirecting to it. It performs inference, not live training. No random-weight prediction fallback.
+- T-Tris uses the shared pure rules in `src/components/games/tetrisEngine.js` for manual play, Magic T, previews and reachable AI placements; keyboard shortcuts belong to the focused board.
 - The main app lives in `src/` and is built with Vite.
 - Production API behavior is defined by `api/` serverless functions.
 - Local persistence and local development API behavior live in `server/`.
-- `Lead Qualifier` depends on `/api/chat`.
+- `Lead Qualifier` currently calls `{VITE_BUILDAPP_DEMO_API_URL or BuildApp base}/api/v1/demo/chat`, including development; `/api/chat` exists as a separate compatibility endpoint, not its selected route.
 - `Presupuestos Reformas` depends on `/api/generate-quote`.
 - Local lead persistence exists in `server/data/leads.json`.
 - Vercel production/serverless flows do not provide durable persistence equivalent to the local Express server unless explicitly implemented.
@@ -207,6 +228,8 @@ Frontend and shared UI changes:
 
 1. Run `npm run build`.
 2. Follow `docs/ai-skills/browser-qa.md` for route and viewport verification when the task changes UI or navigation.
+3. For an existing modified `dist/`, use `npm run build -- --outDir .artifacts/build` to verify without overwriting that output. The build wrapper preserves the `/demos/index.html` compatibility artifact in either destination.
+4. Run `npm run check`; browser interactions and visual baselines have separate commands. `test:visual -- --update-snapshots` needs inspection of the resulting images, not blind acceptance.
 
 `api/` changes:
 

@@ -1,2 +1,6 @@
 .aider*
 ai/tools/vendor/
+.artifacts/
+test-results/
+playwright-report/
+.agents/memory/*.lock

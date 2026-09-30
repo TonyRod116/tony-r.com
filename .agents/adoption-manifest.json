@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-30",
+  "strategy": "hand_adapted_static_workflows",
+  "authority": "local_repository_tooling_only",
+  "sources": [
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/buildapp-agent/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "0099fc942aa926c83e2872cfd0075bd8780c88721dafb576d07949cd0c4f4a79",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/buildapp-frontend/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "7e322fa51b05c1f3289f9001542432a153526085f63f1390a85b4f904e2af13a",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/buildapp-marketing/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "83532f249f8adcf7ef39c2a3d1161f65a3914e27a4d80596c03707e3e8968c1d",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/buildapp-plan/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "433f38d77230e874b82316bf207371f83bfd57d6015f8fc7f040420c781edc9a",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/buildapp-implement/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "03777e516e7b4c2c69018d127e9416994aa392b9cfad03f62c2fda611147bb1d",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/buildapp-api/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "d93791777e892fbb606ab1dcb70de66b87b9e7eb5f99d80f5cfa2844b9426800",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/buildapp-review/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "a76b314128980bf8324c2683c4f6ddacea10dfc5f0ff417b2576a5417a463074",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/buildapp-release/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "c95d362c3d27cf1fbd75121a352f98de05951602a5c31b3af9f0ff95402b9e16",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/buildapp-explain/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "b736a49774f68c8b30bd3defeb35911830a57f96bfdeaddc33a85fdac1f0a941",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": "docs/product/design/STITCH-REDESIGN-V2.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "bc393ca23f5eeef137bc57ee3333809d93431174a64915b900becde22114ab1f",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": "apps/pro/scripts/check-design-tokens.mjs",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "e222911aa554e35191133a3c707b522ae48f4e698acc311488a982c6b63ca514",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/product-marketing/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "cbebd56731ed1883d2f481ec72477b392ee0bdf99be7fa7470b9d078ff154fcb",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/copywriting/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "bb5a097bb55f28a1d069c0d748d8e11c741981192b097b342b655d2608df587e",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/copy-editing/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "9b5a20be3dc5513c8f0b4f4c4960857e4d28ed83698a5b33c8dde9dc75a47bf6",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/cro/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "199016bec3b44bc6a7507b111b6028f6550cc852cd54c7d0df789f15d6f814c4",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/seo-audit/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "3b03a2e07578e9964acac0b6907ae343a904c6547bfefe779ba326db5eedd1cb",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/schema/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "d8b7aa7bcd9727a87fb5470a6c9ee252b99a7ccb84f637d7c67c5d155b507e0b",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/analytics/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "16aab197f87bf6e2599d179061f1947d96acafe0a340837432d8ab96d2f8c55a",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/signup/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "9395aabae64891ebdac5f31d17c83b9d47546dc0c9b22654c7b89e9b04da7cf6",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/onboarding/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "15a802ffb73828730aba90b740426fbb8d2070721ee92d6f8737de4704e8ff0f",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/programmatic-seo/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "15cb5979cab5263ede902a830e03342869256ece17905bff240eef498e27cde1",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/ad-creative/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "dfe60e076f0ffad82b9d26cb212c1b8839d833474f78a434357633e6b57165c9",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "buildapp",
+      "path": ".agents/skills/ads/SKILL.md",
+      "commit": "a5098de8b961c3727b44848138d41f5453af7bdc",
+      "sha256": "4b7a4a65ea1af2a27105f2daea61c654bf92a6e016377275003ea1a7b6fa625b",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "mtm",
+      "path": ".agents/skills/mtm-memory-router/SKILL.md",
+      "commit": "3d4bfa3ea85e1f5813235ae5649cbc91ef0615ef",
+      "sha256": "5997d815f4cf406d4051f61f8a22c4bfc0af7326c1d568fa4a1ae06501b06fd9",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "mtm",
+      "path": ".agents/skills/mtm-agent-eval-lab/SKILL.md",
+      "commit": "3d4bfa3ea85e1f5813235ae5649cbc91ef0615ef",
+      "sha256": "8f5dfe583d7f60b0e4d8f2c15796d0a7cc4dd372db691444df5748e4afbaf59d",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "mtm",
+      "path": ".agents/skills/mtm-agent-skills/SKILL.md",
+      "commit": "3d4bfa3ea85e1f5813235ae5649cbc91ef0615ef",
+      "sha256": "1630e2c247980f6e50c61b60da47650f5066df08a035f17b5278af746b513d08",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "mtm",
+      "path": ".agents/skills/mtm-skill-supply-chain-audit/SKILL.md",
+      "commit": "3d4bfa3ea85e1f5813235ae5649cbc91ef0615ef",
+      "sha256": "9bec7e1a8bd21eade1c8303974f2625d44287831035aac71091330d5efc5d793",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "mtm",
+      "path": ".agents/skills/mtm-loop-orchestrator/SKILL.md",
+      "commit": "3d4bfa3ea85e1f5813235ae5649cbc91ef0615ef",
+      "sha256": "77027005d28ab568f5924ffe03fe9b5678684a1057518f205b052510446a7f2e",
+      "strategy": "concept_adapted_not_executed"
+    },
+    {
+      "repository": "mtm",
+      "path": "scripts/session_brief.py",
+      "commit": "3d4bfa3ea85e1f5813235ae5649cbc91ef0615ef",
+      "sha256": "39a0418110aeb1dd84b6b9b64ae6ab7ffde5cfdf30fca73524ca29d2918dc125",
+      "strategy": "concept_adapted_not_executed"
+    }
+  ],
+  "marketing_license": ".agents/skills/MARKETINGSKILLS_LICENSE",
+  "excluded": [
+    "native release",
+    "trading/live/accounts",
+    "credentials",
+    "third-party installers",
+    "external dispatch",
+    "model-policy duplication"
+  ],
+  "skills": [
+    "my-page-agent",
+    "my-page-plan",
+    "my-page-implement",
+    "my-page-frontend",
+    "my-page-api",
+    "my-page-marketing",
+    "my-page-review",
+    "my-page-release",
+    "my-page-explain",
+    "my-page-memory",
+    "my-page-agent-eval",
+    "my-page-skill-audit",
+    "my-page-loop",
+    "my-page-observability",
+    "my-page-engineering",
+    "product-marketing",
+    "copywriting",
+    "copy-editing",
+    "cro",
+    "seo-audit",
+    "schema",
+    "analytics",
+    "signup",
+    "onboarding",
+    "programmatic-seo",
+    "ad-creative",
+    "ads"
+  ]
+}

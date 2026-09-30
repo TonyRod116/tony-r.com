@@ -1,0 +1,4 @@
+interface:
+  display_name: "my-page-engineering"
+  short_description: "Aplica patrones de ingeniería de BuildApp y Addy al mantenimien"
+  default_prompt: "Usa $my-page-engineering para resolver este encargo en My Page con evidencia local."

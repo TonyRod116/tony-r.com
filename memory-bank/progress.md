@@ -22,3 +22,20 @@
 - [ ] Enhance "Inspírate con IA" features (more edit options).
 - [ ] Automated testing for AI game logic.
 - [ ] Performance optimization for Six Degrees database.
+
+
+## 2026-09-30 — My Page tooling foundation
+
+Adapted the recommended BuildApp/MTM workflows to this portfolio. Canonical operating context is in .memory, AI_SHARED_INSTRUCTIONS.md and docs/ai/operating-system.md; source truth remains current code. Full inventory/verification: docs/ai/adoption.md and docs/ai/verification.md. No production or external-service activation.
+
+## 2026-09-30 — AI lab local redesign
+
+/ai and six experiment routes share AiExperimentLayout and scoped laboratory tokens. Neural now performs validated, attributed local inference; T-Tris shares manual/AI rules and retains its special mechanics. Neighboring demo controls, resets, locale and copy are corrected. Current proof and limitations: docs/ai/lab-redesign-20260930.md and JSON. No publication follows from this completion. Source and .memory remain authoritative over earlier historical deployment notes.
+
+## 2026-09-30 — Portfolio showroom completed in source
+
+Eight remaining pages redesigned with shared warm-paper layouts and ES/EN/CA copy. All project evidence, PDFs and gallery retained; dialog/keyboard/touch/error/reset behavior checked. Original gallery descriptions were inconsistent with images and are corrected without inferring locations. All140 browser journeys pass, plus38 code/tooling tests. Source of current proof/limits: docs/ai/site-showroom-20260930.md and JSON. No publication or real remote AI/contact action occurred.
+
+## Authorized publication — 2026-09-30
+
+The complete showroom is activated on the confirmed IONOS main domain after a private backup. Repository publication and live checks: docs/ai/publication-20260930.md/json. Historical Hostinger statements do not describe current hosting. No real contact or remote AI generation is used for verification.

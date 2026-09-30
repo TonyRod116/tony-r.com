@@ -1,0 +1,4 @@
+interface:
+  display_name: "my-page-api"
+  short_description: "Protege contratos entre My Page, Vercel, Express y las demos de"
+  default_prompt: "Usa $my-page-api para resolver este encargo en My Page con evidencia local."

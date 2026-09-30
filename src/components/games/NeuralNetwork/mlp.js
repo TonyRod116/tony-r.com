@@ -1,174 +1,87 @@
-// Simple Multi-Layer Perceptron for MNIST digit classification
-const WEIGHTS_URL = 'https://raw.githubusercontent.com/DFin/Neural-Network-Visualisation/main/exports/mlp_weights/014_dataset-1x.json'
+// Pretrained artifact: DFin/Neural-Network-Visualisation (Apache-2.0).
+// Provenance and original license live alongside the local model artifact.
+export const WEIGHTS_URL = '/models/mnist/014_dataset-1x.json'
 const NORMALIZATION = { mean: 0.1307, std: 0.3081 }
 
+function decodeTensor(tensor, dimensions) {
+  if (!tensor || !Array.isArray(tensor.shape) || tensor.shape.length !== dimensions || tensor.shape.some(n => !Number.isInteger(n) || n < 1 || n > 784) || typeof tensor.data !== 'string') throw new Error('Invalid tensor')
+  const binary = atob(tensor.data)
+  const count = tensor.shape.reduce((a, b) => a * b, 1)
+  if (binary.length !== count * 2) throw new Error('Invalid tensor length')
+  const bytes = Uint8Array.from(binary, c => c.charCodeAt(0))
+  const view = new DataView(bytes.buffer)
+  const values = Array.from({ length: count }, (_, i) => {
+    const h = view.getUint16(i * 2, true)
+    const sign = h & 0x8000 ? -1 : 1, exponent = (h >> 10) & 31, fraction = h & 1023
+    const value = exponent === 0 ? sign * 2 ** -14 * fraction / 1024 : exponent === 31 ? NaN : sign * 2 ** (exponent - 15) * (1 + fraction / 1024)
+    if (!Number.isFinite(value)) throw new Error('Non-finite model weight')
+    return value
+  })
+  return values
+}
+
 export class MLP {
-  constructor() {
-    // Architecture: 784 (28x28) -> 64 -> 32 -> 10 (según especificaciones originales)
-    this.layers = [
-      { size: 784, name: 'input' },
-      { size: 64, name: 'hidden1' },
-      { size: 32, name: 'hidden2' },
-      { size: 10, name: 'output' }
-    ]
-
+  constructor(definition) {
     this.weights = []
     this.biases = []
+    this.layers = []
     this.activations = []
+    this.ready = false
     this.normalization = { ...NORMALIZATION }
-
-    this._initRandomWeights()
+    if (definition) this.loadDefinition(definition)
   }
 
-  _initRandomWeights() {
-    this.weights = []
-    this.biases = []
-    for (let i = 0; i < this.layers.length - 1; i++) {
-      const inputSize = this.layers[i].size
-      const outputSize = this.layers[i + 1].size
-      const weightMatrix = []
-      for (let j = 0; j < outputSize; j++) {
-        const row = []
-        for (let k = 0; k < inputSize; k++) {
-          row.push((Math.random() * 2 - 1) * Math.sqrt(2 / (inputSize + outputSize)))
-        }
-        weightMatrix.push(row)
-      }
-      this.weights.push(weightMatrix)
-      this.biases.push(new Array(outputSize).fill(0))
+  loadDefinition(data) {
+    if (data?.dtype !== 'float16' || !Array.isArray(data.layers) || data.layers.length !== 3) throw new Error('Invalid model definition')
+    const weights = [], biases = [], architecture = [784]
+    for (const [index, layer] of data.layers.entries()) {
+      const decoded = decodeTensor(layer.weights, 2)
+      const [rows, columns] = layer.weights.shape
+      const bias = decodeTensor(layer.biases || layer.bias, 1)
+      if (columns !== architecture[index] || bias.length !== rows || layer.activation !== (index < 2 ? 'relu' : 'linear')) throw new Error('Incompatible model layer')
+      architecture.push(rows)
+      weights.push(Array.from({ length: rows }, (_, i) => decoded.slice(i * columns, (i + 1) * columns)))
+      biases.push(bias)
     }
+    if (architecture.at(-1) !== 10) throw new Error('Expected ten digit outputs')
+    const normalization = data.normalization || NORMALIZATION
+    if (!Number.isFinite(normalization.mean) || !Number.isFinite(normalization.std) || normalization.std <= 0) throw new Error('Invalid normalization')
+    // Commit validated tensors atomically. No random fallback or partial model.
+    this.weights = weights
+    this.biases = biases
+    this.layers = architecture.map((size, index) => ({ size, name: index === 0 ? 'input' : index === architecture.length - 1 ? 'output' : `hidden${index}` }))
+    this.normalization = { ...normalization }
+    this.ready = true
   }
 
-  async loadPretrainedWeights() {
-    const response = await fetch(WEIGHTS_URL)
+  async loadPretrainedWeights(signal) {
+    const response = await fetch(WEIGHTS_URL, { signal })
     if (!response.ok) throw new Error('Failed to load weights')
-    const data = await response.json()
-    if (!data?.layers?.length) return
-
-    this.weights = []
-    this.biases = []
-    
-    // Reconstruir la arquitectura basada en los pesos cargados
-    this.layers = [{ size: 784, name: 'input' }]
-
-    data.layers.forEach((layer, idx) => {
-      const weightInfo = layer.weights
-      const biasInfo = layer.bias || layer.biases
-      if (!weightInfo || !weightInfo.data || !weightInfo.shape) return
-
-      const weightArray = decodeFloat16ToFloat32(weightInfo.data)
-      const [rows, cols] = weightInfo.shape
-      const weightMatrix = toMatrix(weightArray, rows, cols)
-      this.weights.push(weightMatrix)
-
-      // Actualizar arquitectura: cols es el tamaño de la capa anterior, rows es el tamaño de esta capa
-      const layerSize = rows
-      const layerName = idx === data.layers.length - 1 ? 'output' : `hidden${idx + 1}`
-      this.layers.push({ size: layerSize, name: layerName })
-
-      if (biasInfo?.data && biasInfo?.shape) {
-        const biasArray = decodeFloat16ToFloat32(biasInfo.data)
-        this.biases.push(Array.from(biasArray))
-      } else {
-        this.biases.push(new Array(rows).fill(0))
-      }
-    })
-  }
-
-  relu(x) {
-    return Math.max(0, x)
+    this.loadDefinition(await response.json())
   }
 
   forward(input) {
-    const norm = this.normalization
-    const normalized = input.map((v) => (v - norm.mean) / norm.std)
-
-    // Keep visualization activations in a human-readable range:
-    // input in [0,1] and hidden layers post-activation.
-    this.activations = [input]
-    let current = normalized
-
-    for (let i = 0; i < this.weights.length; i++) {
-      const layerOutput = []
-      
-      for (let j = 0; j < this.weights[i].length; j++) {
-        let sum = this.biases[i][j]
-        
-        for (let k = 0; k < current.length; k++) {
-          sum += this.weights[i][j][k] * current[k]
-        }
-        
-        // Apply activation function (ReLU for hidden layers, linear for output)
-        const activated = i < this.weights.length - 1 ? this.relu(sum) : sum
-        layerOutput.push(activated)
-      }
-      
-      this.activations.push(layerOutput)
-      current = layerOutput
-    }
-    
+    if (!this.ready) throw new Error('Model is not loaded')
+    if (input.length !== 784 || Array.from(input).some(v => !Number.isFinite(v) || v < 0 || v > 1)) throw new Error('Expected 784 normalized pixels')
+    this.activations = [Array.from(input)]
+    let current = Array.from(input, v => (v - this.normalization.mean) / this.normalization.std)
+    this.weights.forEach((matrix, index) => {
+      current = matrix.map((row, neuron) => {
+        const value = row.reduce((sum, weight, i) => sum + weight * current[i], this.biases[index][neuron])
+        return index < this.weights.length - 1 ? Math.max(0, value) : value
+      })
+      this.activations.push(current)
+    })
     return current
   }
 
   softmax(logits) {
-    const maxLogit = Math.max(...logits)
-    const expLogits = logits.map(x => Math.exp(x - maxLogit))
-    const sumExp = expLogits.reduce((a, b) => a + b, 0)
-    return expLogits.map(x => x / sumExp)
+    if (!logits.length || logits.some(v => !Number.isFinite(v))) throw new Error('Invalid logits')
+    const maximum = Math.max(...logits)
+    const exponentials = logits.map(v => Math.exp(v - maximum))
+    const sum = exponentials.reduce((a, b) => a + b, 0)
+    return exponentials.map(v => v / sum)
   }
-
-  getActivations() {
-    return this.activations
-  }
-
-  getWeights() {
-    return this.weights
-  }
-}
-
-function decodeFloat16ToFloat32(base64) {
-  const bytes = base64ToUint8Array(base64)
-  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength)
-  const out = new Float32Array(bytes.byteLength / 2)
-  for (let i = 0; i < out.length; i++) {
-    const half = view.getUint16(i * 2, true)
-    out[i] = float16ToFloat32(half)
-  }
-  return out
-}
-
-function base64ToUint8Array(base64) {
-  const binary = atob(base64)
-  const bytes = new Uint8Array(binary.length)
-  for (let i = 0; i < binary.length; i++) {
-    bytes[i] = binary.charCodeAt(i)
-  }
-  return bytes
-}
-
-function float16ToFloat32(h) {
-  const s = (h & 0x8000) >> 15
-  const e = (h & 0x7C00) >> 10
-  const f = h & 0x03FF
-
-  if (e === 0) {
-    return (s ? -1 : 1) * Math.pow(2, -14) * (f / Math.pow(2, 10))
-  }
-  if (e === 0x1F) {
-    return f ? NaN : ((s ? -1 : 1) * Infinity)
-  }
-  return (s ? -1 : 1) * Math.pow(2, e - 15) * (1 + f / Math.pow(2, 10))
-}
-
-function toMatrix(array, rows, cols) {
-  const matrix = new Array(rows)
-  let idx = 0
-  for (let r = 0; r < rows; r++) {
-    const row = new Array(cols)
-    for (let c = 0; c < cols; c++) {
-      row[c] = array[idx++]
-    }
-    matrix[r] = row
-  }
-  return matrix
+  getActivations() { return this.activations }
+  getWeights() { return this.weights }
 }

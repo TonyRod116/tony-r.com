@@ -1,0 +1,4 @@
+interface:
+  display_name: "my-page-observability"
+  short_description: "Diagnostica conversiones y errores con telemetría mínima y sin "
+  default_prompt: "Usa $my-page-observability para resolver este encargo en My Page con evidencia local."

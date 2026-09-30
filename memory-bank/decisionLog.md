@@ -24,3 +24,8 @@
 - **Decision**: Deploy frontend and API to Vercel.
 - **Rationale**: Serverless functions, zero-config deployment, and seamless Git integration.
 - **Impact**: Reduced infrastructure overhead and reliable hosting.
+
+
+## 2026-09-30 — My Page tooling foundation
+
+Adapted the recommended BuildApp/MTM workflows to this portfolio. Canonical operating context is in .memory, AI_SHARED_INSTRUCTIONS.md and docs/ai/operating-system.md; source truth remains current code. Full inventory/verification: docs/ai/adoption.md and docs/ai/verification.md. No production or external-service activation.

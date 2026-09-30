@@ -1,927 +1,147 @@
-import { useState, useEffect, useRef } from 'react'
-import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Github, Linkedin, Mail, Users, ChevronDown, ChevronUp, Brain } from 'lucide-react'
-import tttIcon from '../assets/tictactoe.png'
-import msIcon from '../assets/buscaminas.png'
-import nimIcon from '../assets/nim.png'
-import tetrisIcon from '../assets/ttris.png'
-import nnIcon from '../assets/NN.png'
-import buildappProHomeCardImg from '../assets/projects/buildapp-pro-home-card-2026-03-29-012230.png'
-import { profile } from '../data/profile'
-import { projects } from '../data/projects'
+import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { useLanguage } from '../hooks/useLanguage.jsx'
-import profileImage from '../assets/pic1.jpg'
+import { profile } from '../data/profile'
+import { projectImages } from '../assets/images'
+import portrait from '../assets/pic3 (2).jpg'
+import proposal from '../assets/projects/buildapp-pro-quote-visual.png'
+import './Home.css'
 
-// Component for animated numbers
-function AnimatedNumber({ value, suffix = '', duration = 2000, delay = 0 }) {
-  const [count, setCount] = useState(0)
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true })
-
-  useEffect(() => {
-    if (isInView) {
-      const timer = setTimeout(() => {
-        const startTime = Date.now()
-        const startValue = 0
-        const endValue = parseInt(value)
-
-        const animate = () => {
-          const elapsed = Date.now() - startTime
-          const progress = Math.min(elapsed / duration, 1)
-          
-          // Smooth easing function (ease-out)
-          const easeOut = 1 - Math.pow(1 - progress, 3)
-          const currentValue = Math.floor(startValue + (endValue - startValue) * easeOut)
-          
-          setCount(currentValue)
-          
-          if (progress < 1) {
-            requestAnimationFrame(animate)
-          }
-        }
-        
-        animate()
-      }, delay)
-
-      return () => clearTimeout(timer)
-    }
-  }, [isInView, value, duration, delay])
-
+function OutboundLink({ href, children, className = '' }) {
   return (
-    <span ref={ref} className="inline-block">
-      {count}{suffix}
-    </span>
-  )
-}
-
-// Component for cards with smooth entry animation
-function ScrollAnimatedCard({ children, delay = 0, className = "" }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24, scale: 0.98, rotateX: 0 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={className}
-      style={{ willChange: 'transform, opacity', transform: 'translateZ(0)' }}
-    >
-      {children}
-    </motion.div>
-  )
-}
-
-// Component for section coming from the left (entry only)
-function ScrollAnimatedSection({ children, delay = 0, className = "" }) {
-  const ref = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  })
-  
-  // Effect from left with zoom (entry only) - optimized for mobile
-  const x = useTransform(scrollYProgress, [0, 0.3, 1], [-100, 0, 0])
-  const scale = useTransform(scrollYProgress, [0, 0.2, 1], [0.9, 1, 1])
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
-  
-  // Subtle rotation reduced for mobile
-  const rotateY = useTransform(scrollYProgress, [0, 0.5, 1], [-5, 0, 0])
-
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      style={{ 
-        x, 
-        scale, 
-        opacity,
-        rotateY,
-        transformOrigin: "left center",
-        transformStyle: "preserve-3d"
-      }}
-      transition={{ delay }}
-    >
-      {children}
-    </motion.div>
-  )
-}
-
-// Component for AI Lab game cards with Z rotation
-function ScrollAnimatedAICard({ children, delay = 0, className = "", rotation = 0 }) {
-  const ref = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  })
-  
-  // AI Card effects with Z rotation - enderezar antes
-  const scale = useTransform(scrollYProgress, [0, 0.2, 1], [0.8, 1, 1])
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
-  const rotateZ = useTransform(scrollYProgress, [0, 0.2, 1], [rotation, 0, 0])
-
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      style={{ 
-        scale, 
-        opacity,
-        rotateZ,
-        transformOrigin: "center center",
-        transformStyle: "preserve-3d"
-      }}
-      transition={{ delay }}
-    >
-      {children}
-    </motion.div>
-  )
-}
-
-// Component for center project (from background)
-function ScrollAnimatedProjectCenter({ children, delay = 0, className = "" }) {
-  const ref = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  })
-  
-  // Zoom effect from background (entry only) - optimized for mobile
-  const scale = useTransform(scrollYProgress, [0, 0.3, 1], [0.5, 1, 1])
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
-  const y = useTransform(scrollYProgress, [0, 0.3, 1], [50, 0, 0])
-  
-  // Subtle rotation reduced for mobile
-  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [8, 0, 0])
-
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      style={{ 
-        scale, 
-        opacity, 
-        y,
-        rotateX,
-        transformOrigin: "center center",
-        transformStyle: "preserve-3d"
-      }}
-      transition={{ delay }}
-    >
-      {children}
-    </motion.div>
-  )
-}
-
-// Component for left project (from left)
-function ScrollAnimatedProjectLeft({ children, delay = 0, className = "" }) {
-  const ref = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  })
-  
-  // Effect from left with zoom (entry only) - optimized for mobile
-  const x = useTransform(scrollYProgress, [0, 0.3, 1], [-150, 0, 0])
-  const scale = useTransform(scrollYProgress, [0, 0.2, 1], [0.8, 1, 1])
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
-  
-  // Subtle rotation reduced for mobile
-  const rotateY = useTransform(scrollYProgress, [0, 0.5, 1], [-8, 0, 0])
-
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      style={{ 
-        x, 
-        scale, 
-        opacity,
-        rotateY,
-        transformOrigin: "left center",
-        transformStyle: "preserve-3d"
-      }}
-      transition={{ delay }}
-    >
-      {children}
-    </motion.div>
-  )
-}
-
-// Component for right project (from right)
-function ScrollAnimatedProjectRight({ children, delay = 0, className = "" }) {
-  const ref = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  })
-  
-  // Effect from right with zoom (entry only) - optimized for mobile
-  const x = useTransform(scrollYProgress, [0, 0.3, 1], [150, 0, 0])
-  const scale = useTransform(scrollYProgress, [0, 0.2, 1], [0.8, 1, 1])
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1])
-  
-  // Subtle rotation reduced for mobile
-  const rotateY = useTransform(scrollYProgress, [0, 0.5, 1], [8, 0, 0])
-
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      style={{ 
-        x, 
-        scale, 
-        opacity,
-        rotateY,
-        transformOrigin: "right center",
-        transformStyle: "preserve-3d"
-      }}
-      transition={{ delay }}
-    >
-      {children}
-    </motion.div>
+    <a href={href} target="_blank" rel="noopener noreferrer" className={`home-link ${className}`}>
+      {children}<ArrowUpRight aria-hidden="true" size={17} />
+    </a>
   )
 }
 
 export default function Home() {
   const { t } = useLanguage()
-  const getText = (key, fallback) => {
-    const value = t(key)
-    return value === key ? fallback : value
-  }
-  const featuredProjects = [
-    projects.find(project => project.id === 're-lux'),
-    projects.find(project => project.id === 'buildapp-pro'),
-    projects.find(project => project.id === 'tradelab')
-  ].filter(Boolean)
-  const [expandedProjects, setExpandedProjects] = useState({})
-  const [backgroundPosition, setBackgroundPosition] = useState('center 30%')
-
-  const toggleExpanded = (projectId) => {
-    setExpandedProjects(prev => ({
-      ...prev,
-      [projectId]: !prev[projectId]
-    }))
-  }
-
-  // Handle responsive background position
-  useEffect(() => {
-    const updateBackgroundPosition = () => {
-      if (window.innerWidth <= 768) {
-        setBackgroundPosition('95% 50%')
-      } else {
-        setBackgroundPosition('center 30%')
-      }
-    }
-
-    updateBackgroundPosition()
-    window.addEventListener('resize', updateBackgroundPosition)
-    
-    return () => window.removeEventListener('resize', updateBackgroundPosition)
-  }, [])
-
-  // Scroll effect that "eats" the photo synchronized with content
-  useEffect(() => {
-    let ticking = false
-    const photoElement = document.getElementById('background-photo')
-
-    const handleScroll = () => {
-      if (!photoElement) return
-      if (ticking) return
-      
-      ticking = true
-      requestAnimationFrame(() => {
-        const scrollY = window.pageYOffset || document.documentElement.scrollTop
-        const windowHeight = window.innerHeight
-        
-        const parallaxMultiplier = 0.5
-        const clipMultiplier = 4
-        
-        const clipProgress = Math.min(scrollY / (windowHeight * clipMultiplier), 1)
-        
-        // If animation is complete, stop the expensive operations
-        if (clipProgress >= 1) {
-          window.removeEventListener('scroll', handleScroll)
-          return
-        }
-        
-        const translateY = scrollY * parallaxMultiplier
-        photoElement.style.transform = `translateY(${translateY}px) translateZ(0)`
-        
-        const clipBottom = 100 - (clipProgress * 100)
-        photoElement.style.clipPath = `polygon(0 0, 100% 0, 100% ${clipBottom}%, 0 ${clipBottom}%)`
-        photoElement.style.opacity = String(Math.max(0.1, 1 - (clipProgress * 0.9)))
-        
-        ticking = false
-      })
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
+  const copy = t('home')
+  const selected = [
+    { id: 're-lux', copy: copy.selected.relux, href: 'https://re-lux-frontend.netlify.app/' },
+    { id: 'tradelab', copy: copy.selected.tradelab, href: 'https://trade-lab.netlify.app/' },
+  ]
 
   return (
-    <div className="flex flex-col">
-      {/* Main Content */}
-      <div className="flex flex-col">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden pt-32 sm:pt-36 lg:pt-20 min-h-screen bg-gray-900">
+    <div className="home-showroom">
+      <section className="home-hero home-width" aria-labelledby="home-title">
+        <div className="home-hero-copy">
+          <p className="home-role">{copy.hero.role}</p>
+          <h1 id="home-title">{copy.hero.title}</h1>
+          <p className="home-intro">{copy.hero.intro}</p>
+          <div className="home-actions">
+            <a href="#work" className="home-action">{copy.hero.work}<ArrowDown aria-hidden="true" size={18} /></a>
+            <a href="#story" className="home-link">{copy.hero.story}</a>
+          </div>
+        </div>
+        <figure className="home-portrait">
+          <img src={portrait} alt={copy.hero.portraitAlt} width="719" height="720" fetchPriority="high" />
+        </figure>
+      </section>
 
-        {/* Background photo that gets "eaten" on scroll */}
-        <div 
-          className="
-            absolute inset-x-0 bottom-0 
-            top-[5rem] sm:top-[6rem] lg:top-[6vh]
-            z-0 bg-gray-900 bg-cover bg-right-bottom bg-no-repeat sm:bg-center w-full h-full
-            pointer-events-none
-          "
-          style={{
-            backgroundImage: `url(${profileImage})`,
-            backgroundPosition: '85% center',
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat',
-            clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-            transform: 'translateZ(0)',
-            willChange: 'clip-path',
-            maxWidth: '100vw',
-            maxHeight: '100vh',
-            minHeight: '80%',
-            minWidth: '100%'
-          }}
-          id="background-photo"
-        />
-        
-        <div className="container mx-auto px-8 sm:px-6 lg:px-8 relative z-10">
-          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-12 items-center min-h-[70vh]">
-            <motion.div
-              initial={{ opacity: 1, x: 0 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4 }}
-              className="space-y-8 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg rounded-2xl px-8 py-6 sm:p-8 shadow-xl border border-gray-200/50 dark:border-gray-700/50 mt-8 sm:mt-0 w-full"
-            >
-              <div className="space-y-5">
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-[2.75rem] font-extrabold text-gray-900 dark:text-white drop-shadow-sm" style={{ lineHeight: '1.15', letterSpacing: '-0.03em' }}>
-                  {t('home.hero.titlePart1')}
-                  <br />
-                  <span className="gradient-text">{t('home.hero.titlePart2')}</span>
-                </h1>
-                <p className="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-2xl drop-shadow-sm" style={{ lineHeight: '1.6' }}>
-                  {t('home.hero.subtitle')}
-                </p>
+      <section id="work" className="home-work" aria-labelledby="home-buildapp">
+        <div className="home-width">
+          <div className="home-work-heading">
+            <p className="home-caption">{copy.work.label}</p>
+            <h2 id="home-buildapp">{copy.work.title}</h2>
+          </div>
+          <div className="home-feature">
+            <figure className="home-product">
+              <img src={proposal} alt={copy.work.imageAlt} width="863" height="916" loading="lazy" />
+              <figcaption>{copy.work.caption}</figcaption>
+            </figure>
+            <div className="home-feature-copy">
+              <h3>{copy.work.subtitle}</h3>
+              <p>{copy.work.description}</p>
+              <div className="home-responsibility">
+                <span className="home-caption">{copy.work.roleLabel}</span>
+                <p>{copy.work.role}</p>
               </div>
-
-
-              <motion.div
-                initial={{ opacity: 1, y: 0 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.1 }}
-                className="flex flex-col sm:flex-row gap-4"
-              >
-                <Link
-                  to="/resume?intent=recruiter"
-                  className="btn-primary group inline-flex items-center justify-center"
-                >
-                  {getText('home.hero.cta.forRecruiters', 'View Resume & Experience')}
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link
-                  to="/demos?intent=company"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-colors bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
-                >
-                  {getText('home.hero.cta.forCompanies', 'See AI Demos')}
-                </Link>
-              </motion.div>
-
-              <div className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-6 text-sm text-gray-600 dark:text-gray-300">
-                <div className="flex items-center space-x-6">
-                  <a
-                    href={profile.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center space-x-2 hover:text-primary-700 dark:hover:text-primary-400 transition-colors drop-shadow-sm"
-                  >
-                    <Github className="h-4 w-4" />
-                    <span>GitHub</span>
-                  </a>
-                  <a
-                    href={profile.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center space-x-2 hover:text-primary-700 dark:hover:text-primary-400 transition-colors drop-shadow-sm"
-                  >
-                    <Linkedin className="h-4 w-4" />
-                    <span>LinkedIn</span>
-                  </a>
-                </div>
-                <a
-                  href={`mailto:${profile.email}`}
-                  className="flex items-center space-x-2 hover:text-primary-600 transition-colors drop-shadow-sm"
-                >
-                  <Mail className="h-4 w-4" />
-                  <span>Email</span>
-                </a>
+              <div className="home-actions">
+                <Link to="/projects" className="home-action">{copy.work.detail}<ArrowUpRight aria-hidden="true" size={18} /></Link>
+                <OutboundLink href="https://buildapp.es/pro">{copy.work.open}</OutboundLink>
               </div>
-            </motion.div>
-
-            {/* Scroll down arrow - Mobile only */}
-            <div className="lg:hidden flex justify-center mt-8">
-              <motion.div
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="flex flex-col items-center space-y-2 text-gray-300 dark:text-gray-400"
-              >
-                <span className="text-sm font-medium">{t('home.hero.scrollDown')}</span>
-                <ChevronDown className="h-6 w-6" />
-              </motion.div>
-            </div>
-
-            {/* Space for photo (will be filled with background effect) */}
-            <div className="relative h-96 lg:h-[500px]">
-              {/* This space will be filled with the background photo */}
             </div>
           </div>
         </div>
-        
-         {/* Scroll down indicator - Desktop only */}
-        <div className="hidden lg:flex justify-center mt-8">
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="flex flex-col items-center space-y-2 text-gray-500 dark:text-gray-400"
-          >
-            <span className="text-sm font-medium">{t('home.hero.scrollDown')}</span>
-            <ChevronDown className="h-5 w-5" />
-          </motion.div>
+      </section>
+
+      <section className="home-trading home-width" aria-labelledby="home-trading">
+        <div>
+          <p className="home-caption">{copy.trading.label}</p>
+          <h2 id="home-trading">{copy.trading.title}</h2>
+          <p className="home-tools">{copy.trading.tools}</p>
+        </div>
+        <div className="home-trading-copy">
+          <p>{copy.trading.description}</p>
+          <p className="home-note">{copy.trading.note}</p>
         </div>
       </section>
 
-      {/* About Preview */}
-      <section className="py-20 sm:py-24 lg:py-[120px] bg-gray-100/80 dark:bg-gray-800/50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <ScrollAnimatedSection 
-              className="space-y-6"
-              delay={0.1}
-            >
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{t('home.about.title')}</h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300">
-                {t('home.about.description')}
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                <div className="space-y-3">
-                  <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{t('home.skills.languages')}</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {profile.skills.languages.map((skill) => (
-                      <span key={skill} className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-50 text-primary-700 dark:bg-primary-900/20 dark:text-primary-300 border border-primary-200 dark:border-primary-700">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{t('home.skills.frameworks')}</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {profile.skills.frameworks.map((skill) => (
-                      <span key={skill} className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-50 text-primary-700 dark:bg-primary-900/20 dark:text-primary-300 border border-primary-200 dark:border-primary-700">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="space-y-3 sm:col-span-2 lg:col-span-1">
-                  <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{t('about.technical.tools')}</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {profile.skills.tools.map((skill) => (
-                      <span key={skill} className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-50 text-primary-700 dark:bg-primary-900/20 dark:text-primary-300 border border-primary-200 dark:border-primary-700">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+      <section className="home-selected home-width" aria-labelledby="home-selected">
+        <div className="home-section-heading">
+          <h2 id="home-selected">{copy.selected.title}</h2>
+          <p>{copy.selected.intro}</p>
+        </div>
+        <div className="home-project-list">
+          {selected.map(project => (
+            <article className="home-project-row" key={project.id}>
+              <img src={projectImages[project.id]} alt={project.copy.title} width="300" height="210" loading="lazy" />
+              <div className="home-project-copy">
+                <p className="home-caption">{project.copy.type}</p>
+                <h3>{project.copy.title}</h3>
+                <p>{project.copy.body}</p>
               </div>
-            </ScrollAnimatedSection>
+              <OutboundLink href={project.href}>{project.copy.link}</OutboundLink>
+            </article>
+          ))}
+        </div>
+        <Link to="/projects" className="home-link home-list-link">{copy.selected.all}<ArrowUpRight aria-hidden="true" size={17} /></Link>
+      </section>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-4"
-            >
-              <ScrollAnimatedCard 
-                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 hover:scale-105"
-                delay={0.1}
-              >
-                <div className="text-3xl font-bold text-white tabular-nums" style={{ minWidth: '3ch' }}>
-                  <AnimatedNumber value="50" suffix="+" duration={1200} delay={200} />
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.repositories')}</div>
-              </ScrollAnimatedCard>
-              
-              <ScrollAnimatedCard 
-                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 hover:scale-105"
-                delay={0.2}
-              >
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">{t('home.stats.problemSolving')}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.orientedBy')}</div>
-              </ScrollAnimatedCard>
-              
-              <ScrollAnimatedCard 
-                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 hover:scale-105"
-                delay={0.3}
-              >
-                <div className="text-3xl font-bold text-white">
-                  <AnimatedNumber value="15" suffix="+" duration={2000} delay={400} />
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.yearsLeading')}</div>
-              </ScrollAnimatedCard>
-              
-              <ScrollAnimatedCard 
-                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 hover:scale-105"
-                delay={0.4}
-              >
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">{t('home.stats.continuousLearning')}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">{t('home.stats.drivenBy')}</div>
-              </ScrollAnimatedCard>
-            </motion.div>
-          </div>
-          
-          {/* Centered More About Me Button */}
-          <div className="flex justify-center mt-12">
-            <Link to="/about" className="btn-primary inline-flex">
-              {t('home.about.moreAboutMe')}
-            </Link>
+      <section id="story" className="home-story" aria-labelledby="home-story">
+        <div className="home-width home-story-layout">
+          <h2 id="home-story">{copy.about.title}</h2>
+          <div>
+            <p>{copy.about.description}</p>
+            <Link to="/about" className="home-link">{copy.about.more}<ArrowUpRight aria-hidden="true" size={17} /></Link>
           </div>
         </div>
       </section>
 
-      {/* Featured Projects */}
-      <section className="py-20 sm:py-24 lg:py-[120px]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{t('home.projects.title')}</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              {t('home.projects.subtitle')}
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {featuredProjects.map((project, index) => {
-              // Determine which component to use based on position
-              const ProjectComponent = index === 0 ? ScrollAnimatedProjectLeft : 
-                                     index === 1 ? ScrollAnimatedProjectCenter : 
-                                     ScrollAnimatedProjectRight
-              const cardImage = project.id === 'buildapp-pro' ? buildappProHomeCardImg : project.image
-              
-              return (
-                <ProjectComponent
-                  key={project.id}
-                  className="group"
-                  delay={index * 0.1}
-                >
-                  <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl hover:shadow-primary-500/10 hover:-translate-y-2 hover:border-primary-500/30 transition-all duration-300 ${project.id === 'buildapp-pro' ? 'ring-1 ring-blue-200 dark:ring-blue-500/30 lg:scale-[1.02]' : ''}`}>
-                    <div className="relative h-80 bg-gradient-to-br from-primary-900/20 to-blue-900/20 overflow-hidden">
-                      <img 
-                        src={cardImage} 
-                        alt={project.title}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-black/20" />
-                    </div>
-                    <div className="p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{project.title}</h3>
-                    <div className="mb-4">
-                      <p className={`text-gray-600 dark:text-gray-300 text-sm ${!expandedProjects[project.id] ? 'line-clamp-2' : ''}`}>
-                        {t(`projects.projects.${project.id}.description`)}
-                      </p>
-                      {t(`projects.projects.${project.id}.description`).length > 100 && (
-                        <button
-                          onClick={() => toggleExpanded(project.id)}
-                          className="text-primary-600 hover:text-primary-700 text-sm font-medium mt-2 flex items-center gap-1"
-                        >
-                          {expandedProjects[project.id] ? (
-                            <>
-                              <ChevronUp className="h-3 w-3" />
-                              {t('home.projects.readLess')}
-                            </>
-                          ) : (
-                            <>
-                              <ChevronDown className="h-3 w-3" />
-                              {t('home.projects.readMore')}
-                            </>
-                          )}
-                        </button>
-                      )}
-                    </div>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.stack.slice(0, 3).map((tech) => (
-                        <span key={tech} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      {/* Backend and Frontend buttons row */}
-                      <div className="flex flex-wrap gap-2">
-                        {(project.backendUrl || project.frontendUrl || project.mobileUrl) ? (
-                          <>
-                            {project.backendUrl && (
-                              <a
-                                href={project.backendUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
-                              >
-                                <Github className="h-4 w-4" />
-                                {t('home.projects.backend')}
-                              </a>
-                            )}
-                            {project.frontendUrl && (
-                              <a
-                                href={project.frontendUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
-                              >
-                                <Github className="h-4 w-4" />
-                                {t('home.projects.frontend')}
-                              </a>
-                            )}
-                            {project.mobileUrl && (
-                              <a
-                                href={project.mobileUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
-                              >
-                                <Github className="h-4 w-4" />
-                                {t('home.projects.mobile')}
-                              </a>
-                            )}
-                          </>
-                        ) : project.githubUrl && (
-                          <a
-                            href={project.githubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 border border-gray-200 hover:border-gray-300 rounded-md transition-colors flex items-center justify-center gap-1"
-                          >
-                            <Github className="h-4 w-4" />
-                            {t('home.projects.github')}
-                          </a>
-                        )}
-                      </div>
-                      
-                      {/* Live button row - full width below */}
-                      {project.liveUrl && (
-                        <a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block w-full text-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-white bg-gray-100 hover:bg-blue-600 border border-gray-200 hover:border-blue-600 rounded-md transition-all duration-300"
-                        >
-                          {t('home.projects.live')}
-                        </a>
-                      )}
-                    </div>
-                    </div>
-                  </div>
-                </ProjectComponent>
-              )
-            })}
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="text-center mt-12"
-          >
-            <Link to="/projects" className="btn-primary inline-flex items-center">
-              {t('home.projects.viewAll')}
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </motion.div>
+      <section className="home-experiments home-width" aria-labelledby="home-experiments">
+        <div className="home-experiments-copy">
+          <h2 id="home-experiments">{copy.experiments.title}</h2>
+          <p>{copy.experiments.body}</p>
+          <Link to="/ai" className="home-link">{copy.experiments.all}<ArrowUpRight aria-hidden="true" size={17} /></Link>
+        </div>
+        <div className="home-experiment-links">
+          <Link to="/ai/neural-network" className="home-experiment">
+            <span>{copy.experiments.neural}</span><ArrowUpRight aria-hidden="true" size={18} />
+          </Link>
+          <Link to="/ai/tetris" className="home-experiment">
+            <span>{copy.experiments.tetris}</span><ArrowUpRight aria-hidden="true" size={18} />
+          </Link>
         </div>
       </section>
 
-      {/* AI Lab Section */}
-      <section className="py-20 sm:py-24 lg:py-[120px] bg-gradient-to-br from-gray-900 via-indigo-950/50 to-gray-900 relative overflow-hidden">
-        {/* Glowing divider top */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
-        {/* Dotted grid overlay */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: 'radial-gradient(circle, rgba(99,102,241,0.15) 1px, transparent 1px)',
-            backgroundSize: '24px 24px',
-          }}
-        />
-        {/* Glowing divider bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <ScrollAnimatedProjectCenter
-            className="text-center mb-12"
-            delay={0.1}
-          >
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-6" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
-              <Brain className="h-8 w-8 text-white" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
+      <section className="home-contact" aria-labelledby="home-contact">
+        <div className="home-width home-contact-layout">
+          <div>
+            <h2 id="home-contact">{copy.contact.title}</h2>
+            <p>{copy.contact.body}</p>
+          </div>
+          <div className="home-contact-links">
+            <a href={`mailto:${profile.email}`} className="home-action">{copy.contact.action}<ArrowUpRight aria-hidden="true" size={18} /></a>
+            <Link to="/resume" className="home-link">{copy.contact.cv}</Link>
+            <div className="home-socials">
+              <OutboundLink href={profile.github}>GitHub</OutboundLink>
+              <OutboundLink href={profile.linkedin}>LinkedIn</OutboundLink>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{t('home.aiLab.title')}</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-4">
-              {t('home.aiLab.subtitle')}
-            </p>
-            <p className="text-base text-gray-500 dark:text-gray-400 max-w-3xl mx-auto">
-              {t('home.aiLab.description')}
-            </p>
-          </ScrollAnimatedProjectCenter>
-
-          {/* AI Games Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
-            {/* Neural Network - Unique cyan/emerald gradient */}
-            <ScrollAnimatedAICard
-              delay={0.05}
-              rotation={-30}
-            >
-              <Link
-                to="/ai/neural-network"
-                className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
-              >
-                <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-32 h-32 bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(6, 182, 212, 0.6), 0 0 40px rgba(16, 185, 129, 0.4)'}}>
-                    <img src={nnIcon} alt="Neural Network" className="h-30 w-30" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                    {t('home.aiLab.games.neuralNetwork.title')}
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                    {t('home.aiLab.games.neuralNetwork.description')}
-                  </p>
-                  <div className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium">
-                    <span>{t('home.aiLab.playNow')}</span>
-                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </Link>
-            </ScrollAnimatedAICard>
-            {/* Tic Tac Toe - Clockwise rotation */}
-            <ScrollAnimatedAICard
-              delay={0.1}
-              rotation={30}
-            >
-              <Link 
-                to="/ai/tictactoe"
-                className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
-              >
-                <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
-                    <img src={tttIcon} alt="Tic-Tac-Toe" className="h-30 w-30" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                    {t('home.aiLab.games.tictactoe.title')}
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                    {t('home.aiLab.games.tictactoe.description')}
-                  </p>
-                  <div className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium">
-                    <span>{t('home.aiLab.playNow')}</span>
-                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </Link>
-            </ScrollAnimatedAICard>
-
-            {/* Minesweeper - Counter-clockwise rotation */}
-            <ScrollAnimatedAICard
-              delay={0.2}
-              rotation={-30}
-            >
-              <Link 
-                to="/ai/minesweeper"
-                className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
-              >
-                <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
-                    <img src={msIcon} alt="Minesweeper" className="h-30 w-30" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                    {t('home.aiLab.games.minesweeper.title')}
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                    {t('home.aiLab.games.minesweeper.description')}
-                  </p>
-                  <div className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium">
-                    <span>{t('home.aiLab.playNow')}</span>
-                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </Link>
-            </ScrollAnimatedAICard>
-
-            {/* Nim - Clockwise rotation */}
-            <ScrollAnimatedAICard
-              delay={0.3}
-              rotation={30}
-            >
-              <Link 
-                to="/ai/nim"
-                className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
-              >
-                <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
-                    <img src={nimIcon} alt="Nim" className="h-30 w-30" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                    {t('home.aiLab.games.nim.title')}
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                    {t('home.aiLab.games.nim.description')}
-                  </p>
-                  <div className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium">
-                    <span>{t('home.aiLab.playNow')}</span>
-                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </Link>
-            </ScrollAnimatedAICard>
-
-            {/* Tetris - Counter-clockwise rotation */}
-            <ScrollAnimatedAICard
-              delay={0.4}
-              rotation={-30}
-            >
-              <Link 
-                to="/ai/tetris"
-                className="group block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105"
-              >
-                <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
-                    <img src={tetrisIcon} alt="Tetris" className="h-34 w-34" style={{filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'}} />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                    {t('home.aiLab.games.tetris.title')}
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                    {t('home.aiLab.games.tetris.description')}
-                  </p>
-                  <div className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium">
-                    <span>{t('home.aiLab.playNow')}</span>
-                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </Link>
-            </ScrollAnimatedAICard>
           </div>
-
-          <ScrollAnimatedProjectCenter
-            className="text-center"
-            delay={0.5}
-          >
-            <Link to="/ai" className="btn-primary inline-flex items-center" style={{boxShadow: '0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4)'}}>
-              <span style={{textShadow: '0 0 8px rgba(255, 255, 255, 0.8)'}}>
-              {t('home.aiLab.cta')}
-              </span>
-              <ArrowRight className="ml-2 h-4 w-4" style={{filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.8))'}} />
-            </Link>
-          </ScrollAnimatedProjectCenter>
         </div>
       </section>
-
-      {/* CTA Section */}
-      <section className="py-20 sm:py-24 lg:py-[120px] bg-gradient-to-r from-primary-600 to-primary-700 relative z-20 mt-0">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center space-y-8"
-          >
-            <h2 className="text-3xl font-bold text-white">{t('home.cta.title')}</h2>
-            <p className="text-xl text-primary-50 max-w-2xl mx-auto">
-              {t('home.cta.description')}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/resume?intent=recruiter" className="btn-secondary bg-white/20 border-white/30 text-white hover:bg-white hover:text-primary-600 transition-all duration-300">
-                {getText('home.cta.forRecruiters', 'View Resume & Experience')}
-              </Link>
-              <Link to="/contact?intent=company" className="btn-secondary bg-white text-primary-600 hover:bg-gray-50 hover:text-primary-700 transition-all duration-300">
-                {getText('home.cta.forCompanies', 'See AI Demos')}
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-      </div>
     </div>
   )
 }

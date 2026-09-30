@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { siteContent } from '../../../../data/siteContent'
 import {
   Target,
   MapPin,
@@ -333,6 +333,7 @@ function FieldRow({ icon: Icon, label, value, highlight, valueClass }) {
 
 export default function LeadSummaryCard({ leadData, config = {}, t, language = 'es' }) {
   const [showDetails, setShowDetails] = useState(false)
+  const copy = siteContent[language]
   const locale = LOCALE_MAP[language] || 'es-ES'
   const clientRatings = getClientRatings(t)
   const { rating, score, factors } = calculateClientRating(leadData, config, t, locale)
@@ -342,9 +343,7 @@ export default function LeadSummaryCard({ leadData, config = {}, t, language = '
   if (!leadData || Object.keys(leadData).length === 0) {
     const bullets = t('solutions.leadQualifier.summary.bullets') || []
     return (
-      <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
+      <div
         className="rounded-2xl border border-gray-700 bg-gray-800/50 p-6"
       >
         <h3 className="text-lg font-semibold text-white mb-4">{t('solutions.leadQualifier.summary.title')}</h3>
@@ -365,7 +364,7 @@ export default function LeadSummaryCard({ leadData, config = {}, t, language = '
             {t('solutions.leadQualifier.summary.emptyMessage')}
           </p>
         </div>
-      </motion.div>
+      </div>
     )
   }
 
@@ -403,15 +402,13 @@ export default function LeadSummaryCard({ leadData, config = {}, t, language = '
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
+    <div
       className="rounded-2xl border border-gray-700 bg-gray-800/50 overflow-hidden"
     >
       {/* Header grande - Lead listo para llamar */}
       <div className={`${ratingInfo.color} px-6 py-5`}>
         <p className="text-white/90 text-xs font-medium uppercase tracking-wider mb-1">
-          {t('solutions.leadQualifier.summary.readyToCall')}
+          {copy.chatSummary}
         </p>
         <p className="text-white text-2xl font-bold mb-1">
           {ratingInfo.label}
@@ -425,7 +422,7 @@ export default function LeadSummaryCard({ leadData, config = {}, t, language = '
           {t('solutions.leadQualifier.summary.estimatedBudget')}
         </p>
         <p className="text-4xl font-bold text-white mb-2">{priceEstimate.displayText}</p>
-        {priceEstimate.estimatedMin && priceEstimate.estimatedMin >= 50000 && (
+        {priceEstimate.estimatedMin >= 50000 && (
           <p className="text-sm text-gray-300">{t('solutions.leadQualifier.summary.thisCouldBe')}</p>
         )}
       </div>
@@ -517,13 +514,9 @@ export default function LeadSummaryCard({ leadData, config = {}, t, language = '
           )}
         </button>
 
-        <AnimatePresence>
+        <>
           {showDetails && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
+            <div
               className="overflow-hidden"
             >
               <div className="px-6 pb-6 space-y-4">
@@ -584,23 +577,23 @@ export default function LeadSummaryCard({ leadData, config = {}, t, language = '
 
                 {/* El email ya se muestra en el bloque de contacto */}
               </div>
-            </motion.div>
+            </div>
           )}
-        </AnimatePresence>
+        </>
       </div>
 
       {/* CTA final */}
       <div className="px-6 py-4 border-t border-gray-700 bg-gray-800/30">
         <p className="text-xs text-gray-400 mb-3 text-center">
-          {t('solutions.leadQualifier.summary.ctaQuestion')}
+          {copy.chatInterest}
         </p>
         <Link
           to="/contact"
           className="w-full block px-6 py-3 rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-medium transition-colors text-sm text-center"
         >
-          {t('solutions.leadQualifier.ui.ctaSecondary')}
+          {copy.talk}
         </Link>
       </div>
-    </motion.div>
+    </div>
   )
 }

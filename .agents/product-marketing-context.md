@@ -1,6 +1,6 @@
 # Product Marketing Context
 
-Last updated: 2026-04-23
+Last updated: 2026-09-30
 
 ## Project Overview
 
@@ -9,8 +9,8 @@ Last updated: 2026-04-23
 | Product | Tony Rodriguez portfolio and AI demos |
 | Website | https://tony-r.com |
 | Stage | Live portfolio, continuously iterated |
-| Core offer | Solutions engineering, AI product delivery, automation, and applied full-stack execution |
-| Primary conversion goals | recruiter contact, inbound project inquiries, proof of execution |
+| Core offer | Showroom of shipped products, Python systems, applied AI, and founder-level product/engineering execution |
+| Primary conversion goals | understand Tony through his work, explore real projects, see his responsibility and judgment, and start a relevant conversation |
 | Platforms | Web portfolio, AI demos, case-study style project pages |
 
 ## One-Line Description
@@ -19,7 +19,7 @@ Tony Rodriguez is the CEO & Founder of BuildApp and a hands-on solutions enginee
 
 ## Positioning Statement
 
-For hiring managers, founders, and companies that need someone who can move from business ambiguity to shipped product, Tony Rodriguez is the CEO & Founder of BuildApp and a solutions engineer focused on AI, automation, and end-to-end delivery. Unlike candidates who only present isolated prototypes or narrow implementation work, Tony combines founder-level ownership, real operator experience, customer-facing judgment, and cross-stack execution across frontend, backend collaboration, mobile delivery, AI workflows, and production tooling.
+My Page is a personal showroom: a visitor should understand who Tony is, how he thinks, what he has built, and which parts he owned. Lead with concrete work and product judgment, with BuildApp as the flagship. Recruiting and service inquiries are possible outcomes, not the organizing story of the home. Keep the page calm, specific and human rather than a generic agency or CV landing.
 
 ## Primary Value Proposition
 
@@ -45,22 +45,24 @@ Build useful products that solve real business problems, reduce operational fric
 
 ## Audiences
 
-### Primary Audience: Recruiters and Hiring Managers
+### Primary: People Evaluating Tony Through His Work
 
-- Need a candidate who can ship, communicate, and think beyond tickets.
-- Care about proof of execution, breadth, ownership, and clarity.
-- Respond to credible outcomes, real project context, and concise positioning.
+- Want to see what he can build and what responsibility he actually carried.
+- Need product evidence, clear ownership, judgment and credible technical depth.
+- Prefer a coherent selection of work to a long list of technologies or vague titles.
 
-### Secondary Audience: Founders and Companies Needing AI/Automation
+### Secondary: Technical Visitors and Relevant Professional Contacts
 
-- Need practical help with AI workflows, internal tools, customer-facing products, or automation.
-- Care about speed, business value, and end-to-end execution.
-- Respond to case studies, concrete examples, and a low-hype tone.
+- Can explore demos, implementation details and the broader trajectory.
+- Recruitment and commercial conversations remain possible without dominating the page.
 
-### Tertiary Audience: Technical Visitors
+## Confirmed Public Fact — 2026-09-30
 
-- Interested in AI algorithms, interactive demos, and engineering craft.
-- Respond to transparent technical explanations and hands-on examples.
+Tony says his own Python trading bots are already generating income and explicitly asks to include that on the website. Use as a sober biographic statement, not independently audited performance. No returns, money amounts, guarantees, account identifiers, strategy details or fabricated charts. Keep this distinct from the older TradeLab backtesting project.
+
+## Public Messaging Boundary
+
+The public home presents work, capabilities, trajectory and a natural path to talk. Do not expose private reasons for a visitor evaluating the profile or turn it into an investment/partner solicitation. Strategic context guides hierarchy; it is not public copy.
 
 ## Current Site Structure
 
@@ -84,7 +86,7 @@ Important demos:
 2. Tie technical depth to business outcomes: revenue, speed, operational efficiency, user value.
 3. Use BuildApp as flagship proof, but keep claims accurate and proportionate.
 4. Preserve credibility: specific, concrete, low-hype language beats broad superlatives.
-5. Make recruiter and company CTAs obvious without turning the site into a generic agency landing page.
+5. Make exploring work the first action; keep biography and contact accessible without framing the home as a recruiter/service funnel.
 
 ## Voice and Tone
 
@@ -152,11 +154,11 @@ Brand/search terms:
 
 ## Preferred CTA Modes
 
-- View Projects
-- View Resume
-- View Resume & Experience
-- See AI Demos
-- Start Project
+- Explore My Work / Explorar mi trabajo
+- See BuildApp / Ver BuildApp
+- My Story / Mi recorrido
+- Explore Experiments / Explorar experimentos
+- Talk / Hablemos
 
 ## Recommended Use of External Marketing Skill Repos
 

@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "skills": [
+    {
+      "name": "my-page-agent",
+      "description": "Conoce My Page y enruta tareas de web, demos, API, marketing y herramientas de IA."
+    },
+    {
+      "name": "my-page-plan",
+      "description": "Define alcance, pasos y criterios de aceptación para cambios amplios de My Page."
+    },
+    {
+      "name": "my-page-implement",
+      "description": "Implementa y diagnostica cambios de My Page con pruebas proporcionales."
+    },
+    {
+      "name": "my-page-frontend",
+      "description": "Construye y verifica interfaces, traducciones y rendimiento de My Page."
+    },
+    {
+      "name": "my-page-api",
+      "description": "Protege contratos entre My Page, Vercel, Express y las demos de BuildApp."
+    },
+    {
+      "name": "my-page-marketing",
+      "description": "Mejora posicionamiento, contenidos y conversión del portfolio con pruebas reales."
+    },
+    {
+      "name": "my-page-review",
+      "description": "Audita cambios o afirmaciones de My Page por corrección, contratos y riesgo."
+    },
+    {
+      "name": "my-page-release",
+      "description": "Prepara CI, comprobaciones y continuidad de My Page sin publicar por defecto."
+    },
+    {
+      "name": "my-page-explain",
+      "description": "Explica código, arquitectura y decisiones de My Page desde el estado actual."
+    },
+    {
+      "name": "my-page-memory",
+      "description": "Recupera memoria selectiva y comprueba frescura e integridad de resultados."
+    },
+    {
+      "name": "my-page-agent-eval",
+      "description": "Evalúa routing y comportamiento de skills con casos y evidencia de My Page."
+    },
+    {
+      "name": "my-page-skill-audit",
+      "description": "Audita skills, hooks y scripts antes de adoptarlos o actualizarlos."
+    },
+    {
+      "name": "my-page-loop",
+      "description": "Organiza encargos autónomos o repetidos con evidencia y límites de progreso."
+    },
+    {
+      "name": "my-page-observability",
+      "description": "Diagnostica conversiones y errores con telemetría mínima y sin datos personales."
+    },
+    {
+      "name": "my-page-engineering",
+      "description": "Aplica patrones de ingeniería de BuildApp y Addy al mantenimiento de My Page."
+    },
+    {
+      "name": "product-marketing",
+      "description": "Define audiencia y posicionamiento antes de escribir campañas."
+    },
+    {
+      "name": "copywriting",
+      "description": "Escribe textos persuasivos y microcopy creíbles del portfolio."
+    },
+    {
+      "name": "copy-editing",
+      "description": "Pule texto existente sin inventar hechos ni cambiar la promesa."
+    },
+    {
+      "name": "cro",
+      "description": "Mejora recorridos de visitante a proyectos, demos, CV y contacto."
+    },
+    {
+      "name": "seo-audit",
+      "description": "Audita estructura, indexación y metadatos de las rutas del portfolio."
+    },
+    {
+      "name": "schema",
+      "description": "Diseña datos estructurados honestos para Tony y sus proyectos."
+    },
+    {
+      "name": "analytics",
+      "description": "Define eventos de conversión útiles y verifica su emisión."
+    },
+    {
+      "name": "signup",
+      "description": "Mejora formularios de contacto o registro solicitados."
+    },
+    {
+      "name": "onboarding",
+      "description": "Mejora la primera experiencia con una demo o recorrido."
+    },
+    {
+      "name": "programmatic-seo",
+      "description": "Evalúa páginas repetibles con intención real y contenido original."
+    },
+    {
+      "name": "ad-creative",
+      "description": "Prepara creatividades de campañas explícitas con pruebas reales."
+    },
+    {
+      "name": "ads",
+      "description": "Planifica campañas solicitadas y su medición sin gastar por defecto."
+    }
+  ]
+}

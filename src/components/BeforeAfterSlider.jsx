@@ -1,132 +1,29 @@
-import { useState, useRef, useEffect } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { useLanguage } from '../hooks/useLanguage.jsx'
+import { siteContent } from '../data/siteContent'
 
-export default function BeforeAfterSlider({ originalImageUrl, renderedImageUrl, t }) {
-  const [sliderPosition, setSliderPosition] = useState(50)
-  const [isDragging, setIsDragging] = useState(false)
-  const [originalImageError, setOriginalImageError] = useState(false)
-  const [renderedImageError, setRenderedImageError] = useState(false)
-  const sliderContainerRef = useRef(null)
-  const { t: translate } = useLanguage()
-
-  useEffect(() => {
-    console.log('🔍 BeforeAfterSlider - originalImageUrl:', originalImageUrl)
-    console.log('🔍 BeforeAfterSlider - renderedImageUrl:', renderedImageUrl)
-    // Reset error states when URLs change
-    setOriginalImageError(false)
-    setRenderedImageError(false)
-  }, [originalImageUrl, renderedImageUrl])
-
-  const handleMouseMove = (e) => {
-    e.stopPropagation()
-    if (sliderContainerRef.current && !isDragging) {
-      const rect = sliderContainerRef.current.getBoundingClientRect()
-      const x = e.clientX - rect.left
-      const percentage = (x / rect.width) * 100
-      const clampedPercentage = Math.max(0, Math.min(100, percentage))
-      setSliderPosition(clampedPercentage)
-    }
+export default function BeforeAfterSlider({ originalImageUrl, renderedImageUrl }) {
+  const { language } = useLanguage()
+  const copy = siteContent[language]
+  const [position,setPosition] = useState(50)
+  const [failed,setFailed] = useState({original:false,rendered:false})
+  const container = useRef(null)
+  const id = useId()
+  useEffect(() => {setFailed({original:false,rendered:false});setPosition(50)},[originalImageUrl,renderedImageUrl])
+  const move = event => {
+    const rect=container.current.getBoundingClientRect()
+    setPosition(Math.round(Math.max(0,Math.min(100,(event.clientX-rect.left)/rect.width*100))))
   }
-
-  const handleTouchMove = (e) => {
-    e.stopPropagation()
-    if (sliderContainerRef.current) {
-      const rect = sliderContainerRef.current.getBoundingClientRect()
-      const x = e.touches[0].clientX - rect.left
-      const percentage = (x / rect.width) * 100
-      const clampedPercentage = Math.max(0, Math.min(100, percentage))
-      setSliderPosition(clampedPercentage)
-    }
-  }
-
-  return (
-    <div>
-      <p className="text-xs font-semibold text-primary-600/60 dark:text-primary-400/60 uppercase tracking-wide mb-3">
-        {(t || translate)('demos.renderPresupuesto.result.comparison')}
-      </p>
-      <div
-        ref={sliderContainerRef}
-        className="rounded-2xl overflow-hidden bg-black relative touch-none select-none"
-        style={{ minHeight: '300px' }}
-        onMouseMove={handleMouseMove}
-        onMouseDown={() => setIsDragging(true)}
-        onMouseUp={() => setIsDragging(false)}
-        onMouseLeave={() => setIsDragging(false)}
-        onTouchStart={(e) => {
-          e.stopPropagation()
-          setIsDragging(true)
-          handleTouchMove(e)
-        }}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={() => setIsDragging(false)}
-      >
-        {/* Rendered Image (Background) */}
-        <div className="w-full">
-          {renderedImageError ? (
-            <div className="w-full min-h-[300px] flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
-              <p className="text-sm">Error loading rendered image</p>
-            </div>
-          ) : (
-            <img 
-              src={renderedImageUrl} 
-              alt={(t || translate)('demos.renderPresupuesto.result.renderAlt')} 
-              className="w-full h-auto block rounded-none"
-              onError={(e) => {
-                console.error('❌ Error loading rendered image:', renderedImageUrl)
-                setRenderedImageError(true)
-                e.target.style.display = 'none'
-              }}
-              onLoad={() => {
-                console.log('✅ Rendered image loaded successfully')
-                setRenderedImageError(false)
-              }}
-            />
-          )}
-        </div>
-        {/* Original Image (Overlay with clip) */}
-        {!originalImageError && (
-          <div
-            className="absolute inset-0 overflow-hidden pointer-events-none"
-            style={{
-              clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
-              WebkitClipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
-            }}
-          >
-            <img 
-              src={originalImageUrl} 
-              alt={(t || translate)('demos.renderPresupuesto.result.originalImageAlt')} 
-              className="w-full h-auto block rounded-none"
-              onError={(e) => {
-                console.error('❌ Error loading original image:', originalImageUrl)
-                setOriginalImageError(true)
-                e.target.style.display = 'none'
-              }}
-              onLoad={() => {
-                console.log('✅ Original image loaded successfully')
-                setOriginalImageError(false)
-              }}
-            />
-          </div>
-        )}
-        {/* Slider Handle */}
-        <div
-          className={`absolute top-0 bottom-0 w-0.5 bg-white shadow-lg pointer-events-none ${
-            isDragging ? '' : 'transition-all duration-100'
-          }`}
-          style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
-        >
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-xl flex items-center justify-center border-2 border-primary-600">
-            <div className="flex gap-0.5">
-              <div className="w-0.5 h-4 bg-primary-600 rounded-full" />
-              <div className="w-0.5 h-4 bg-primary-600 rounded-full" />
-              <div className="w-0.5 h-4 bg-primary-600 rounded-full" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <p className="text-xs text-primary-600/50 dark:text-primary-400/50 text-center italic mt-2">
-        {(t || translate)('demos.renderPresupuesto.sliderHint')}
-      </p>
+  return <div>
+    <p className="site-kicker">{copy.comparison}</p>
+    <div ref={container} className="site-comparison" onPointerDown={event=>{event.preventDefault();event.currentTarget.setPointerCapture(event.pointerId);move(event)}} onPointerMove={event=>{if(event.currentTarget.hasPointerCapture(event.pointerId))move(event)}} onPointerUp={event=>{if(event.currentTarget.hasPointerCapture(event.pointerId))event.currentTarget.releasePointerCapture(event.pointerId)}}>
+      {failed.rendered?<div className="site-comparison-fallback">{copy.unavailable}</div>:<img src={renderedImageUrl} alt={copy.after} onError={()=>setFailed(state=>({...state,rendered:true}))} />}
+      {!failed.original&&<div className="site-comparison-original" style={{clipPath:`inset(0 ${100-position}% 0 0)`}}><img src={originalImageUrl} alt={copy.before} onError={()=>setFailed(state=>({...state,original:true}))} /></div>}
+      <div className="site-comparison-line" style={{left:`${position}%`}}><span aria-hidden="true">↔</span></div>
     </div>
-  )
+    <div className="site-comparison-labels"><span>{copy.before}</span><span>{copy.after}</span></div>
+    <label htmlFor={id} className="site-note">{copy.comparisonControl}</label><input id={id} className="site-comparison-range" type="range" min="0" max="100" step="1" value={position} onChange={event=>setPosition(Number(event.target.value))} />
+    <p className="site-note">{copy.comparisonHint}</p>
+    {(failed.original||failed.rendered)&&<p role="alert" className="site-message is-error">{copy.unavailable}</p>}
+  </div>
 }

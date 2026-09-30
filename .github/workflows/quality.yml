@@ -1,0 +1,37 @@
+name: Portfolio quality
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run build -- --outDir .artifacts/build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      # Capture evidence on CI; do not accept/compare a baseline generated on another OS image.
+      - run: npm run test:visual
+        env:
+          MY_PAGE_VISUAL_CAPTURE: '1'
+      - run: npm run perf:report
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: portfolio-quality-evidence
+          path: .artifacts/
+          retention-days: 7

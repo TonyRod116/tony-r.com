@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../../hooks/useLanguage';
-import { useNavigate } from 'react-router-dom';
+import AiExperimentLayout from '../ai/AiExperimentLayout';
+import { labCopy, playHints } from '../../data/aiExperiments';
 
 const X = "X";
 const O = "O";
@@ -122,77 +123,21 @@ const min_value = (board) => {
 };
 
 const TicTacToe = () => {
-    const { t } = useLanguage();
-    const navigate = useNavigate();
+    const { t, language } = useLanguage();
+    const copy = labCopy[language];
+    const aiTimer = useRef(null);
+    const [thinking, setThinking] = useState(false);
+    useEffect(() => () => clearTimeout(aiTimer.current), []);
     const [board, setBoard] = useState(initial_state());
     const [isHardMode, setIsHardMode] = useState(true);
-    const [gameStatus, setGameStatus] = useState('');
+    const gameWinner = winner(board);
+    const gameStatus = gameWinner ? t(gameWinner === X ? 'aiLab.games.tictactoe.youWin' : 'aiLab.games.tictactoe.aiWins') : terminal(board) ? t('aiLab.games.tictactoe.draw') : t(player(board) === X ? 'aiLab.games.tictactoe.yourTurn' : 'aiLab.games.tictactoe.aiThinking');
     const [stats, setStats] = useState({
         gamesPlayed: parseInt(localStorage.getItem('ttt_games') || '0'),
         aiWins: parseInt(localStorage.getItem('ttt_ai_wins') || '0'),
         youWins: parseInt(localStorage.getItem('ttt_you_wins') || '0'),
         draws: parseInt(localStorage.getItem('ttt_draws') || '0')
     });
-
-    const translations = {
-        en: {
-            title: "Tic-Tac-Toe AI",
-            subtitle: "Challenge tha AI's unbeatable Minimax algorithm",
-            description: "This AI uses my original Minimax Python algorithm converted to JavaScript. The algorithm evaluates all 255,168 possible game positions, making it impossible to beat (unless you use easy mode) - it will always force a draw or win against any opponent.",
-            newGame: "New Game",
-            easyMode: "Easy Mode",
-            hardMode: "Hard Mode",
-            yourTurn: "Your turn!",
-            aiThinking: "AI is thinking...",
-            youWin: "You win!",
-            aiWins: "AI wins!",
-            draw: "It's a draw!",
-            stats: {
-                games: "Games Played",
-                aiWins: "AI Wins",
-                draws: "Draws"
-            }
-        },
-        es: {
-            title: "IA Tres en Raya",
-            subtitle: "Desafía el algoritmo Minimax imbatible de la IA",
-            description: "Esta IA usa mi implementación original del algoritmo Minimax en Python convertida a JavaScript. El algoritmo evalúa todas las 255,168 posiciones posibles del juego, haciéndolo imposible de vencer (a menos que uses el modo fácil) - siempre forzará un empate o victoria contra cualquier oponente.",
-            newGame: "Nuevo Juego",
-            easyMode: "Modo Fácil",
-            hardMode: "Modo Difícil",
-            yourTurn: "¡Tu turno!",
-            aiThinking: "La IA está pensando...",
-            youWin: "¡Ganaste!",
-            aiWins: "¡La IA gana!",
-            draw: "¡Es un empate!",
-            stats: {
-                games: "Juegos Jugados",
-                aiWins: "Victorias IA",
-                draws: "Empates"
-            }
-        },
-        ca: {
-            title: "IA Tres en Ratlla",
-            subtitle: "Desafia l'algoritme Minimax imbatible de la IA",
-            description: "Aquesta IA usa la meva implementació original de l'algoritme Minimax de Python convertida a JavaScript. L'algoritme avalua totes les 255,168 posicions possibles del joc, fent-lo impossible de vèncer (a menys que usis el mode fàcil) - sempre forçarà un empat o victòria contra qualsevol oponent.",
-            newGame: "Nou Joc",
-            easyMode: "Mode Fàcil",
-            hardMode: "Mode Difícil",
-            yourTurn: "El teu torn!",
-            aiThinking: "La IA està pensant...",
-            youWin: "Has guanyat!",
-            aiWins: "L'IA guanya!",
-            draw: "És un empat!",
-            stats: {
-                games: "Jocs Jugats",
-                aiWins: "Victòries IA",
-                draws: "Empats"
-            }
-        }
-    };
-
-    const currentLang = localStorage.getItem('language') || 'en';
-    const currentT = translations[currentLang];
 
     useEffect(() => {
         updateGameStatus();
@@ -202,38 +147,38 @@ const TicTacToe = () => {
         const gameWinner = winner(board);
         if (gameWinner) {
             if (gameWinner === X) {
-                setGameStatus(t('aiLab.games.tictactoe.youWin'));
+
                 // Player wins - update stats
                 const newStats = { ...stats, youWins: stats.youWins + 1 };
                 setStats(newStats);
                 localStorage.setItem('ttt_you_wins', newStats.youWins.toString());
             } else {
-                setGameStatus(t('aiLab.games.tictactoe.aiWins'));
+
                 // AI wins - update stats
                 const newStats = { ...stats, aiWins: stats.aiWins + 1 };
                 setStats(newStats);
                 localStorage.setItem('ttt_ai_wins', newStats.aiWins.toString());
             }
         } else if (terminal(board)) {
-            setGameStatus(t('aiLab.games.tictactoe.draw'));
+
             // Draw - update stats
             const newStats = { ...stats, draws: stats.draws + 1 };
             setStats(newStats);
             localStorage.setItem('ttt_draws', newStats.draws.toString());
-        } else {
-            const currentPlayer = player(board);
-            setGameStatus(currentPlayer === X ? t('aiLab.games.tictactoe.yourTurn') : t('aiLab.games.tictactoe.aiThinking'));
         }
     };
 
     const makeMove = (row, col) => {
-        if (board[row][col] !== EMPTY || terminal(board)) return;
+        if (aiTimer.current !== null || player(board) !== X || board[row][col] !== EMPTY || terminal(board)) return;
         
         const newBoard = result(board, [row, col]);
         setBoard(newBoard);
         
         // AI move after player move
-        setTimeout(() => {
+        setThinking(true);
+        aiTimer.current = setTimeout(() => {
+            aiTimer.current = null;
+            setThinking(false);
             if (!terminal(newBoard)) {
                 const aiMove = isHardMode ? minimax(newBoard) : getEasyModeMove(newBoard);
                 if (aiMove) {
@@ -314,8 +259,11 @@ const TicTacToe = () => {
     };
 
     const newGame = () => {
+        clearTimeout(aiTimer.current);
+        aiTimer.current = null;
+        setThinking(false);
         setBoard(initial_state());
-        setGameStatus(t('aiLab.games.tictactoe.yourTurn'));
+
         
         // Update games played counter
         const newStats = { ...stats, gamesPlayed: stats.gamesPlayed + 1 };
@@ -335,34 +283,13 @@ const TicTacToe = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 pt-32 pb-8">
-            <div className="container mx-auto px-4 max-w-4xl">
-                <div className="bg-white/10 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-8 border border-blue-200/20 dark:border-blue-400/20">
-                    <div className="text-center mb-8">
-                        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                            {t('aiLab.games.tictactoe.title')}
-                        </h1>
-                        <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-                            {t('aiLab.games.tictactoe.subtitle')}
-                        </p>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-3xl mx-auto">
-                            {t('aiLab.games.tictactoe.description')}
-                        </p>
-                    </div>
+        <AiExperimentLayout id="tictactoe">
+            <div className="ai-legacy-content">
 
-                    <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 max-w-2xl mx-auto mb-8">
-                        <p className="text-sm text-blue-800 dark:text-blue-200 font-medium">
-                            {t('aiLab.games.tictactoe.howToPlay')}
-                        </p>
-                    </div>
+
+                    <p className="ai-help mb-6">{playHints[language].tictactoe}</p>
 
                     <div className="flex justify-center gap-4 mb-8">
-                        <button
-                            onClick={() => navigate('/ai')}
-                            className="px-4 py-2 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg text-sm"
-                        >
-                            {t('aiLab.games.tictactoe.backToAI')}
-                        </button>
                         <button
                             onClick={newGame}
                             className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg"
@@ -382,20 +309,21 @@ const TicTacToe = () => {
                     </div>
 
                     <div className="flex justify-center mb-6">
-                        <div className="text-xl font-semibold text-gray-700 dark:text-gray-200">
+                        <div aria-live="polite" className="ai-game-status text-xl font-semibold">
                             {gameStatus}
                         </div>
                     </div>
 
                     <div className="flex justify-center mb-8">
-                        <div className="grid grid-cols-3 gap-1 sm:gap-2 bg-gray-800/50 p-2 sm:p-4 rounded-xl max-w-xs sm:max-w-none mx-auto">
+                        <div className="ai-ttt-board grid grid-cols-3 gap-1 sm:gap-2 bg-gray-800/50 p-2 sm:p-4 rounded-xl max-w-xs sm:max-w-none mx-auto">
                             {board.map((row, rowIndex) =>
                                 row.map((cell, colIndex) => (
                                     <button
                                         key={`${rowIndex}-${colIndex}`}
                                         onClick={() => makeMove(rowIndex, colIndex)}
-                                        className={`w-16 h-16 sm:w-20 sm:h-20 bg-gray-700/80 hover:bg-gray-600/80 border-2 border-blue-400/30 rounded-lg flex items-center justify-center text-2xl sm:text-3xl font-bold transition-all duration-200 hover:scale-105 ${getCellColor(cell)}`}
-                                        disabled={cell !== EMPTY || terminal(board)}
+                                        aria-label={`${copy.cell} ${rowIndex + 1}, ${colIndex + 1}: ${cell || "—"}`}
+                                        className={`ai-cell w-16 h-16 sm:w-20 sm:h-20 bg-gray-700/80 hover:bg-gray-600/80 border-2 border-blue-400/30 rounded-lg flex items-center justify-center text-2xl sm:text-3xl font-bold transition-all duration-200 hover:scale-105 ${getCellColor(cell)}`}
+                                        disabled={thinking || cell !== EMPTY || terminal(board)}
                                     >
                                         {cell}
                                     </button>
@@ -404,7 +332,7 @@ const TicTacToe = () => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 max-w-2xl mx-auto">
+                    <div className="ai-game-stats grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 max-w-2xl mx-auto">
                         <div className="bg-gray-800/50 p-3 sm:p-4 rounded-xl text-center border border-blue-400/20">
                             <div className="text-xl sm:text-2xl font-bold text-blue-400">{stats.gamesPlayed}</div>
                             <div className="text-xs sm:text-sm text-gray-300">{t('aiLab.games.tictactoe.stats.games')}</div>
@@ -422,9 +350,8 @@ const TicTacToe = () => {
                             <div className="text-xs sm:text-sm text-gray-300">{t('aiLab.games.tictactoe.stats.draws')}</div>
                         </div>
                     </div>
-                </div>
             </div>
-        </div>
+        </AiExperimentLayout>
     );
 };
 

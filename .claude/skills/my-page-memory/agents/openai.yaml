@@ -1,0 +1,4 @@
+interface:
+  display_name: "my-page-memory"
+  short_description: "Recupera memoria selectiva y comprueba frescura e integridad de"
+  default_prompt: "Usa $my-page-memory para resolver este encargo en My Page con evidencia local."

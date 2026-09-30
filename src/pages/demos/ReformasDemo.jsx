@@ -1,6 +1,11 @@
+import { observeDemoRequest } from '../../utils/telemetry'
+
 import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Copy, Loader2, CheckCircle, AlertCircle, ListChecks, MessageCircle, FileText, MessageSquare, History, ImagePlus } from 'lucide-react'
+
+const observedFetch = (...args) => observeDemoRequest('quote', () => fetch(...args))
+
 
 // BuildApp API: foto + prompt → render + presupuesto
 const BUILDAPP_GET_INSPIRED_URL = 'https://buildapp-v1-backend.onrender.com/api/v1/get-inspired/process'
@@ -130,7 +135,7 @@ export default function ReformasDemo() {
     setRenderError(null)
     setRenderResult(null)
     try {
-      const res = await fetch(BUILDAPP_GET_INSPIRED_URL, {
+      const res = await observedFetch(BUILDAPP_GET_INSPIRED_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -175,7 +180,7 @@ export default function ReformasDemo() {
         photoNames: photos.map((f) => f.name),
       }
 
-      const res = await fetch(`${getApiBase()}/api/generate-quote`, {
+      const res = await observedFetch(`${getApiBase()}/api/generate-quote`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -188,7 +193,7 @@ export default function ReformasDemo() {
       setResult(data)
 
       // Guardar en histórico (llamada al backend)
-      await fetch(`${getApiBase()}/api/leads`, {
+      await observedFetch(`${getApiBase()}/api/leads`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ lead: body.lead, result: data }),
@@ -203,7 +208,7 @@ export default function ReformasDemo() {
 
   const loadHistory = async () => {
     try {
-      const res = await fetch(`${getApiBase()}/api/leads`)
+      const res = await observedFetch(`${getApiBase()}/api/leads`)
       const data = await res.json()
       if (res.ok && Array.isArray(data)) setHistoryList(data)
     } catch {

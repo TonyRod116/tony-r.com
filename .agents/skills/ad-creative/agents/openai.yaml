@@ -1,0 +1,4 @@
+interface:
+  display_name: "ad-creative"
+  short_description: "Prepara creatividades de campañas explícitas con pruebas reales"
+  default_prompt: "Usa $ad-creative para resolver este encargo en My Page con evidencia local."

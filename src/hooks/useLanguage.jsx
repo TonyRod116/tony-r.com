@@ -8,6 +8,10 @@ export const LanguageProvider = ({ children }) => {
   const [isTransitioning, setIsTransitioning] = useState(false)
 
   useEffect(() => {
+    document.documentElement.lang = language
+  }, [language])
+
+  useEffect(() => {
     // Get language from localStorage or default to 'es' (Spanish)
     const savedLanguage = localStorage.getItem('portfolio-language')
     if (savedLanguage && translations[savedLanguage]) {

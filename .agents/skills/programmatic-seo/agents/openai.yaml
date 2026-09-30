@@ -1,0 +1,4 @@
+interface:
+  display_name: "programmatic-seo"
+  short_description: "Evalúa páginas repetibles con intención real y contenido origin"
+  default_prompt: "Usa $programmatic-seo para resolver este encargo en My Page con evidencia local."

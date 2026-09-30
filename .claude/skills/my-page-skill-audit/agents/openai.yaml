@@ -1,0 +1,4 @@
+interface:
+  display_name: "my-page-skill-audit"
+  short_description: "Audita skills, hooks y scripts antes de adoptarlos o actualizar"
+  default_prompt: "Usa $my-page-skill-audit para resolver este encargo en My Page con evidencia local."

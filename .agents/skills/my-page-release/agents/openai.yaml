@@ -1,0 +1,4 @@
+interface:
+  display_name: "my-page-release"
+  short_description: "Prepara CI, comprobaciones y continuidad de My Page sin publica"
+  default_prompt: "Usa $my-page-release para resolver este encargo en My Page con evidencia local."

@@ -1,0 +1,175 @@
+[
+  {
+    "id": "portada",
+    "query": "Actualizar portada",
+    "expected_lanes": [
+      "site"
+    ]
+  },
+  {
+    "id": "seo",
+    "query": "Auditar SEO",
+    "expected_lanes": [
+      "marketing"
+    ]
+  },
+  {
+    "id": "design",
+    "query": "Revisar diseño visual",
+    "expected_lanes": [
+      "design"
+    ]
+  },
+  {
+    "id": "chat",
+    "query": "El chat no funciona",
+    "expected_lanes": [
+      "demos"
+    ]
+  },
+  {
+    "id": "endpoint",
+    "query": "El endpoint no funciona",
+    "expected_lanes": [
+      "api"
+    ]
+  },
+  {
+    "id": "ops",
+    "query": "Revisar skills y memoria",
+    "expected_lanes": [
+      "ops"
+    ]
+  },
+  {
+    "id": "joint-site",
+    "query": "Cambiar portada y SEO",
+    "expected_lanes": [
+      "marketing",
+      "site"
+    ]
+  },
+  {
+    "id": "joint-demo",
+    "query": "Revisar API y chat",
+    "expected_lanes": [
+      "api",
+      "demos"
+    ]
+  },
+  {
+    "id": "exclusion",
+    "query": "Cambiar portada, no toques API",
+    "expected_lanes": [
+      "site"
+    ]
+  },
+  {
+    "id": "leading-exclusion",
+    "query": "No modifiques API; revisar diseño",
+    "expected_lanes": [
+      "design"
+    ]
+  },
+  {
+    "id": "negative-problem",
+    "query": "La web no funciona",
+    "expected_lanes": [
+      "site"
+    ]
+  },
+  {
+    "id": "neutral",
+    "query": "Explícame lo que tenemos",
+    "expected_lanes": [
+      "explain"
+    ]
+  },
+  {
+    "id": "ci",
+    "query": "Revisar CI",
+    "expected_lanes": [
+      "ops"
+    ]
+  },
+  {
+    "id": "contract",
+    "query": "Ver contrato y persistencia",
+    "expected_lanes": [
+      "api"
+    ]
+  },
+  {
+    "id": "cv",
+    "query": "Actualizar CV",
+    "expected_lanes": [
+      "site"
+    ]
+  },
+  {
+    "id": "game",
+    "query": "Revisar Tetris",
+    "expected_lanes": [
+      "demos"
+    ]
+  },
+  {
+    "id": "onboarding",
+    "query": "Revisar demo",
+    "expected_lanes": [
+      "demos"
+    ]
+  },
+  {
+    "id": "marketing",
+    "query": "Revisar marketing y conversion",
+    "expected_lanes": [
+      "marketing"
+    ]
+  },
+  {
+    "id": "bounded",
+    "query": "Solo análisis de router; no implementar",
+    "expected_lanes": [
+      "ops"
+    ]
+  },
+  {
+    "id": "scope",
+    "query": "Revisar tipografía y estilo",
+    "expected_lanes": [
+      "design"
+    ]
+  },
+  {
+    "id": "all-ops",
+    "query": "Revisar hooks, tooling y continuidad",
+    "expected_lanes": [
+      "ops"
+    ]
+  },
+  {
+    "id": "multi",
+    "query": "Revisar home, demo y server",
+    "expected_lanes": [
+      "site",
+      "demos",
+      "api"
+    ]
+  },
+  {
+    "id": "preserve",
+    "query": "Revisar web sin tocar API",
+    "expected_lanes": [
+      "site"
+    ]
+  },
+  {
+    "id": "accents",
+    "query": "Revisar posicionamiento y navegación",
+    "expected_lanes": [
+      "marketing",
+      "site"
+    ]
+  }
+]

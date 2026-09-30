@@ -1,3 +1,9 @@
+# Reference continuity summary
+
+Last updated: 2026-09-30
+
+Current operating truth is in .memory/, PROJECT_STATE.md, docs/ai/ and source code. Use ai:context to retrieve task-specific current sources. The paragraphs below are historical context; they do not certify present deployment/API availability.
+
 # Active Context
 
 ## Current Status

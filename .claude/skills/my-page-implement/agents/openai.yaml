@@ -1,0 +1,4 @@
+interface:
+  display_name: "my-page-implement"
+  short_description: "Implementa y diagnostica cambios de My Page con pruebas proporc"
+  default_prompt: "Usa $my-page-implement para resolver este encargo en My Page con evidencia local."

@@ -1,0 +1,313 @@
+{
+  "date": "2026-09-30",
+  "status": "locally_verified",
+  "issue": "My Page-88",
+  "scope": [
+    "/about",
+    "/projects",
+    "/resume",
+    "/contact",
+    "/demos",
+    "/demos/presupuesto-orientativo",
+    "/demos/render-presupuesto",
+    "/demos/lead-qualifier"
+  ],
+  "checks": {
+    "isolated_build": "pass",
+    "quality": "pass",
+    "code_tooling_tests": 38,
+    "routing_cases": 24,
+    "full_browser_journeys": 140,
+    "browser_workers": 1,
+    "final_budget_text_journeys": 10,
+    "visual_comparisons": 24,
+    "new_visual_references": 12,
+    "updated_references": 4,
+    "approved_home_ai_references_preserved": 8,
+    "viewport_route_observations": 24,
+    "gallery_images_decoded": 24
+  },
+  "preserved": {
+    "protected_file_count": 83,
+    "protected_changes": [],
+    "ai_source_hashes_match": true,
+    "source_pdfs_unchanged": true,
+    "gallery_pixels_unchanged": true,
+    "gallery_images": 24,
+    "document_items": 7,
+    "gallery_manifest": "public/gallery/manifest.json"
+  },
+  "viewports": [
+    {
+      "name": "desktop",
+      "id": "about",
+      "width": 1440,
+      "documentWidth": 1440,
+      "height": 2084,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "desktop",
+      "id": "projects",
+      "width": 1440,
+      "documentWidth": 1440,
+      "height": 2975,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "desktop",
+      "id": "resume",
+      "width": 1440,
+      "documentWidth": 1440,
+      "height": 5159,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "desktop",
+      "id": "contact",
+      "width": 1440,
+      "documentWidth": 1440,
+      "height": 1234,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "desktop",
+      "id": "solutions",
+      "width": 1440,
+      "documentWidth": 1440,
+      "height": 1659,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "desktop",
+      "id": "budget",
+      "width": 1440,
+      "documentWidth": 1440,
+      "height": 1388,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "desktop",
+      "id": "render",
+      "width": 1440,
+      "documentWidth": 1440,
+      "height": 1287,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "desktop",
+      "id": "lead",
+      "width": 1440,
+      "documentWidth": 1440,
+      "height": 1506,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "mobile",
+      "id": "about",
+      "width": 390,
+      "documentWidth": 390,
+      "height": 2584,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "mobile",
+      "id": "projects",
+      "width": 390,
+      "documentWidth": 390,
+      "height": 4766,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "mobile",
+      "id": "resume",
+      "width": 390,
+      "documentWidth": 390,
+      "height": 5010,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "mobile",
+      "id": "contact",
+      "width": 390,
+      "documentWidth": 390,
+      "height": 1525,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "mobile",
+      "id": "solutions",
+      "width": 390,
+      "documentWidth": 390,
+      "height": 1554,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "mobile",
+      "id": "budget",
+      "width": 390,
+      "documentWidth": 390,
+      "height": 1913,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "mobile",
+      "id": "render",
+      "width": 390,
+      "documentWidth": 390,
+      "height": 1462,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "mobile",
+      "id": "lead",
+      "width": 390,
+      "documentWidth": 390,
+      "height": 2070,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "tablet",
+      "id": "about",
+      "width": 768,
+      "documentWidth": 768,
+      "height": 2335,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "tablet",
+      "id": "projects",
+      "width": 768,
+      "documentWidth": 768,
+      "height": 3149,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "tablet",
+      "id": "resume",
+      "width": 768,
+      "documentWidth": 768,
+      "height": 4705,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "tablet",
+      "id": "contact",
+      "width": 768,
+      "documentWidth": 768,
+      "height": 1225,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "tablet",
+      "id": "solutions",
+      "width": 768,
+      "documentWidth": 768,
+      "height": 1657,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "tablet",
+      "id": "budget",
+      "width": 768,
+      "documentWidth": 768,
+      "height": 1379,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "tablet",
+      "id": "render",
+      "width": 768,
+      "documentWidth": 768,
+      "height": 1283,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "name": "tablet",
+      "id": "lead",
+      "width": 768,
+      "documentWidth": 768,
+      "height": 1905,
+      "errors": [],
+      "brokenImages": []
+    }
+  ],
+  "source_sha256": {
+    "src/components/site/DemoPage.jsx": "8477b14e45d764070a550e6d0c52376702dd7529c7772be2851c899d7048cea7",
+    "src/components/site/SitePage.jsx": "6e13a1f3d32761c8469b1e77b34766f73f3980fb73f75fae5f2d616f58709613",
+    "src/components/site/Site.css": "5f4280994e983efe9e7b7ea2de183873f02deb27a2411006176651e2f72e4350",
+    "src/components/site/Modal.jsx": "1aa70aa5bfb0e176e3e575ccdcb63b59c6c5e87ad81a9ba2d2e4edd63f4a6764",
+    "src/data/siteContent.js": "2947913e5a2b292e03f997f7866063ca6d77b3940cbc31e483dc3e4c92f1839a",
+    "src/data/documents.js": "64be3c2c2d1c453d1d51359d53dd742b843a932ba2abb73dbadaed056b627e89",
+    "src/data/totalhomesGallery.js": "3dde2dcd8675c4babd20826e0be4a6cf70eb1b57267639d32e8111370297dd1b",
+    "src/pages/About.jsx": "013d7e06b8436e881ea1fe6d754614167892841dc3c5306fc1d2ec609692f366",
+    "src/pages/Projects.jsx": "c226ae51940aaf6d3df60ca4999dbebd574b8de22609cbb3a1212d093fa12b08",
+    "src/pages/Resume.jsx": "7a2306112a5715eeccff390d55c11b1371a4c07a0cb8960fe9c0d207e1f14a92",
+    "src/pages/Contact.jsx": "298ec0b27810c5d74b49c6bcc9d528baa3ee94f0702ecd76c9e886ea4c187720",
+    "src/pages/Demos.jsx": "e6e4e62a685566a24f538128a6956662c7bedc208de94dde5224ca3b7b0c223e",
+    "src/pages/demos/PresupuestoOrientativo.jsx": "6d218d1a4a89870ff7e17a51bd33c1d990302a2fab83d265f845e6a5e03f1eee",
+    "src/pages/demos/RenderPresupuesto.jsx": "b59bec6576c70a6433b88d988e913f102459523d675326b422ce6762711780dd",
+    "src/pages/demos/LeadQualifier/index.jsx": "f7cb0997dcaf092e2c489e0ff38a4f26e29ddaa0d9be4eaca74a609cc971cafa",
+    "src/pages/demos/LeadQualifier/components/ConfigPanel.jsx": "937a7abf0b61cb63c90e1ff5012449efb83325ca84186d555064525a6aa97341",
+    "src/pages/demos/LeadQualifier/components/ChatBubble.jsx": "9a41ccbef55004ff56f8befa8a825bace30cbb830d05a31e59989aa7ffb9b3e8",
+    "src/pages/demos/LeadQualifier/components/LeadSummaryCard.jsx": "2809d1757a60d7f00a6165ddb167a8403951a19ef8b7aede4c15392863e29154",
+    "src/pages/demos/LeadQualifier/components/TypingIndicator.jsx": "8ebfff57386b13be2485ef57d7468bbb370a0109f4431530e8d35de4bf5e4ce7",
+    "src/pages/demos/LeadQualifier/utils/scoring.js": "21413ddbdc0cf35835fe388d08eab2735e560b0013e63d670d44b4c856df5c3d",
+    "src/components/Header.jsx": "6d192094b3809afe9b7ef4cc3d96a39591578ea9eceab5435f6966014344aa81",
+    "src/components/Footer.jsx": "2dc21ed725a75dcc8544376b63dbd456a0d4028914efd72320448700e7920cf4",
+    "src/components/ScrollToTop.jsx": "bf8eb8327dce860dc5c636f0bde456c18ce7d467747a7ced0e539cb3b7c08447",
+    "src/utils/demoResponse.js": "7ba8b5dc86c64aabae4963e984b0825ae15375c19073d84d19212cff092a7de6"
+  },
+  "design_helper": {
+    "provider": "claude",
+    "model": "claude-sonnet-5-5",
+    "effort": "high",
+    "access": "subscription_cli",
+    "attempt": 1,
+    "status": "failed",
+    "subscription_type": "max",
+    "usage": {},
+    "observed_models": [],
+    "error": "Claude CLI failed; no automatic retry or provider fallback"
+  },
+  "design_helper_authority": "failed_attempt_no_advice_or_attestation_no_fallback",
+  "limits": [
+    "Chromium and local built frontend proof",
+    "all BuildApp/Formspree calls intercepted with synthetic fixtures",
+    "remote production availability and generation quality not tested",
+    "no independent model design review completed",
+    "no API/server/CORS/persistence/auth/credential change",
+    "no deployment/publication"
+  ],
+  "excluded_runs": [
+    "wrong old-button test selector",
+    "test pointer coordinates outside viewport after focusing the range",
+    "malformed closing tags during animation cleanup",
+    "gallery diagnostic loaded from about:blank; same-origin decoding later proves all 24 assets"
+  ],
+  "screenshots": ".artifacts/site-rest-preview",
+  "report": "docs/ai/site-showroom-20260930.md"
+}

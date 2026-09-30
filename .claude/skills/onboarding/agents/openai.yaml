@@ -1,0 +1,4 @@
+interface:
+  display_name: "onboarding"
+  short_description: "Mejora la primera experiencia con una demo o recorrido."
+  default_prompt: "Usa $onboarding para resolver este encargo en My Page con evidencia local."

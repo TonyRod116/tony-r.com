@@ -13,7 +13,7 @@ export const projects = [
     liveUrl: 'https://buildapp.es/pro',
     appStoreUrl: 'https://apps.apple.com/es/app/buildapp/id6761193227',
     googlePlayUrl: 'https://play.google.com/store/apps/details?id=es.buildapp.app&hl=es_419',
-    samplePdfUrl: 'https://buildapp-v1-1.onrender.com/public/quote-share?slug=q-wlgYmKB21CE&token=cTqNCIRXO2RCbnx_LlfjjjCmRwE5sXn_agpXionvTO8&clientName=Marta+Gimeno',
+    samplePdfUrl: '/projects/buildapp-pro-sample-quote.pdf',
     date: '2026-03-26',
     metrics: {
       performance: 92,

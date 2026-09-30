@@ -1,0 +1,4 @@
+interface:
+  display_name: "cro"
+  short_description: "Mejora recorridos de visitante a proyectos, demos, CV y contact"
+  default_prompt: "Usa $cro para resolver este encargo en My Page con evidencia local."

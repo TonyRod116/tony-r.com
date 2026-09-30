@@ -1,0 +1,4 @@
+interface:
+  display_name: "product-marketing"
+  short_description: "Define audiencia y posicionamiento antes de escribir campañas."
+  default_prompt: "Usa $product-marketing para resolver este encargo en My Page con evidencia local."

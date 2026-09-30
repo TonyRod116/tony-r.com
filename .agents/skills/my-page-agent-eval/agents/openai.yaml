@@ -1,0 +1,4 @@
+interface:
+  display_name: "my-page-agent-eval"
+  short_description: "Evalúa routing y comportamiento de skills con casos y evidencia"
+  default_prompt: "Usa $my-page-agent-eval para resolver este encargo en My Page con evidencia local."

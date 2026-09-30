@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-09-30",
+  "reason": "Inspected preexisting arbitrary token debt; no baseline renewal to hide regressions",
+  "legacy_counts": {
+    "src/components/games/NeuralNetwork/NeuralNetworkEducational.jsx|arbitrary-color|bg-[#0d1117]": 1,
+    "src/pages/Projects.jsx|arbitrary-type|text-[10px]": 1,
+    "src/pages/Projects.jsx|arbitrary-radius|rounded-[30px]": 1,
+    "src/pages/Projects.jsx|arbitrary-radius|rounded-[28px]": 2,
+    "src/pages/Projects.jsx|arbitrary-radius|rounded-[24px]": 1,
+    "src/pages/Projects.jsx|arbitrary-radius|rounded-[22px]": 1,
+    "src/pages/Projects.jsx|arbitrary-radius|rounded-[32px]": 1
+  }
+}

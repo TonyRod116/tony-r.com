@@ -1,0 +1,4 @@
+interface:
+  display_name: "my-page-explain"
+  short_description: "Explica código, arquitectura y decisiones de My Page desde el e"
+  default_prompt: "Usa $my-page-explain para resolver este encargo en My Page con evidencia local."

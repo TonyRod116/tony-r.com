@@ -1,0 +1,4 @@
+interface:
+  display_name: "copywriting"
+  short_description: "Escribe textos persuasivos y microcopy creíbles del portfolio."
+  default_prompt: "Usa $copywriting para resolver este encargo en My Page con evidencia local."

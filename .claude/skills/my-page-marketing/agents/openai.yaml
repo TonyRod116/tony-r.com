@@ -1,0 +1,4 @@
+interface:
+  display_name: "my-page-marketing"
+  short_description: "Mejora posicionamiento, contenidos y conversión del portfolio c"
+  default_prompt: "Usa $my-page-marketing para resolver este encargo en My Page con evidencia local."
