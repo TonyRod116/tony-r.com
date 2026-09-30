@@ -2,9 +2,8 @@ import { Link } from 'react-router-dom'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { useLanguage } from '../hooks/useLanguage.jsx'
 import { profile } from '../data/profile'
-import { projectImages } from '../assets/images'
+import { projectImages, buildappMobileImages, buildappCaptureCaptions } from '../assets/images'
 import portrait from '../assets/pic3 (2).jpg'
-import proposal from '../assets/projects/buildapp-pro-quote-visual.png'
 import './Home.css'
 
 function OutboundLink({ href, children, className = '' }) {
@@ -16,7 +15,7 @@ function OutboundLink({ href, children, className = '' }) {
 }
 
 export default function Home() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const copy = t('home')
   const selected = [
     { id: 're-lux', copy: copy.selected.relux, href: 'https://re-lux-frontend.netlify.app/' },
@@ -48,7 +47,7 @@ export default function Home() {
           </div>
           <div className="home-feature">
             <figure className="home-product">
-              <img src={proposal} alt={copy.work.imageAlt} width="863" height="916" loading="lazy" />
+              <div className="home-product-screens">{buildappMobileImages.map((image,index)=><img key={image} src={image} alt={buildappCaptureCaptions[language][index+1]} width="390" height="844" loading="lazy" />)}</div>
               <figcaption>{copy.work.caption}</figcaption>
             </figure>
             <div className="home-feature-copy">

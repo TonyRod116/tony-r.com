@@ -1,0 +1,54 @@
+{
+  "captured_at": "2026-09-30T21:55:29.277710+00:00",
+  "network": "GET/HEAD only; no authentication, messages, writes or AI generations",
+  "captures": [
+    {
+      "asset": "src/assets/projects/buildapp-pro-mobile-2026-09-30.png",
+      "source_url": "https://buildapp.es/pro2/",
+      "capture": "actual browser screenshot; no raster edits",
+      "mode": "public read-only product demo with sample data",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "18efc4927ef29b9a26472be0d2aaac147a1382e4cd6ff6dcd0aa641cdfb9de4b",
+      "device_scale_factor": 2,
+      "captured_at": "2026-09-30T22:34:34.749Z"
+    },
+    {
+      "asset": "src/assets/projects/buildapp-budget-mobile-2026-09-30.png",
+      "source_url": "https://buildapp.es/pro2/professional/budget-generator?quoteId=pro-preview-quote-1",
+      "capture": "actual browser screenshot; no raster edits",
+      "mode": "public read-only product demo with sample data",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "a21b7880663f406a7c753865b40cf195da1a29694fd1b691ee14f94c6019ae28",
+      "device_scale_factor": 2,
+      "captured_at": "2026-09-30T22:34:34.751Z"
+    },
+    {
+      "asset": "src/assets/projects/buildapp-before-after-2026-09-30.png",
+      "source_url": "https://buildapp.es/",
+      "capture": "actual browser screenshot; no raster edits",
+      "mode": "public website",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "sha256": "a257e641b8a4400f75e699877a444eddd794ad1e93f92d67ccfda23c228e3381"
+    },
+    {
+      "asset": "src/assets/projects/buildapp-web-current-2026-09-30.png",
+      "source_url": "https://buildapp.es/",
+      "capture": "actual browser screenshot; no raster edits",
+      "mode": "public website",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "sha256": "9dc6aab007c05a53fb657c965982d4b923f1b31c6d0e91bfd77e552451a53221"
+    }
+  ]
+}

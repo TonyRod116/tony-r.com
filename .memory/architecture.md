@@ -1,6 +1,6 @@
 # Architecture
 
-Last updated: 2026-09-30
+Last updated: 2026-10-01
 
 ## Purpose
 Shared architecture and operating map for this portfolio repo.
@@ -95,3 +95,7 @@ All eight remaining routes use SitePage/DemoPage and Site.css; UI copy and descr
 ## Confirmed hosting — 2026-09-30
 
 tony-r.com currently serves static Vite output on IONOS. Apache rewrite sends non-file paths to index.html; api/ serverless functions are available through the separate Vercel hosting, not executable on IONOS. The three redesigned demos currently call the documented BuildApp host directly; contact uses Formspree. GitHub main remains connected to the historical Vercel project. Publication evidence/recovery: docs/ai/publication-20260930.md. Never infer domain hosting from vercel.json alone.
+
+## T-Tris transition and neural instrument — 2026-10-01
+
+Magic T contact enters a settling phase: each visible frame moves blocks one row down in their column; manual/AI actions are blocked until the precomputed common final board is committed. Gravity and sand timers are mutually exclusive and pause/reset-safe. Rotations use central pivots and rendering/search retain coordinate pairs. Neural instrument keeps the actual pretrained MLP and the approved camera; examples are hand-drawn inputs, never substituted labels. Current capture/model/game proof: docs/ai/polish-20261001.md/json.

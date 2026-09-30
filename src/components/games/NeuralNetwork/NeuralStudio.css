@@ -1,0 +1,76 @@
+/* A scientific instrument: the drawing, its real signal and the decision. */
+[data-experiment="neural-network"] .ai-stage { padding: 0; background: var(--ai-dark); }
+.neural-studio-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 28px; border-bottom: 1px solid var(--ai-line); }
+.neural-studio-heading .ai-kicker { color: var(--ai-accent); }
+.neural-studio-heading .ai-model-state { margin: 0 !important; font-size: 0.75rem; }
+.neural-studio-grid { display: grid; grid-template-columns: 260px minmax(0,1fr) 200px; align-items: start; }
+.neural-section-label { display: flex; justify-content: space-between; gap: 10px; font: 0.625rem ui-monospace,monospace; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.7; margin-bottom: 16px; }
+.neural-drawing { background: var(--ai-paper); color: var(--ai-ink); padding: 24px; }
+.neural-drawing h2 { font-size: 1.1rem; letter-spacing: -0.02em; }
+.neural-drawing .ai-help, .neural-drawing label, .neural-drawing .ai-samples span { color: var(--ai-ink); }
+.neural-drawing .ai-button { font-size: 0.75rem !important; padding-inline: 12px; }
+.neural-drawing .ai-button-secondary { color: var(--ai-ink); border-color: var(--ai-muted); }
+.neural-drawing .ai-button[aria-pressed="true"] { background: var(--ai-ink); color: var(--ai-paper); border-color: var(--ai-ink); }
+.neural-drawing .ai-samples { display: grid; grid-template-columns: repeat(5,1fr); gap: 5px; }
+.neural-drawing .ai-samples span { grid-column: 1 / -1; margin-bottom: 4px; }
+.neural-drawing .ai-samples button { padding: 0; font: 1rem ui-monospace,monospace !important; }
+.neural-drawing input { accent-color: var(--ai-ink); }
+.neural-network { padding: 24px; min-width: 0; }
+.neural-network h2 { font-size: 1.1rem; letter-spacing: -0.02em; }
+.ai-network-topline { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.ai-network-topline .ai-kicker { font-size: 0.625rem; color: var(--ai-muted); }
+.ai-text-button { color: var(--ai-accent); padding: 8px 0; min-height: 44px; display: flex; align-items: center; gap: 12px; font-size: 0.75rem !important; background: none; border: 0; cursor: pointer; }
+.ai-text-button:disabled { color: var(--ai-muted); opacity: 0.5; cursor: default; }
+.ai-network-plane { fill: var(--ai-accent); fill-opacity: 0.015; stroke: var(--ai-line); stroke-width: 0.7; }
+.ai-network-plane.is-selected { fill-opacity: 0.07; stroke: var(--ai-accent); }
+.ai-network-label.is-winner { fill: var(--ai-paper); font-weight: 700; }
+.ai-network-instrument circle { cursor: crosshair; }
+.ai-layer-navigation { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); margin-top: 8px; border-block: 1px solid var(--ai-line); }
+.ai-layer-navigation button { background: none; border: 0; border-right: 1px solid var(--ai-line); padding: 12px 8px; color: var(--ai-muted); text-align: left; min-width: 0; cursor: pointer; }
+.ai-layer-navigation button:last-child { border-right: 0; }
+.ai-layer-navigation button span { display: block; font-size: 0.625rem; line-height: 1.5; min-height: 2.8em; }
+.ai-layer-navigation button strong { display: block; font: 1.4rem ui-monospace,monospace; color: var(--ai-paper); }
+.ai-layer-navigation button[aria-pressed="true"] { background: var(--ai-panel); color: var(--ai-accent); }
+.ai-layer-navigation button[aria-pressed="true"] strong { color: var(--ai-accent); }
+.ai-layer-hint { margin-bottom: 16px !important; }
+.ai-node-inspector { color: var(--ai-muted); font-size: 0.75rem; padding: 12px 0; border-top: 1px solid var(--ai-line); }
+.ai-node-inspector summary { cursor: pointer; min-height: 32px; }
+.ai-node-inspector label { display: block; }
+.ai-node-inspector input { display: block; width: 100%; accent-color: var(--ai-accent); margin: 12px 0; }
+.ai-node-inspector output { color: var(--ai-accent); font: 0.75rem ui-monospace,monospace; }
+.neural-network .ai-view-controls { padding: 16px 0 0; gap: 16px; }
+.neural-network .ai-view-controls label { min-width: 96px; }
+.neural-network .ai-view-controls button { min-height: 36px; padding: 8px 12px; font-size: 0.75rem !important; }
+.neural-response { border-top: 0; border-left: 1px solid var(--ai-line); padding: 24px 20px; margin: 0; align-self: stretch; }
+.neural-response h2 { font-size: 1.1rem; letter-spacing: -0.02em; }
+.neural-result { padding-block: 20px 24px; border-bottom: 1px solid var(--ai-line); margin-bottom: 24px; }
+.neural-result > strong { display: block; font-size: clamp(5rem,8vw,7rem); letter-spacing: -0.09em; font-weight: 500; line-height: 1; color: var(--ai-accent); padding-bottom: 16px; }
+.neural-result > div span, .neural-result > p { display: block; color: var(--ai-muted); font-size: 0.75rem; }
+.neural-result b { display: block; font: 1.125rem ui-monospace,monospace; margin-top: 8px; }
+.neural-response .ai-probability { grid-template-columns: 12px 1fr 42px; gap: 8px; font-size: 0.625rem; padding-block: 3px; color: var(--ai-muted); }
+.neural-response .ai-probability-track { height: 3px; }
+.neural-response .ai-probability-track span { background: var(--ai-muted); }
+.neural-response .ai-probability.is-leading { color: var(--ai-accent); }
+.neural-response .ai-probability.is-leading .ai-probability-track span { background: var(--ai-accent); }
+.neural-studio-notes { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 24px 28px; border-top: 1px solid var(--ai-line); font-size: 0.75rem; color: var(--ai-muted); }
+@media (max-width:1100px) {
+  .neural-studio-grid { grid-template-columns: 260px minmax(0,1fr); }
+  .neural-response { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; border-left: 0; border-top: 1px solid var(--ai-line); padding: 24px; }
+  .neural-response .neural-section-label, .neural-response h2 { grid-column: 1 / -1; }
+  .neural-response .neural-result { margin: 0; border: 0; }
+  .neural-response .ai-probabilities { padding-top: 20px; }
+  .neural-response .ai-help { grid-column: 1 / -1; }
+}
+@media (max-width:640px) {
+  .neural-studio-heading { padding: 16px; gap: 10px; }
+  .neural-studio-grid { grid-template-columns: 1fr; }
+  .neural-drawing { max-width: none; padding: 24px; margin: 0; }
+  .neural-drawing .ai-drawing-canvas { max-width: 280px; margin-inline: auto; }
+  .neural-network { padding: 24px 16px; border-top: 0; }
+  .neural-section-label { font-size: 0.5625rem; }
+  .ai-layer-navigation button { padding-inline: 6px; }
+  .ai-layer-navigation button span { font-size: 0.5625rem; }
+  .ai-layer-navigation button strong { font-size: 1.125rem; }
+  .neural-response { padding: 24px 16px; column-gap: 20px; }
+  .neural-studio-notes { grid-template-columns: 1fr; gap: 16px; padding: 20px 16px; }
+}

@@ -3,26 +3,28 @@ export const HEIGHT = 20
 // Keep Tony's eight shapes, including the five-cell Magic T. Offsets are
 // explicit [row,column] pairs everywhere: rendering, preview, play and search.
 export const PIECES = {
-  L: { color: '#719cfa', cells: [[-2,0],[-1,0],[0,0],[0,1]] },
-  Li: { color: '#e999be', cells: [[-2,1],[-1,1],[0,0],[0,1]] },
-  S: { color: '#a3c880', cells: [[-2,0],[-1,0],[-1,1],[0,1]] },
-  Si: { color: '#ebd37d', cells: [[-2,1],[-1,1],[-1,0],[0,0]] },
-  M: { color: '#b59ae9', cells: [[-2,0],[-1,0],[-1,1],[0,0]] },
-  O: { color: '#efa46c', cells: [[-1,0],[-1,1],[0,0],[0,1]] },
-  I: { color: '#a7d9d5', cells: [[-2,0],[-1,0],[0,0],[1,0]] },
-  T: { color: '#d3f56b', cells: [[0,-1],[0,0],[0,1],[1,0],[2,0]] },
+  L: { color: '#719cfa', cells: [[-1,0],[0,0],[1,0],[1,1]], pivot: [0,0] },
+  Li: { color: '#e999be', cells: [[-1,0],[0,0],[1,-1],[1,0]], pivot: [0,0] },
+  S: { color: '#a3c880', cells: [[-1,0],[0,0],[0,1],[1,1]], pivot: [0,0] },
+  Si: { color: '#ebd37d', cells: [[-1,1],[0,1],[0,0],[1,0]], pivot: [0,0] },
+  M: { color: '#b59ae9', cells: [[-1,0],[0,0],[0,1],[1,0]], pivot: [0,0] },
+  O: { color: '#efa46c', cells: [[-1,0],[-1,1],[0,0],[0,1]], pivot: [-0.5,0.5] },
+  I: { color: '#a7d9d5', cells: [[-1,0],[0,0],[1,0],[2,0]], pivot: [0.5,0.5] },
+  T: { color: '#d3f56b', cells: [[-1,-1],[-1,0],[-1,1],[0,0],[1,0]], pivot: [0,0] },
 }
 export const NAMES = Object.keys(PIECES)
 export const emptyBoard = () => Array.from({ length: HEIGHT }, () => Array(WIDTH).fill(null))
 export const randomPiece = () => NAMES[Math.floor(Math.random() * NAMES.length)]
 export function cellsFor(piece) {
   let offsets = PIECES[piece.name].cells
+  const [pivotR,pivotC] = PIECES[piece.name].pivot
   // O retains its shape and origin in every rotation.
-  for (let i = 0; i < (piece.name === 'O' ? 0 : piece.rotation % 4); i++) offsets = offsets.map(([r,c]) => [c,-r])
+  for (let i = 0; i < (piece.name === 'O' ? 0 : piece.rotation % 4); i++) offsets = offsets.map(([r,c]) => [pivotR+c-pivotC,pivotC-r+pivotR])
   return offsets.map(([r,c]) => [r + piece.r,c + piece.c])
 }
-export const spawn = name => ({ name, rotation: 0, r: 0, c: 4 })
+export const spawn = name => ({ name, rotation: 0, r: -Math.min(...PIECES[name].cells.map(([r]) => r)), c: 4 })
 export function fits(board, piece) {
+  if (!PIECES[piece.name] || !Number.isInteger(piece.r) || !Number.isInteger(piece.c) || !Number.isInteger(piece.rotation) || piece.rotation < 0 || piece.rotation > 3) return false
   return cellsFor(piece).every(([r,c]) => c >= 0 && c < WIDTH && r < HEIGHT && r >= -4 && (r < 0 || board[r][c] === null))
 }
 export function rotate(board, piece) {
@@ -62,6 +64,16 @@ export function lockPiece(board, piece, magic = true) {
   while (remaining.length < HEIGHT) remaining.unshift(Array(WIDTH).fill(null))
   return { board: remaining, cleared, over: false }
 }
+// One visible frame of the same bottom-first sand physics used by the AI.
+// Blocks only move down one row; columns never change during dissolution.
+export function settleSandStep(board) {
+  const next = board.map(row => [...row]), moved = []
+  for (let c = 0; c < WIDTH; c++) for (let r = HEIGHT - 2; r >= 0; r--) {
+    if (next[r][c] !== 'T' || next[r+1][c] !== null) continue
+    next[r+1][c] = 'T'; next[r][c] = null; moved.push([r+1,c])
+  }
+  return { board: next, moved }
+}
 export function reachableLandings(board, piece) {
   if (!fits(board, piece)) return []
   const queue = [piece], seen = new Set([`${piece.r},${piece.c},${piece.rotation}`]), results = new Map()
@@ -100,14 +112,22 @@ export function suggestMove(board, piece, nextName, magic) {
   return best
 }
 export function newGame(first, next, previous = {}) {
-  return { board: emptyBoard(), piece: spawn(first), next, score: 0, lines: 0, level: 1, paused: false, over: false, magic: previous.magic ?? true, ai: previous.ai ?? false, aiMoves: 0 }
+  return { board: emptyBoard(), piece: spawn(first), next, score: 0, lines: 0, level: 1, paused: false, over: false, magic: previous.magic ?? true, ai: previous.ai ?? false, aiMoves: 0, settling: null }
+}
+function finishCommit(state, result, nextName, isAi) {
+  const piece = spawn(state.next), lines = state.lines + result.cleared
+  return { ...state, board: result.board, piece, next: nextName, settling: null, score: state.score + 10 + result.cleared * 100, lines,
+    level: Math.floor(lines / 10) + 1, over: !fits(result.board, piece), aiMoves: state.aiMoves + Number(isAi) }
 }
 function commit(state, target, nextName, isAi = false) {
   const result = lockPiece(state.board, target, state.magic)
   if (result.over) return { ...state, over: true }
-  const piece = spawn(state.next), lines = state.lines + result.cleared
-  return { ...state, board: result.board, piece, next: nextName, score: state.score + 10 + result.cleared * 100, lines,
-    level: Math.floor(lines / 10) + 1, over: !fits(result.board, piece), aiMoves: state.aiMoves + Number(isAi) }
+  if (state.magic && target.name === 'T') {
+    const contact = state.board.map(row => [...row])
+    cellsFor(target).forEach(([r,c]) => { contact[r][c] = 'T' })
+    return { ...state, board: contact, piece: target, settling: { result, nextName, isAi, step: 0, moved: [] } }
+  }
+  return finishCommit(state, result, nextName, isAi)
 }
 export function gameReducer(state, action) {
   if (action.type === 'restart') return newGame(action.first, action.next, state)
@@ -116,8 +136,17 @@ export function gameReducer(state, action) {
   if (action.type === 'ai') return { ...state, ai: !state.ai }
   if (action.type === 'magic') return { ...state, magic: !state.magic }
   if (state.over || state.paused) return state
+  if (state.settling) {
+    if (action.type !== 'settle-tick') return state
+    const settling = { ...state.settling, step: state.settling.step + 1 }
+    // A brief contact pulse precedes the downward flow, including flat landings.
+    if (settling.step <= 2) return { ...state, settling }
+    const frame = settleSandStep(state.board)
+    return frame.moved.length ? { ...state, board: frame.board, settling: { ...settling, moved: frame.moved } }
+      : finishCommit(state, settling.result, settling.nextName, settling.isAi)
+  }
+  if (action.type === 'settle-tick') return state
   if (action.type === 'ai-move') {
-    if (!state.ai) return state
     const target = suggestMove(state.board, state.piece, state.next, state.magic)
     return target ? commit(state, target, action.next, true) : { ...state, over: true }
   }

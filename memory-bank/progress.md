@@ -39,3 +39,9 @@ Eight remaining pages redesigned with shared warm-paper layouts and ES/EN/CA cop
 ## Authorized publication — 2026-09-30
 
 The complete showroom is activated on the confirmed IONOS main domain after a private backup. Repository publication and live checks: docs/ai/publication-20260930.md/json. Historical Hostinger statements do not describe current hosting. No real contact or remote AI generation is used for verification.
+
+## Game/model presentation polish — 2026-10-01
+
+Centered rotations/physical keyboard/independent AI in T-Tris, progressive luminous Magic T, larger neural instrument with ten actual inputs, fresh public BuildApp screens and cleaned Casex CV. Proof/status: docs/ai/polish-20261001.md/json. Model weights, paid services, API/server and original documents are unchanged.
+
+Polish publication is confirmed on IONOS with10 live route/viewport checks and a private prior-version backup. Neural examples and Magic T phases use actual local computation. Final implementation/publication evidence: docs/ai/polish-20261001.json.

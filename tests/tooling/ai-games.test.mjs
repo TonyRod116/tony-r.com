@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { MLP } from '../../src/components/games/NeuralNetwork/mlp.js'
-import { NAMES, emptyBoard, spawn, fits, cellsFor, previewCells, landing, rotate, lockPiece, reachableLandings, newGame, gameReducer, suggestMove } from '../../src/components/games/tetrisEngine.js'
+import { PIECES, NAMES, emptyBoard, spawn, fits, cellsFor, previewCells, landing, rotate, lockPiece, settleSandStep, reachableLandings, newGame, gameReducer, suggestMove } from '../../src/components/games/tetrisEngine.js'
 
 const definition = JSON.parse(readFileSync(new URL('../../public/models/mnist/014_dataset-1x.json', import.meta.url), 'utf8'))
 test('unloaded neural model cannot produce invented predictions', () => assert.throws(() => new MLP().forward(Array(784).fill(0)), /not loaded/))
@@ -55,7 +55,8 @@ test('manual drop and AI simulation share Magic T sand settlement', () => {
   const board=emptyBoard();board[19][4]='O'
   const game={...newGame('T','I'),board}
   const target=landing(board,game.piece), simulated=lockPiece(board,target,true)
-  const played=gameReducer(game,{type:'drop',next:'L'})
+  let played=gameReducer(game,{type:'drop',next:'L'})
+  for(let frame=0;played.settling&&frame<30;frame++)played=gameReducer(played,{type:'settle-tick'})
   assert.deepEqual(played.board,simulated.board)
   assert.equal(played.board.flat().filter(cell => cell==='T').length,5)
   assert.equal(simulated.over,false)
@@ -67,8 +68,8 @@ test('line clearing conserves board size and moves settled rows correctly', () =
   assert.equal(result.board[19][4],'O');assert.equal(result.board[19][5],'O')
 })
 test('locking above the ceiling loses instead of deleting invisible cells', () => {
-  const board=emptyBoard();board[1][4]='O'
-  const target=landing(board,spawn('I'))
+  const board=emptyBoard();board[2][4]='O'
+  const target=landing(board,{...spawn('I'),r:-1})
   assert.equal(lockPiece(board,target).over,true)
 })
 test('AI placements are reachable and cannot overwrite settled cells', () => {
@@ -82,4 +83,81 @@ test('pause blocks gravity, drops and AI; reset cannot be overwritten by timers'
   for (const type of ['tick','drop','left','rotate','ai-move']) assert.strictEqual(gameReducer(game,{type,next:'I'}),game)
   const restarted=gameReducer(game,{type:'restart',first:'O',next:'I'})
   assert.equal(restarted.score,0);assert.equal(restarted.paused,false);assert.equal(restarted.board.flat().filter(Boolean).length,0)
+})
+
+test('every shape rotates around its central frame, rather than an end block', () => {
+  for (const name of NAMES) for (let rotation=0;rotation<4;rotation++) {
+    const piece={...spawn(name),r:8,rotation}, cells=cellsFor(piece)
+    const pivot=PIECES[name].pivot || [0,0]
+    for(const [axis,origin]of [[0,piece.r+pivot[0]],[1,piece.c+pivot[1]]]) {
+      const center=(Math.min(...cells.map(cell=>cell[axis]))+Math.max(...cells.map(cell=>cell[axis])))/2
+      assert.ok(Math.abs(center-origin)<=0.5,`${name}/${rotation} pivots at its end: center ${center}, origin ${origin}`)
+    }
+  }
+})
+test('one requested AI move works independently of the suggestion display toggle', () => {
+  const state=newGame('L','O'), moved=gameReducer(state,{type:'ai-move',next:'I'})
+  assert.equal(state.ai,false);assert.equal(moved.ai,false)
+  assert.equal(moved.aiMoves,1);assert.ok(moved.score>=10)
+  assert.equal(moved.board.flat().filter(Boolean).length,4)
+})
+test('edge rotations and AI placements cannot split a single shape across both walls', () => {
+  for(const name of NAMES) {
+    for(const c of [0,1,8,9])for(let rotation=0;rotation<4;rotation++) {
+      const piece={name,r:12,c,rotation},board=emptyBoard()
+      if(!fits(board,piece))continue
+      const turned=rotate(board,piece),cells=cellsFor(turned)
+      assert.ok(fits(board,turned));assert.ok(cells.every(([r,col])=>Number.isInteger(r)&&Number.isInteger(col)&&col>=0&&col<10))
+      assert.ok(Math.max(...cells.map(([,col])=>col))-Math.min(...cells.map(([,col])=>col))<=3)
+    }
+    for(const gap of [0,8]) {
+      const board=emptyBoard();board[19].fill('O');board[19][gap]=null;board[19][gap+1]=null
+      const target=suggestMove(board,spawn(name),null,false)
+      assert.ok(target);assert.ok(fits(board,target))
+      const cells=cellsFor(target)
+      assert.ok(Math.max(...cells.map(([,col])=>col))-Math.min(...cells.map(([,col])=>col))<=3)
+      assert.equal(lockPiece(board,target,false).over,false)
+    }
+  }
+})
+test('Magic T touches first, settles visibly, and pauses without accepting other moves', () => {
+  const board=emptyBoard();board[12][4]='O'
+  const initial={...newGame('T','L'),board},target=landing(board,initial.piece),expected=lockPiece(board,target,true)
+  let state=gameReducer(initial,{type:'drop',next:'O'})
+  assert.ok(state.settling,'contact cannot jump directly to the final sand result')
+  assert.notDeepEqual(state.board,expected.board)
+  assert.equal(state.next,initial.next);assert.equal(state.score,0)
+  for(const type of ['tick','drop','left','right','rotate','ai-move'])assert.strictEqual(gameReducer(state,{type,next:'I'}),state)
+  state=gameReducer(state,{type:'pause'})
+  assert.strictEqual(gameReducer(state,{type:'settle-tick'}),state)
+  state=gameReducer(state,{type:'pause'})
+  let frames=0
+  while(state.settling&&frames<30){state=gameReducer(state,{type:'settle-tick'});frames++}
+  assert.ok(frames>2&&frames<30);assert.equal(state.settling,null)
+  assert.deepEqual(state.board,expected.board);assert.equal(state.piece.name,'L');assert.equal(state.next,'O')
+  assert.equal(state.score,10+expected.cleared*100)
+})
+
+test('animated sand frames conserve blocks, move only down, and match final AI physics', () => {
+  const board=emptyBoard();board[12][4]='O';board[18][3]='L';board[17][5]='Li'
+  const piece=landing(board,spawn('T')),expected=lockPiece(board,piece,true)
+  let contact=board.map(row=>[...row]);cellsFor(piece).forEach(([r,c])=>{contact[r][c]='T'})
+  const counts=Array.from({length:10},(_,c)=>contact.filter(row=>row[c]==='T').length)
+  let frames=0
+  while(frames<30){
+    const frame=settleSandStep(contact)
+    assert.deepEqual(Array.from({length:10},(_,c)=>frame.board.filter(row=>row[c]==='T').length),counts)
+    for(const [r,c]of frame.moved){assert.equal(contact[r-1][c],'T');assert.equal(frame.board[r][c],'T')}
+    contact=frame.board;frames++
+    if(!frame.moved.length)break
+  }
+  assert.ok(frames<30);assert.deepEqual(contact,expected.board)
+  const state=gameReducer({...newGame('T','L'),board},{type:'drop',next:'O'})
+  const reset=gameReducer(state,{type:'restart',first:'I',next:'O'})
+  assert.equal(reset.settling,null);assert.strictEqual(gameReducer(reset,{type:'settle-tick'}),reset)
+})
+
+test('centered pieces spawn fully visible, including all five Magic T cells',()=>{
+  for(const name of NAMES){const piece=spawn(name);assert.ok(fits(emptyBoard(),piece));assert.ok(cellsFor(piece).every(([r])=>r>=0))}
+  assert.equal(cellsFor(spawn('T')).length,5)
 })

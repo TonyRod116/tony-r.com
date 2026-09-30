@@ -45,3 +45,11 @@ Las ocho páginas restantes usan SitePage y DemoPage en src/components/site/: pa
 Composiciones distintas: About como relato con fotografía real, Projects como casos con capturas y atribución, Resume como cronología/documentos/galería, Contact como conversación directa, Solutions como recorridos con entradas y salidas. Tres demos con navegación común y estados reales de espera/error/resultado. Sin imágenes con cifras ficticias, progreso simulado, tipografía animada, promesas de conversión o ubicaciones de galería no confirmadas.
 
 Visores de PDF/fotos y configuración usan diálogo nativo con foco/escape. Las 24 imágenes originales se sirven desde public/gallery/; leyendas descriptivas verificadas visualmente, incluyendo la visualización arquitectónica. Ningún píxel o PDF se retoca.
+
+## Instrumento neuronal y T mágica — 2026-10-01
+
+El instrumento conserva la orientación de28 grados confirmada por Tony. Tres zonas: lienzo de papel, escena central y salida grande con probabilidades reales. Diez trazos vectoriales son ejemplos elegidos de la demo, sin usarlos como prueba de precisión general; recorrer capas destaca valores ya calculados. Tipografía y paleta del laboratorio se reutilizan.
+
+T-Tris usa pivotes centrales y muestra las piezas completas al entrar. La recomendación se representa en una miniatura separada, mientras la decisión puntual de IA siempre está disponible jugando. La T tiene un núcleo luminoso y una marca propia; al contactar, sus bloques se desplazan por pasos físicos reales. Pausa, reinicio y movimiento reducido respetan la fase.
+
+Capturas actuales de BuildApp: dos pantallas móviles de demo pública en home y antes/después/presupuesto en Projects; las leyendas identifican los datos de ejemplo. Proveniencia y hashes: docs/ai/buildapp-captures-20260930.json. Pruebas/inspección/publicación: docs/ai/polish-20261001.md/json.

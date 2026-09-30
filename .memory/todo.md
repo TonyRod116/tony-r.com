@@ -1,6 +1,6 @@
 # Startup handoff
 
-Last updated: 2026-09-30
+Last updated: 2026-10-01
 
 Home is the implemented showroom reference: src/pages/Home.jsx/Home.css and the home locale branches. Source remains current code; use ai:brief/ai:context for the actual task. Preserve existing user work.
 
@@ -13,3 +13,7 @@ The remaining eight pages are now implemented as the showroom: docs/ai/site-show
 Browser cache for this machine: /tmp/my-page-playwright-browsers while it exists. Operation/checks: docs/ai/operating-system.md and docs/ai-skills/browser-qa.md. Initial tooling evidence remains docs/ai/verification.md.
 
 Publication is now verified on IONOS: 32 route/viewport checks and real local neural/Tetris interactions pass. Lead chat uses the current public backend; budget/render restoration is tracked separately because it needs an authenticated/public API contract. See publication evidence for limits.
+
+T-Tris, neural visual scene, current BuildApp captures and Casex CV polish are completed source changes for the current task: docs/ai/polish-20261001.md/json. Preserve progressive Magic T physics, centered rotations and the independent AI decision. User confirms neuron digit orientation is already correct; do not mirror it.
+
+The polish is now online and verified on IONOS; source/proof is docs/ai/polish-20261001.json. Source/model/game tests44, browser149 plus one inapplicable mobile skip, final affected17 plus same skip, and all24 visual comparisons pass. Ten direct live route/viewport checks pass. BuildApp budget/render API restoration remains a separate issue, not silently expanded by this frontend task.

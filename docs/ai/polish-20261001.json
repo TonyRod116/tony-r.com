@@ -1,0 +1,513 @@
+{
+  "status": "published_and_verified",
+  "verified_at": "2026-09-30T22:50:58.336522+00:00",
+  "issue": "My Page-14s",
+  "scope": [
+    "T-Tris keyboard, centered rotations, independent AI and safe separate preview",
+    "progressive luminous Magic T with pause/reset-safe sand phase",
+    "neural visual instrument, approved orientation, examples0-9 and actual layer inspection",
+    "four actual public BuildApp screenshots, including high-resolution mobile UI",
+    "Casex clean title and casex.es link"
+  ],
+  "checks": {
+    "build": "pass",
+    "check": "pass",
+    "tooling_tests": 44,
+    "routing_cases": 24,
+    "full_browser_journeys": 149,
+    "full_browser_skipped": 1,
+    "skip_reason": "physical desktop-keyboard journey does not apply to mobile project",
+    "final_affected_browser_journeys": 17,
+    "final_affected_browser_skipped": 1,
+    "visual_comparisons": 24,
+    "viewport_checks": 15,
+    "protected_original_files": 74,
+    "originals_changed": 0,
+    "realtime_magic_frames": 14,
+    "realtime_distinct_transforms": 13
+  },
+  "source_sha256": {
+    "src/assets/images.js": "8f59bcb3c5ba049d2e997f8e38015c212f87c8bae7975d8473c96f8d479e79b8",
+    "src/assets/projects/buildapp-before-after-2026-09-30.png": "a257e641b8a4400f75e699877a444eddd794ad1e93f92d67ccfda23c228e3381",
+    "src/assets/projects/buildapp-budget-mobile-2026-09-30.png": "a21b7880663f406a7c753865b40cf195da1a29694fd1b691ee14f94c6019ae28",
+    "src/assets/projects/buildapp-pro-mobile-2026-09-30.png": "18efc4927ef29b9a26472be0d2aaac147a1382e4cd6ff6dcd0aa641cdfb9de4b",
+    "src/assets/projects/buildapp-web-current-2026-09-30.png": "9dc6aab007c05a53fb657c965982d4b923f1b31c6d0e91bfd77e552451a53221",
+    "src/components/ai/AiLab.css": "e5bed470f1126a219468d50775ec798b6ae39fb50919551be5b7518671e4a38e",
+    "src/components/ai/NetworkDiagram.jsx": "4f90d0fc2791a8f5d0fa00d097e9bbdf875bfd4e0b3c73f582ee9b62ae570f5a",
+    "src/components/games/NeuralNetwork/DrawingCanvas.jsx": "17bd9f71ed3a30641626b60c27f53d58f363de752bc1c76b6cccbfe23bc27c5e",
+    "src/components/games/NeuralNetwork/NeuralStudio.css": "3a3ac5018cff99478e6c131be3c9eab453cf073cef9bcd888f1e0ba0f0e4e7ab",
+    "src/components/games/NeuralNetwork/digitExamples.js": "bc7d7b1a61a2e10921f0e8d7de06cedbaa03d472b0a77949f7cae9fd33602872",
+    "src/components/games/NeuralNetworkVisualization.jsx": "3bfe53fd43e5269d75170390e7ac4e7cd3faf8625b839117da59312f11b60407",
+    "src/components/games/Tetris.jsx": "3ffcab2122ba24827607b516e6ae01196a3cb96923b19463cd2d8adb13a76bfa",
+    "src/components/games/tetrisEngine.js": "e88cb18c62494baeaa59081a45dd0b709803df8bc65aff8fb4c96ca13a5e006e",
+    "src/data/aiExperiments.js": "7eb5f0a9b50c655f2d5fb57d23b797fced2d9565e1a9b242e1a278baeefdb8ad",
+    "src/data/profile.js": "2d860674b7360a6ab871ffd47df42370ef1a4dc027bf788ef69982250016de15",
+    "src/data/translations.js": "e883aeb6bbbe56e31a0835468f4b2fc5c28416956d139a16b2b666bfc38ea7e2",
+    "src/pages/Home.css": "373acbaab11495cc6bbf5fa43d5179434bfaafbb54013ec0b246721940775c66",
+    "src/pages/Home.jsx": "0238bfcb5559966afd7450206bb532a9e757db59516d6a0ca48bc16606dab9a1",
+    "src/pages/Projects.jsx": "7258041620178476cfc723f6c1b091120270b2c31b01ae6fc5dfb51f930476e9",
+    "src/pages/Resume.jsx": "7f5acde81de48825d8e093f7e7b234e5ffc14c9e947b24cc362f7db415b3b354"
+  },
+  "public_entry_sha256": "a4199b1077b1992111068162aae0a5d57642c552209f9befe605aad2b0dc994a",
+  "observations": [
+    {
+      "viewport": 1440,
+      "route": "/",
+      "width": 1440,
+      "broken": [],
+      "errors": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/projects",
+      "width": 1440,
+      "broken": [],
+      "errors": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/resume",
+      "width": 1440,
+      "broken": [],
+      "errors": []
+    },
+    {
+      "viewport": 390,
+      "route": "/",
+      "width": 390,
+      "broken": [],
+      "errors": []
+    },
+    {
+      "viewport": 390,
+      "route": "/projects",
+      "width": 390,
+      "broken": [],
+      "errors": []
+    },
+    {
+      "viewport": 390,
+      "route": "/resume",
+      "width": 390,
+      "broken": [],
+      "errors": []
+    },
+    {
+      "viewport": 768,
+      "route": "/",
+      "width": 768,
+      "broken": [],
+      "errors": []
+    },
+    {
+      "viewport": 768,
+      "route": "/projects",
+      "width": 768,
+      "broken": [],
+      "errors": []
+    },
+    {
+      "viewport": 768,
+      "route": "/resume",
+      "width": 768,
+      "broken": [],
+      "errors": []
+    },
+    {
+      "viewport": "desktop",
+      "route": "/ai/neural-network",
+      "examples": [
+        {
+          "input": 0,
+          "prediction": "0"
+        },
+        {
+          "input": 1,
+          "prediction": "1"
+        },
+        {
+          "input": 2,
+          "prediction": "2"
+        },
+        {
+          "input": 3,
+          "prediction": "3"
+        },
+        {
+          "input": 4,
+          "prediction": "4"
+        },
+        {
+          "input": 5,
+          "prediction": "5"
+        },
+        {
+          "input": 6,
+          "prediction": "6"
+        },
+        {
+          "input": 7,
+          "prediction": "7"
+        },
+        {
+          "input": 8,
+          "prediction": "8"
+        },
+        {
+          "input": 9,
+          "prediction": "9"
+        }
+      ]
+    },
+    {
+      "viewport": 1440,
+      "route": "/ai/neural-network",
+      "width": 1440,
+      "broken": [],
+      "errors": []
+    },
+    {
+      "viewport": 1440,
+      "route": "/ai/tetris",
+      "width": 1440,
+      "broken": [],
+      "errors": []
+    },
+    {
+      "viewport": "mobile",
+      "route": "/ai/neural-network",
+      "examples": [
+        {
+          "input": 0,
+          "prediction": "0"
+        },
+        {
+          "input": 1,
+          "prediction": "1"
+        },
+        {
+          "input": 2,
+          "prediction": "2"
+        },
+        {
+          "input": 3,
+          "prediction": "3"
+        },
+        {
+          "input": 4,
+          "prediction": "4"
+        },
+        {
+          "input": 5,
+          "prediction": "5"
+        },
+        {
+          "input": 6,
+          "prediction": "6"
+        },
+        {
+          "input": 7,
+          "prediction": "7"
+        },
+        {
+          "input": 8,
+          "prediction": "8"
+        },
+        {
+          "input": 9,
+          "prediction": "9"
+        }
+      ]
+    },
+    {
+      "viewport": 390,
+      "route": "/ai/neural-network",
+      "width": 390,
+      "broken": [],
+      "errors": []
+    },
+    {
+      "viewport": 390,
+      "route": "/ai/tetris",
+      "width": 390,
+      "broken": [],
+      "errors": []
+    },
+    {
+      "viewport": "tablet",
+      "route": "/ai/neural-network",
+      "examples": [
+        {
+          "input": 0,
+          "prediction": "0"
+        },
+        {
+          "input": 1,
+          "prediction": "1"
+        },
+        {
+          "input": 2,
+          "prediction": "2"
+        },
+        {
+          "input": 3,
+          "prediction": "3"
+        },
+        {
+          "input": 4,
+          "prediction": "4"
+        },
+        {
+          "input": 5,
+          "prediction": "5"
+        },
+        {
+          "input": 6,
+          "prediction": "6"
+        },
+        {
+          "input": 7,
+          "prediction": "7"
+        },
+        {
+          "input": 8,
+          "prediction": "8"
+        },
+        {
+          "input": 9,
+          "prediction": "9"
+        }
+      ]
+    },
+    {
+      "viewport": 768,
+      "route": "/ai/neural-network",
+      "width": 768,
+      "broken": [],
+      "errors": []
+    },
+    {
+      "viewport": 768,
+      "route": "/ai/tetris",
+      "width": 768,
+      "broken": [],
+      "errors": []
+    }
+  ],
+  "helper": {
+    "requested_provider": "claude",
+    "requested_model": "claude-sonnet-5-5",
+    "requested_effort": "high",
+    "verified_access": "firstParty claude.ai subscription CLI",
+    "status": "failed",
+    "attempts": 1,
+    "observed_models": [],
+    "usage": {},
+    "independent_approval": false
+  },
+  "limits": [
+    "Examples were curated for demonstration, not an independent MNIST accuracy evaluation.",
+    "The historical two-wall engine wrap was not reproduced; independent suggestion rendering and coordinate/rotation bounds are verified.",
+    "Local/contact/demo APIs remain simulated; no real contact or paid remote AI generation is executed.",
+    "Publication is tracked separately after live verification."
+  ],
+  "publication": {
+    "main_url": "https://tony-r.com",
+    "hosting": "IONOS",
+    "verified_at": "2026-09-30T23:03:12.444160+00:00",
+    "online": {
+      "checked_at": "2026-09-30T22:58:05.235Z",
+      "origin": "https://tony-r.com",
+      "hosting": "IONOS",
+      "status": "pass",
+      "routes": [
+        {
+          "viewport": 1440,
+          "path": "/",
+          "status": 200,
+          "h1": "Tony Rodríguez.",
+          "width": 1440,
+          "broken": []
+        },
+        {
+          "viewport": 1440,
+          "path": "/projects",
+          "status": 200,
+          "h1": "Proyectos.",
+          "width": 1440,
+          "broken": []
+        },
+        {
+          "viewport": 1440,
+          "path": "/resume",
+          "status": 200,
+          "h1": "Currículum.",
+          "width": 1440,
+          "broken": []
+        },
+        {
+          "viewport": 1440,
+          "path": "/ai/neural-network",
+          "status": 200,
+          "h1": "Red neuronal",
+          "width": 1440,
+          "broken": []
+        },
+        {
+          "viewport": 1440,
+          "path": "/ai/tetris",
+          "status": 200,
+          "h1": "T-Tris",
+          "width": 1440,
+          "broken": []
+        },
+        {
+          "viewport": 390,
+          "path": "/",
+          "status": 200,
+          "h1": "Tony Rodríguez.",
+          "width": 390,
+          "broken": []
+        },
+        {
+          "viewport": 390,
+          "path": "/projects",
+          "status": 200,
+          "h1": "Proyectos.",
+          "width": 390,
+          "broken": []
+        },
+        {
+          "viewport": 390,
+          "path": "/resume",
+          "status": 200,
+          "h1": "Currículum.",
+          "width": 390,
+          "broken": []
+        },
+        {
+          "viewport": 390,
+          "path": "/ai/neural-network",
+          "status": 200,
+          "h1": "Red neuronal",
+          "width": 390,
+          "broken": []
+        },
+        {
+          "viewport": 390,
+          "path": "/ai/tetris",
+          "status": 200,
+          "h1": "T-Tris",
+          "width": 390,
+          "broken": []
+        }
+      ],
+      "interactions": [
+        {
+          "viewport": "desktop",
+          "neural": "actual local model; approved camera;986nodes; all10 curated examples; normalized probabilities",
+          "predictions": [
+            {
+              "input": 0,
+              "predicted": "0"
+            },
+            {
+              "input": 1,
+              "predicted": "1"
+            },
+            {
+              "input": 2,
+              "predicted": "2"
+            },
+            {
+              "input": 3,
+              "predicted": "3"
+            },
+            {
+              "input": 4,
+              "predicted": "4"
+            },
+            {
+              "input": 5,
+              "predicted": "5"
+            },
+            {
+              "input": 6,
+              "predicted": "6"
+            },
+            {
+              "input": 7,
+              "predicted": "7"
+            },
+            {
+              "input": 8,
+              "predicted": "8"
+            },
+            {
+              "input": 9,
+              "predicted": "9"
+            }
+          ]
+        },
+        {
+          "viewport": "desktop",
+          "tetris": "keyboard; all5MagicTcells; contact/sand phase; pause freezes phase; independent AI; separate preview"
+        },
+        {
+          "viewport": "mobile",
+          "neural": "actual local model; approved camera;986nodes; all10 curated examples; normalized probabilities",
+          "predictions": [
+            {
+              "input": 0,
+              "predicted": "0"
+            },
+            {
+              "input": 1,
+              "predicted": "1"
+            },
+            {
+              "input": 2,
+              "predicted": "2"
+            },
+            {
+              "input": 3,
+              "predicted": "3"
+            },
+            {
+              "input": 4,
+              "predicted": "4"
+            },
+            {
+              "input": 5,
+              "predicted": "5"
+            },
+            {
+              "input": 6,
+              "predicted": "6"
+            },
+            {
+              "input": 7,
+              "predicted": "7"
+            },
+            {
+              "input": 8,
+              "predicted": "8"
+            },
+            {
+              "input": 9,
+              "predicted": "9"
+            }
+          ]
+        },
+        {
+          "viewport": "mobile",
+          "tetris": "keyboard; all5MagicTcells; contact/sand phase; pause freezes phase; independent AI; separate preview"
+        }
+      ],
+      "blocked": "external mutations, contact submissions, paid remote AI and analytics",
+      "public_entry_sha256": "a4199b1077b1992111068162aae0a5d57642c552209f9befe605aad2b0dc994a"
+    },
+    "backup": "private prior version retained; operational locations excluded from public documentation",
+    "git_source_branch": "main"
+  }
+}

@@ -1,6 +1,6 @@
 # Project State — 2026-09-30
 
-Last updated: 2026-09-30
+Last updated: 2026-10-01
 
 ## Current state
 
@@ -48,3 +48,11 @@ Observed: isolated build, quality checks (38 tests,24 routing cases) and full140
 Tony authorizes publishing the completed showroom, AI lab, demos and repository tools. Current hosting confirmed: IONOS serves tony-r.com from its tony-r directory. Private backup precedes activation; public HTML SHA-256 matches the isolated production build. The historical GitHub → Vercel integration remains active separately. Online verification and recovery are recorded in docs/ai/publication-20260930.md/json; deployment verification blocks contact submissions and paid AI calls. Personal Claude settings and preexisting dist modifications are excluded from commits. Existing dependency audit debt is tracked in My Page-5lo, without automatic upgrades during publication.
 
 Live read-only checks find the legacy BuildApp host returns503. Lead Qualifier's public-compatible default is corrected to the current monorepo backend (health/preflight200, no actual AI request). Budget/render generations remain unavailable: current routes require BuildApp authentication/quota; the portfolio displays a clear localized notice and links to the product. No backend/auth/quota changes are made.
+
+## T-Tris and neural showroom polish — 2026-10-01
+
+T-Tris has centered rotation frames, physical-keyboard control without an initial click, a one-off AI decision independent of preview mode, and a separate suggestion board. Magic T has real progressive sand frames and a distinct luminous appearance; score/line clearing/next spawn wait for the same final result used by the AI. Pause and reset protect the phase. Neural keeps the approved28-degree orientation and local pretrained model, with a scientific instrument layout, examples0–9, actual layer/neurone inspection and optional traversal of computed activations.
+
+Current public BuildApp web/mobile screenshots replace the old product captures; provenance is docs/ai/buildapp-captures-20260930.json and sample data are labelled as public demo content. Casex title/link are cleaned while original PDFs remain unchanged. Local proof, visual acceptance and publication status: docs/ai/polish-20261001.md/json. Full browser pass:149 plus one desktop-only test skipped on mobile; final affected neural/T-Tris check17 passes plus that same skip. Tooling44 tests and routing24 cases pass. Sonnet5.5High produces no usable output; no independent approval is claimed. Existing API/server, personal settings and generated user changes are preserved.
+
+Publication verified: the five updated routes pass10 online desktop/mobile checks on tony-r.com/IONOS, including actual local model examples, keyboard/AI and Magic T phase/pause. Prior version is privately backed up; latest proof is docs/ai/polish-20261001.json. Baselines for the five affected pages are visually accepted, and all24 comparisons pass. Git source publication follows the same verified build.

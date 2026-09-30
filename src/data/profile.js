@@ -76,7 +76,8 @@ export const profile = {
     },
     {
       id: 'casex',
-      company: 'Casex O.I., Barcelona (casex.es)',
+      company: 'Casex O.I., Barcelona',
+      urlLabel: 'casex.es',
       position: 'Project Manager',
       period: '2003-2019',
       description: 'Managed residential projects, budgets, and client relationships. Oversaw sales strategies, market studies, and new client acquisition.',

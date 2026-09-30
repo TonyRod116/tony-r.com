@@ -1,4 +1,5 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
+import { DIGIT_EXAMPLES } from './digitExamples'
 
 const SIZE = 280
 const DrawingCanvas = forwardRef(function DrawingCanvas({ strokeWidth = 2, erasing = false, onDrawingChange, label }, ref) {
@@ -25,11 +26,8 @@ const DrawingCanvas = forwardRef(function DrawingCanvas({ strokeWidth = 2, erasi
       clear()
       const ctx = canvasRef.current.getContext('2d')
       ctx.strokeStyle = '#fff'; ctx.lineWidth = 18; ctx.lineCap = 'round'; ctx.lineJoin = 'round'
-      ctx.beginPath()
-      if (digit === 0) ctx.ellipse(140, 140, 55, 85, 0, 0, Math.PI * 2)
-      if (digit === 1) { ctx.moveTo(115, 80); ctx.lineTo(145, 55); ctx.lineTo(145, 225) }
-      if (digit === 7) { ctx.moveTo(75, 65); ctx.lineTo(200, 65); ctx.lineTo(115, 225) }
-      ctx.stroke(); emit()
+      if (!Number.isInteger(digit) || !DIGIT_EXAMPLES[digit]) return
+      ctx.stroke(new Path2D(DIGIT_EXAMPLES[digit])); emit()
     },
   }))
   const draw = event => {
