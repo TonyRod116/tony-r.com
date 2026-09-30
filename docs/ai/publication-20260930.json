@@ -1,6 +1,6 @@
 {
   "origin": "https://tony-r.com",
-  "checked_at": "2026-09-30T21:03:29.137Z",
+  "checked_at": "2026-09-30T21:14:21.672Z",
   "routes": [
     {
       "viewport": 1440,
@@ -384,6 +384,10 @@
     },
     {
       "viewport": "desktop",
+      "chat": "current backend destination and JSON transport verified with an intercepted synthetic response; no remote AI generation"
+    },
+    {
+      "viewport": "desktop",
       "language": "en",
       "route": "/",
       "h1": "Tony Rodríguez."
@@ -425,6 +429,10 @@
     {
       "viewport": "mobile",
       "tetris": "drop, AI toggle, pause freezes position and AI, resume and restart work"
+    },
+    {
+      "viewport": "mobile",
+      "chat": "current backend destination and JSON transport verified with an intercepted synthetic response; no remote AI generation"
     },
     {
       "viewport": "mobile",
@@ -492,10 +500,9 @@
   "external_mutations": "blocked; no contact or paid AI requests",
   "status": "pass",
   "hosting": "IONOS",
-  "release": "showroom-20260930-2100",
-  "public_entry_sha256": "ed94d3d5a6a6f03a01b425ca4ca9fa6c23725e9495032e736ad8693c63602084",
+  "public_entry_sha256": "394eef9b949a1180752f79d95d2c33d003a2fe264104356ac942614704fc53ee",
   "rollback": {
-    "remote_backup": "/home/www/.tony-r-releases/before-20260930-2100.tar.gz",
+    "private_backup": "retained; access and location intentionally excluded from public documentation",
     "previous_git_sha": "ab0bfd2d8a88e3752b243002f86a0d65214ec378"
   },
   "local_checks": {
@@ -504,11 +511,28 @@
     "tooling_tests": 38,
     "routing_cases": 24,
     "previous_browser_journeys": 140,
-    "visual_comparisons": 24
+    "previous_visual_comparisons": 24,
+    "final_affected_browser_journeys": 28,
+    "final_affected_visual_comparisons": 4
+  },
+  "external_service_checks": {
+    "legacy_buildapp": "OPTIONS HTTP503 for all three routes",
+    "current_buildapp": "health and OPTIONS HTTP200; CORS permits https://tony-r.com",
+    "chat": "public source contract compatible; destination/transport verified with intercepted reply, no real remote AI response",
+    "budget_and_render": "unauthenticated empty requests HTTP401; current source requires authentication/quota; restoration pending My Page-1x9"
   },
   "repository": {
     "url": "https://github.com/TonyRod116/tony-r.com",
     "branch": "main",
-    "excluded": "personal Claude settings and preexisting generated dist changes"
+    "initial_publication_commit": "0fa2ec5ad15332efe6271c30034476659894b2bd",
+    "initial_github_quality": "success",
+    "initial_vercel": "success",
+    "excluded": "personal settings and preexisting generated dist changes"
+  },
+  "source_sha256": {
+    "src/components/site/DemoPage.jsx": "6423f800d4b5f880052cf62052e215161969b0214700241883f453195825b9c2",
+    "src/data/siteContent.js": "b6d4b4666932dbc1677ac5309d829dccf82c5c712a14b4f6960fc2bd38bd004c",
+    "src/pages/demos/LeadQualifier/utils/openai.js": "0b7022012347ee886c5b8babe7971697713397da6c320de5174841f71ca5e72b",
+    "src/data/projects.js": "30fc67e2b7cfa8f5f3ac1652e08270f30835e44ee4e96eb2c5c5844e0ae5cdce"
   }
 }

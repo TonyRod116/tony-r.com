@@ -103,7 +103,8 @@ Rules:
 - `/ai/neural-network` is an integrated React demo using validated local MNIST weights in `public/models/mnist/`; `/neural-network.html` preserves old links by redirecting to it. It performs inference, not live training. No random-weight prediction fallback.
 - T-Tris uses the shared pure rules in `src/components/games/tetrisEngine.js` for manual play, Magic T, previews and reachable AI placements; keyboard shortcuts belong to the focused board.
 - The main app lives in `src/` and is built with Vite.
-- Production API behavior is defined by `api/` serverless functions.
+- The main domain `tony-r.com` is served as static Vite output by IONOS (confirmed 2026-09-30). The historical GitHub/Vercel deployment remains separate; do not infer domain hosting from `vercel.json`.
+- Production API behavior on Vercel is defined by `api/` serverless functions; IONOS static hosting does not execute them.
 - Local persistence and local development API behavior live in `server/`.
 - `Lead Qualifier` currently calls `{VITE_BUILDAPP_DEMO_API_URL or BuildApp base}/api/v1/demo/chat`, including development; `/api/chat` exists as a separate compatibility endpoint, not its selected route.
 - `Presupuestos Reformas` depends on `/api/generate-quote`.
@@ -257,3 +258,5 @@ Docs and AI-instruction changes:
 
 - 2026-03-27: AI instruction policy tightened around the real repo structure: `src/`, `api/`, `server/`, `memory-bank/`, and generated `dist*` artifacts.
 - 2026-03-27: Cross-CLI sync now explicitly includes legacy `cursor.md` while that file still exists, to avoid Cursor drift from the root source of truth.
+
+- 2026-09-30 publication: IONOS hosting is verified and backup/live evidence is in `docs/ai/publication-20260930.md`. The legacy BuildApp host returns503; current budget/render endpoints require authentication and their portfolio generations remain unavailable. A frontend publication does not authorize changing BuildApp auth, quotas or credentials.

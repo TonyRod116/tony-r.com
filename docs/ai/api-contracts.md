@@ -2,7 +2,7 @@
 
 Last updated: 2026-09-30
 
-Estado reconstruido desde clientes locales; no se ha probado disponibilidad de producción.
+Estado reconstruido desde clientes locales. Comprobación de publicación: ver docs/ai/publication-20260930.md; OPTIONS/health no acredita generaciones de IA.
 
 | Consumidor | Ruta utilizada | Propietario y límites |
 |---|---|---|
@@ -20,3 +20,5 @@ No mover lógica entre `api/` y `server/` por copiar prácticas de otro repo. Un
 Frontend showroom follow-up (2026-09-30): budget sends the selected locale (`es-ES`, `en-US`, `ca-ES`) with the existing `projectType/description/sqm/city` fields; both response variants (`items/total` and `lineItems/totalMin/totalMax`) remain supported. Render sends the existing `image/prompt/locale` fields and uses the same optional BuildApp base override as the other clients; its default host/path is unchanged. Budget waiting is bounded to two minutes and render to the prior five-minute recommendation, with local cancellation. Cancellation does not certify that a remote generation job stopped. `src/utils/demoResponse.js` handles readable JSON errors and rejects invalid/executable image URLs; UI validation does not replace backend limits. Contact keeps the same Formspree action and name/email/message/intent/solution fields. No API/server, credentials, CORS or persistence changes.
 
 `docs/BUILDAPP_DEMO_API.md` conserva el contrato detallado. Las antiguas afirmaciones sobre fallback automático a rutas locales no corresponden al cliente actual.
+
+Publicación 2026-09-30: el antiguo host buildapp-v1-backend.onrender.com responde HTTP503 en las tres rutas. Lead Qualifier cambia su base por defecto a buildapp-backend-monorepo.onrender.com; health y preflight desde https://tony-r.com responden200, el código vigente mantiene el contrato público messages/config/language → content. No se ha ejecutado una respuesta de IA real. Presupuesto y render no se migran ciegamente: en el backend vigente requieren get_current_active_user y, para presupuestos, usuario profesional/quota. No hay autenticación de BuildApp en My Page; sus demos indican indisponibilidad y enlazan al producto. Una futura migración necesita un contrato autorizado propio, sin exponer credenciales, saltar auth o alterar cuotas. No hay cambios en api/ ni server/.

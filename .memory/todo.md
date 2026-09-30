@@ -11,3 +11,5 @@ AI lab and all six experiments are also implemented: docs/ai/lab-redesign-202609
 The remaining eight pages are now implemented as the showroom: docs/ai/site-showroom-20260930.md. CV/PDF/gallery and demo contracts remain available; final validation is recorded in its JSON. Tony authorizes publication on 2026-09-30. Main hosting is IONOS; current publication proof and recovery are in docs/ai/publication-20260930.md. Do not restore the CV-first funnel, pill wall or decorative scroll effects. Portfolio tasks stay in Beads; this file is a short handoff, not the backlog.
 
 Browser cache for this machine: /tmp/my-page-playwright-browsers while it exists. Operation/checks: docs/ai/operating-system.md and docs/ai-skills/browser-qa.md. Initial tooling evidence remains docs/ai/verification.md.
+
+Publication is now verified on IONOS: 32 route/viewport checks and real local neural/Tetris interactions pass. Lead chat uses the current public backend; budget/render restoration is tracked separately because it needs an authenticated/public API contract. See publication evidence for limits.

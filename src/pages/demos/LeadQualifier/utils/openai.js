@@ -3,7 +3,7 @@ import { observeDemoRequest } from '../../../../utils/telemetry'
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions'
 const TIMEOUT_MS = 30000
 
-const BUILDAPP_BASE = 'https://buildapp-v1-backend.onrender.com'
+const BUILDAPP_BASE = 'https://buildapp-backend-monorepo.onrender.com'
 
 // Usar backend BuildApp siempre (env, producción por defecto, o desarrollo si no hay env)
 function getApiEndpoint() {
