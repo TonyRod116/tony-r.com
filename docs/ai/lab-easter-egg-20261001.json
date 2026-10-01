@@ -1,0 +1,263 @@
+{
+  "status": "published_and_verified",
+  "source_hashes": {
+    "src/App.jsx": "74c94d6e2069cd4de9809eab02281956e36f6003815905f8b415f032e9b63483",
+    "src/components/Footer.jsx": "3a3386bd336d17171f0862d06312107457e10d6f6ee3f16b79dd0d13864b8eca",
+    "src/components/ai/LabEasterEgg.jsx": "5980ada05932bdbe8b5dfd1d766f622fd19080a8057a0116c8fe17f9988b91c1",
+    "src/components/ai/LabEasterEgg.css": "8f295a258ae35a0685e039224a749e09776a0d87b66001fb3edee5a373ed93de",
+    "src/data/labEasterEgg.js": "260c4402510e6a816ebddeb551a0b0103cea62f09c160863444a5736519171c6",
+    "src/utils/siteRouting.js": "734043148c2850b0bfdca5932208b92148a12f8b374c5cb23fb138df625b7229",
+    "tests/tooling/site-routing.test.mjs": "866bcae7e1f067115a69abbf6a4d87a0de54d3d053ff09993872013c5879f96b",
+    "tests/e2e/lab-easter-egg.spec.mjs": "3bc967cd654f5049872118b83ff44203fc8db05786dee04bbfac73b7676d273f",
+    "vite.config.js": "7c76d33261ee157d04b18149575db0977f74e0d3cc16610dfe37f9da32a93122",
+    "src/components/games/NeuralNetwork/mlp.js": "2916fddb37635375dc4226d6a22cdc10c786d36b61e0015ac908fbf20932c659"
+  },
+  "entry_sha256": "46d78eabd15e2c399dcdcc36bfed1eedb3445fd07ec8ec3f1dc8be3e7fc09063",
+  "requirements": {
+    "attribution": "Hugo Duprez / Sprite Fusion",
+    "official_game": "https://destroy.spritefusion.com/",
+    "official_credit": "https://www.spritefusion.com/games/destroy-any-website",
+    "integration": "Official hosted game new-tab link; no copied engine/scripts/assets",
+    "public_lab_routes": 7,
+    "languages": [
+      "es",
+      "en",
+      "ca"
+    ],
+    "page_content_or_state_uploaded": false,
+    "query_fragment_or_local_url_shared": false,
+    "third_party_requests_before_play": false,
+    "window_opener": null,
+    "original_page_untouched_by_game": true
+  },
+  "baseline": {
+    "upstream_header_and_footer_only_letters": 101,
+    "upstream_viewer_prefix": "/p/https/tony-r.com",
+    "optional_chunk_failure_blank_app_reproduced": [
+      "desktop",
+      "mobile"
+    ],
+    "overly_permissive_proxy_fixture_replaced": true,
+    "strict_asset_prefix_failures_reproduced": 4,
+    "upstream_missing_preload_asset_paths": "/assets on game origin, outside the website viewer prefix"
+  },
+  "tests": {
+    "node_and_tooling": 58,
+    "browser_interactions": 68,
+    "failed_chunk_corrected": true,
+    "proxy_hub_and_model_rendered": true,
+    "visual_comparisons": 24,
+    "inspected_updated_visual_references": 6
+  },
+  "local_runtime": {
+    "status": "pass",
+    "checked_at": "2026-10-01T12:30:15.858Z",
+    "origin": "http://127.0.0.1:36923",
+    "checks": [
+      {
+        "viewport": "desktop",
+        "lang": "es",
+        "canonical_url": true,
+        "credit": true,
+        "keyboard_close_and_focus": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "desktop",
+        "lang": "en",
+        "canonical_url": true,
+        "credit": true,
+        "keyboard_close_and_focus": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "desktop",
+        "lang": "ca",
+        "canonical_url": true,
+        "credit": true,
+        "keyboard_close_and_focus": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "lang": "es",
+        "canonical_url": true,
+        "credit": true,
+        "keyboard_close_and_focus": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "lang": "en",
+        "canonical_url": true,
+        "credit": true,
+        "keyboard_close_and_focus": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "lang": "ca",
+        "canonical_url": true,
+        "credit": true,
+        "keyboard_close_and_focus": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "tablet",
+        "lang": "es",
+        "canonical_url": true,
+        "credit": true,
+        "keyboard_close_and_focus": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "tablet",
+        "lang": "en",
+        "canonical_url": true,
+        "credit": true,
+        "keyboard_close_and_focus": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "tablet",
+        "lang": "ca",
+        "canonical_url": true,
+        "credit": true,
+        "keyboard_close_and_focus": true,
+        "no_overflow": true,
+        "errors": []
+      }
+    ],
+    "entry_sha256": "fff74d467f78f41f2e651fc2345acbf82fde9121373848c058bf09a4d5234707"
+  },
+  "dependency_debt": {
+    "unchanged": true,
+    "warnings": 23,
+    "high": 17,
+    "critical": 0,
+    "follow_up": "My Page-5lo",
+    "review_before": "2026-10-08",
+    "no_new_packages": true,
+    "router_advisory_excludes_BrowserRouter": "https://github.com/advisories/GHSA-2w69-qvjg-hvjx"
+  },
+  "publication": {
+    "status": "pass",
+    "checked_at": "2026-10-01T13:32:56.621Z",
+    "origin": "https://tony-r.com",
+    "checks": [
+      {
+        "viewport": "desktop",
+        "lang": "es",
+        "canonical_url": true,
+        "credit": true,
+        "keyboard_close_and_focus": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "desktop",
+        "lang": "en",
+        "canonical_url": true,
+        "credit": true,
+        "keyboard_close_and_focus": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "desktop",
+        "lang": "ca",
+        "canonical_url": true,
+        "credit": true,
+        "keyboard_close_and_focus": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "lang": "es",
+        "canonical_url": true,
+        "credit": true,
+        "keyboard_close_and_focus": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "lang": "en",
+        "canonical_url": true,
+        "credit": true,
+        "keyboard_close_and_focus": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "lang": "ca",
+        "canonical_url": true,
+        "credit": true,
+        "keyboard_close_and_focus": true,
+        "no_overflow": true,
+        "errors": []
+      }
+    ],
+    "entry_sha256": "46d78eabd15e2c399dcdcc36bfed1eedb3445fd07ec8ec3f1dc8be3e7fc09063"
+  },
+  "upstream_after_publication": {
+    "checked_at": "2026-10-01T13:28:42.954Z",
+    "integration": "Official new-tab link with explicit public AI route",
+    "checks": [
+      {
+        "path": "/ai",
+        "url": "https://destroy.spritefusion.com/?url=https%3A%2F%2Ftony-r.com%2Fai",
+        "state": {
+          "stage": "stage playing",
+          "err": "",
+          "loading": "Slicing 1,021 letters",
+          "hud": "",
+          "title": "",
+          "canvas": {
+            "width": 1424,
+            "height": 836
+          }
+        },
+        "errors": [],
+        "failed": []
+      },
+      {
+        "path": "/ai/neural-network",
+        "url": "https://destroy.spritefusion.com/?url=https%3A%2F%2Ftony-r.com%2Fai%2Fneural-network",
+        "state": {
+          "stage": "stage playing",
+          "err": "",
+          "loading": "Slicing 2,017 letters",
+          "hud": "",
+          "title": "",
+          "canvas": {
+            "width": 1424,
+            "height": 836
+          }
+        },
+        "errors": [],
+        "failed": []
+      }
+    ]
+  },
+  "build_url_policy": "Relative lazy JS/CSS and CSS-owned assets, preserved HTML/document/image public root URLs",
+  "mlp_change": "Model asset request URL only; normalization, equations and predictor unchanged",
+  "conversion_limit": "The official service recreates the public scene; some SVG graphics are not reproduced by its converter. The original website remains fully interactive and unchanged.",
+  "gameplay": {
+    "observed_damage_meter_before_percent": 0,
+    "observed_damage_meter_after_percent": 0.2,
+    "rounded_label_after": "0%",
+    "escape_pauses": true,
+    "source": "Official game on the public hub; no multiplayer/accounts/payments/POST"
+  }
+}

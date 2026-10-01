@@ -1,4 +1,5 @@
 import { denseForward, stableSoftmax, singleTrainingStep } from './networkMath.js'
+import { publicAssetUrl } from '../../../utils/siteRouting.js'
 
 // Pretrained artifact: DFin/Neural-Network-Visualisation (Apache-2.0).
 // Provenance and original license live alongside the local model artifact.
@@ -57,7 +58,7 @@ export class MLP {
   }
 
   async loadPretrainedWeights(signal) {
-    const response = await fetch(WEIGHTS_URL, { signal })
+    const response = await fetch(publicAssetUrl(WEIGHTS_URL), { signal })
     if (!response.ok) throw new Error('Failed to load weights')
     this.loadDefinition(await response.json())
   }

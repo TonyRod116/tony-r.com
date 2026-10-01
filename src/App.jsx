@@ -6,6 +6,7 @@ import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
 import GoogleAnalytics from './components/GoogleAnalytics'
 import RouteBoundary from './components/RouteBoundary'
+import { spriteFusionRouteBase } from './utils/siteRouting'
 const Home = lazy(() => import('./pages/Home'))
 const About = lazy(() => import('./pages/About'))
 const Projects = lazy(() => import('./pages/Projects'))
@@ -43,7 +44,7 @@ function AppContent() {
   }, [])
 
   return (
-    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+    <Router basename={spriteFusionRouteBase(window.location)} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <div className="min-h-screen bg-gray-900 overflow-x-hidden">
         <ScrollToTop />
         <GoogleAnalytics />
