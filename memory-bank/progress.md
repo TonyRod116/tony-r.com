@@ -63,3 +63,9 @@ The corrected controls are published and verified on IONOS: four live checks,53 
 The output is moved into the fourth3D layer as one vertical column at Tony’s preference. Same projection, actual edge endpoints and independent controls are retained. Home/Projects/thumbnail/dialog share a26-CSS-pixel crop of the original mobile screenshots, removing the top Demo/blank strip while preserving source pixels and sample-data attribution. Latest verification/publication proof: docs/ai/column-captures-20261001.md/json. No public GitHub export or backend change.
 
 Both changes are published and verified on IONOS with six live checks,53 code tests,26 affected browser journeys and24 visual comparisons. Original PNG/model/game sources remain unchanged; five inspected visual references update.
+
+## Simplified neural controls and correct input interpretation — 2026-10-01
+
+The separate supervised-digit dropdown and training CTA are removed. The ten buttons own the label, including across Clear/custom drawing. Output scales to75%; input keeps original pixels during backward viewing, while the inspector can show its actual sensitivity. Real-model numerical derivatives are checked for62 parameters/pixels over two labels, including ReLU gates and normalization; max error4.123795749322312e-11. Predictor/weights and other pages stay preserved. Current proof/publication status: docs/ai/neural-refinement-20261001.md/json; no public GitHub export.
+
+Refinement is published and verified on IONOS with two direct checks,54 code tests,24 visual comparisons and18 unique affected UI journeys. Only neural references update; original math/model/PNG/game sources and74 protected files match earlier evidence.

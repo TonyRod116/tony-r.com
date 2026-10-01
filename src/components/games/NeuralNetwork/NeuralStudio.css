@@ -42,13 +42,15 @@
 .neural-animation-switch[aria-checked="true"] .neural-switch-indicator { border-color: var(--ai-accent); }
 .neural-animation-switch[aria-checked="true"] .neural-switch-indicator::after { background: var(--ai-accent); margin-left: auto; }
 .neural-motion-state { color: var(--ai-muted); font: 0.625rem ui-monospace,monospace; margin-left: auto; }
-.ai-network-instrument .neural-output-label { font-size: 22px; }
+.ai-network-instrument .neural-output-label { font-size: 16.5px; }
 .ai-layer-hint { margin-bottom: 16px !important; }
 .ai-node-inspector { color: var(--ai-muted); font-size: 0.75rem; padding: 12px 0; border-top: 1px solid var(--ai-line); }
 .ai-node-inspector summary { cursor: pointer; min-height: 32px; }
 .ai-node-inspector label { display: block; }
 .ai-node-inspector input { display: block; width: 100%; accent-color: var(--ai-accent); margin: 12px 0; }
 .ai-node-inspector output { color: var(--ai-accent); font: 0.75rem ui-monospace,monospace; }
+.ai-node-inspector .neural-input-toggle { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.ai-node-inspector .neural-input-toggle input { width: 16px; height: 16px; margin: 0; }
 .neural-network .ai-view-controls { padding: 16px 0 0; gap: 16px; }
 .neural-network .ai-view-controls label { min-width: 96px; }
 .neural-network .ai-view-controls button { min-height: 36px; padding: 8px 12px; font-size: 0.75rem !important; }
@@ -85,11 +87,6 @@
   .neural-response { padding: 24px 16px; column-gap: 20px; }
   .neural-studio-notes { grid-template-columns: 1fr; gap: 16px; padding: 20px 16px; }
 }
-.neural-training-control { border-top: 1px solid var(--ai-muted); padding-top: 20px; margin-top: 24px; }
-.neural-training-control label { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.neural-training-control select { background: var(--ai-paper); border: 1px solid var(--ai-muted); color: var(--ai-ink); min-height: 44px; min-width: 64px; padding: 8px; font-size: 1rem; }
-.neural-training-control button { width: 100%; margin-top: 12px; }
-.neural-training-control p { font-size: 0.75rem; line-height: 1.6; margin-top: 12px !important; }
 .neural-trace-panel { border: 1px solid var(--ai-line); background: var(--ai-panel); padding: 20px; margin-top: 24px; }
 .neural-trace-caption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; color: var(--ai-accent); font: 0.6875rem ui-monospace,monospace; }
 .neural-trace-caption .ai-kicker { font-size: 0.6875rem; }
@@ -116,4 +113,3 @@
   .neural-trace-controls { gap: 8px 16px; }
 }
 @media (prefers-reduced-motion:reduce) { .neural-flow-edge { animation: none !important; stroke-dasharray: none; } .neural-flow-node { animation: none !important; stroke-opacity: 0; } }
-.neural-target-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }

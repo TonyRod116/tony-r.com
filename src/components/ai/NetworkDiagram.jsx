@@ -1,6 +1,8 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { edgeSignal } from '../games/NeuralNetwork/networkMath'
 
+const OUTPUT_SCALE = 0.75
+
 // The camera retains the approved orientation; columns grow left to right.
 // All nodes and highlighted values come from the actual model/input.
 export default function NetworkDiagram({ activations, probabilities, weights, interactive = false, labels, title, dynamics, controls, forward, training, phase, running, animationEnabled, paused, selectedLayer = null, direction, guided, session, onTrace, onHold, onLayer, onDirection, onToggleAnimation, onPause }) {
@@ -8,12 +10,13 @@ export default function NetworkDiagram({ activations, probabilities, weights, in
   const [pitch, setPitch] = useState(-0.12)
   const [zoom, setZoom] = useState(1)
   const [inspected, setInspected] = useState(null)
+  const [showInputGradients, setShowInputGradients] = useState(false)
   const drag = useRef(null)
   const glow = useId().replaceAll(':','')
   const sizes = weights?.length ? [weights[0][0].length, ...weights.map(layer => layer.length)] : [784,128,64,10]
   const isGradient = phase?.kind==='backward'||phase?.kind==='update'
   const activeLayer = selectedLayer
-  const metricLabel = isGradient?dynamics.gradient:labels?.activation
+  const metricLabel = isGradient&&(inspected?.layer!==0||showInputGradients)?dynamics.gradient:inspected?.layer===0?dynamics?.pixel:labels?.activation
   const names = labels ? [labels.input,`${labels.hidden} 1`,`${labels.hidden} 2`,labels.output] : []
   const project = (layer,depth,vertical) => {
     const radians=angle*Math.PI/180
@@ -21,13 +24,14 @@ export default function NetworkDiagram({ activations, probabilities, weights, in
   }
   const layerLayout = layer => ({
     columns:layer===0?28:layer===sizes.length-1?(interactive?1:2):Math.ceil(Math.sqrt(sizes[layer])),
-    spacing:layer===0?7:layer===sizes.length-1?(interactive?26:22):16,
+    spacing:layer===0?7:layer===sizes.length-1?(interactive?26*OUTPUT_SCALE:22):16,
   })
   const nodes = sizes.map((size,layer) => {
     const {columns,spacing}=layerLayout(layer),rows=Math.ceil(size/columns)
-    const values=isGradient?training.nodeGradients[layer]:layer===sizes.length-1 && probabilities && phase?.key!=='f3' ? probabilities : activations?.[layer]
+    const gradient=isGradient&&(layer!==0||showInputGradients)
+    const values=gradient?training.nodeGradients[layer]:layer===sizes.length-1 && probabilities && phase?.key!=='f3' ? probabilities : activations?.[layer]
     const max=values?Math.max(1e-12,...values.map(v=>Math.abs(v))):1
-    return Array.from({length:size},(_,index)=>({...project(layer,(index%columns-(columns-1)/2)*spacing,(Math.floor(index/columns)-(rows-1)/2)*spacing),value:values?Math.abs(values[index])/max:0,raw:values?.[index],index}))
+    return Array.from({length:size},(_,index)=>({...project(layer,(index%columns-(columns-1)/2)*spacing,(Math.floor(index/columns)-(rows-1)/2)*spacing),value:values?Math.abs(values[index])/max:0,raw:values?.[index],index,gradient}))
   })
   const connections=useMemo(()=>{
     if(interactive && !weights)return []
@@ -74,28 +78,29 @@ export default function NetworkDiagram({ activations, probabilities, weights, in
         return <g key={`${layer}-${target}-${source}`}>
           <line {...coordinates} stroke={color} opacity={(interactive?0.04+strength*0.55:0.05+strength*0.6)*(focused&&matches?1:0.13)} strokeWidth={focused&&matches?1:0.5}
             data-edge-layer={layer} data-source={source} data-target={target} data-weight={weight} data-contribution={signal?.contribution} data-gradient={signal?.gradient} data-signal={signal?.value}>
-            {signal&&<title>{`${dynamics.weight}: ${weight.toFixed(5)} · ${dynamics.contribution}: ${signal.contribution.toExponential(3)}${training?` · ${dynamics.gradient}: ${signal.gradient.toExponential(3)} · w′: ${signal.updatedWeight.toFixed(5)}`:''}`}</title>}
+            {signal&&<title>{`${dynamics.weight}: ${weight.toFixed(5)} · ${dynamics.contribution}: ${signal.contribution.toExponential(3)}${training?` · ${dynamics.gradient}: ${signal.gradient.toExponential(3)}`:''}`}</title>}
           </line>
           {flowing&&<line {...coordinates} stroke={color} strokeWidth={1+strength*1.4} opacity={0.25+strength*0.75} className="neural-flow-edge" data-flow-layer={layer}/>}
         </g>
       })}</g>
       {nodes.map((layer,index)=><g key={index}>{layer.map(node=><g key={node.index}>
-        <circle cx={node.x} cy={node.y} r={(index===0?1.6:index===3?(interactive?(winner===node.index?7:4):5):3)*zoom} fill={node.raw<0?'var(--ai-orange)':index===0&&activations&&!isGradient?'var(--ai-paper)':'var(--ai-accent)'}
+        <circle cx={node.x} cy={node.y} r={(index===0?1.6:index===3?(interactive?(winner===node.index?7:4)*OUTPUT_SCALE:5):3)*zoom} fill={node.raw<0?'var(--ai-orange)':index===0&&activations&&!node.gradient?'var(--ai-paper)':'var(--ai-accent)'}
           opacity={futureLayer(index)?0.035:(activations?0.1+node.value*0.9:index===0?0.25:0.7)*(activeLayer===null||activeLayer===index?1:0.4)}
           stroke={inspected?.layer===index&&inspected.index===node.index?'var(--ai-paper)':undefined} strokeWidth="2"
           filter={interactive&&activations&&node.value>0.65?`url(#${glow})`:undefined}
-          data-layer={index} data-node-index={node.index} data-activation={activations?.[index]?.[node.index]} data-node-value={node.raw} data-value-kind={isGradient?'gradient':'activation'}
+          data-layer={index} data-node-index={node.index} data-activation={activations?.[index]?.[node.index]} data-node-value={node.raw} data-value-kind={node.gradient?'gradient':index===0?'pixel':'activation'} data-input-gradient={isGradient&&index===0?training.nodeGradients[0][node.index]:undefined}
           className={animationEnabled&&activations&&node.value>0.05&&phase?.layer===index&&['input','outputGradient'].includes(phase.key)?'neural-flow-node':undefined}
           onClick={interactive?()=>inspect(index,node.index):undefined}>
-          <title>{`${names[index]||sizes[index]} / ${node.index}${node.raw!==undefined?`: ${(isGradient?node.raw.toExponential(3):node.raw.toFixed(3))}`:''}`}</title>
+          <title>{`${names[index]||sizes[index]} / ${node.index}${node.raw!==undefined?`: ${(node.gradient?node.raw.toExponential(3):node.raw.toFixed(3))}`:''}`}</title>
         </circle>
-        {interactive&&index===3&&<text x={node.x+14*zoom} y={node.y+7*zoom} data-output-label={node.index} className={`ai-network-label neural-output-label${winner===node.index?' is-winner':''}`}>{node.index}</text>}
+        {interactive&&index===3&&<text x={node.x+14*OUTPUT_SCALE*zoom} y={node.y+7*OUTPUT_SCALE*zoom} data-output-label={node.index} className={`ai-network-label neural-output-label${winner===node.index?' is-winner':''}`}>{node.index}</text>}
       </g>)}</g>)}
       {!interactive&&sizes.map((size,index)=><text key={index} x={project(index,0,0).x} y={interactive?382:385} textAnchor="middle" className="ai-network-label">{size}</text>)}
     </svg>
     {interactive && <>
       <p className="ai-help ai-layer-hint">{controls.layerHint}</p>{dynamics&&<p className="neural-signal-legend">{dynamics.legend}</p>}
-      <details className="ai-node-inspector"><summary>{labels.inspect}</summary><label>{labels.neuron}<input type="range" min="0" max={sizes[activeLayer??0]-1} value={inspected?.layer===(activeLayer??0)?inspected.index:0} onChange={e=>inspect(activeLayer??0,Number(e.target.value))}/></label>{selected&&<output>{names[inspected.layer]} · {inspected.index} / {metricLabel}: {selected.raw!==undefined?(isGradient?selected.raw.toExponential(3):selected.raw.toFixed(4)):'—'}</output>}</details>
+      {isGradient&&<p className="neural-signal-legend">{showInputGradients?controls.sensitivityNote:controls.inputNote}</p>}
+      <details className="ai-node-inspector"><summary>{labels.inspect}</summary>{isGradient&&<label className="neural-input-toggle"><input type="checkbox" checked={showInputGradients} onChange={event=>{onHold?.();setShowInputGradients(event.target.checked)}}/>{controls.inputSensitivity}</label>}<label>{labels.neuron}<input type="range" min="0" max={sizes[activeLayer??0]-1} value={inspected?.layer===(activeLayer??0)?inspected.index:0} onChange={e=>inspect(activeLayer??0,Number(e.target.value))}/></label>{selected&&<output>{names[inspected.layer]} · {inspected.index} / {metricLabel}: {selected.raw!==undefined?(selected.gradient?selected.raw.toExponential(3):selected.raw.toFixed(4)):'—'}{isGradient&&inspected.layer===0&&!showInputGradients&&<span> · {dynamics.gradient}: {training.nodeGradients[0][inspected.index].toExponential(3)}</span>}</output>}</details>
       <div className="ai-view-controls"><label>{labels.view}<input type="range" min="-60" max="60" value={angle} onChange={e=>setAngle(Number(e.target.value))}/></label><label>{labels.zoom}<input type="range" min="0.7" max="1.2" step="0.05" value={zoom} onChange={e=>setZoom(Number(e.target.value))}/></label><button className="ai-button ai-button-secondary" onClick={()=>{setAngle(28);setPitch(-0.12);setZoom(1);setInspected(null)}}>{labels.resetView}</button></div>
     </>}
   </div>

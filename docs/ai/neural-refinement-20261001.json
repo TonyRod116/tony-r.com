@@ -1,0 +1,179 @@
+{
+  "status": "published_and_verified",
+  "verified_at": "2026-10-01T09:33:29.500646+00:00",
+  "issue": "My Page-ccj",
+  "checks": {
+    "build": "pass",
+    "check": "pass",
+    "tooling_tests": 54,
+    "router_cases": 24,
+    "affected_unique_browser_journeys": 18,
+    "browser_runs": {
+      "initial_other_passed": 17,
+      "final_picker_passed": 2,
+      "note": "One initial desktop picker scenario clicked under the fixed header; final test centers the canvas. Mobile picker appears in both runs."
+    },
+    "visual_comparisons": 24,
+    "changed_visual_references": 2,
+    "inspected_viewports": [
+      1440,
+      390,
+      768
+    ],
+    "languages": [
+      "es",
+      "en",
+      "ca"
+    ],
+    "output_scale": 0.75,
+    "output_height_before": 234,
+    "output_height_after": 175.5,
+    "picker_count": 1,
+    "redundant_select": false,
+    "training_cta": false,
+    "raw_pixels_preserved_in_backward": true,
+    "explicit_actual_sensitivity": true,
+    "protected_originals": 74,
+    "protected_original_changes": 0,
+    "original_captures_unchanged": 4,
+    "math_model_game_sources_unchanged": true
+  },
+  "derivative_evidence": {
+    "previous_small_case_comparisons": 47,
+    "real_model_derivative_comparisons": 62,
+    "max_absolute_error": 4.123795749322312e-11,
+    "tolerance": 3e-07,
+    "nonzero_comparisons": 40,
+    "real_labels": [
+      7,
+      2
+    ],
+    "input": "Synthetic stroke with raw pixels0.1/0.85; not an accuracy benchmark",
+    "method": "central perturbation; independent -log p(y) scalar loss; parameters restored"
+  },
+  "preview": {
+    "status": "pass",
+    "origin": "http://127.0.0.1:37901",
+    "checked_at": "2026-10-01T09:20:46.145Z",
+    "checks": [
+      {
+        "viewport": "desktop",
+        "status": 200,
+        "output_height": 175.5,
+        "previous_height": 234,
+        "scale": 0.75,
+        "picker_count": 1,
+        "training_cta": false,
+        "dropdown": false,
+        "input_pixels_preserved_in_backward": true,
+        "input_sensitivity_available": true,
+        "actual_output_gradients": true,
+        "loss": 0.010177,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "status": 200,
+        "output_height": 175.5,
+        "previous_height": 234,
+        "scale": 0.75,
+        "picker_count": 1,
+        "training_cta": false,
+        "dropdown": false,
+        "input_pixels_preserved_in_backward": true,
+        "input_sensitivity_available": true,
+        "actual_output_gradients": true,
+        "loss": 0.010177,
+        "errors": []
+      },
+      {
+        "viewport": "tablet",
+        "status": 200,
+        "output_height": 175.5,
+        "previous_height": 234,
+        "scale": 0.75,
+        "picker_count": 1,
+        "training_cta": false,
+        "dropdown": false,
+        "input_pixels_preserved_in_backward": true,
+        "input_sensitivity_available": true,
+        "actual_output_gradients": true,
+        "loss": 0.010177,
+        "errors": []
+      }
+    ],
+    "languages": [
+      "es",
+      "en",
+      "ca"
+    ],
+    "entry_sha256": "50e7cf74868b3763067817b0771fffa7df2e68dbb2fa61aa01dad09414ea7fca",
+    "model_sha256": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b"
+  },
+  "source_sha256": {
+    "src/components/ai/NetworkDiagram.jsx": "fd5bb6a71bdb9f83798330c538e3a68abe4b1577c19b2e43c6d81c03774f4b84",
+    "src/components/games/NeuralNetworkVisualization.jsx": "c59278a9c8c9e1768d2f3b444547f3d957099c423330d8555300ac73d75f2cac",
+    "src/components/games/NeuralNetwork/NeuralStudio.css": "5259a9fe1c5c1dd9c0cf9fa476441cf3327751d7ff6ad9726fcc0735c3040ba8",
+    "src/components/games/NeuralNetwork/NeuralTracePanel.jsx": "626f77168e68e01ec01faff9414f3189a25d44cbbe0fd6971e455bf6d1e41df0",
+    "src/data/neuralDynamics.js": "7b8a317162f5735095670431ffb90a4b8c03989404d01989333f24385d7c84e8",
+    "src/data/aiExperiments.js": "19155682a910cfb71d4cd46b94737ffb4918d414a57863dc1f1e4e84b7f360d7",
+    "tests/tooling/neural-dynamics.test.mjs": "248a95e48dfcd6b27045cc5e3f1a55212408d4a83cf71d41857e1e92dddeb0ba",
+    "tests/e2e/ai-lab.spec.mjs": "1ac601478f485f0f07f6d6baf3c249d612b139d9ad42b5cea3ac054a74b7a3cc",
+    "AI_SHARED_INSTRUCTIONS.md": "53181413c6abbac9dd4b1e7e57271aae77d4dfa24e47d36a3539e5658ed40eb0"
+  },
+  "model_sha256": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b",
+  "public_entry_sha256": "50e7cf74868b3763067817b0771fffa7df2e68dbb2fa61aa01dad09414ea7fca",
+  "publication": {
+    "status": "pass",
+    "hosting": "IONOS",
+    "main_url": "https://tony-r.com",
+    "verified_at": "2026-10-01T09:44:23.771275+00:00",
+    "online": {
+      "status": "pass",
+      "origin": "https://tony-r.com",
+      "checked_at": "2026-10-01T09:39:19.555Z",
+      "checks": [
+        {
+          "viewport": "desktop",
+          "status": 200,
+          "output_height": 175.5,
+          "previous_height": 234,
+          "scale": 0.75,
+          "picker_count": 1,
+          "training_cta": false,
+          "dropdown": false,
+          "input_pixels_preserved_in_backward": true,
+          "input_sensitivity_available": true,
+          "actual_output_gradients": true,
+          "loss": 0.010177,
+          "errors": []
+        },
+        {
+          "viewport": "mobile",
+          "status": 200,
+          "output_height": 175.5,
+          "previous_height": 234,
+          "scale": 0.75,
+          "picker_count": 1,
+          "training_cta": false,
+          "dropdown": false,
+          "input_pixels_preserved_in_backward": true,
+          "input_sensitivity_available": true,
+          "actual_output_gradients": true,
+          "loss": 0.010177,
+          "errors": []
+        }
+      ],
+      "entry_sha256": "50e7cf74868b3763067817b0771fffa7df2e68dbb2fa61aa01dad09414ea7fca",
+      "model_sha256": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b"
+    },
+    "backup": "private prior version retained; operational paths excluded",
+    "source_export": "GitHub public export awaits specific confirmation; no push attempted"
+  },
+  "limits": [
+    "Numerical comparisons verify sampled derivatives and standard equations; not every possible input or recognition accuracy.",
+    "Original-pixel and loss-sensitivity views are different quantities and are explicitly labelled.",
+    "Only selected connections are drawn; full matrices calculate all values.",
+    "Original predictor/model artifact, API/server, T-Tris, BuildApp PNGs and existing personal/generated changes remain preserved."
+  ]
+}

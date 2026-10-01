@@ -66,3 +66,39 @@ test('edge values use normalized forward inputs and actual backward/SGD quantiti
   assert.equal(update.value,-step.learningRate*step.weightGradients[2][3][0])
   assert.equal(update.updatedWeight,step.updatedWeights[2][3][0])
 })
+
+test('real MNIST model derivatives match perturbations of weights, biases and raw pixels',()=>{
+  const model=new MLP(JSON.parse(readFileSync(new URL('../../public/models/mnist/014_dataset-1x.json',import.meta.url),'utf8')))
+  const input=Array(784).fill(0.1)
+  for(let col=5;col<=22;col++)input[4*28+col]=0.85
+  for(let row=5;row<=23;row++)input[row*28+22-Math.floor((row-5)*0.6)]=0.85
+  const original=JSON.stringify({weights:model.weights,biases:model.biases})
+  let comparisons=0,maxError=0,nonzero=0
+  for(const target of [7,2]){
+    const analytic=model.trainingStep(input,target)
+    // Independent scalar loss: no analytic gradient or SGD update participates.
+    const loss=()=>-Math.log(model.trace(input).probabilities[target])
+    assert.ok(Math.abs(loss()-analytic.lossBefore)<1e-12)
+    const compare=(array,index,expected)=>{
+      const saved=array[index],eps=1e-5
+      let plus,minus
+      try{array[index]=saved+eps;plus=loss();array[index]=saved-eps;minus=loss()}finally{array[index]=saved}
+      const observed=(plus-minus)/(2*eps),error=Math.abs(observed-expected)
+      comparisons++;maxError=Math.max(maxError,error);if(Math.abs(expected)>1e-7)nonzero++
+      assert.ok(error<3e-7,`${target}/${comparisons}: ${observed} vs ${expected}`)
+    }
+    for(let layer=0;layer<3;layer++){
+      const ranked=analytic.deltas[layer].map((v,i)=>({i,v})).sort((a,b)=>Math.abs(b.v)-Math.abs(a.v))
+      for(const {i:node} of [ranked[0],ranked[1],ranked.at(-1)]){
+        const sources=analytic.before.layerInputs[layer].map((v,i)=>({i,v})).sort((a,b)=>Math.abs(b.v)-Math.abs(a.v))
+        for(const {i:source} of [sources[0],sources.at(-1)])compare(model.weights[layer][node],source,analytic.weightGradients[layer][node][source])
+        compare(model.biases[layer],node,analytic.biasGradients[layer][node])
+      }
+    }
+    for(const pixel of [100,200,400,650])compare(input,pixel,analytic.nodeGradients[0][pixel])
+    for(let layer=0;layer<2;layer++)analytic.before.preActivations[layer].forEach((z,node)=>{if(z<=0)assert.equal(analytic.deltas[layer][node],0)})
+  }
+  assert.equal(comparisons,62);assert.ok(nonzero>30)
+  assert.equal(JSON.stringify({weights:model.weights,biases:model.biases}),original)
+  console.log(JSON.stringify({real_model_derivative_comparisons:comparisons,max_absolute_error:maxError,tolerance:3e-7,nonzero_comparisons:nonzero}))
+})
