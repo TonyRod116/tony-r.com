@@ -1,0 +1,182 @@
+{
+  "status": "pass",
+  "method": "Independent flat-board terminal enumeration; real production Minimax definitions evaluated unchanged in an isolated VM; every legal human continuation against its chosen O policy from an empty board",
+  "legal_complete_games": 255168,
+  "terminal_outcomes": {
+    "X": 131184,
+    "O": 77904,
+    "draw": 46080
+  },
+  "tree_positions_with_repetitions": 549946,
+  "actual_ai_policy_outcomes": {
+    "X": 0,
+    "O": 498,
+    "draw": 183
+  },
+  "ai_decisions_checked": 936,
+  "definition": "X starts; stop at first win or full board; chronological move sequences count separately, including rotated/reflected equivalents",
+  "algorithm_sha256": "23a8b823a68833ada8a3f5860876275a598cf6dbaff1fee37db4510903ea0f3f",
+  "source_sha256": "9718826fc58238cf842e13a74b33118a7b6693877c69aa2c7047086850f60211",
+  "current_source_sha256": "47184ea32acdf29958183464e609690855761fab6dd9a6d48095d5bb66bc7ef3",
+  "browser": {
+    "status": "pass",
+    "checks": [
+      {
+        "viewport": "desktop",
+        "language": "es",
+        "count": "255.168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "en",
+        "count": "255,168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "ca",
+        "count": "255.168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "es",
+        "count": "255.168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "en",
+        "count": "255,168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "ca",
+        "count": "255.168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "tablet",
+        "language": "es",
+        "count": "255.168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "tablet",
+        "language": "en",
+        "count": "255,168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "tablet",
+        "language": "ca",
+        "count": "255.168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      }
+    ]
+  },
+  "checks": {
+    "node_tooling_tests": 58,
+    "existing_turn_reset_browser_cases": 2,
+    "build": "pass",
+    "unchanged_AI_visual_comparisons": 6
+  },
+  "publication": {
+    "status": "pass",
+    "checks": [
+      {
+        "viewport": "desktop",
+        "language": "es",
+        "count": "255.168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "en",
+        "count": "255,168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "ca",
+        "count": "255.168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "es",
+        "count": "255.168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "en",
+        "count": "255,168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "ca",
+        "count": "255.168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "tablet",
+        "language": "es",
+        "count": "255.168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "tablet",
+        "language": "en",
+        "count": "255,168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "tablet",
+        "language": "ca",
+        "count": "255.168",
+        "mode_context": true,
+        "no_overflow": true,
+        "errors": []
+      }
+    ]
+  },
+  "publication_host": "IONOS; no public GitHub source push"
+}

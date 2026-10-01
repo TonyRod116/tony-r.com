@@ -285,8 +285,12 @@ const TicTacToe = () => {
     return (
         <AiExperimentLayout id="tictactoe">
             <div className="ai-legacy-content">
-
-
+                    <div className="ai-ttt-facts">
+                        <p className="ai-kicker">MINIMAX · {t(isHardMode ? 'aiLab.games.tictactoe.hardMode' : 'aiLab.games.tictactoe.easyMode')}</p>
+                        <h2><strong>{new Intl.NumberFormat({ es: 'es-ES', en: 'en-GB', ca: 'ca-ES' }[language]).format(255168)}</strong><span>{t('aiLab.games.tictactoe.possibilities')}</span></h2>
+                        <p className="ai-ttt-challenge">{t(isHardMode ? 'aiLab.games.tictactoe.challenge' : 'aiLab.games.tictactoe.easyChallenge')}</p>
+                        <p className="ai-help">{t('aiLab.games.tictactoe.description')}</p>
+                    </div>
                     <p className="ai-help mb-6">{playHints[language].tictactoe}</p>
 
                     <div className="flex justify-center gap-4 mb-8">
