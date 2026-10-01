@@ -4,3 +4,5 @@ ai/tools/vendor/
 test-results/
 playwright-report/
 .agents/memory/*.lock
+# Public immutable dataset required by the browser demo (global ignores *.gz).
+!public/demos-data/degrees/catalog-*.bin.gz
