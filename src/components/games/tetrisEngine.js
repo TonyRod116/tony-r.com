@@ -1,5 +1,6 @@
 export const WIDTH = 10
 export const HEIGHT = 20
+export const LINE_CLEAR_MS = 320
 // Keep Tony's eight shapes, including the five-cell Magic T. Offsets are
 // explicit [row,column] pairs everywhere: rendering, preview, play and search.
 export const PIECES = {
@@ -59,10 +60,11 @@ export function lockPiece(board, piece, magic = true) {
       if (target !== r) { next[target][c] = 'T'; next[r][c] = null }
     }
   }
-  const remaining = next.filter(row => row.some(value => value === null))
-  const cleared = HEIGHT - remaining.length
+  const clearingRows = next.flatMap((row,r) => row.every(value => value !== null) ? [r] : [])
+  const remaining = next.filter((_,r) => !clearingRows.includes(r))
+  const cleared = clearingRows.length
   while (remaining.length < HEIGHT) remaining.unshift(Array(WIDTH).fill(null))
-  return { board: remaining, cleared, over: false }
+  return { board: remaining, cleared, over: false, clearingRows, beforeClear: next }
 }
 // One visible frame of the same bottom-first sand physics used by the AI.
 // Blocks only move down one row; columns never change during dissolution.
@@ -112,12 +114,17 @@ export function suggestMove(board, piece, nextName, magic) {
   return best
 }
 export function newGame(first, next, previous = {}) {
-  return { board: emptyBoard(), piece: spawn(first), next, score: 0, lines: 0, level: 1, paused: false, over: false, magic: previous.magic ?? true, ai: previous.ai ?? false, aiMoves: 0, settling: null }
+  return { board: emptyBoard(), piece: spawn(first), next, score: 0, lines: 0, level: 1, paused: false, over: false, magic: previous.magic ?? true, ai: previous.ai ?? false, aiMoves: 0, settling: null, clearing: null }
 }
 function finishCommit(state, result, nextName, isAi) {
   const piece = spawn(state.next), lines = state.lines + result.cleared
-  return { ...state, board: result.board, piece, next: nextName, settling: null, score: state.score + 10 + result.cleared * 100, lines,
+  return { ...state, board: result.board, piece, next: nextName, settling: null, clearing: null, score: state.score + 10 + result.cleared * 100, lines,
     level: Math.floor(lines / 10) + 1, over: !fits(result.board, piece), aiMoves: state.aiMoves + Number(isAi) }
+}
+function flashOrFinish(state, result, nextName, isAi, piece = state.piece) {
+  if (!result.cleared) return finishCommit(state, result, nextName, isAi)
+  return { ...state, board: result.beforeClear, piece, settling: null,
+    clearing: { rows: result.clearingRows, result, nextName, isAi } }
 }
 function commit(state, target, nextName, isAi = false) {
   const result = lockPiece(state.board, target, state.magic)
@@ -127,7 +134,7 @@ function commit(state, target, nextName, isAi = false) {
     cellsFor(target).forEach(([r,c]) => { contact[r][c] = 'T' })
     return { ...state, board: contact, piece: target, settling: { result, nextName, isAi, step: 0, moved: [] } }
   }
-  return finishCommit(state, result, nextName, isAi)
+  return flashOrFinish(state, result, nextName, isAi, target)
 }
 export function gameReducer(state, action) {
   if (action.type === 'restart') return newGame(action.first, action.next, state)
@@ -136,6 +143,12 @@ export function gameReducer(state, action) {
   if (action.type === 'ai') return { ...state, ai: !state.ai }
   if (action.type === 'magic') return { ...state, magic: !state.magic }
   if (state.over || state.paused) return state
+  if (state.clearing) {
+    // Bind completion to this exact phase so reset/old timers cannot clear twice.
+    if (action.type !== 'clear-complete' || action.result !== state.clearing.result) return state
+    return finishCommit(state, state.clearing.result, state.clearing.nextName, state.clearing.isAi)
+  }
+  if (action.type === 'clear-complete') return state
   if (state.settling) {
     if (action.type !== 'settle-tick') return state
     const settling = { ...state.settling, step: state.settling.step + 1 }
@@ -143,7 +156,7 @@ export function gameReducer(state, action) {
     if (settling.step <= 2) return { ...state, settling }
     const frame = settleSandStep(state.board)
     return frame.moved.length ? { ...state, board: frame.board, settling: { ...settling, moved: frame.moved } }
-      : finishCommit(state, settling.result, settling.nextName, settling.isAi)
+      : flashOrFinish(state, settling.result, settling.nextName, settling.isAi)
   }
   if (action.type === 'settle-tick') return state
   if (action.type === 'ai-move') {

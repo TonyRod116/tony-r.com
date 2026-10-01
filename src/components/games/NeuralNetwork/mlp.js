@@ -1,3 +1,5 @@
+import { denseForward, stableSoftmax, singleTrainingStep } from './networkMath.js'
+
 // Pretrained artifact: DFin/Neural-Network-Visualisation (Apache-2.0).
 // Provenance and original license live alongside the local model artifact.
 export const WEIGHTS_URL = '/models/mnist/014_dataset-1x.json'
@@ -60,27 +62,19 @@ export class MLP {
     this.loadDefinition(await response.json())
   }
 
-  forward(input) {
+  trace(input) {
     if (!this.ready) throw new Error('Model is not loaded')
-    if (input.length !== 784 || Array.from(input).some(v => !Number.isFinite(v) || v < 0 || v > 1)) throw new Error('Expected 784 normalized pixels')
-    this.activations = [Array.from(input)]
-    let current = Array.from(input, v => (v - this.normalization.mean) / this.normalization.std)
-    this.weights.forEach((matrix, index) => {
-      current = matrix.map((row, neuron) => {
-        const value = row.reduce((sum, weight, i) => sum + weight * current[i], this.biases[index][neuron])
-        return index < this.weights.length - 1 ? Math.max(0, value) : value
-      })
-      this.activations.push(current)
-    })
-    return current
+    return denseForward(this.weights,this.biases,this.normalization,input)
   }
-
-  softmax(logits) {
-    if (!logits.length || logits.some(v => !Number.isFinite(v))) throw new Error('Invalid logits')
-    const maximum = Math.max(...logits)
-    const exponentials = logits.map(v => Math.exp(v - maximum))
-    const sum = exponentials.reduce((a, b) => a + b, 0)
-    return exponentials.map(v => v / sum)
+  forward(input) {
+    const trace=this.trace(input)
+    this.activations=trace.activations
+    return trace.logits
+  }
+  softmax(logits) { return stableSoftmax(logits) }
+  trainingStep(input,target,learningRate=0.001) {
+    if (!this.ready) throw new Error('Model is not loaded')
+    return singleTrainingStep(this.weights,this.biases,this.normalization,input,target,learningRate)
   }
   getActivations() { return this.activations }
   getWeights() { return this.weights }

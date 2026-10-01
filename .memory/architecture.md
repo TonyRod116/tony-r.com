@@ -99,3 +99,9 @@ tony-r.com currently serves static Vite output on IONOS. Apache rewrite sends no
 ## T-Tris transition and neural instrument — 2026-10-01
 
 Magic T contact enters a settling phase: each visible frame moves blocks one row down in their column; manual/AI actions are blocked until the precomputed common final board is committed. Gravity and sand timers are mutually exclusive and pause/reset-safe. Rotations use central pivots and rendering/search retain coordinate pairs. Neural instrument keeps the actual pretrained MLP and the approved camera; examples are hand-drawn inputs, never substituted labels. Current capture/model/game proof: docs/ai/polish-20261001.md/json.
+
+## Recorded neural calculations and line-clear phase — 2026-10-01
+
+networkMath.js powers the same dense equations for inference and a transient teaching copy. Its tape includes normalized layer inputs, pre-ReLU sums and output logits/probabilities. Gradients use softmax-cross-entropy/ReLU/normalization exactly; the viewer animates selected real quantities from that tape. A1400ms visual phase is deliberately slower than computation and can be paused/stepped/cancelled. The base model/artifact never learns silently.
+
+T-Tris completed rows enter a320ms highlight phase before score/board/next spawn commit. Completion binds the exact result object, so stale callbacks cannot finish another clear. Magic T enters this phase only after its sand settlement. Evidence: docs/ai/neural-dynamics-20261001.md/json.

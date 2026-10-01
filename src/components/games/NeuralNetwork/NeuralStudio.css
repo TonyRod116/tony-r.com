@@ -74,3 +74,42 @@
   .neural-response { padding: 24px 16px; column-gap: 20px; }
   .neural-studio-notes { grid-template-columns: 1fr; gap: 16px; padding: 20px 16px; }
 }
+/* A single readable example row, independent of the drawing column. */
+.neural-example-strip { display: flex; align-items: center; gap: 24px; padding: 16px 28px; border-bottom: 1px solid var(--ai-line); }
+.neural-example-strip > span { font-size: 0.8125rem; color: var(--ai-muted); min-width: 140px; }
+.neural-example-strip .ai-samples { display: grid; grid-template-columns: repeat(10,minmax(0,1fr)); flex: 1; max-width: 620px; gap: 6px; margin: 0; }
+.neural-example-strip .ai-samples button { min-width: 0; padding: 0; font: 1rem ui-monospace,monospace !important; }
+.neural-example-strip .ai-samples button[aria-pressed="true"] { background: var(--ai-accent); color: var(--ai-ink); }
+.neural-training-control { border-top: 1px solid var(--ai-muted); padding-top: 20px; margin-top: 24px; }
+.neural-training-control label { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.neural-training-control select { background: var(--ai-paper); border: 1px solid var(--ai-muted); color: var(--ai-ink); min-height: 44px; min-width: 64px; padding: 8px; font-size: 1rem; }
+.neural-training-control button { width: 100%; margin-top: 12px; }
+.neural-training-control p { font-size: 0.75rem; line-height: 1.6; margin-top: 12px !important; }
+.neural-trace-panel { border: 1px solid var(--ai-line); background: var(--ai-panel); padding: 20px; margin-top: 24px; }
+.neural-trace-caption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; color: var(--ai-accent); font: 0.6875rem ui-monospace,monospace; }
+.neural-trace-caption .ai-kicker { font-size: 0.6875rem; }
+.neural-trace-panel h3 { font-size: 1.25rem; font-weight: 500; margin-top: 16px; letter-spacing: -0.025em; }
+.neural-trace-panel code { display: block; font-size: 0.75rem; color: var(--ai-accent); padding-block: 12px; overflow-wrap: anywhere; }
+.neural-trace-panel > p { color: var(--ai-muted); font-size: 0.8125rem; }
+.neural-trace-controls { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 12px; }
+.neural-trace-panel .neural-trace-note { border-top: 1px solid var(--ai-line); padding-top: 12px; margin-top: 12px; font-size: 0.6875rem; }
+.neural-loss-values { display: flex; gap: 24px; border-block: 1px solid var(--ai-line); padding: 12px 0; margin-top: 16px; }
+.neural-loss-values dt { color: var(--ai-muted); font-size: 0.6875rem; }
+.neural-loss-values dd { font: 1.125rem ui-monospace,monospace; margin-top: 8px; }
+.neural-signal-legend { color: var(--ai-muted); font-size: 0.625rem; line-height: 1.6; margin-bottom: 12px !important; }
+.neural-copy-label { color: var(--ai-orange); font-size: 0.6875rem; margin-top: 12px !important; }
+.neural-flow-edge { stroke-dasharray: 4 14; stroke-linecap: round; animation: neural-signal-forward 900ms linear infinite; }
+.ai-network-instrument[data-flow-direction="backward"] .neural-flow-edge { animation-name: neural-signal-backward; }
+.ai-network-instrument[data-flow-direction="update"] .neural-flow-edge { stroke-dasharray: 2 8; animation-duration: 1200ms; }
+.ai-network-instrument[data-flow-playing="false"] .neural-flow-edge { animation-play-state: paused; }
+@keyframes neural-signal-forward { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -18; } }
+@keyframes neural-signal-backward { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 18; } }
+@media (max-width:640px) {
+  .neural-example-strip { flex-direction: column; align-items: stretch; gap: 10px; padding: 16px; }
+  .neural-example-strip .ai-samples { max-width: none; gap: 4px; }
+  .neural-example-strip .ai-samples button { font-size: 0.875rem !important; }
+  .neural-trace-panel { padding: 16px; }
+  .neural-trace-controls { gap: 8px 16px; }
+}
+@media (prefers-reduced-motion:reduce) { .neural-flow-edge { animation: none !important; stroke-dasharray: none; } }
+.neural-target-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }

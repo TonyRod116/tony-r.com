@@ -45,3 +45,9 @@ The complete showroom is activated on the confirmed IONOS main domain after a pr
 Centered rotations/physical keyboard/independent AI in T-Tris, progressive luminous Magic T, larger neural instrument with ten actual inputs, fresh public BuildApp screens and cleaned Casex CV. Proof/status: docs/ai/polish-20261001.md/json. Model weights, paid services, API/server and original documents are unchanged.
 
 Polish publication is confirmed on IONOS with10 live route/viewport checks and a private prior-version backup. Neural examples and Magic T phases use actual local computation. Final implementation/publication evidence: docs/ai/polish-20261001.json.
+
+## Neural dynamics / completed-line feedback — 2026-10-01
+
+Real forward/backward/SGD teaching traces, isolated copy and one-row examples are implemented with numerical derivative and browser checks. T-Tris flashes complete rows before guarded removal/scoring. Evidence/status: docs/ai/neural-dynamics-20261001.md/json. Pretrained artifact and API/server are unchanged.
+
+The dynamics/line-flash release is verified live on IONOS with four experiment/viewport checks and a private backup; all24 visual comparisons pass. Final proof: docs/ai/neural-dynamics-20261001.json.

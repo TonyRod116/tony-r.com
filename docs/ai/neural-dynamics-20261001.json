@@ -1,0 +1,151 @@
+{
+  "status": "published_and_verified",
+  "verified_at": "2026-10-01T00:53:21.707061+00:00",
+  "issues": [
+    "My Page-9fm",
+    "My Page-3ao"
+  ],
+  "checks": {
+    "build": "pass",
+    "check": "pass",
+    "tooling_tests": 53,
+    "router_cases": 24,
+    "full_browser_passed": 155,
+    "full_browser_skipped": 1,
+    "skip_reason": "physical desktop keyboard journey not applicable to mobile project",
+    "derivative_comparisons": 47,
+    "central_difference_tolerance": 3e-07,
+    "pretrained_artifact_unchanged": true,
+    "protected_original_files": 74,
+    "protected_original_changes": 0,
+    "visual": "pass",
+    "real_forward_frames": 16,
+    "real_backward_frames": 16,
+    "real_line_flash_frames": 19,
+    "visual_comparisons": 24
+  },
+  "viewport_observations": [
+    {
+      "viewport": 1440,
+      "width": 1440,
+      "rows": [
+        530
+      ],
+      "forwardStyle": "neural-signal-forward",
+      "backwardStyle": "neural-signal-backward",
+      "lossBefore": 0.0552169,
+      "lossAfter": 0.0515677,
+      "errors": []
+    },
+    {
+      "viewport": 390,
+      "width": 390,
+      "rows": [
+        530
+      ],
+      "forwardStyle": "neural-signal-forward",
+      "backwardStyle": "neural-signal-backward",
+      "lossBefore": 0.0552169,
+      "lossAfter": 0.0515677,
+      "errors": []
+    },
+    {
+      "viewport": 768,
+      "width": 768,
+      "rows": [
+        503
+      ],
+      "forwardStyle": "neural-signal-forward",
+      "backwardStyle": "neural-signal-backward",
+      "lossBefore": 0.0552169,
+      "lossAfter": 0.0515677,
+      "errors": []
+    }
+  ],
+  "source_sha256": {
+    "src/components/ai/AiLab.css": "bb3622ff7e7c1d1945f6b936f931c3f0e1ba3533b41e800f428f8a0453db5e39",
+    "src/components/ai/NetworkDiagram.jsx": "f558ba26608e887fe48fba9660a264d737b2acc27f88192e6bbbb085211c6bd5",
+    "src/components/games/NeuralNetwork/NeuralStudio.css": "e2b4ef01f85069acfb9599b944771d5f8ee0e06190aa079c57dd3e7d0a5a2ff0",
+    "src/components/games/NeuralNetwork/NeuralTracePanel.jsx": "0bd77c7857df727b6c1299d633f7fdf3e73c9f7e036ef2342b96bfbaf1036b25",
+    "src/components/games/NeuralNetwork/mlp.js": "e97f14ec49accf17b08c4c06f4bc598acdc89840e378d47d45d5e8231fb3db5b",
+    "src/components/games/NeuralNetwork/networkMath.js": "af8d41920bb8faf2891922299ce6844d8b668c42857745c487bcde7c85c1c46c",
+    "src/components/games/NeuralNetworkVisualization.jsx": "f2b90a30a0d11336f25e5e10f05dd992f72a2a555b3cc8a3288a6cacec2c6006",
+    "src/components/games/Tetris.jsx": "5fcffa4f1850c6c577c659dd2ab3d62601cc2b957986f2b0076baa82171f8e37",
+    "src/components/games/tetrisEngine.js": "c12e5c17aef10834cfbb43b5c033b9df087ff1748b160d0bad7063ac7d5a4934",
+    "src/data/aiExperiments.js": "ba388b8099cf80f4374dd51da8899a79bace68cca9974d85ef12dce87fa18d97",
+    "src/data/neuralDynamics.js": "10f702bc57d1a4059692f22d205bdf23ff71c455a525aa8e1ad064a11425485c"
+  },
+  "model_sha256": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b",
+  "public_entry_sha256": "14447cf77ce48d3a14ae045d9a7b6d836f94a7c49cf0aa1c509c20883badbe0c",
+  "publication": {
+    "status": "pass",
+    "hosting": "IONOS",
+    "main_url": "https://tony-r.com",
+    "verified_at": "2026-10-01T01:00:09.854022+00:00",
+    "online": {
+      "origin": "https://tony-r.com",
+      "checked_at": "2026-10-01T00:58:19.533Z",
+      "status": "pass",
+      "checks": [
+        {
+          "viewport": 1440,
+          "path": "/ai/neural-network",
+          "status": 200,
+          "width": 1440,
+          "examples": 10,
+          "nodes": 986,
+          "forward": true,
+          "backpropagation": true,
+          "copy_isolated": true,
+          "lossBefore": 0.0552169,
+          "lossAfter": 0.0515677
+        },
+        {
+          "viewport": "desktop",
+          "path": "/ai/tetris",
+          "status": 200,
+          "rows_flashed": 2,
+          "animation": "line-clear-blink",
+          "pause": true,
+          "score_after": 250
+        },
+        {
+          "viewport": 390,
+          "path": "/ai/neural-network",
+          "status": 200,
+          "width": 390,
+          "examples": 10,
+          "nodes": 986,
+          "forward": true,
+          "backpropagation": true,
+          "copy_isolated": true,
+          "lossBefore": 0.0552169,
+          "lossAfter": 0.0515677
+        },
+        {
+          "viewport": "mobile",
+          "path": "/ai/tetris",
+          "status": 200,
+          "rows_flashed": 2,
+          "animation": "line-clear-blink",
+          "pause": true,
+          "score_after": 250
+        }
+      ],
+      "external_mutations": "blocked; no paid AI or real contact requests",
+      "public_entry_sha256": "14447cf77ce48d3a14ae045d9a7b6d836f94a7c49cf0aa1c509c20883badbe0c"
+    },
+    "backup": "private prior version retained; operational paths excluded",
+    "git_source_branch": "main"
+  },
+  "limits": [
+    "Animated time is a slow replay of computed quantities, not hardware timing or biological signaling.",
+    "Only selected connections are drawn; inference and gradients use the full matrices.",
+    "The SGD step updates a transient local copy, not the base artifact; one example does not establish general accuracy.",
+    "No real remote AI generation or contact submission is executed."
+  ],
+  "primary_references": [
+    "https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html",
+    "https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial.html"
+  ]
+}

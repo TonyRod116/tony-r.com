@@ -4,7 +4,7 @@ for (const [name,path] of [['ai-lab','/ai'],['ai-neural','/ai/neural-network'],[
   if(name==='ai-tetris') await page.addInitScript(()=>{Math.random=()=>0.95})
   await page.goto(path)
   await expect(page.locator('main h1')).toBeVisible()
-  if(name==='ai-neural') { await expect(page.getByTestId('model-state')).toContainText('Modelo cargado');await page.locator('.ai-samples').getByRole('button',{name:'7',exact:true}).click() }
+  if(name==='ai-neural') { await expect(page.getByTestId('model-state')).toContainText('Modelo cargado');await page.locator('.ai-samples').getByRole('button',{name:'7',exact:true}).click();await page.getByRole('button',{name:'Restablecer vista',exact:true}).click() }
   if(name==='ai-tetris') await page.getByRole('button',{name:'Pausar',exact:true}).click()
   await page.addStyleTag({content:'*{animation:none!important;transition:none!important;caret-color:transparent!important}'})
   await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}))

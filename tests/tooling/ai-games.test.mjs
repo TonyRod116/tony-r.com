@@ -161,3 +161,39 @@ test('centered pieces spawn fully visible, including all five Magic T cells',()=
   for(const name of NAMES){const piece=spawn(name);assert.ok(fits(emptyBoard(),piece));assert.ok(cellsFor(piece).every(([r])=>r>=0))}
   assert.equal(cellsFor(spawn('T')).length,5)
 })
+test('full rows remain visible during the flash and commit together exactly once',()=>{
+  const board=emptyBoard();board[17][0]='S'
+  for(const row of [18,19]){board[row].fill('L');board[row][4]=null;board[row][5]=null}
+  const initial={...newGame('O','L'),board},expected=lockPiece(board,landing(board,initial.piece),true)
+  const flashing=gameReducer(initial,{type:'drop',next:'I'})
+  assert.ok(flashing.clearing,'full lines cannot vanish before the flash')
+  assert.deepEqual(flashing.clearing.rows,[18,19]);assert.equal(flashing.score,0);assert.equal(flashing.lines,0)
+  assert.ok(flashing.board[18].every(Boolean));assert.ok(flashing.board[19].every(Boolean))
+  for(const type of ['tick','drop','left','right','rotate','ai-move','settle-tick'])assert.strictEqual(gameReducer(flashing,{type,next:'T'}),flashing)
+  const complete={type:'clear-complete',result:flashing.clearing.result},paused=gameReducer(flashing,{type:'pause'})
+  assert.strictEqual(gameReducer(paused,complete),paused)
+  const finished=gameReducer(gameReducer(paused,{type:'pause'}),complete)
+  assert.deepEqual(finished.board,expected.board);assert.equal(finished.lines,2);assert.equal(finished.score,210)
+  assert.equal(finished.piece.name,'L');assert.equal(finished.clearing,null)
+  assert.strictEqual(gameReducer(finished,complete),finished)
+  const reset=gameReducer(flashing,{type:'restart',first:'O',next:'L'})
+  const freshFlash=gameReducer({...reset,board},{type:'drop',next:'T'})
+  assert.strictEqual(gameReducer(freshFlash,complete),freshFlash,'an old timer cannot finish a new flash')
+})
+test('Magic T finishes dissolving before its completed row flashes',()=>{
+  const board=emptyBoard();board[19].fill('L');for(const c of [3,4,5])board[19][c]=null
+  const initial={...newGame('T','L'),board},expected=lockPiece(board,landing(board,initial.piece),true)
+  let state=gameReducer(initial,{type:'drop',next:'O'})
+  assert.ok(state.settling);assert.equal(state.clearing,null)
+  for(let frame=0;state.settling&&frame<30;frame++)state=gameReducer(state,{type:'settle-tick'})
+  assert.ok(state.clearing);assert.deepEqual(state.clearing.rows,[19]);assert.equal(state.score,0)
+  const finished=gameReducer(state,{type:'clear-complete',result:state.clearing.result})
+  assert.deepEqual(finished.board,expected.board);assert.equal(finished.score,110);assert.equal(finished.lines,1)
+})
+test('AI line clears use the same flash phase and count the move only on completion',()=>{
+  const board=emptyBoard();board[19].fill('L');board[19][4]=null;board[19][5]=null
+  const initial={...newGame('O','L'),board},state=gameReducer(initial,{type:'ai-move',next:'I'})
+  assert.ok(state.clearing);assert.equal(state.aiMoves,0)
+  const finished=gameReducer(state,{type:'clear-complete',result:state.clearing.result})
+  assert.equal(finished.aiMoves,1);assert.equal(finished.score,110);assert.equal(finished.lines,1)
+})

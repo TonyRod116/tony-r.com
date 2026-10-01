@@ -1,54 +1,86 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLanguage } from '../../hooks/useLanguage.jsx'
 import { labCopy } from '../../data/aiExperiments'
+import { neuralDynamics, forwardSteps, trainingSteps, TRACE_STEP_MS } from '../../data/neuralDynamics'
 import AiExperimentLayout from '../ai/AiExperimentLayout'
 import NetworkDiagram from '../ai/NetworkDiagram'
 import DrawingCanvas from './NeuralNetwork/DrawingCanvas'
+import NeuralTracePanel from './NeuralNetwork/NeuralTracePanel'
 import { MLP } from './NeuralNetwork/mlp'
 import './NeuralNetwork/NeuralStudio.css'
 
 export default function NeuralNetworkVisualization() {
-  const { language } = useLanguage()
-  const copy = labCopy[language]
+  const { language } = useLanguage(),copy=labCopy[language],dynamics=neuralDynamics[language]
   const [model,setModel]=useState(null),[state,setState]=useState('loading'),[attempt,setAttempt]=useState(0)
   const [pixels,setPixels]=useState(()=>Array(784).fill(0)),[strokeWidth,setStrokeWidth]=useState(1.8),[erasing,setErasing]=useState(false),[example,setExample]=useState(7)
-  const canvas=useRef(null)
+  const [target,setTarget]=useState(7),[playback,setPlayback]=useState(null),[traceError,setTraceError]=useState('')
+  const canvas=useRef(null),sequence=useRef(0),autoTimer=useRef(null)
+  const changePixels=value=>{clearTimeout(autoTimer.current);setPixels(value);setPlayback(null);setTraceError('')}
   useEffect(()=>{canvas.current.example(7)},[])
   useEffect(()=>{
-    const controller=new AbortController(),instance=new MLP()
-    const timeout=setTimeout(()=>controller.abort(),15000)
+    const controller=new AbortController(),instance=new MLP(),timeout=setTimeout(()=>controller.abort(),15000)
     let active=true
-    setState('loading');setModel(null)
+    setState('loading');setModel(null);setPlayback(null)
     instance.loadPretrainedWeights(controller.signal).then(()=>{if(active){setModel(instance);setState('ready')}}).catch(()=>{if(active)setState('error')}).finally(()=>clearTimeout(timeout))
     return ()=>{active=false;controller.abort();clearTimeout(timeout)}
   },[attempt])
-  const result=useMemo(()=>{
-    if(!model||!pixels.some(v=>v>0.02))return null
-    const probabilities=model.softmax(model.forward(pixels))
-    return {probabilities,activations:model.getActivations(),digit:probabilities.indexOf(Math.max(...probabilities))}
-  },[model,pixels])
+  const result=useMemo(()=>model&&pixels.some(v=>v>0.02)?model.trace(pixels):null,[model,pixels])
+  useEffect(()=>{
+    if(!result)return
+    autoTimer.current=setTimeout(()=>setPlayback({id:++sequence.current,type:'inference',snapshot:result,steps:forwardSteps,index:0,playing:true}),180)
+    return ()=>clearTimeout(autoTimer.current)
+  },[result])
+  const startTrace=type=>{
+    clearTimeout(autoTimer.current)
+    if(!result)return
+    try{
+      const snapshot=type==='training'?model.trainingStep(pixels,target):result
+      setTraceError('');setPlayback({id:++sequence.current,type,snapshot,steps:type==='training'?trainingSteps:forwardSteps,index:0,playing:true})
+    }catch{setPlayback(null);setTraceError(dynamics.error)}
+  }
+  useEffect(()=>{
+    if(!playback?.playing)return
+    const id=playback.id
+    const timer=setTimeout(()=>setPlayback(previous=>{
+      if(!previous||previous.id!==id||!previous.playing)return previous
+      const index=Math.min(previous.index+1,previous.steps.length-1)
+      return {...previous,index,playing:index<previous.steps.length-1}
+    }),TRACE_STEP_MS)
+    return ()=>clearTimeout(timer)
+  },[playback])
+  const phase=playback?.steps[playback.index],training=playback?.type==='training'?playback.snapshot:null
+  const visibleResult=playback?(training?(phase.kind==='after'?training.after:training.before):playback.snapshot):result
+  const weights=phase?.kind==='after'?training.updatedWeights:model?.getWeights()
+  const pauseTrace=()=>setPlayback(previous=>previous?{...previous,playing:!previous.playing,index:previous.index===previous.steps.length-1?0:previous.index}:null)
+  const holdTrace=()=>setPlayback(previous=>previous?{...previous,playing:false}:null)
+  const stepTrace=()=>setPlayback(previous=>previous?{...previous,index:Math.min(previous.index+1,previous.steps.length-1),playing:false}:null)
+  const stopTrace=()=>{clearTimeout(autoTimer.current);setPlayback(null)}
   return <AiExperimentLayout id="neural-network">
     <div className="neural-studio">
       <div className="neural-studio-heading"><p className="ai-kicker">{copy.signal}</p><p className="ai-model-state" data-testid="model-state">{state==='ready'?copy.ready:state==='error'?copy.failed:copy.loading}</p>{state==='error'&&<button className="ai-button" onClick={()=>setAttempt(value=>value+1)}>{copy.retry}</button>}</div>
+      <div className="neural-example-strip"><span>{copy.sample}</span><div className="ai-samples">{Array.from({length:10},(_,digit)=><button key={digit} className="ai-button ai-button-secondary" aria-pressed={example===digit} onClick={()=>{canvas.current.example(digit);setExample(digit);setTarget(digit)}}>{digit}</button>)}</div></div>
       <div className="neural-studio-grid">
         <section className="ai-drawing neural-drawing"><div className="neural-section-label"><span>01 / {copy.input}</span><span>28 × 28</span></div><h2>{copy.draw}</h2>
-          <DrawingCanvas ref={canvas} label={copy.draw} strokeWidth={strokeWidth} erasing={erasing} onDrawingChange={setPixels}/>
+          <DrawingCanvas ref={canvas} label={copy.draw} strokeWidth={strokeWidth} erasing={erasing} onDrawingChange={changePixels}/>
           <div className="ai-toolbar"><button className="ai-button" onClick={()=>{canvas.current.clear();setExample(null)}}>{copy.clear}</button><button className="ai-button ai-button-secondary" aria-pressed={erasing} onClick={()=>setErasing(value=>!value)}>{copy.erase}</button></div>
           <label>{copy.brush}<input type="range" min="0.8" max="3" step="0.1" value={strokeWidth} onChange={e=>setStrokeWidth(Number(e.target.value))}/></label>
-          <div className="ai-samples"><span>{copy.sample}</span>{Array.from({length:10},(_,digit)=><button key={digit} className="ai-button ai-button-secondary" aria-pressed={example===digit} onClick={()=>{canvas.current.example(digit);setExample(digit)}}>{digit}</button>)}</div>
           <p className="ai-help">{copy.drawHint}</p>
+          <div className="neural-training-control"><div className="neural-target-row"><label htmlFor="training-digit">{dynamics.target}</label><select id="training-digit" value={target} onChange={e=>{setTarget(Number(e.target.value));stopTrace()}}>{Array.from({length:10},(_,digit)=><option key={digit} value={digit}>{digit}</option>)}</select></div><button className="ai-button ai-button-secondary" disabled={!result} onClick={()=>startTrace('training')}>{dynamics.training}</button><p>{dynamics.trainingNote}</p></div>
         </section>
         <section className="ai-network-panel neural-network"><div className="neural-section-label"><span>02 / MLP</span><span>784 → 128 → 64 → 10</span></div><h2>{copy.network}</h2>
-          <NetworkDiagram interactive title={copy.network} labels={copy} weights={model?.getWeights()} activations={result?.activations} probabilities={result?.probabilities}/>
+          <NetworkDiagram interactive title={copy.network} labels={copy} dynamics={dynamics} weights={weights} activations={visibleResult?.activations} probabilities={visibleResult?.probabilities} forward={visibleResult} training={training} phase={phase} running={playback?.playing??false} session={playback?.id} onTrace={()=>startTrace('inference')} onHold={holdTrace} onStop={stopTrace}/>
+          {playback&&<NeuralTracePanel playback={playback} phase={phase} language={language} onPause={pauseTrace} onStep={stepTrace} onStop={stopTrace}/>}
+          {traceError&&<p role="alert" className="ai-help">{traceError}</p>}
           <p className="ai-help">{copy.viewHint}</p>
         </section>
         <section className="ai-prediction neural-response"><div className="neural-section-label"><span>03 / {copy.output}</span><span>SOFTMAX</span></div><h2>{copy.prediction}</h2>
-          <div className="neural-result" aria-live="polite">{result?<><strong data-testid="predicted-digit">{result.digit}</strong><div><span>{copy.strongest}</span><b>{(result.probabilities[result.digit]*100).toFixed(1)}%</b></div></>:<><strong aria-hidden="true">—</strong><p>{state==='ready'?copy.empty:state==='error'?copy.failed:copy.loading}</p></>}</div>
-          <div className="ai-probabilities">{Array.from({length:10},(_,digit)=>{const value=result?.probabilities[digit]??0;return <div key={digit} className={`ai-probability${result?.digit===digit?' is-leading':''}`} data-probability={result?value:undefined}><span>{digit}</span><div className="ai-probability-track"><span style={{width:`${value*100}%`}}/></div><span>{result?(value*100).toFixed(1)+'%':'—'}</span></div>})}</div>
+          {phase?.kind==='after'&&<p className="neural-copy-label">{dynamics.afterCopy}</p>}
+          <div className="neural-result" aria-live="polite">{visibleResult?<><strong data-testid="predicted-digit">{visibleResult.digit}</strong><div><span>{copy.strongest}</span><b>{(visibleResult.probabilities[visibleResult.digit]*100).toFixed(1)}%</b></div></>:<><strong aria-hidden="true">—</strong><p>{state==='ready'?copy.empty:state==='error'?copy.failed:copy.loading}</p></>}</div>
+          <div className="ai-probabilities">{Array.from({length:10},(_,digit)=>{const value=visibleResult?.probabilities[digit]??0;return <div key={digit} className={`ai-probability${visibleResult?.digit===digit?' is-leading':''}`} data-probability={visibleResult?value:undefined}><span>{digit}</span><div className="ai-probability-track"><span style={{width:`${value*100}%`}}/></div><span>{visibleResult?(value*100).toFixed(1)+'%':'—'}</span></div>})}</div>
           <p className="ai-help">{copy.probabilityNote}</p>
         </section>
       </div>
-      <footer className="neural-studio-notes"><p>{copy.networkNote}</p><p>{copy.modelNote}</p></footer>
+      <footer className="neural-studio-notes"><p>{copy.networkNote} {dynamics.animationNote}</p><p>{copy.modelNote}</p></footer>
     </div>
   </AiExperimentLayout>
 }

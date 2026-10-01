@@ -17,3 +17,7 @@ Publication is now verified on IONOS: 32 route/viewport checks and real local ne
 T-Tris, neural visual scene, current BuildApp captures and Casex CV polish are completed source changes for the current task: docs/ai/polish-20261001.md/json. Preserve progressive Magic T physics, centered rotations and the independent AI decision. User confirms neuron digit orientation is already correct; do not mirror it.
 
 The polish is now online and verified on IONOS; source/proof is docs/ai/polish-20261001.json. Source/model/game tests44, browser149 plus one inapplicable mobile skip, final affected17 plus same skip, and all24 visual comparisons pass. Ten direct live route/viewport checks pass. BuildApp budget/render API restoration remains a separate issue, not silently expanded by this frontend task.
+
+Newest neural/line-clear work: docs/ai/neural-dynamics-20261001.md/json. Preserve the original model, real tape-based animation and separate local training copy; examples stay in one row. Line flashes are a guarded reducer phase, after Magic T settlement. Publishing status belongs to the current proof, not earlier screenshots.
+
+Neural dynamics and the line flash are now online/verified in IONOS: docs/ai/neural-dynamics-20261001.json. Preserve the recorded real calculations, supervised local copy, one-row examples and guarded line-clear phase.53 code tests,155 browser journeys plus one inapplicable mobile skip,24 visual comparisons and4 direct live checks pass.
