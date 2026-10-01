@@ -58,7 +58,13 @@ Build useful products that solve real business problems, reduce operational fric
 
 ## Confirmed Public Fact — 2026-09-30
 
-Tony says his own Python trading bots are already generating income and explicitly asks to include that on the website. Use as a sober biographic statement, not independently audited performance. No returns, money amounts, guarantees, account identifiers, strategy details or fabricated charts. Keep this distinct from the older TradeLab backtesting project.
+Tony says his own Python trading bots are already generating income and explicitly asks to include that on the website. Use as a sober biographic statement, not independently audited performance. No returns, guarantees, account identifiers, strategy details or fabricated charts. Money amounts may only refer to the two explicitly authorized payout certificates below. Keep this distinct from the older TradeLab backtesting project.
+
+## Authorized Public Payout Evidence — 2026-10-01
+
+Tony explicitly authorized publishing two Lucid Trading payout certificates, with amounts/dates and exact local identifier redaction. Publish only payouts: 1,617 USD on 2026-08-14 (footer date explicitly confirmed by Tony) and 2,100 USD on 2026-09-15. Their combined 3,717 USD describes these two payments only, not net profit, returns or a complete performance record. The two supplied evaluation-to-funded certificates are excluded. Originals remain private ignored artifacts; public assets contain an opaque local mask and no original metadata. No generative editing.
+
+Read-only inspection of MTM primary source confirms Python bots, signal/risk/execution modules, alerts and a native customtkinter desktop dashboard for Windows. This supports architecture copy, not a claim about present broker connectivity, independently audited performance or attribution of each payment to a particular bot. Keep the project separate from TradeLab. Evidence: docs/ai/lucid-payouts-20261001.md/json.
 
 ## Public Messaging Boundary
 

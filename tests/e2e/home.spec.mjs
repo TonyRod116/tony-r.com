@@ -102,3 +102,38 @@ test('normal-size showroom links have sufficient contrast on their actual backgr
     expect(contrast, link.text).toBeGreaterThanOrEqual(4.5)
   }
 })
+
+for (const [language, heading, close] of [
+  ['es', 'Payouts de Lucid Trading', 'Cerrar justificante'],
+  ['en', 'Lucid Trading payouts', 'Close certificate'],
+  ['ca', 'Payouts de Lucid Trading', 'Tancar justificant'],
+]) test(`documented payouts ${language} open both redacted certificates and restore keyboard focus`, async ({ page }) => {
+  const certificates = []
+  page.on('request', request => { if (/\/payouts\/.*\.png$/.test(request.url())) certificates.push(request.url()) })
+  await page.addInitScript(value => localStorage.setItem('portfolio-language', value), language)
+  await page.goto('/')
+  const section = page.getByRole('region', { name: heading, exact: true })
+  await expect(section).toBeVisible()
+  await expect(section.locator('time')).toHaveCount(2)
+  await expect(section.locator('time').nth(0)).toHaveAttribute('datetime', '2026-08-14')
+  await expect(section.locator('time').nth(1)).toHaveAttribute('datetime', '2026-09-15')
+  expect(certificates).toHaveLength(0)
+  for (const [index, date] of ['2026-08-14', '2026-09-15'].entries()) {
+    const trigger = section.locator('.home-payout').nth(index)
+    await trigger.focus()
+    await page.keyboard.press('Enter')
+    const dialog = page.getByRole('dialog')
+    await expect(dialog).toBeVisible()
+    await expect(dialog.locator('img')).toHaveAttribute('src', `/payouts/lucid-${date}.png`)
+    await expect.poll(() => dialog.locator('img').evaluate(image => image.complete && image.naturalWidth === 1500)).toBe(true)
+    await expect(dialog.locator('a')).toHaveAttribute('href', `/payouts/lucid-${date}.png`)
+    expect(await page.evaluate(() => document.body.style.overflow)).toBe('hidden')
+    if (index === 0) await page.keyboard.press('Escape')
+    else await dialog.getByRole('button', { name: close, exact: true }).click()
+    await expect(dialog).not.toBeVisible()
+    await expect(trigger).toBeFocused()
+    expect(await page.evaluate(() => document.body.style.overflow)).not.toBe('hidden')
+  }
+  expect(certificates).toHaveLength(2)
+  await expect(section).not.toContainText(/100K|ROI|funded evaluation/i)
+})

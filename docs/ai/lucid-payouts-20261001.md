@@ -1,0 +1,13 @@
+# Payouts documentados y sistema de trading — 2026-10-01
+
+La home presenta únicamente los dos payouts de Lucid Trading aportados y autorizados por Tony: **1.617 USD, 14/08/2026**, y **2.100 USD, 15/09/2026**. El total **3.717 USD** se refiere explícitamente a esos dos pagos. No se presenta como beneficio neto, rentabilidad o historial completo auditado. La fecha de agosto fue confirmada por Tony; se conserva todo el contenido restante del certificado original.
+
+Cada certificado se decodificó a su tamaño original1500×1075 y recibió una máscara opaca local sobre el identificador. Se comprobó pixel a pixel que el exterior de la máscara es idéntico a la imagen decodificada original. El PNG público no contiene metadatos ni bytes del JPEG original. Las miniaturas WebP se obtienen del PNG ya censurado; la copia completa se carga solo al abrir el diálogo. Se inspeccionaron visualmente ambas copias. No hubo edición generativa. Las dos certificaciones de evaluación a funded quedan excluidas. Los originales se conservan exclusivamente en artefactos privados ignorados.
+
+TradingPayouts utiliza el diálogo nativo existente: foco atrapado, Escape/cierre, recuperación de foco y enlace a tamaño completo. Cantidades y fechas se adaptan a ES/EN/CA; la fecha se formatea en UTC para evitar desplazamientos por zona horaria. La composición mantiene el papel cálido y reglas finas de la home, sin gráficas o métricas inventadas.
+
+La descripción del sistema se apoya en la declaración de Tony y la lectura de fuentes primarias de MTM: la clase Dashboard hereda de customtkinter.CTk; el proyecto incluye módulos de señales, comprobaciones de riesgo, cliente DTC con órdenes/reconciliación y notificaciones de Windows. Se describe como bots Python y aplicación de escritorio Windows que automatizan/supervisan la operativa. Esto no demuestra el estado actual del broker ni atribuye cada pago a un bot concreto. No se ejecutaron, importaron ni modificaron módulos de trading, datos, cuentas, estrategias o su registro de tareas. TradeLab sigue identificado como otro proyecto anterior.
+
+Los hashes, prueba de máscara exacta y resultados finales están en el JSON compañero. La publicación de la web está autorizada en IONOS; la exportación del repositorio público conserva su autorización independiente pendiente.
+
+Publicación comprobada en IONOS: ambos certificados tienen los mismos hashes que las copias censuradas locales; visor, idiomas y foco funcionan en escritorio/móvil. El conjunto pasó79 pruebas de interacción y24 comparaciones visuales, sin cambiar referencias, además de54 pruebas de cálculos/tooling.

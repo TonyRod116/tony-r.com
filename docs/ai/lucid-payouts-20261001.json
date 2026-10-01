@@ -1,0 +1,231 @@
+{
+  "method": "Exact local canvas redaction explicitly authorized by owner; no generative editing",
+  "payouts": [
+    {
+      "date": "2026-08-14",
+      "amount": 1617,
+      "currency": "USD",
+      "asset": "/payouts/lucid-2026-08-14.png",
+      "thumbnail": "/payouts/lucid-2026-08-14-thumb.webp",
+      "source_sha256": "1f184eea374437aa9ed86153f6d19c34f296a3defc7aeeefe4b05a22a37be386",
+      "public_sha256": "38fe902eee25ce2298ce3ec772a16d151ae55d719b2b6b09d3d1bbe1359b76ff",
+      "thumbnail_sha256": "9578349fae8727bbb73cbe167b4e274d8c16cd55771c4eb6c66b59ec1291b9c7",
+      "width": 1500,
+      "height": 1075,
+      "redaction_rectangle": {
+        "x": 530,
+        "y": 418,
+        "width": 440,
+        "height": 102
+      },
+      "changed_pixels_outside_redaction": 0,
+      "changed_pixels_inside_redaction": 44880,
+      "metadata": "PNG/WebP re-encoded from decoded pixels; original JPEG bytes/metadata are not embedded",
+      "date_note": "Footer payout date explicitly confirmed by owner; all other decoded pixels preserved",
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR"
+      ]
+    },
+    {
+      "date": "2026-09-15",
+      "amount": 2100,
+      "currency": "USD",
+      "asset": "/payouts/lucid-2026-09-15.png",
+      "thumbnail": "/payouts/lucid-2026-09-15-thumb.webp",
+      "source_sha256": "5fe5130ea544429a650e8126a46fb3d81d7f4e65cb3a4a6b37fd221a00c64cae",
+      "public_sha256": "cdf19dd7aabd6fef3645e0d12cbd7bff6d2e7d0a25703cc2dedb6b9805ef849b",
+      "thumbnail_sha256": "9bc11d56989c16085573a5cba7daae378747803d926a48a56a100c42ef1beb13",
+      "width": 1500,
+      "height": 1075,
+      "redaction_rectangle": {
+        "x": 530,
+        "y": 418,
+        "width": 440,
+        "height": 102
+      },
+      "changed_pixels_outside_redaction": 0,
+      "changed_pixels_inside_redaction": 44880,
+      "metadata": "PNG/WebP re-encoded from decoded pixels; original JPEG bytes/metadata are not embedded",
+      "date_note": "Footer date preserved",
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR"
+      ]
+    }
+  ],
+  "total_amount": 3717,
+  "currency": "USD",
+  "excluded": "The two evaluation-to-funded certificates were neither copied to public assets nor published",
+  "public_claim": "These two owner-supplied payout certificates only; not net profit, returns or an audited track record",
+  "source_inspection": "MTM primary sources were read only; no bots, broker, trades, research or promotion executed",
+  "frontend_verification": {
+    "status": "pass",
+    "checked_at": "2026-10-01T11:49:54.259Z",
+    "origin": "http://127.0.0.1:36575",
+    "checks": [
+      {
+        "viewport": "desktop",
+        "language": "es",
+        "certificates": 2,
+        "source_loads_on_demand": true,
+        "keyboard_focus_restore": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "en",
+        "certificates": 2,
+        "source_loads_on_demand": true,
+        "keyboard_focus_restore": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "ca",
+        "certificates": 2,
+        "source_loads_on_demand": true,
+        "keyboard_focus_restore": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "es",
+        "certificates": 2,
+        "source_loads_on_demand": true,
+        "keyboard_focus_restore": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "en",
+        "certificates": 2,
+        "source_loads_on_demand": true,
+        "keyboard_focus_restore": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "ca",
+        "certificates": 2,
+        "source_loads_on_demand": true,
+        "keyboard_focus_restore": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "tablet",
+        "language": "es",
+        "certificates": 2,
+        "source_loads_on_demand": true,
+        "keyboard_focus_restore": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "tablet",
+        "language": "en",
+        "certificates": 2,
+        "source_loads_on_demand": true,
+        "keyboard_focus_restore": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "tablet",
+        "language": "ca",
+        "certificates": 2,
+        "source_loads_on_demand": true,
+        "keyboard_focus_restore": true,
+        "no_overflow": true,
+        "errors": []
+      }
+    ],
+    "entry_sha256": "f47a4105e3d6b0cfa866eac6c490a7d320fdb98640013edcc5e63eba49fa998d",
+    "asset_hashes": {
+      "/payouts/lucid-2026-08-14.png": "38fe902eee25ce2298ce3ec772a16d151ae55d719b2b6b09d3d1bbe1359b76ff",
+      "/payouts/lucid-2026-09-15.png": "cdf19dd7aabd6fef3645e0d12cbd7bff6d2e7d0a25703cc2dedb6b9805ef849b"
+    }
+  },
+  "publication": {
+    "status": "pass",
+    "checked_at": "2026-10-01T11:51:22.932Z",
+    "origin": "https://tony-r.com",
+    "checks": [
+      {
+        "viewport": "desktop",
+        "language": "es",
+        "certificates": 2,
+        "source_loads_on_demand": true,
+        "keyboard_focus_restore": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "en",
+        "certificates": 2,
+        "source_loads_on_demand": true,
+        "keyboard_focus_restore": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "ca",
+        "certificates": 2,
+        "source_loads_on_demand": true,
+        "keyboard_focus_restore": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "es",
+        "certificates": 2,
+        "source_loads_on_demand": true,
+        "keyboard_focus_restore": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "en",
+        "certificates": 2,
+        "source_loads_on_demand": true,
+        "keyboard_focus_restore": true,
+        "no_overflow": true,
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "ca",
+        "certificates": 2,
+        "source_loads_on_demand": true,
+        "keyboard_focus_restore": true,
+        "no_overflow": true,
+        "errors": []
+      }
+    ],
+    "entry_sha256": "f47a4105e3d6b0cfa866eac6c490a7d320fdb98640013edcc5e63eba49fa998d",
+    "asset_hashes": {
+      "/payouts/lucid-2026-08-14.png": "38fe902eee25ce2298ce3ec772a16d151ae55d719b2b6b09d3d1bbe1359b76ff",
+      "/payouts/lucid-2026-09-15.png": "cdf19dd7aabd6fef3645e0d12cbd7bff6d2e7d0a25703cc2dedb6b9805ef849b"
+    }
+  },
+  "quality": {
+    "node_tests": 54,
+    "ui_tests": 79,
+    "intentional_mobile_keyboard_skip": 1,
+    "visual_comparisons": 24,
+    "visual_baselines_updated": false,
+    "modal_adjustment": "Rechecked all3 viewports and languages after image sizing adjustment"
+  }
+}

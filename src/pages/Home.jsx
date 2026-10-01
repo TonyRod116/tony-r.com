@@ -5,6 +5,7 @@ import { profile } from '../data/profile'
 import { projectImages, buildappMobileImages, buildappCaptureCaptions } from '../assets/images'
 import portrait from '../assets/pic3 (2).jpg'
 import BuildAppScreenshot from '../components/site/BuildAppScreenshot'
+import TradingPayouts from '../components/site/TradingPayouts'
 import './Home.css'
 
 function OutboundLink({ href, children, className = '' }) {
@@ -76,6 +77,7 @@ export default function Home() {
         <div className="home-trading-copy">
           <p>{copy.trading.description}</p>
           <p className="home-note">{copy.trading.note}</p>
+          <TradingPayouts language={language} />
         </div>
       </section>
 

@@ -37,9 +37,9 @@ export const translations = {
       "trading": {
         "label": "Personal project",
         "title": "Trading in Python.",
-        "description": "I develop and run my own Python trading bots, which are already generating income. I have taken this project from code into real operation.",
-        "note": "This work is separate from TradeLab, the backtesting platform shown below.",
-        "tools": "Python · Automation · Trading"
+        "description": "I develop and run my own Python trading bots, which are already generating income. The system automates signals, risk checks and execution, with a Windows desktop application to monitor its operation.",
+        "note": "Research, bots, a desktop dashboard and alerts in one project. Separate from TradeLab, the earlier backtesting platform shown below.",
+        "tools": "Python · Automation · Windows desktop"
       },
       "selected": {
         "title": "Other projects",
@@ -1162,9 +1162,9 @@ export const translations = {
       "trading": {
         "label": "Proyecto propio",
         "title": "Trading en Python.",
-        "description": "Desarrollo y opero bots de trading propios en Python que ya generan ingresos. Es un proyecto que he llevado del código a la operación real.",
-        "note": "Este trabajo es distinto de TradeLab, la plataforma de backtesting que muestro más abajo.",
-        "tools": "Python · Automatización · Trading"
+        "description": "Desarrollo y opero bots de trading propios en Python que ya generan ingresos. El sistema automatiza señales, controles de riesgo y ejecución, con una aplicación de escritorio para Windows desde la que superviso la operativa.",
+        "note": "Investigación, bots, dashboard de escritorio y alertas en un mismo proyecto. Distinto de TradeLab, la plataforma de backtesting anterior que muestro más abajo.",
+        "tools": "Python · Automatización · Escritorio Windows"
       },
       "selected": {
         "title": "Otros proyectos",
@@ -2303,9 +2303,9 @@ export const translations = {
       "trading": {
         "label": "Projecte propi",
         "title": "Trading en Python.",
-        "description": "Desenvolupo i opero bots de trading propis en Python que ja generen ingressos. És un projecte que he portat del codi a l’operació real.",
-        "note": "Aquesta feina és diferent de TradeLab, la plataforma de backtesting que mostro més avall.",
-        "tools": "Python · Automatització · Trading"
+        "description": "Desenvolupo i opero bots de trading propis en Python que ja generen ingressos. El sistema automatitza senyals, controls de risc i execució, amb una aplicació d’escriptori per a Windows des de la qual superviso l’operativa.",
+        "note": "Recerca, bots, dashboard d’escriptori i alertes en un mateix projecte. Diferent de TradeLab, la plataforma de backtesting anterior que mostro més avall.",
+        "tools": "Python · Automatització · Escriptori Windows"
       },
       "selected": {
         "title": "Altres projectes",

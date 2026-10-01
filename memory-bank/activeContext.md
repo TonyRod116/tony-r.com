@@ -22,3 +22,6 @@ Current operating truth is in .memory/, PROJECT_STATE.md, docs/ai/ and source co
 - Test the Context7 MCP for documentation retrieval.
 - Ensure the local Memory Bank is updated after each session.
 - Consider adding more AI games or refining the renovation demo.
+
+
+2026-10-01 continuation: true backward input gradients and synchronized784 grouped returns are implemented with full128-source sums; frozen model/math/camera remain. Home adds the two explicitly authorized Lucid payouts (1,617 USD2026-08-14;2,100 USD2026-09-15) using exact local identifier redaction, with evaluation certificates excluded. MTM was inspected strictly read-only for Python/Windows desktop automation copy. Current proof/publication status lives in docs/ai/neural-arrival-20261001 and lucid-payouts-20261001. Next requested feature is My Page-yf1, a credited optional Sprite Fusion AI Lab easter egg. Keep public GitHub export blocked pending its independent authorization.
