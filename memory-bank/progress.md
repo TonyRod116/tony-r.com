@@ -51,3 +51,9 @@ Polish publication is confirmed on IONOS with10 live route/viewport checks and a
 Real forward/backward/SGD teaching traces, isolated copy and one-row examples are implemented with numerical derivative and browser checks. T-Tris flashes complete rows before guarded removal/scoring. Evidence/status: docs/ai/neural-dynamics-20261001.md/json. Pretrained artifact and API/server are unchanged.
 
 The dynamics/line-flash release is verified live on IONOS with four experiment/viewport checks and a private backup; all24 visual comparisons pass. Final proof: docs/ai/neural-dynamics-20261001.json.
+
+## Neural controls correction — 2026-10-01
+
+The single row is corrected to output neurons0–9; the drawing has one examples selector. Forward/backward and layer/all selection preserve independent animation on/off and pause, including changing input/label and leaving the guided training trace. Camera reset preserves the view settings. Real gradients, isolated copy, pretrained artifact and T-Tris flash remain unchanged. Latest proof/publication status: docs/ai/neural-controls-20261001.md/json. IONOS and public GitHub export are separate authority lanes; the latter remains awaiting specific user confirmation, without another push attempt.
+
+The corrected controls are published and verified on IONOS: four live checks,53 code tests,22 affected browser journeys and24 visual comparisons pass. Protected originals and published model match their prior hashes; only the two neural references are updated.

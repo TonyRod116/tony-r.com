@@ -102,6 +102,8 @@ Magic T contact enters a settling phase: each visible frame moves blocks one row
 
 ## Recorded neural calculations and line-clear phase — 2026-10-01
 
-networkMath.js powers the same dense equations for inference and a transient teaching copy. Its tape includes normalized layer inputs, pre-ReLU sums and output logits/probabilities. Gradients use softmax-cross-entropy/ReLU/normalization exactly; the viewer animates selected real quantities from that tape. A1400ms visual phase is deliberately slower than computation and can be paused/stepped/cancelled. The base model/artifact never learns silently.
+networkMath.js powers the same dense equations for inference and a transient teaching copy. Its tape includes normalized layer inputs, pre-ReLU sums and output logits/probabilities. Gradients use softmax-cross-entropy/ReLU/normalization exactly; the viewer animates selected real quantities from that tape. The base model/artifact never learns silently.
+
+NeuralNetworkVisualization owns independent stage, direction, animation-enabled and paused state. Default is the joint forward view; layer0–3 or all can be inspected in either direction. Direct selection cancels the optional1400ms sequential teaching trace without restarting motion. Drawing/target changes refresh actual values while retaining view/motion settings. Output nodes0–9 use one horizontal rail at all zoom settings; the single examples selector remains beside the drawing in two rows. Camera reset preserves selection and motion; node inspection pauses motion. Joint visualization does not claim parallel layer execution. Current control/geometry proof: docs/ai/neural-controls-20261001.md/json.
 
 T-Tris completed rows enter a320ms highlight phase before score/board/next spawn commit. Completion binds the exact result object, so stale callbacks cannot finish another clear. Magic T enters this phase only after its sand settlement. Evidence: docs/ai/neural-dynamics-20261001.md/json.

@@ -1,0 +1,158 @@
+{
+  "status": "published_and_verified",
+  "verified_at": "2026-10-01T07:16:38.668960+00:00",
+  "issue": "My Page-7uy",
+  "checks": {
+    "build": "pass",
+    "check": "pass",
+    "tooling_tests": 53,
+    "router_cases": 24,
+    "affected_browser_journeys": 22,
+    "visual_comparisons": 24,
+    "inspected_viewports": [
+      1440,
+      390,
+      768
+    ],
+    "languages": [
+      "es",
+      "en",
+      "ca"
+    ],
+    "output_rows": 1,
+    "output_digits": 10,
+    "example_selectors": 1,
+    "pause_and_on_off_independent": true,
+    "stage_changes_preserve_motion": true,
+    "max_zoom_output_visible": true,
+    "real_label_gradients": true,
+    "reduced_motion": "pass",
+    "preserved_original_files": 74,
+    "preserved_original_changes": 0,
+    "math_model_game_sources_unchanged": true
+  },
+  "viewport_observations": [
+    {
+      "viewport": 1440,
+      "width": 1440,
+      "output_y": 340,
+      "sample_rows": 2,
+      "ten_examples_ms": 774,
+      "forward_frames": 16,
+      "backward_frames": 16,
+      "paused_offsets_unique": 1,
+      "errors": []
+    },
+    {
+      "viewport": 390,
+      "width": 390,
+      "output_y": 340,
+      "sample_rows": 2,
+      "ten_examples_ms": 673,
+      "forward_frames": 16,
+      "backward_frames": 16,
+      "paused_offsets_unique": 1,
+      "errors": []
+    },
+    {
+      "viewport": 768,
+      "width": 768,
+      "output_y": 340,
+      "sample_rows": 2,
+      "ten_examples_ms": 739,
+      "forward_frames": 16,
+      "backward_frames": 16,
+      "paused_offsets_unique": 1,
+      "errors": []
+    }
+  ],
+  "source_sha256": {
+    "src/components/ai/NetworkDiagram.jsx": "3323325d2ba284c8a6f185b81a33953716857560624166d37460dba561f97c94",
+    "src/components/games/NeuralNetwork/NeuralStudio.css": "94282e75f98df9bb0a9953fc306a3b4aea95e8ec23b87b52a522d8ed2555106a",
+    "src/components/games/NeuralNetwork/NeuralTracePanel.jsx": "ac462ca4f9690b10b0858a38abb1bb94c2232218d4e17592a942442716abefea",
+    "src/components/games/NeuralNetworkVisualization.jsx": "0d6aa4c323925d9bc340d399d47cb38d26645c20f0dae64a56111c4c7f1a0a0b",
+    "src/data/neuralDynamics.js": "5531ef32bf9711cb8b2e88e2987aef7fb544f8bd2e91ccfba4f6c539baeb851a",
+    "tests/e2e/ai-lab.spec.mjs": "49dfc8b61521134f43ac44f11f53379d7d028c7d4bd7ca5319020fedc9ef1ccb",
+    "AI_SHARED_INSTRUCTIONS.md": "ece8fefa5c6bc9b2650532924c45d0e81721981eb275bc84c1ceda622c9fa4ae"
+  },
+  "model_sha256": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b",
+  "public_entry_sha256": "1ed35a31918ab9b7846a01b394a5c69c9665dda9c1729dc76f3cd4c23c10c442",
+  "publication": {
+    "status": "pass",
+    "hosting": "IONOS",
+    "main_url": "https://tony-r.com",
+    "verified_at": "2026-10-01T07:23:30.774100+00:00",
+    "online": {
+      "origin": "https://tony-r.com",
+      "checked_at": "2026-10-01T07:21:45.168Z",
+      "status": "pass",
+      "checks": [
+        {
+          "viewport": 1440,
+          "path": "/ai/neural-network",
+          "status": 200,
+          "width": 1440,
+          "examples_selectors": 1,
+          "output_rows": 1,
+          "output_digits": 10,
+          "nodes": 986,
+          "stage_selection": true,
+          "forward": true,
+          "backpropagation": true,
+          "pause_retained": true,
+          "on_off_retained": true,
+          "copy_isolated": true,
+          "lossBefore": 0.0552169,
+          "lossAfter": 0.0515677
+        },
+        {
+          "viewport": "desktop",
+          "path": "/ai/tetris",
+          "status": 200,
+          "rows_flashed": 2,
+          "animation": "line-clear-blink",
+          "pause": true,
+          "score_after": 250
+        },
+        {
+          "viewport": 390,
+          "path": "/ai/neural-network",
+          "status": 200,
+          "width": 390,
+          "examples_selectors": 1,
+          "output_rows": 1,
+          "output_digits": 10,
+          "nodes": 986,
+          "stage_selection": true,
+          "forward": true,
+          "backpropagation": true,
+          "pause_retained": true,
+          "on_off_retained": true,
+          "copy_isolated": true,
+          "lossBefore": 0.0552169,
+          "lossAfter": 0.0515677
+        },
+        {
+          "viewport": "mobile",
+          "path": "/ai/tetris",
+          "status": 200,
+          "rows_flashed": 2,
+          "animation": "line-clear-blink",
+          "pause": true,
+          "score_after": 250
+        }
+      ],
+      "external_mutations": "blocked; GET/HEAD only, no paid AI or contact requests",
+      "public_entry_sha256": "1ed35a31918ab9b7846a01b394a5c69c9665dda9c1729dc76f3cd4c23c10c442",
+      "model_sha256": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b"
+    },
+    "backup": "private prior version retained; operational paths excluded",
+    "source_export": "GitHub public export awaits specific confirmation; no push attempted"
+  },
+  "limits": [
+    "Joint view displays already calculated sequential layers together; it does not assert parallel execution.",
+    "Only selected real edges are drawn; full matrices determine all values.",
+    "A training step updates a transient local copy and does not establish general accuracy.",
+    "No API/server/auth changes or paid remote generation/contact requests."
+  ]
+}
