@@ -329,11 +329,10 @@ test('neural single picker keeps the drawn input distinct from its real sensitiv
   const pixels=await values()
   await page.getByRole('button',{name:'Backpropagation',exact:false}).click()
   await page.getByRole('button',{name:'01 / Entrada',exact:false}).click()
-  expect(await values()).toEqual(pixels)
-  await expect(input.first()).toHaveAttribute('data-value-kind','pixel')
+  await expect(input.first()).toHaveAttribute('data-value-kind','gradient')
   await page.getByText('Inspeccionar una neurona',{exact:true}).click()
   const sensitivity=page.getByLabel('Mostrar sensibilidad de los píxeles',{exact:true})
-  await sensitivity.check();await expect(input.first()).toHaveAttribute('data-value-kind','gradient')
+  await expect(sensitivity).toBeChecked()
   const gradients=await values()
   expect(gradients.some((value,index)=>value!==pixels[index])).toBe(true)
   expect(await input.evaluateAll(es=>es.every(e=>e.dataset.nodeValue===e.dataset.inputGradient))).toBe(true)
@@ -428,5 +427,50 @@ test.describe('independent neural inspection controls',()=>{
     await expect(page.locator('.neural-flow-node').first()).toHaveCSS('animation-play-state','paused')
     await page.getByRole('switch',{name:'Apagar animación',exact:true}).click()
     await expect(page.locator('.neural-flow-node')).toHaveCount(0)
+  })
+})
+
+test.describe('complete input gradient transport',()=>{
+  test.use({reducedMotion:'no-preference'})
+  test('each returning bundle equals the full128-source derivative and lands on its cell',async({page})=>{
+    await page.goto('/ai/neural-network');await expect(page.getByTestId('model-state')).toContainText('Modelo cargado')
+    await page.getByRole('button',{name:'Backpropagation',exact:false}).click()
+    await page.getByRole('button',{name:'01 / Entrada',exact:false}).click()
+    const routes=page.locator('[data-input-route]'),cells=page.locator('[data-input-cell]')
+    await expect(routes).toHaveCount(784);await expect(cells).toHaveCount(784)
+    await expect(page.getByTestId('input-gradient-transport')).toHaveAttribute('data-source-count','128')
+    const accuracy=await page.evaluate(async()=>{
+      const data=await fetch('/models/mnist/014_dataset-1x.json').then(r=>r.json()),tensor=data.layers[0].weights
+      const bytes=Uint8Array.from(atob(tensor.data),c=>c.charCodeAt(0)),view=new DataView(bytes.buffer)
+      const deltas=[...document.querySelectorAll('circle[data-layer="1"]')].map(e=>Number(e.dataset.nodeValue))
+      const pixels=[...document.querySelectorAll('circle[data-layer="0"]')],cells=[...document.querySelectorAll('[data-input-cell]')],routes=[...document.querySelectorAll('[data-input-route]')]
+      let maxError=0
+      const coherent=routes.every(route=>{
+        const i=Number(route.dataset.inputRoute);let sum=0
+        for(let j=0;j<128;j++){
+          const half=view.getUint16((j*784+i)*2,true),sign=half&0x8000?-1:1,exp=half>>10&31,frac=half&1023
+          const weight=exp===0?sign*2**-14*frac/1024:sign*2**(exp-15)*(1+frac/1024)
+          sum+=weight*deltas[j]
+        }
+        sum/=data.normalization?.std??0.3081
+        maxError=Math.max(maxError,Math.abs(sum-Number(route.dataset.signal)))
+        const pixel=pixels[i],cell=cells[i],endpoint=route.getPointAtLength(0)
+        return route.dataset.signal===cell.dataset.gradient&&route.dataset.signal===pixel.dataset.inputGradient&&endpoint.x===pixel.cx.baseVal.value&&endpoint.y===pixel.cy.baseVal.value&&getComputedStyle(route).stroke===getComputedStyle(cell).fill
+      })
+      return {maxError,coherent}
+    })
+    expect(accuracy.maxError).toBeLessThan(1e-10);expect(accuracy.coherent).toBe(true)
+    await expect(page.getByTestId('input-gradient-pulses')).toHaveCSS('animation-name','neural-input-return')
+    await expect(page.getByTestId('input-gradient-cells')).toHaveCSS('animation-name','neural-input-arrival')
+    await page.getByRole('button',{name:'Pausar animación',exact:true}).click()
+    const offset=await page.getByTestId('input-gradient-pulses').evaluate(e=>getComputedStyle(e).strokeDashoffset)
+    await page.waitForTimeout(220)
+    expect(await page.getByTestId('input-gradient-pulses').evaluate(e=>getComputedStyle(e).strokeDashoffset)).toBe(offset)
+    await page.getByRole('switch',{name:'Apagar animación',exact:true}).click()
+    await expect(page.getByTestId('input-gradient-pulses')).toHaveCount(0)
+    await expect(cells).toHaveCount(784)
+    await cells.nth(100).click()
+    await expect(page.locator('.ai-node-inspector output')).toContainText('Gradiente:')
+    await expect(page.locator('.ai-network-instrument')).toHaveAttribute('data-animation-paused','true')
   })
 })

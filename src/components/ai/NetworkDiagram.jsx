@@ -1,5 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { edgeSignal } from '../games/NeuralNetwork/networkMath'
+import { InputGradientLinks, InputGradientCells } from './InputGradientFlow'
 
 const OUTPUT_SCALE = 0.75
 
@@ -10,7 +11,7 @@ export default function NetworkDiagram({ activations, probabilities, weights, in
   const [pitch, setPitch] = useState(-0.12)
   const [zoom, setZoom] = useState(1)
   const [inspected, setInspected] = useState(null)
-  const [showInputGradients, setShowInputGradients] = useState(false)
+  const [showInputGradients, setShowInputGradients] = useState(true)
   const drag = useRef(null)
   const glow = useId().replaceAll(':','')
   const sizes = weights?.length ? [weights[0][0].length, ...weights.map(layer => layer.length)] : [784,128,64,10]
@@ -48,6 +49,9 @@ export default function NetworkDiagram({ activations, probabilities, weights, in
   const scales=[0,1,2].map(layer=>Math.max(1e-12,...signals.filter((_,i)=>connections[i].layer===layer).map(signal=>Math.abs(signal?.value||0))))
   const selected=inspected?nodes[inspected.layer][inspected.index]:null
   const winner=probabilities?probabilities.indexOf(Math.max(...probabilities)):null
+  const groupedInput=interactive&&isGradient&&showInputGradients&&Boolean(training&&forward)
+  const inputReturnActive=phase?.edgeLayer===0||phase?.edgeLayers?.includes(0)
+  const inputFocused=activeLayer===null||activeLayer===0||inputReturnActive
   const futureLayer=index=>guided&&phase&&phase.layer!==null&&(['input','forward'].includes(phase.kind)?index>phase.layer:phase.kind==='backward'?index<phase.layer:false)
   return <div className={`ai-network-diagram${interactive?' ai-network-instrument':''}`} data-active-layer={activeLayer??'all'} data-flow-direction={phase?.kind==='update'?'update':direction??'forward'} data-flow-playing={Boolean(running)} data-animation-enabled={Boolean(animationEnabled)} data-animation-paused={Boolean(paused)}>
     {interactive && <div className="ai-network-topline"><span className="ai-kicker">{isGradient?dynamics.gradient:activations?labels.liveSignal:labels.idleSignal}</span><button className="ai-text-button" disabled={!activations} onClick={()=>{setInspected(null);onTrace?.()}}>{labels.traverse}<span aria-hidden="true">↗</span></button></div>}
@@ -68,6 +72,7 @@ export default function NetworkDiagram({ activations, probabilities, weights, in
         return <polygon key={index} points={points} className={`ai-network-plane${activeLayer===index?' is-selected':''}`} />
       })}
       <g>{connections.map(({source,target,layer,weight},i)=>{
+        if(groupedInput&&layer===0)return null
         const from=nodes[layer][source],to=nodes[layer+1][target],signal=signals[i]
         const strength=signal?Math.min(1,Math.abs(signal.value)/scales[layer]):activations?Math.min(1,Math.abs(weight)*from.value*2):0.1
         const focused=activeLayer===null||activeLayer===layer+1||phase?.edgeLayer===layer
@@ -83,11 +88,12 @@ export default function NetworkDiagram({ activations, probabilities, weights, in
           {flowing&&<line {...coordinates} stroke={color} strokeWidth={1+strength*1.4} opacity={0.25+strength*0.75} className="neural-flow-edge" data-flow-layer={layer}/>}
         </g>
       })}</g>
+      {groupedInput&&<InputGradientLinks nodes={nodes[0]} project={project} sourceCount={sizes[1]} active={inputReturnActive} enabled={animationEnabled} focused={inputFocused} inspected={inspected} copy={controls}/>}
       {nodes.map((layer,index)=><g key={index}>{layer.map(node=><g key={node.index}>
         <circle cx={node.x} cy={node.y} r={(index===0?1.6:index===3?(interactive?(winner===node.index?7:4)*OUTPUT_SCALE:5):3)*zoom} fill={node.raw<0?'var(--ai-orange)':index===0&&activations&&!node.gradient?'var(--ai-paper)':'var(--ai-accent)'}
-          opacity={futureLayer(index)?0.035:(activations?0.1+node.value*0.9:index===0?0.25:0.7)*(activeLayer===null||activeLayer===index?1:0.4)}
+          opacity={groupedInput&&index===0?0:futureLayer(index)?0.035:(activations?0.1+node.value*0.9:index===0?0.25:0.7)*(activeLayer===null||activeLayer===index?1:0.4)}
           stroke={inspected?.layer===index&&inspected.index===node.index?'var(--ai-paper)':undefined} strokeWidth="2"
-          filter={interactive&&activations&&node.value>0.65?`url(#${glow})`:undefined}
+          filter={interactive&&activations&&!(groupedInput&&index===0)&&node.value>0.65?`url(#${glow})`:undefined}
           data-layer={index} data-node-index={node.index} data-activation={activations?.[index]?.[node.index]} data-node-value={node.raw} data-value-kind={node.gradient?'gradient':index===0?'pixel':'activation'} data-input-gradient={isGradient&&index===0?training.nodeGradients[0][node.index]:undefined}
           className={animationEnabled&&activations&&node.value>0.05&&phase?.layer===index&&['input','outputGradient'].includes(phase.key)?'neural-flow-node':undefined}
           onClick={interactive?()=>inspect(index,node.index):undefined}>
@@ -95,11 +101,13 @@ export default function NetworkDiagram({ activations, probabilities, weights, in
         </circle>
         {interactive&&index===3&&<text x={node.x+14*OUTPUT_SCALE*zoom} y={node.y+7*OUTPUT_SCALE*zoom} data-output-label={node.index} className={`ai-network-label neural-output-label${winner===node.index?' is-winner':''}`}>{node.index}</text>}
       </g>)}</g>)}
+      {groupedInput&&<InputGradientCells nodes={nodes[0]} project={project} active={inputReturnActive} enabled={animationEnabled} focused={inputFocused} inspected={inspected} onInspect={inspect}/>}
       {!interactive&&sizes.map((size,index)=><text key={index} x={project(index,0,0).x} y={interactive?382:385} textAnchor="middle" className="ai-network-label">{size}</text>)}
     </svg>
     {interactive && <>
       <p className="ai-help ai-layer-hint">{controls.layerHint}</p>{dynamics&&<p className="neural-signal-legend">{dynamics.legend}</p>}
       {isGradient&&<p className="neural-signal-legend">{showInputGradients?controls.sensitivityNote:controls.inputNote}</p>}
+      {groupedInput&&<p className="neural-signal-legend">{controls.inputSumNote.replace('{count}',String(sizes[1]))}</p>}
       <details className="ai-node-inspector"><summary>{labels.inspect}</summary>{isGradient&&<label className="neural-input-toggle"><input type="checkbox" checked={showInputGradients} onChange={event=>{onHold?.();setShowInputGradients(event.target.checked)}}/>{controls.inputSensitivity}</label>}<label>{labels.neuron}<input type="range" min="0" max={sizes[activeLayer??0]-1} value={inspected?.layer===(activeLayer??0)?inspected.index:0} onChange={e=>inspect(activeLayer??0,Number(e.target.value))}/></label>{selected&&<output>{names[inspected.layer]} · {inspected.index} / {metricLabel}: {selected.raw!==undefined?(selected.gradient?selected.raw.toExponential(3):selected.raw.toFixed(4)):'—'}{isGradient&&inspected.layer===0&&!showInputGradients&&<span> · {dynamics.gradient}: {training.nodeGradients[0][inspected.index].toExponential(3)}</span>}</output>}</details>
       <div className="ai-view-controls"><label>{labels.view}<input type="range" min="-60" max="60" value={angle} onChange={e=>setAngle(Number(e.target.value))}/></label><label>{labels.zoom}<input type="range" min="0.7" max="1.2" step="0.05" value={zoom} onChange={e=>setZoom(Number(e.target.value))}/></label><button className="ai-button ai-button-secondary" onClick={()=>{setAngle(28);setPitch(-0.12);setZoom(1);setInspected(null)}}>{labels.resetView}</button></div>
     </>}

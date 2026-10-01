@@ -108,8 +108,19 @@
 @keyframes neural-signal-forward { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -18; } }
 @keyframes neural-signal-backward { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 18; } }
 @keyframes neural-node-signal { 0%,100% { stroke-opacity: 0; } 50% { stroke-opacity: 0.7; } }
+.neural-input-sum-label rect { fill: var(--ai-dark); stroke: var(--ai-line); stroke-width: 0.7; }
+.neural-input-sum-label text { fill: var(--ai-paper); font: 14px ui-monospace,monospace; }
+.ai-network-instrument .neural-input-return-edge { animation: none; stroke-dasharray: 8 92; stroke-linecap: round; }
+.neural-input-return-pulses { animation: neural-input-return 1600ms linear infinite; }
+.neural-input-gradient-cells { stroke-opacity: 0.15; }
+.neural-input-gradient-cells polygon { cursor: crosshair; }
+.neural-input-gradient-cells.is-return-active { animation: neural-input-arrival 1600ms linear infinite; }
+.ai-network-instrument[data-flow-playing="false"] :is(.neural-input-return-pulses,.neural-input-gradient-cells) { animation-play-state: paused; }
+@keyframes neural-input-return { 0% { stroke-dashoffset: -92; opacity: 0; } 8% { opacity: 1; } 78% { stroke-dashoffset: 0; opacity: 1; } 95%,100% { stroke-dashoffset: 0; opacity: 0; } }
+@keyframes neural-input-arrival { 0%,60% { opacity: 0.45; stroke-opacity: 0; } 78%,90% { opacity: 1; stroke-opacity: 0.9; } 100% { opacity: 0.45; stroke-opacity: 0; } }
 @media (max-width:640px) {
   .neural-trace-panel { padding: 16px; }
   .neural-trace-controls { gap: 8px 16px; }
 }
 @media (prefers-reduced-motion:reduce) { .neural-flow-edge { animation: none !important; stroke-dasharray: none; } .neural-flow-node { animation: none !important; stroke-opacity: 0; } }
+@media (prefers-reduced-motion:reduce) { .neural-input-return-pulses { display: none; animation: none; } .neural-input-gradient-cells.is-return-active { animation: none; opacity: 1; stroke-opacity: 0.15; } }

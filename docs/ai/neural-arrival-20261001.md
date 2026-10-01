@@ -1,0 +1,13 @@
+# Retorno de backpropagation a las celdas — 2026-10-01
+
+Tony observa que las líneas de vuelta no parecen pintar las celdas y prefiere la representación anterior. Se recupera la sensibilidad real como vista predeterminada de entrada en backpropagation; en forward sigue apareciendo el dibujo original. El inspector permite conservarlo explícitamente como referencia.
+
+La antigua selección de dos enlaces por neurona destino solo mostraba256 conexiones del primer nivel; el gradiente de cada uno de los784 píxeles utiliza las128 contribuciones reales. InputGradientFlow representa esas contribuciones como haces agrupados desde un operador de suma ponderada señalado `∑128`. Es una representación colapsada de la operación, no una neurona nueva ni un peso individual. Cada haz transporta exactamente `∂L/∂x[i]`, que incluye la normalización, y su valor/signo/color coincide con la celda de destino. Las celdas son cuadrados proyectados en la cámara3D existente; conservan los índices y valores originales del modelo.
+
+Un pulso recorre cada haz y el mapa resalta la llegada. La calibración por longitud usa números y `pathLength=100`, conforme a [SVG2/pathLength](https://www.w3.org/TR/SVG2/paths.html#PathLengthAttribute) y [stroke-dasharray/dashoffset](https://www.w3.org/TR/SVG2/painting.html#StrokeDashing). La animación recorre una suma ya calculada a cámara lenta; no modifica los píxeles ni representa el tiempo de CPU. La referencia externa confirma la calibración numérica y evita porcentajes relativos al viewport; la corrección local se prueba en el navegador.
+
+Los cálculos, pesos, predictor, etiquetas0–9, salida75%, controles y cámara aprobada quedan preservados. QA contrasta los784 haces con una suma independiente de los128 pesos/gradientes del tensor Float16 real, verifica extremos/colores, llegada, pausa/encendido y movimiento reducido. Se prueban tres tamaños; estados/timings/hashes/publicación definitivos están en el JSON compañero. Se evita procesar nodos de entrada invisibles con filtros de brillo.
+
+La publicación de la web sigue autorizada en IONOS con respaldo privado y sin alterar APIs/auth ni exportar fuentes a GitHub público. Los dos payouts de Lucid ya se han identificado y cuentan con autorización expresa para publicar importes, fechas y copias con censura local exacta. Su procedencia y límites constan en lucid-payouts-20261001.md/json; los pases de evaluación quedan excluidos.
+
+Publicado y verificado en IONOS:784 haces/celdas coherentes, pulso de llegada real, pausa/encendido y movimiento reducido en móvil/escritorio; modelo original intacto.79 pruebas de interacción y24 comparaciones visuales pasan, además de54 pruebas de cálculos/tooling.

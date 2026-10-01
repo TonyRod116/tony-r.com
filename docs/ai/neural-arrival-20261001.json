@@ -1,0 +1,213 @@
+{
+  "status": "pass",
+  "preserved_preexisting_files": 74,
+  "model_sha256": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b",
+  "source_hashes": {
+    "src/components/ai/InputGradientFlow.jsx": "62f15b61ae1ba0635a5cda8028c860897e16ca444cb8acec0fdaa7cbbe77847c",
+    "src/components/ai/NetworkDiagram.jsx": "5967d9a09f986a0fddcc43d9ac8910e8b137699ce54d3766c875cb191286dd8c",
+    "src/components/games/NeuralNetwork/NeuralStudio.css": "f88b3a9bfa3646dd7e27a245c3079c5b770cf101f4d70fcefe794e027ccd337d",
+    "src/data/neuralDynamics.js": "481dcfe9a32357c7b3ded8885beb380a24b36948c1bc083739f60658215e91b2",
+    "src/components/games/Tetris.jsx": "5fcffa4f1850c6c577c659dd2ab3d62601cc2b957986f2b0076baa82171f8e37",
+    "src/components/games/tetrisEngine.js": "c12e5c17aef10834cfbb43b5c033b9df087ff1748b160d0bad7063ac7d5a4934",
+    "src/components/games/NeuralNetwork/networkMath.js": "af8d41920bb8faf2891922299ce6844d8b668c42857745c487bcde7c85c1c46c",
+    "src/components/games/NeuralNetwork/mlp.js": "e97f14ec49accf17b08c4c06f4bc598acdc89840e378d47d45d5e8231fb3db5b"
+  },
+  "local_runtime": {
+    "status": "pass",
+    "origin": "http://127.0.0.1:36947",
+    "checked_at": "2026-10-01T10:52:57.698Z",
+    "checks": [
+      {
+        "viewport": "desktop",
+        "routes": 784,
+        "cells": 784,
+        "sources_per_pixel": 128,
+        "colors_and_values_match": true,
+        "default_input": "gradient",
+        "pause": true,
+        "on_off": true,
+        "reduced_motion": true,
+        "frames": 30,
+        "frame_ms": 60.08620689655172,
+        "timeline": [
+          {
+            "time": 0,
+            "offset": -92,
+            "opacity": 0.45,
+            "stroke": 0
+          },
+          {
+            "time": 1150,
+            "offset": -7.22436,
+            "opacity": 0.812847,
+            "stroke": 0.59375
+          },
+          {
+            "time": 1260,
+            "offset": 0,
+            "opacity": 1,
+            "stroke": 0.9
+          }
+        ],
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "routes": 784,
+        "cells": 784,
+        "sources_per_pixel": 128,
+        "colors_and_values_match": true,
+        "default_input": "gradient",
+        "pause": true,
+        "on_off": true,
+        "reduced_motion": true,
+        "frames": 36,
+        "frame_ms": 50.0400000001703,
+        "timeline": [
+          {
+            "time": 0,
+            "offset": -92,
+            "opacity": 0.45,
+            "stroke": 0
+          },
+          {
+            "time": 1150,
+            "offset": -7.22436,
+            "opacity": 0.812847,
+            "stroke": 0.59375
+          },
+          {
+            "time": 1260,
+            "offset": 0,
+            "opacity": 1,
+            "stroke": 0.9
+          }
+        ],
+        "errors": []
+      },
+      {
+        "viewport": "tablet",
+        "routes": 784,
+        "cells": 784,
+        "sources_per_pixel": 128,
+        "colors_and_values_match": true,
+        "default_input": "gradient",
+        "pause": true,
+        "on_off": true,
+        "reduced_motion": true,
+        "frames": 35,
+        "frame_ms": 51.63529411747175,
+        "timeline": [
+          {
+            "time": 0,
+            "offset": -92,
+            "opacity": 0.45,
+            "stroke": 0
+          },
+          {
+            "time": 1150,
+            "offset": -7.22436,
+            "opacity": 0.812847,
+            "stroke": 0.59375
+          },
+          {
+            "time": 1260,
+            "offset": 0,
+            "opacity": 1,
+            "stroke": 0.9
+          }
+        ],
+        "errors": []
+      }
+    ],
+    "entry_sha256": "cf6680eec84b5a2a55556da1a3aae81be9aae0fd4e21558244ca4cb32322bc17",
+    "model_sha256": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b"
+  },
+  "calculation_check": "Independent browser sum of all128 Float16 tensor contributions for each of784 pixels matches the displayed derivative; error<1e-10",
+  "test_counts": {
+    "node_and_tooling": 54,
+    "focused_browser_sum_cases": 2,
+    "all_affected_ui": 79,
+    "intentional_mobile_keyboard_skip": 1,
+    "visual_comparisons": 24,
+    "visual_baselines_updated": false
+  },
+  "production_runtime": {
+    "status": "pass",
+    "origin": "https://tony-r.com",
+    "checked_at": "2026-10-01T11:52:10.602Z",
+    "checks": [
+      {
+        "viewport": "desktop",
+        "routes": 784,
+        "cells": 784,
+        "sources_per_pixel": 128,
+        "colors_and_values_match": true,
+        "default_input": "gradient",
+        "pause": true,
+        "on_off": true,
+        "reduced_motion": true,
+        "frames": 24,
+        "frame_ms": 73.70869565139647,
+        "timeline": [
+          {
+            "time": 0,
+            "offset": -92,
+            "opacity": 0.45,
+            "stroke": 0
+          },
+          {
+            "time": 1150,
+            "offset": -7.22436,
+            "opacity": 0.812847,
+            "stroke": 0.59375
+          },
+          {
+            "time": 1260,
+            "offset": 0,
+            "opacity": 1,
+            "stroke": 0.9
+          }
+        ],
+        "errors": []
+      },
+      {
+        "viewport": "mobile",
+        "routes": 784,
+        "cells": 784,
+        "sources_per_pixel": 128,
+        "colors_and_values_match": true,
+        "default_input": "gradient",
+        "pause": true,
+        "on_off": true,
+        "reduced_motion": true,
+        "frames": 19,
+        "frame_ms": 87.75,
+        "timeline": [
+          {
+            "time": 0,
+            "offset": -92,
+            "opacity": 0.45,
+            "stroke": 0
+          },
+          {
+            "time": 1150,
+            "offset": -7.22436,
+            "opacity": 0.812847,
+            "stroke": 0.59375
+          },
+          {
+            "time": 1260,
+            "offset": 0,
+            "opacity": 1,
+            "stroke": 0.9
+          }
+        ],
+        "errors": []
+      }
+    ],
+    "entry_sha256": "f47a4105e3d6b0cfa866eac6c490a7d320fdb98640013edcc5e63eba49fa998d",
+    "model_sha256": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b"
+  },
+  "publication": "IONOS static web verified; no public GitHub source push"
+}
