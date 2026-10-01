@@ -116,3 +116,6 @@ T-Tris completed rows enter a320ms highlight phase before score/board/next spawn
 
 
 AI footer: LabEasterEgg is an opt-in reveal/official new-tab launcher, credited to Hugo Duprez / Sprite Fusion. It only sends canonical public AI route URLs, with no referrer/opener or visitor state, and never loads the game into My Page. A failed optional chunk is contained. siteRouting recognizes the exact official origin/prefix `/p/https/tony-r.com` so the hosted game can render the actual React deep route; all other origins keep normal routing. Proof: docs/ai/lab-easter-egg-20261001.md/json.
+
+
+Seis grados now loads public/demos-data/degrees/manifest.json and its immutable Gzip MPDEG001 package only on that route. Original Parquet sources remain untouched; scripts/build-sixdegrees-catalog.py reproduces typed UTF-8/CSR/token data with source hashes. A module worker validates SHA/format, owns the66.1MB buffer, does cancellation-aware lookup/BFS and is terminated on route exit. React renders only bounded suggestions/results. Matching preserves IDs and ambiguity; no name-similarity merge or fake credit. Catalog is historical, not complete current filmography. Stage/worker and hook error/epoch boundaries must remain. Proof: docs/ai/sixdegrees-20261001.md/json.

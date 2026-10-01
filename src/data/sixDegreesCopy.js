@@ -1,0 +1,23 @@
+export const sixDegreesCopy = {
+  es: {
+    title: 'Dos nombres. Una conexión.', intro: 'Busca entre el catálogo completo. Puedes escribir solo una parte del nombre, omitir tildes o cometer un pequeño error.',
+    people: 'nombres', movies: 'películas', catalogue: 'CATÁLOGO CS50 AI / IMDb', loading: 'Preparando el catálogo completo…', loadingHint: 'La primera carga puede tardar un poco. Después, las búsquedas se hacen en tu navegador.', failed: 'No se ha podido cargar el catálogo.', retry: 'Reintentar',
+    source: 'Primer artista', target: 'Segundo artista', placeholder: 'Escribe un nombre…', chooseHit: 'Elige una coincidencia.', inputHint: 'Escribe al menos dos letras.', searchingName: 'Buscando nombres…', noName: 'No hay coincidencias. Prueba con otra parte del nombre.', selected: 'Seleccionado', unknownYear: 'Año sin indicar', credits: 'créditos', approximate: 'Coincidencia aproximada',
+    find: 'Encontrar conexión', searching: 'Buscando el camino más corto…', choose: 'Elige un artista de los resultados en cada campo.', ambiguous: 'Hay varios nombres parecidos. Elige a la persona que buscas.', noPath: 'No hay conexión en los créditos de este catálogo. Prueba otra pareja.', searchFailed: 'No se ha podido completar la búsqueda. Inténtalo de nuevo.',
+    example: 'Prueba una pareja', found: 'grados de separación', same: 'Has elegido a la misma persona: cero grados.', shared: 'Coinciden en los créditos de', movieLink: 'Ver ficha', note: 'Catálogo histórico de CS50 AI / IMDb. Sus créditos permiten explorar conexiones; no representan toda la filmografía actual.', sourceLink: 'Datos y ejercicio original',
+  },
+  en: {
+    title: 'Two names. One connection.', intro: 'Search the complete catalogue. Type part of a name, leave out accents or make a small spelling mistake.',
+    people: 'names', movies: 'films', catalogue: 'CS50 AI / IMDb CATALOGUE', loading: 'Preparing the full catalogue…', loadingHint: 'The first load may take a moment. After that, searches run in your browser.', failed: 'The catalogue could not be loaded.', retry: 'Retry',
+    source: 'First artist', target: 'Second artist', placeholder: 'Type a name…', chooseHit: 'Choose a match.', inputHint: 'Type at least two letters.', searchingName: 'Searching names…', noName: 'No matches. Try another part of the name.', selected: 'Selected', unknownYear: 'Year not listed', credits: 'credits', approximate: 'Approximate match',
+    find: 'Find connection', searching: 'Finding the shortest path…', choose: 'Choose an artist from the results in each field.', ambiguous: 'Several names are similar. Choose the person you mean.', noPath: 'There is no connection in this catalogue’s credits. Try another pair.', searchFailed: 'The search could not be completed. Please try again.',
+    example: 'Try a pair', found: 'degrees of separation', same: 'You chose the same person: zero degrees.', shared: 'Both appear in the credits of', movieLink: 'View film', note: 'Historical CS50 AI / IMDb catalogue. Its credits let you explore connections; they do not cover all current filmographies.', sourceLink: 'Data and original exercise',
+  },
+  ca: {
+    title: 'Dos noms. Una connexió.', intro: 'Busca al catàleg complet. Pots escriure només una part del nom, ometre accents o cometre un petit error.',
+    people: 'noms', movies: 'pel·lícules', catalogue: 'CATÀLEG CS50 AI / IMDb', loading: 'Preparant el catàleg complet…', loadingHint: 'La primera càrrega pot trigar una mica. Després, les cerques es fan al navegador.', failed: 'No s’ha pogut carregar el catàleg.', retry: 'Reintentar',
+    source: 'Primer artista', target: 'Segon artista', placeholder: 'Escriu un nom…', chooseHit: 'Tria una coincidència.', inputHint: 'Escriu almenys dues lletres.', searchingName: 'Buscant noms…', noName: 'No hi ha coincidències. Prova amb una altra part del nom.', selected: 'Seleccionat', unknownYear: 'Any sense indicar', credits: 'crèdits', approximate: 'Coincidència aproximada',
+    find: 'Trobar connexió', searching: 'Buscant el camí més curt…', choose: 'Tria un artista dels resultats a cada camp.', ambiguous: 'Hi ha diversos noms semblants. Tria la persona que busques.', noPath: 'No hi ha connexió als crèdits d’aquest catàleg. Prova una altra parella.', searchFailed: 'No s’ha pogut completar la cerca. Torna-ho a provar.',
+    example: 'Prova una parella', found: 'graus de separació', same: 'Has triat la mateixa persona: zero graus.', shared: 'Coincideixen als crèdits de', movieLink: 'Veure fitxa', note: 'Catàleg històric de CS50 AI / IMDb. Els seus crèdits permeten explorar connexions; no representen tota la filmografia actual.', sourceLink: 'Dades i exercici original',
+  },
+}

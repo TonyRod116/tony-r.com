@@ -1,0 +1,26 @@
+{
+  "format": "MPDEG001",
+  "asset": "/demos-data/degrees/catalog-02fc2ebaecc5.bin.gz",
+  "people": 1044499,
+  "movies": 344276,
+  "credits": 1188614,
+  "vocabulary": 366244,
+  "compressed_bytes": 27839630,
+  "binary_bytes": 66121092,
+  "compressed_sha256": "9dee48245908e9b034ead838db1ef6765b690d794f11e8d39f7d3f7d5a1c643b",
+  "binary_sha256": "02fc2ebaecc5d2004d72cf1ec433c151f891635a948437a82fbb8809c04ccffe",
+  "source": "Existing original CS50 AI / IMDb dataset; historical snapshot, not current filmography",
+  "source_url": "https://cs50.harvard.edu/ai/projects/0/degrees/",
+  "source_files": {
+    "people.parquet": "710e27c11275eb1420fcc4e2dab9cf75cdf9c6d6ec0363f502f0a0a907e92156",
+    "movies.parquet": "9f35b805dd58452cbc150fc7e1158030eefec0ab9b7248cffc5bceca5595697a",
+    "stars.parquet": "8a7327caceed96e6df35c07b44deb5ef4e3a8dc588b2ceda956fb0b6ae0d96af"
+  },
+  "original_credit_rows": 1189594,
+  "dropped_missing_people": 899,
+  "dropped_missing_movies": 0,
+  "duplicate_credits": 70,
+  "excluded_future_credit_rows": 11,
+  "credit_year_cutoff": 2026,
+  "historical_names_preserved": 10000
+}

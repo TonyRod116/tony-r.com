@@ -130,15 +130,16 @@ test('Nim reset cancels a pending opponent move', async ({ page }) => {
   await expect(page.locator('.ai-nim-piles > div > div')).toHaveText(['1','3','5','7'])
 })
 
-test('Six Degrees exposes examples, trims input, reports errors and finds a sample path', async ({ page }) => {
+test('Six Degrees restores the full catalogue, exposes examples and finds a credited path', async ({ page }) => {
   await page.goto('/ai/sixdegrees')
+  await expect(page.getByTestId('catalog-state')).toHaveAttribute('data-state','ready',{timeout:45000})
   await page.getByRole('button',{name:'Kevin Bacon → Tom Hanks',exact:true}).click()
-  await page.locator('#graph-source').fill(' Kevin Bacon ')
-  await page.getByRole('button',{name:'Encontrar Camino',exact:true}).click()
-  await expect(page.getByText('¡Encontrado!',{exact:false})).toBeVisible()
+  await expect(page.locator('#graph-source')).toHaveValue('Kevin Bacon')
+  await page.getByRole('button',{name:'Encontrar conexión',exact:true}).click()
+  await expect(page.locator('.degrees-result')).toContainText('Apollo 13')
   await page.locator('#graph-source').fill('Unknown QA name')
-  await page.getByRole('button',{name:'Encontrar Camino',exact:true}).click()
-  await expect(page.getByText('No está en el conjunto de muestra: Unknown QA name',{exact:true})).toBeVisible()
+  await page.getByRole('button',{name:'Encontrar conexión',exact:true}).click()
+  await expect(page.getByRole('alert')).toContainText('Elige un artista')
 })
 
 test('old neural URL leads to the integrated visualization', async ({ page }) => {
@@ -157,11 +158,14 @@ test('Nim trains the expert locally and re-enables play when complete', async ({
 
 test('Six Degrees uses verified film edges to find a multi-step path', async ({ page }) => {
   await page.goto('/ai/sixdegrees')
+  await expect(page.getByTestId('catalog-state')).toHaveAttribute('data-state','ready',{timeout:45000})
   await page.locator('#graph-source').fill('Tom Cruise');await page.locator('#graph-target').fill('Helen Hunt')
-  await page.getByRole('button',{name:'Encontrar Camino',exact:true}).click()
-  await expect(page.getByText('¡Encontrado! 3 grados de separación.',{exact:true})).toBeVisible()
-  await expect(page.locator('.ai-stage a[href="https://www.sonypictures.com/movies/afewgoodmen"]')).toBeVisible()
-  await expect(page.locator('.ai-stage a[href="https://amblin.com/movie/cast-away/"]')).toBeVisible()
+  await expect(page.locator('.degrees-input-note').first()).toContainText('Seleccionado: Tom Cruise')
+  await expect(page.locator('.degrees-input-note').last()).toContainText('Seleccionado: Helen Hunt')
+  await page.getByRole('button',{name:'Encontrar conexión',exact:true}).click()
+  await expect(page.locator('.degrees-result')).toContainText('2 grados de separación')
+  await expect(page.locator('.degrees-result')).toContainText('A Few Good Men')
+  await expect(page.locator('.degrees-result')).toContainText('As Good as It Gets')
 })
 
 test('desktop Tetris accepts keys without an initial click and AI works with previews off', async ({page},testInfo) => {
