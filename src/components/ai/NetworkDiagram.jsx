@@ -19,14 +19,15 @@ export default function NetworkDiagram({ activations, probabilities, weights, in
     const radians=angle*Math.PI/180
     return {x:375+((layer-1.5)*175*Math.cos(radians)+depth*Math.sin(radians))*zoom,y:200+(vertical+depth*pitch+(layer-1.5)*18)*zoom}
   }
-  // The output rail stays horizontal and inside the view at every zoom setting.
-  const outputPosition = index => ({x:375+(index-4.5)*54*zoom,y:200+140*zoom})
+  const layerLayout = layer => ({
+    columns:layer===0?28:layer===sizes.length-1?(interactive?1:2):Math.ceil(Math.sqrt(sizes[layer])),
+    spacing:layer===0?7:layer===sizes.length-1?(interactive?26:22):16,
+  })
   const nodes = sizes.map((size,layer) => {
-    const columns=layer===0?28:layer===sizes.length-1?2:Math.ceil(Math.sqrt(size))
-    const rows=Math.ceil(size/columns),spacing=layer===0?7:layer===sizes.length-1?22:16
+    const {columns,spacing}=layerLayout(layer),rows=Math.ceil(size/columns)
     const values=isGradient?training.nodeGradients[layer]:layer===sizes.length-1 && probabilities && phase?.key!=='f3' ? probabilities : activations?.[layer]
     const max=values?Math.max(1e-12,...values.map(v=>Math.abs(v))):1
-    return Array.from({length:size},(_,index)=>({...((interactive&&layer===3)?outputPosition(index):project(layer,(index%columns-(columns-1)/2)*spacing,(Math.floor(index/columns)-(rows-1)/2)*spacing)),value:values?Math.abs(values[index])/max:0,raw:values?.[index],index}))
+    return Array.from({length:size},(_,index)=>({...project(layer,(index%columns-(columns-1)/2)*spacing,(Math.floor(index/columns)-(rows-1)/2)*spacing),value:values?Math.abs(values[index])/max:0,raw:values?.[index],index}))
   })
   const connections=useMemo(()=>{
     if(interactive && !weights)return []
@@ -51,14 +52,13 @@ export default function NetworkDiagram({ activations, probabilities, weights, in
       <div className="neural-motion-controls"><button className="neural-animation-switch" role="switch" aria-checked={Boolean(animationEnabled)} aria-label={animationEnabled?controls.disable:controls.enable} onClick={onToggleAnimation}><span className="neural-switch-indicator" aria-hidden="true"/><span>{controls.animation} · {animationEnabled?controls.on:controls.off}</span></button><button className="ai-text-button" disabled={!animationEnabled||!activations} onClick={onPause}>{paused?dynamics.play:dynamics.pause}</button><span className="neural-motion-state">{!animationEnabled?controls.off:paused?controls.paused:controls.running}</span></div>
       <div className="ai-layer-navigation" role="group" aria-label={controls.layers}><button aria-pressed={activeLayer===null} onClick={()=>{setInspected(null);onLayer(null)}}><span>{controls.all}</span><strong>{sizes.reduce((sum,size)=>sum+size,0)}</strong></button>{sizes.map((size,index)=><button key={index} aria-pressed={activeLayer===index} onClick={()=>{setInspected(null);onLayer(index)}}><span>0{index+1} / {names[index]}</span><strong>{size}</strong></button>)}</div>
     </>}
-    <svg viewBox={interactive?"60 25 630 390":"0 0 750 410"} role="img" aria-label={title} className={interactive?'is-interactive':''}
+    <svg viewBox={interactive?"35 20 705 395":"0 0 750 410"} role="img" aria-label={title} className={interactive?'is-interactive':''}
       onPointerDown={interactive?event=>{event.currentTarget.setPointerCapture(event.pointerId);drag.current={x:event.clientX,y:event.clientY,angle,pitch}}:undefined}
       onPointerMove={interactive?event=>{if(!drag.current)return;setAngle(Math.max(-60,Math.min(60,drag.current.angle+(event.clientX-drag.current.x)/3)));setPitch(Math.max(-0.8,Math.min(0.8,drag.current.pitch+(event.clientY-drag.current.y)/180)))}:undefined}
       onPointerUp={()=>{drag.current=null}} onPointerCancel={()=>{drag.current=null}} onLostPointerCapture={()=>{drag.current=null}}>
       <defs><filter id={glow} x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="1.8" result="light"/><feMerge><feMergeNode in="light"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
       {interactive && nodes.map((layer,index)=>{
-        if(index===3){const first=outputPosition(0),last=outputPosition(9);return <rect key={index} x={first.x-18*zoom} y={first.y-18*zoom} width={last.x-first.x+36*zoom} height={52*zoom} className={`ai-network-plane${activeLayer===index?' is-selected':''}`} />}
-        const columns=index===0?28:index===3?2:Math.ceil(Math.sqrt(sizes[index])),rows=Math.ceil(sizes[index]/columns),spacing=index===0?7:index===3?22:16
+        const {columns,spacing}=layerLayout(index),rows=Math.ceil(sizes[index]/columns)
         const depth=(columns+1)*spacing/2,vertical=(rows+1)*spacing/2
         const points=[[-depth,-vertical],[depth,-vertical],[depth,vertical],[-depth,vertical]].map(([d,v])=>{const p=project(index,d,v);return `${p.x},${p.y}`}).join(' ')
         return <polygon key={index} points={points} className={`ai-network-plane${activeLayer===index?' is-selected':''}`} />
@@ -89,7 +89,7 @@ export default function NetworkDiagram({ activations, probabilities, weights, in
           onClick={interactive?()=>inspect(index,node.index):undefined}>
           <title>{`${names[index]||sizes[index]} / ${node.index}${node.raw!==undefined?`: ${(isGradient?node.raw.toExponential(3):node.raw.toFixed(3))}`:''}`}</title>
         </circle>
-        {interactive&&index===3&&<text x={node.x} y={node.y+27*zoom} textAnchor="middle" data-output-label={node.index} className={`ai-network-label neural-output-label${winner===node.index?' is-winner':''}`}>{node.index}</text>}
+        {interactive&&index===3&&<text x={node.x+14*zoom} y={node.y+7*zoom} data-output-label={node.index} className={`ai-network-label neural-output-label${winner===node.index?' is-winner':''}`}>{node.index}</text>}
       </g>)}</g>)}
       {!interactive&&sizes.map((size,index)=><text key={index} x={project(index,0,0).x} y={interactive?382:385} textAnchor="middle" className="ai-network-label">{size}</text>)}
     </svg>

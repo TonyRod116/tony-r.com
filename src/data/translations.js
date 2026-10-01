@@ -32,7 +32,7 @@ export const translations = {
         "detail": "View the project",
         "open": "Open BuildApp",
         "imageAlt": "BuildApp renovation proposal with before-and-after visualization and quote",
-        "caption": "Current screens from the public BuildApp mobile web demo."
+        "caption": "BuildApp Pro on mobile. Budgets and budget details with sample data."
       },
       "trading": {
         "label": "Personal project",
@@ -1157,7 +1157,7 @@ export const translations = {
         "detail": "Ver el proyecto",
         "open": "Abrir BuildApp",
         "imageAlt": "Propuesta de reforma en BuildApp con visualización antes y después y presupuesto",
-        "caption": "Pantallas actuales de la demo pública de BuildApp en móvil."
+        "caption": "BuildApp Pro en móvil. Presupuestos y detalle con datos de ejemplo."
       },
       "trading": {
         "label": "Proyecto propio",
@@ -2298,7 +2298,7 @@ export const translations = {
         "detail": "Veure el projecte",
         "open": "Obrir BuildApp",
         "imageAlt": "Proposta de reforma a BuildApp amb visualització abans i després i pressupost",
-        "caption": "Pantalles actuals de la demo pública de BuildApp al mòbil."
+        "caption": "BuildApp Pro al mòbil. Pressupostos i detall amb dades d’exemple."
       },
       "trading": {
         "label": "Projecte propi",

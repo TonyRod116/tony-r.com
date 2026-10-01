@@ -1,0 +1,189 @@
+{
+  "status": "published_and_verified",
+  "verified_at": "2026-10-01T08:04:28.866143+00:00",
+  "issue": "My Page-3mk",
+  "checks": {
+    "build": "pass",
+    "check": "pass",
+    "tooling_tests": 53,
+    "router_cases": 24,
+    "affected_browser_journeys": 26,
+    "visual_comparisons": 24,
+    "changed_visual_references": [
+      "tests/e2e/visual/__screenshots__/desktop/ai-neural.png",
+      "tests/e2e/visual/__screenshots__/desktop/home.png",
+      "tests/e2e/visual/__screenshots__/mobile/ai-neural.png",
+      "tests/e2e/visual/__screenshots__/mobile/home.png",
+      "tests/e2e/visual/__screenshots__/mobile/projects.png"
+    ],
+    "inspected_viewports": [
+      1440,
+      390,
+      768
+    ],
+    "output_columns": 1,
+    "output_digits": 10,
+    "camera_and_edges_share_projection": true,
+    "max_zoom_and_frontal_view": "pass",
+    "stage_controls_preserved": true,
+    "crop_css_pixels": 26,
+    "crop_natural_pixels": 52,
+    "original_captures_unchanged": 4,
+    "protected_originals": 74,
+    "protected_original_changes": 0,
+    "math_model_game_sources_unchanged": true
+  },
+  "viewport_observations": [
+    {
+      "viewport": "desktop",
+      "output_x": 606.7737426757812,
+      "output_y_range": [
+        110,
+        344
+      ],
+      "home_crops": 2,
+      "project_crop": 25.9997692478367,
+      "modal_crop": 25.999860215053765,
+      "errors": []
+    },
+    {
+      "viewport": "mobile",
+      "output_x": 606.7737426757812,
+      "output_y_range": [
+        110,
+        344
+      ],
+      "home_crops": 2,
+      "project_crop": 25.99946772817742,
+      "modal_crop": 25.999453416149066,
+      "errors": []
+    },
+    {
+      "viewport": "tablet",
+      "output_x": 606.7737426757812,
+      "output_y_range": [
+        110,
+        344
+      ],
+      "home_crops": 2,
+      "project_crop": 25.99944448683709,
+      "modal_crop": 25.999508564678084,
+      "errors": []
+    }
+  ],
+  "source_sha256": {
+    "src/components/ai/NetworkDiagram.jsx": "26805845c7f9b502545da4c63f8a65a1cf05872974e1e7f5250ed255538ce0ca",
+    "src/components/site/BuildAppScreenshot.jsx": "1a00d180092148bc214a7daff49f7fa624ded641889b32ed57e7c3b04145c4f1",
+    "src/components/site/BuildAppScreenshot.css": "2b9347c812213edc6b1469d05ff9b1af93765cb551e2f0a0c235ed577b1300a8",
+    "src/pages/Home.jsx": "d5ff7d28fc36750411435d3b9e0ffabf8ee778a2ad771f203b9031611887eef9",
+    "src/pages/Home.css": "ecbf624d427f07da91a5c2e5185b905b4873fff71826261208db3d934b720386",
+    "src/pages/Projects.jsx": "6cb99220e6cc991a82efb349c9d89a331ad59ade9c375e8e72f5b8646d19dda3",
+    "src/components/site/Site.css": "7fc50258c67a62c61d82a2fb80f79bea3e6168a12d8650db5b72a2d3d5eeb285",
+    "src/assets/images.js": "32dba36d75acf34bb7bbbcd9ae3fb161ee1c2e5dcfb2d6dd7688da772ccd8b41",
+    "src/data/translations.js": "e6189718f537b247d4d52a60c4061a9205734aa9787be5e910558526b8bccfdd",
+    "tests/e2e/ai-lab.spec.mjs": "fbde3f6a7791b6b5e71d99959708b282d477a7b442110d857bb4eff123a72660",
+    "AI_SHARED_INSTRUCTIONS.md": "302c65bf5e62473c17a0c3c6061ca0604e694cfc53157097082e6c5e7d0f5985"
+  },
+  "original_captures_sha256": {
+    "src/assets/projects/buildapp-pro-mobile-2026-09-30.png": "18efc4927ef29b9a26472be0d2aaac147a1382e4cd6ff6dcd0aa641cdfb9de4b",
+    "src/assets/projects/buildapp-budget-mobile-2026-09-30.png": "a21b7880663f406a7c753865b40cf195da1a29694fd1b691ee14f94c6019ae28",
+    "src/assets/projects/buildapp-before-after-2026-09-30.png": "a257e641b8a4400f75e699877a444eddd794ad1e93f92d67ccfda23c228e3381",
+    "src/assets/projects/buildapp-web-current-2026-09-30.png": "9dc6aab007c05a53fb657c965982d4b923f1b31c6d0e91bfd77e552451a53221"
+  },
+  "model_sha256": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b",
+  "public_entry_sha256": "eda264fdc25f849c66b3afce69fe86dcafe09f58544eb3cdcdc264c78f897985",
+  "publication": {
+    "status": "pass",
+    "hosting": "IONOS",
+    "main_url": "https://tony-r.com",
+    "verified_at": "2026-10-01T08:15:52.953871+00:00",
+    "online": {
+      "status": "pass",
+      "origin": "https://tony-r.com",
+      "checked_at": "2026-10-01T08:12:51.489Z",
+      "checks": [
+        {
+          "viewport": "desktop",
+          "path": "/ai/neural-network",
+          "status": 200,
+          "output_columns": 1,
+          "output_digits": 10,
+          "output_in_3d": true,
+          "edge_endpoints_follow_camera": true,
+          "stage_pause_preserved": true,
+          "actual_gradients": true
+        },
+        {
+          "viewport": "desktop",
+          "path": "/",
+          "status": 200,
+          "cropped_mobile_screens": 2,
+          "top_css_pixels": 26,
+          "sample_data_caption": true
+        },
+        {
+          "viewport": "desktop",
+          "path": "/projects",
+          "status": 200,
+          "selected_capture_crop": true,
+          "modal_crop": true,
+          "next_capture_crop": true,
+          "sample_data_caption": true,
+          "modalBeforeDecode": {
+            "complete": false,
+            "naturalWidth": 0,
+            "naturalHeight": 0,
+            "transform": "matrix(1, 0, 0, 1, 0, 0)"
+          },
+          "errors": []
+        },
+        {
+          "viewport": "mobile",
+          "path": "/ai/neural-network",
+          "status": 200,
+          "output_columns": 1,
+          "output_digits": 10,
+          "output_in_3d": true,
+          "edge_endpoints_follow_camera": true,
+          "stage_pause_preserved": true,
+          "actual_gradients": true
+        },
+        {
+          "viewport": "mobile",
+          "path": "/",
+          "status": 200,
+          "cropped_mobile_screens": 2,
+          "top_css_pixels": 26,
+          "sample_data_caption": true
+        },
+        {
+          "viewport": "mobile",
+          "path": "/projects",
+          "status": 200,
+          "selected_capture_crop": true,
+          "modal_crop": true,
+          "next_capture_crop": true,
+          "sample_data_caption": true,
+          "modalBeforeDecode": {
+            "complete": false,
+            "naturalWidth": 0,
+            "naturalHeight": 0,
+            "transform": "matrix(1, 0, 0, 1, 0, 0)"
+          },
+          "errors": []
+        }
+      ],
+      "external_mutations": "GET/HEAD only; AI/contact/auth/payment calls blocked",
+      "public_entry_sha256": "eda264fdc25f849c66b3afce69fe86dcafe09f58544eb3cdcdc264c78f897985",
+      "model_sha256": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b"
+    },
+    "backup": "private prior version retained; operational paths excluded",
+    "source_export": "GitHub public export awaits specific confirmation; no push attempted"
+  },
+  "limits": [
+    "Framing changes only presentation; PNGs and capture provenance remain original.",
+    "Samples illustrate the product UI and are not real client revenue or new backend availability proof.",
+    "Inference/backprop still use the same actual model and isolated teaching copy.",
+    "No auth/quota/API/server, contact submissions or paid generations change."
+  ]
+}

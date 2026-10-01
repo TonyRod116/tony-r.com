@@ -4,6 +4,7 @@ import { useLanguage } from '../hooks/useLanguage.jsx'
 import { profile } from '../data/profile'
 import { projectImages, buildappMobileImages, buildappCaptureCaptions } from '../assets/images'
 import portrait from '../assets/pic3 (2).jpg'
+import BuildAppScreenshot from '../components/site/BuildAppScreenshot'
 import './Home.css'
 
 function OutboundLink({ href, children, className = '' }) {
@@ -47,7 +48,7 @@ export default function Home() {
           </div>
           <div className="home-feature">
             <figure className="home-product">
-              <div className="home-product-screens">{buildappMobileImages.map((image,index)=><img key={image} src={image} alt={buildappCaptureCaptions[language][index+1]} width="390" height="844" loading="lazy" />)}</div>
+              <div className="home-product-screens">{buildappMobileImages.map((image,index)=><BuildAppScreenshot key={image} trimHeader src={image} alt={buildappCaptureCaptions[language][index+1]} width="390" height="844" loading="lazy" />)}</div>
               <figcaption>{copy.work.caption}</figcaption>
             </figure>
             <div className="home-feature-copy">

@@ -28,7 +28,7 @@ export const projectShowcaseImages = {
 
 export const buildappMobileImages = [buildappProAppDashboardImg,buildappProBudgetImg]
 export const buildappCaptureCaptions = {
-  es: ['Antes y propuesta con IA · web actual de BuildApp','Presupuestos · demo pública de la web móvil','Detalle de presupuesto · demo pública de la web móvil'],
-  en: ['Before and AI proposal · current BuildApp website','Budgets · public mobile web demo','Budget detail · public mobile web demo'],
-  ca: ['Abans i proposta amb IA · web actual de BuildApp','Pressupostos · demo pública de la web mòbil','Detall de pressupost · demo pública de la web mòbil'],
+  es: ['Antes y propuesta con IA · web actual de BuildApp','Presupuestos · BuildApp Pro · datos de ejemplo','Detalle de presupuesto · BuildApp Pro · datos de ejemplo'],
+  en: ['Before and AI proposal · current BuildApp website','Budgets · BuildApp Pro · sample data','Budget detail · BuildApp Pro · sample data'],
+  ca: ['Abans i proposta amb IA · web actual de BuildApp','Pressupostos · BuildApp Pro · dades d’exemple','Detall de pressupost · BuildApp Pro · dades d’exemple'],
 }

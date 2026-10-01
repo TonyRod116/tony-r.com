@@ -57,3 +57,9 @@ The dynamics/line-flash release is verified live on IONOS with four experiment/v
 The single row is corrected to output neurons0–9; the drawing has one examples selector. Forward/backward and layer/all selection preserve independent animation on/off and pause, including changing input/label and leaving the guided training trace. Camera reset preserves the view settings. Real gradients, isolated copy, pretrained artifact and T-Tris flash remain unchanged. Latest proof/publication status: docs/ai/neural-controls-20261001.md/json. IONOS and public GitHub export are separate authority lanes; the latter remains awaiting specific user confirmation, without another push attempt.
 
 The corrected controls are published and verified on IONOS: four live checks,53 code tests,22 affected browser journeys and24 visual comparisons pass. Protected originals and published model match their prior hashes; only the two neural references are updated.
+
+## 3D output and BuildApp mobile framing — 2026-10-01
+
+The output is moved into the fourth3D layer as one vertical column at Tony’s preference. Same projection, actual edge endpoints and independent controls are retained. Home/Projects/thumbnail/dialog share a26-CSS-pixel crop of the original mobile screenshots, removing the top Demo/blank strip while preserving source pixels and sample-data attribution. Latest verification/publication proof: docs/ai/column-captures-20261001.md/json. No public GitHub export or backend change.
+
+Both changes are published and verified on IONOS with six live checks,53 code tests,26 affected browser journeys and24 visual comparisons. Original PNG/model/game sources remain unchanged; five inspected visual references update.

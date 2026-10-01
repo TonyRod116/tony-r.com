@@ -1,0 +1,2 @@
+.buildapp-screenshot-crop { display: block; position: relative; width: 100%; aspect-ratio: 390 / 818; overflow: hidden; }
+.buildapp-screenshot-crop > .buildapp-screenshot-image { position: absolute; top: 0; left: 0; width: 100%; height: auto; max-height: none; border: 0; transform: translateY(-3.0805687204%); }

@@ -161,4 +161,5 @@
 }
 .home-product-screens { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 20px; padding: 24px; border: 1px solid var(--home-line); }
 .home-product-screens img { display: block; border: 1px solid var(--home-line); }
+.home-product-screens .buildapp-screenshot-crop { border: 1px solid var(--home-line); }
 @media (max-width:640px) { .home-product-screens { gap: 12px; padding: 12px; } }
