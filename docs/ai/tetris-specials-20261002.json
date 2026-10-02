@@ -292,5 +292,22 @@
     "Known-piece continuation is conditional on following predicted placements; AI recalculates after board changes.",
     "Node timing is a local engine measurement, not a device latency or Core Web Vitals guarantee.",
     "External demo/API availability and business impact are outside these tests."
-  ]
+  ],
+  "github": {
+    "repository": "TonyRod116/tony-r.com",
+    "branch": "main",
+    "code_commit": "9bb839fba14eeb3e8f1c94568eda8cd08f8e7c33",
+    "push_observed": true,
+    "quality_run": 37045685232,
+    "quality_url": "https://github.com/TonyRod116/tony-r.com/actions/runs/37045685232",
+    "quality_status": "completed",
+    "quality_conclusion": "success",
+    "tooling_pass": 78,
+    "browser_pass": 215,
+    "browser_intentional_skip": 1,
+    "visual_capture_pass": 36,
+    "visual_capture_cross_os_comparison": false,
+    "quality_log_sha256": "974a0766d9933ee1260e58a638de47fa970d2efcf7e9ccc7392b1bd21e9332f9",
+    "artifact_upload_warning": "No files were found; verification counts are read from the run log."
+  }
 }
