@@ -30,7 +30,7 @@ test('neural input validation rejects wrong size and non-finite pixels', () => {
 test('all piece previews preserve every cell, including the five-block T', () => {
   for (const name of NAMES) {
     const cells = previewCells(name)
-    assert.equal(cells.length, name === 'T' ? 5 : 4)
+    assert.equal(cells.length, PIECES[name].cells.length)
     assert.equal(new Set(cells.map(cell => cell.join(','))).size, cells.length)
     assert.ok(cells.every(([r,c]) => r>=0 && r<5 && c>=0 && c<5))
   }

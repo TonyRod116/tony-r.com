@@ -8,14 +8,14 @@ export const learningCopy = {
 export const gameLearning = {
   tetris: {
     title: { es: 'Una jugada, varias consecuencias.', en: 'One move, several consequences.', ca: 'Una jugada, diverses conseqüències.' },
-    explanation: { es: 'Una línea suma; un hueco resta. La IA compara posiciones alcanzables y después comprueba qué dejarían para la siguiente pieza.', en: 'A line adds value; a hole subtracts it. The AI compares reachable positions, then checks what they leave for the next piece.', ca: 'Una línia suma; un buit resta. La IA compara posicions assolibles i després comprova què deixarien per a la peça següent.' },
+    explanation: { es: 'Una línea suma; un hueco resta. La IA compara posiciones alcanzables y después comprueba qué dejarían para la cola conocida y la caducidad del Cristal.', en: 'A line adds value; a hole subtracts it. The AI compares reachable positions, then checks what they leave for the known queue and Crystal expiry.', ca: 'Una línia suma; un buit resta. La IA compara posicions assolibles i després comprova què deixarien per a la cua coneguda i la caducitat del Cristall.' },
     formula: 'S = 8L − 4.5H − 9.5G − 1.8R',
-    glossary: { es: 'L: líneas completadas · H: altura máxima · G: huecos bajo bloques · R: diferencias de altura entre columnas vecinas. Se mide el tablero después de retirar las líneas.', en: 'L: completed lines · H: maximum height · G: holes below blocks · R: height differences between neighboring columns. The board is measured after clearing lines.', ca: 'L: línies completades · H: alçada màxima · G: buits sota blocs · R: diferències d’alçada entre columnes veïnes. Es mesura el tauler després de retirar les línies.' },
+    glossary: { es: 'L: líneas completadas · H: altura máxima · G: huecos bajo bloques · R: diferencias de altura entre columnas vecinas. Se mide el tablero al terminar efectos y líneas.', en: 'L: completed lines · H: maximum height · G: holes below blocks · R: height differences between neighboring columns. The board is measured after effects and line clears.', ca: 'L: línies completades · H: alçada màxima · G: buits sota blocs · R: diferències d’alçada entre columnes veïnes. Es mesura el tauler en acabar efectes i línies.' },
     function: 'evaluate', source: 'src/components/games/tetrisEngine.js',
     code: `const f = features(result.board)
 return result.cleared * 8 - f.height * 4.5 - f.holes * 9.5 - f.bumpiness * 1.8`,
-    moreCode: `const immediate = evaluate(candidate.result)
-const future = nextName ? (replies.length ? Math.max(...replies) : -10000) : 0
+    moreCode: `const continuation = continuations(candidate.result.board, nextName, candidate.result.turn, second)
+const future = continuation.value
 const score = immediate + (nextName ? 0.6 * future : 0)`,
   },
   tictactoe: {

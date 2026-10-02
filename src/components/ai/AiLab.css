@@ -232,3 +232,47 @@
 .ai-tetris-board[data-paused="true"] .is-clearing::after { animation-play-state: paused; }
 @keyframes line-clear-blink { 0% { opacity: 0; } 30% { opacity: 1; } 100% { opacity: 0; } }
 @media (prefers-reduced-motion:reduce) { .ai-tetris-cell.is-clearing::after { animation: none !important; opacity: 0.6; box-shadow: none; } }
+
+/* Special-piece effects are driven by reducer frames, not decorative timers. */
+.ai-tetris-cell { position: relative; }
+.ai-tetris-cell.is-ghost { outline: 1px dashed var(--ghost-color); outline-offset: -3px; }
+.ai-tetris-cell.is-crystal { background: color-mix(in srgb,var(--piece-color) 45%,var(--ai-dark)); border: 1px solid var(--piece-color); }
+.ai-tetris-cell.is-crystal::before { content: ''; position: absolute; inset: 2px; border: 1px solid color-mix(in srgb,var(--piece-color) 45%,transparent); clip-path: polygon(0 0,100% 0,100% 100%,0 100%,0 0,100% 100%); }
+.ai-crystal-life { position: relative; display: grid; height: 100%; place-items: center; font: 0.6875rem ui-monospace,monospace; color: var(--ai-paper); }
+.ai-tetris-cell[data-crystal-life="1"]::before { background: linear-gradient(135deg,transparent 43%,var(--piece-color) 47%,transparent 51%); }
+.ai-tetris-cell.will-expire { outline: 2px dashed var(--piece-color); outline-offset: -3px; }
+.ai-tetris-cell.is-breaking { animation: crystal-break var(--crystal-break-ms) ease-out both; }
+@keyframes crystal-break { 0%,25% { opacity: 1; transform: scale(1); } 60% { opacity: 0.8; transform: scale(0.85); } 100% { opacity: 0; transform: scale(0.2); } }
+.ai-tetris-cell.is-drill { border-color: var(--ai-paper); }
+.ai-drill-voxel { display: grid; height: 100%; place-items: center; font: 1rem ui-monospace,monospace; color: var(--ai-ink); }
+.ai-drill-voxel.is-spinning { animation: drill-cut 115ms linear infinite; }
+@keyframes drill-cut { 0%,100% { transform: translateY(0); } 50% { transform: translateY(2px); } }
+.ai-tetris-cell.will-drill::after { content: '×'; position: absolute; inset: 0; display: grid; place-items: center; color: var(--ai-orange); font: 1.25rem ui-monospace,monospace; background: color-mix(in srgb,var(--ai-dark) 65%,transparent); }
+.ai-tetris-cell.is-drilled::after { content: ''; position: absolute; inset: 2px; border: 2px solid var(--ai-orange); animation: drill-spark 115ms ease-out both; pointer-events: none; }
+@keyframes drill-spark { from { opacity: 1; transform: scale(0.4); } to { opacity: 0; transform: scale(1.35); } }
+.ai-tetris-board[data-paused="true"] :is(.is-breaking,.ai-drill-voxel), .ai-tetris-board[data-paused="true"] .is-drilled::after { animation-play-state: paused; }
+.ai-special-status { color: var(--ai-orange); text-align: center; }
+.ai-effect-hint { max-width: 50ch; }
+.ai-tetris-specials { border-block: 1px solid var(--ai-line); margin-bottom: 24px; padding-block: 12px; }
+.ai-tetris-specials summary, .ai-tetris-forecast summary { min-height: 44px; cursor: pointer; color: var(--ai-accent); font-size: 0.8125rem; }
+.ai-tetris-specials summary:focus-visible, .ai-tetris-forecast summary:focus-visible { outline: 2px solid var(--ai-accent); outline-offset: 4px; }
+.ai-tetris-special-rules { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding-block: 16px; }
+.ai-tetris-special-rules p { color: var(--ai-muted); font-size: 0.8125rem; }
+.ai-tetris-special-rules .ai-kicker { color: var(--ai-accent); margin-bottom: 12px; }
+.ai-tetris-special-rules button { margin-top: 16px; }
+.ai-tetris-anticipation { display: grid; grid-template-columns: repeat(auto-fit,minmax(96px,1fr)); gap: 12px; }
+.ai-tetris-result .ai-kicker { color: var(--ai-accent); font-size: 0.625rem; }
+.ai-tetris-result > .ai-kicker { min-height: 3.2em; }
+.ai-tetris-board[data-paused="true"][data-game-over="false"] .ai-tetris-overlay { background: color-mix(in srgb,var(--ai-dark) 20%,transparent); }
+.ai-tetris-board[data-paused="true"][data-game-over="false"] .ai-tetris-overlay h2 { text-shadow: 0 2px 4px var(--ai-dark); }
+.ai-tetris-plan-board { width: min(100%,120px); }
+.ai-tetris-plan-board :is(.is-target,.is-occupied) { background: var(--preview-color,var(--ai-muted)); }
+.ai-tetris-plan-board .is-target { border-color: var(--ai-paper); }
+.ai-tetris-forecast { border-bottom: 1px solid var(--ai-line); padding-bottom: 16px; }
+.ai-tetris-queue { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ai-tetris-queue > .ai-kicker { grid-column: 1 / -1; }
+.ai-tetris-queue > div > p { font-size: 0.6875rem; color: var(--ai-muted); }
+.ai-tetris-queue .ai-tetris-preview { grid-template-columns: repeat(5,14px); margin-block: 12px; }
+.ai-tetris-queue .ai-tetris-preview span { height: 14px; }
+@media (max-width:640px) { .ai-tetris-special-rules { grid-template-columns: 1fr; } .ai-tetris-anticipation,.ai-tetris-forecast { grid-column: 1 / -1; } }
+@media (prefers-reduced-motion:reduce) { .ai-tetris-cell.is-breaking,.ai-drill-voxel.is-spinning,.ai-tetris-cell.is-drilled::after { animation: none !important; transform: none; } }

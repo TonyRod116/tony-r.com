@@ -91,7 +91,10 @@ test('Tetris keyboard drop, AI placement and restart use valid settled pieces', 
   await page.getByRole('button',{name:'Nueva partida',exact:true}).click()
   await expect(board).toHaveAttribute('data-score','0')
   await expect(board.locator('[data-settled]:not([data-settled=""])')).toHaveCount(0)
-  await expect(page.locator('[data-preview-filled="true"]')).toHaveCount(await page.locator('.ai-tetris-preview').getAttribute('aria-label').then(label=>label.endsWith(': T')?5:4))
+  const upcoming = page.locator('.ai-tetris-preview').first()
+  const name = (await upcoming.getAttribute('aria-label')).split(': ').at(-1)
+  await expect(upcoming.locator('[data-preview-filled="true"]')).toHaveCount(name==='T'?5:name==='D'?3:4)
+  await expect(page.locator('.ai-tetris-preview')).toHaveCount(2)
 })
 
 test('Tetris game shortcuts do not hijack header or toolbar keyboard actions', async ({ page }) => {

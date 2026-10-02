@@ -1,0 +1,26 @@
+# Cristal y Taladro en T-Tris — 2026-10-02
+
+Cristal y Taladro amplían las piezas existentes, el juego manual, la jugada puntual de la IA, los contornos y la explicación educativa. Publicados y comprobados en [T-Tris](https://tony-r.com/ai/tetris). La física se calcula en una sola transacción pura; los fotogramas de juego reproducen el mismo resultado que anticipan los tableros de prueba y la IA.
+
+Cristal tiene cuatro bloques, forma cuadrada y color azul. Sus bloques conservan una identidad y una fecha de caducidad por turnos, incluso cuando una línea desplaza sus filas. Sirven durante las dos colocaciones siguientes: primero se resuelven las líneas de la segunda y después se agrietan durante 360 ms y desaparecen los bloques restantes. Los números 2/1 muestran el tiempo disponible. Pausar no lo consume. Si desaparece un apoyo de la T fluida, sus bloques bajan y las líneas resultantes también se resuelven.
+
+Taladro tiene tres bloques en línea, pivote central y color ámbar. Al contactar desciende con fotogramas de 115 ms, destruye como máximo dos casillas ocupadas en total y sigue bajando por los espacios libres hasta encontrar otro apoyo o el fondo. En horizontal, tres apoyos simultáneos lo frenan. No sobrescribe un tercer bloque ni descarta casillas fuera del techo. Destruir bloques no suma puntos; la colocación y las líneas mantienen su puntuación habitual. Solo los bloques del Taladro activo animan la perforación; los ya fijados permanecen quietos.
+
+Cada nueva pieza tiene la mitad de peso de aparición que cada pieza original: probabilidad 1/18 para Cristal y 1/18 para Taladro, frente a 1/9 para cada una de las ocho piezas anteriores. Hay controles explícitos para empezar una partida nueva con cualquiera de ellas, sin alterar piezas dentro de la partida actual.
+
+El contorno señala la pieza tras caer, antes de retirar líneas. Las cruces marcan las casillas que perforará el Taladro y el borde azul discontinuo señala Cristal que caducará en esa jugada. La miniatura «Al soltar» muestra el tablero completo después de todos los efectos y las líneas. La propuesta y las continuaciones de la IA son otras miniaturas, claramente separadas del tablero de juego. La pausa deja visibles las grietas y las perforaciones para inspeccionarlas.
+
+La cola contiene las dos piezas realmente conocidas. La búsqueda mantiene los coeficientes originales de líneas, altura, huecos e irregularidad, y las seis candidatas actuales. Anticipa una pieza normalmente; amplía la continuación a las dos conocidas cuando hay Cristal vivo o Cristal/Taladro en la pieza actual o la cola. Esas continuaciones también simulan caducidad, perforaciones, T fluida y líneas con la misma transacción. Son posiciones previstas: la IA recalcula al cambiar el tablero y no conoce las piezas aleatorias posteriores. La búsqueda limitada no garantiza la mejor jugada global. Las fórmulas y fragmentos visibles explican esta evaluación real y distinguen sus valores de los puntos de partida.
+
+La resolución conserva fases explícitas de perforación, disolución, parpadeo de líneas y rotura. Solo al finalizar se confirman puntuación, turno y cola. Pausa, reinicio y callbacks de fases antiguas no pueden adelantar, duplicar o contaminar otra jugada. No se añaden dependencias ni se modifican otros juegos, modelos, API, servidor o ajustes de alojamiento.
+
+Validación observada:
+
+- `npm run check`: 78 pruebas de código y herramientas, 24 casos de routing y 27 skills sincronizadas. La deuda previa de lint/diseño no aumenta.
+- Build de producción aislado; 31 recorridos de interfaz pasan y la prueba exclusiva de teclado de ordenador se omite deliberadamente en móvil.
+- 10 comparaciones visuales pasan. Se inspeccionan y aceptan únicamente las seis referencias nuevas o cambiadas de T-Tris; portada del laboratorio y red neuronal conservan sus referencias.
+- 48 comparaciones de política ordinaria conservan los destinos del motor anterior. Los casos especiales comprueban conservación de bloques, límite de dos perforaciones, caducidad después de las líneas, cascadas, pausa/reinicio y coincidencia entre simulación y juego animado.
+- Seis comprobaciones del preview en ordenador, móvil y tablet, más 12 comprobaciones online de ambas piezas en ES/EN/CA y ambos tamaños. Todas verifican efectos reales, pausa, previsión igual a la jugada, dos continuaciones conocidas, cero desbordamiento y cero errores de página.
+- 74 archivos originales protegidos conservan sus hashes; las matemáticas y pesos MNIST permanecen intactos. En 12 mediciones locales de búsqueda especial, mediana 48,80 ms y máximo 82,02 ms. Es una medición del motor en Node, no una garantía de latencia en todos los dispositivos.
+
+El HTML servido coincide con el build verificado. La versión anterior tiene copia de recuperación verificada antes de activar esta publicación; rutas operativas, SSH y recuperación se guardan en artefactos privados. Las pruebas online no envían contactos ni ejecutan generaciones externas. Evidencia pública: `tetris-specials-20261002.json`; capturas y detalles de operación: `.artifacts/tetris-specials-20261002/`.

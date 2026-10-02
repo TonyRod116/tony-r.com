@@ -1,0 +1,296 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-02",
+  "status": "implemented_and_verified_online",
+  "route": "https://tony-r.com/ai/tetris",
+  "rules": {
+    "crystal": {
+      "cells": 4,
+      "subsequent_placements": 2,
+      "expiry_after_second_placement_lines": true,
+      "break_ms": 360
+    },
+    "drill": {
+      "cells": 3,
+      "total_destroyed_cell_limit": 2,
+      "frame_ms": 115,
+      "destroyed_cells_score": 0
+    },
+    "new_piece_probability_each": "1/18"
+  },
+  "ai": {
+    "same_pure_physics_as_manual": true,
+    "current_beam_limit": 6,
+    "ordinary_known_lookahead": 1,
+    "special_or_expiry_known_lookahead": 2,
+    "unseen_draws_used": false,
+    "globally_optimal_claim": false
+  },
+  "local": {
+    "check_tooling_pass": 78,
+    "routing_pass": 24,
+    "skills_mirrored": 27,
+    "scoped_browser_pass": 31,
+    "scoped_browser_intentional_mobile_keyboard_skip": 1,
+    "visual_comparisons_pass": 10,
+    "visually_inspected_tetris_references": 6,
+    "preview": {
+      "status": "pass",
+      "html_sha256": "ae853161be955e040e6e6e69352d69d9f8d7c84b0d60929853b77016ae487ce9",
+      "cases": [
+        {
+          "viewport": "desktop",
+          "language": "es",
+          "type": "C",
+          "ghost_matches_play": true,
+          "actual_effect": true,
+          "pause_preserved": true,
+          "known_forecast_steps": 2,
+          "overflow": 0,
+          "page_errors": []
+        },
+        {
+          "viewport": "desktop",
+          "language": "es",
+          "type": "D",
+          "ghost_matches_play": true,
+          "actual_effect": true,
+          "pause_preserved": true,
+          "known_forecast_steps": 2,
+          "overflow": 0,
+          "page_errors": []
+        },
+        {
+          "viewport": "mobile",
+          "language": "es",
+          "type": "C",
+          "ghost_matches_play": true,
+          "actual_effect": true,
+          "pause_preserved": true,
+          "known_forecast_steps": 2,
+          "overflow": 0,
+          "page_errors": []
+        },
+        {
+          "viewport": "mobile",
+          "language": "es",
+          "type": "D",
+          "ghost_matches_play": true,
+          "actual_effect": true,
+          "pause_preserved": true,
+          "known_forecast_steps": 2,
+          "overflow": 0,
+          "page_errors": []
+        },
+        {
+          "viewport": "tablet",
+          "language": "es",
+          "type": "C",
+          "ghost_matches_play": true,
+          "actual_effect": true,
+          "pause_preserved": true,
+          "known_forecast_steps": 2,
+          "overflow": 0,
+          "page_errors": []
+        },
+        {
+          "viewport": "tablet",
+          "language": "es",
+          "type": "D",
+          "ghost_matches_play": true,
+          "actual_effect": true,
+          "pause_preserved": true,
+          "known_forecast_steps": 2,
+          "overflow": 0,
+          "page_errors": []
+        }
+      ]
+    },
+    "engine_comparison_and_node_timing": {
+      "ordinary_policy_parity_cases": 48,
+      "ai_special_cases": 12,
+      "ai_ms_max": 82.01688899999999,
+      "ai_ms_median": 48.80421999999999
+    }
+  },
+  "online": {
+    "status": "pass",
+    "html_sha256": "9a81ae850800f90db9d257f593db3f135528166bc38f5bf5c7faae2e4b4df306",
+    "cases": [
+      {
+        "viewport": "desktop",
+        "language": "es",
+        "type": "C",
+        "ghost_matches_play": true,
+        "actual_effect": true,
+        "pause_preserved": true,
+        "known_forecast_steps": 2,
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "es",
+        "type": "D",
+        "ghost_matches_play": true,
+        "actual_effect": true,
+        "pause_preserved": true,
+        "known_forecast_steps": 2,
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "en",
+        "type": "C",
+        "ghost_matches_play": true,
+        "actual_effect": true,
+        "pause_preserved": true,
+        "known_forecast_steps": 2,
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "en",
+        "type": "D",
+        "ghost_matches_play": true,
+        "actual_effect": true,
+        "pause_preserved": true,
+        "known_forecast_steps": 2,
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "ca",
+        "type": "C",
+        "ghost_matches_play": true,
+        "actual_effect": true,
+        "pause_preserved": true,
+        "known_forecast_steps": 2,
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "ca",
+        "type": "D",
+        "ghost_matches_play": true,
+        "actual_effect": true,
+        "pause_preserved": true,
+        "known_forecast_steps": 2,
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "es",
+        "type": "C",
+        "ghost_matches_play": true,
+        "actual_effect": true,
+        "pause_preserved": true,
+        "known_forecast_steps": 2,
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "es",
+        "type": "D",
+        "ghost_matches_play": true,
+        "actual_effect": true,
+        "pause_preserved": true,
+        "known_forecast_steps": 2,
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "en",
+        "type": "C",
+        "ghost_matches_play": true,
+        "actual_effect": true,
+        "pause_preserved": true,
+        "known_forecast_steps": 2,
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "en",
+        "type": "D",
+        "ghost_matches_play": true,
+        "actual_effect": true,
+        "pause_preserved": true,
+        "known_forecast_steps": 2,
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "ca",
+        "type": "C",
+        "ghost_matches_play": true,
+        "actual_effect": true,
+        "pause_preserved": true,
+        "known_forecast_steps": 2,
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "ca",
+        "type": "D",
+        "ghost_matches_play": true,
+        "actual_effect": true,
+        "pause_preserved": true,
+        "known_forecast_steps": 2,
+        "overflow": 0,
+        "page_errors": []
+      }
+    ]
+  },
+  "preservation": {
+    "protected_original_files": 74,
+    "changed_protected_files": [],
+    "model_sha256": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b",
+    "neural_math_sha256": "af8d41920bb8faf2891922299ce6844d8b668c42857745c487bcde7c85c1c46c",
+    "dependencies_added": false,
+    "api_server_changes": false,
+    "hosting_configuration_changes": false
+  },
+  "source_sha256": {
+    "src/components/games/tetrisEngine.js": "57ac006ef88cf8c1437741621f0f7628677dc67ff435dd1d6d3496787c3a1666",
+    "src/components/games/Tetris.jsx": "2aedba437909c3594fbea7a73e658f706b06a3ec00022eae1f25d9e14ca77b08",
+    "src/components/ai/AiLab.css": "47b44f8708ed03f6ed62f486f46715a5d54e5f5b40c3e7bc3cc5497749f16375",
+    "src/components/ai/GameLearning.jsx": "520126c7ddcaebfb83bd0eb5a6d2e89e9f53a0c17a7fdf16aaa56160c4ac2157",
+    "src/data/tetrisSpecials.js": "97f635f31ab86fbe3863b826d75cb9ce2810ca7780d16ab655f926ee75a6f553",
+    "src/data/aiExperiments.js": "9d0d234f0c674339a037e3d4abf877753655963237584b39dede035c958818ad",
+    "src/data/gameLearning.js": "b8acfa40b6c2aa7ed7777f50aa1b89624aec384833207e3a2dae4c442e83efab",
+    "tests/tooling/tetris-specials.test.mjs": "8d1ee7c46e95f3b90dadca2f799b6bbdc36245146c59b9f3debd3b8247e4cf13",
+    "tests/e2e/tetris-specials.spec.mjs": "7c09ac11bfb1eb32762dbe8e5edac050a66bc9d6ffa479c26d849c9eed0c37b3",
+    "tests/e2e/visual/tetris-specials.spec.mjs": "59a427e120e8ac8e758d77d769d7a3ea066271474d82142ffcf6c0a8a0d9fab6"
+  },
+  "accepted_visual_sha256": {
+    "tests/e2e/visual/__screenshots__/desktop/ai-tetris.png": "a6e18a2c5ec63bb251697b1016865c6dd42620f64724cda9aff19b358b6b8f42",
+    "tests/e2e/visual/__screenshots__/desktop/tetris-crystal.png": "8c394f09d89cde7dfe19a12ccb2b810e6c3c16b8ac62b945a59b3f62a970613f",
+    "tests/e2e/visual/__screenshots__/desktop/tetris-drill.png": "c31b9416b4da2fe46afa8adff739942e71e65164a36c3b062d6e6976265991ec",
+    "tests/e2e/visual/__screenshots__/mobile/ai-tetris.png": "cfa2d547f0b750c29e16968c5d88fe5fedfae629d539d00bdef964c408ff6f67",
+    "tests/e2e/visual/__screenshots__/mobile/tetris-crystal.png": "79e2500d429e578e9b93deea608dc6213ba29aea87e41967e97226c1003e043a",
+    "tests/e2e/visual/__screenshots__/mobile/tetris-drill.png": "23047149f9b33855ae2c4e4ce5bcdf176662cfd3b3b11e972640265610fa520d"
+  },
+  "publication": {
+    "host": "IONOS",
+    "html_sha256": "9a81ae850800f90db9d257f593db3f135528166bc38f5bf5c7faae2e4b4df306",
+    "prior_version_backup_verified": true,
+    "private_operations_in_public_source": false,
+    "contact_or_paid_generation_sent": false
+  },
+  "limitations": [
+    "Bounded heuristic search is not a globally optimal or unbeatable policy.",
+    "Known-piece continuation is conditional on following predicted placements; AI recalculates after board changes.",
+    "Node timing is a local engine measurement, not a device latency or Core Web Vitals guarantee.",
+    "External demo/API availability and business impact are outside these tests."
+  ]
+}
