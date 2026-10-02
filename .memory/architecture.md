@@ -1,6 +1,6 @@
 # Architecture
 
-Last updated: 2026-10-01
+Last updated: 2026-10-02
 
 ## Purpose
 Shared architecture and operating map for this portfolio repo.
@@ -110,7 +110,7 @@ BuildAppScreenshot frames the original780×1688 mobile captures by omitting thei
 
 Neural follow-up: target is the sole selected-digit state for all ten buttons. The separate target dropdown and training CTA/after-update view are removed; Clear retains the label to permit custom drawing. Sequential playback only traces inference; backward inspection still uses the unchanged real derivative calculation copy. The output column’s spacing, plane, radii and labels are scaled0.75. Input displays original pixels in forward/backward; the inspector can explicitly show true raw-pixel gradients. Node metrics/types reflect the displayed quantity and the input inspector also exposes the underlying derivative.62 central finite-difference comparisons on the actual model (two labels, weights/biases/raw pixels) pass with maximum absolute error4.123795749322312e-11; this is local derivative evidence, not a recognition-accuracy benchmark. Latest proof: docs/ai/neural-refinement-20261001.md/json.
 
-Backward return follow-up: InputGradientFlow.jsx represents one explicit collapsed weighted-sum operator for the first hidden layer, not an extra neuron.784 bundles each carry the complete raw-pixel derivative from all128 contributors (including zero ReLU-gated deltas and normalization), rather than pretending the sampled single-edge subset covers every cell. The default backward input is a projected gradient heatmap; its bundle/cell/node values and signed colours agree. Normalized SVG paths transport a pulse toward each cell, followed by a shared arrival highlight. Pausing/off/reduced-motion retain actual values; original-pixel reference is still available in the inspector. Model/mathematics are unchanged and the image is never altered by backpropagation. Latest source/runtime proof: docs/ai/neural-arrival-20261001.md/json.
+Backward returns — 2026-10-02: Tony requests restoring the original two strongest-weight links per first-hidden-layer neuron. InputGradientFlow.jsx now draws256 individual connections anchored at the actual128 hidden nodes; no central sum operator remains. Each link carries its own weight-times-delta/normalization contribution. The784 projected input cells still contain the full derivative over all128 hidden nodes, independent of the visible subset. ReLU-gated zero contributions stay static. Pausing/off/reduced-motion, signed colours, cell arrival highlights, camera projection and the original-pixel reference remain. Original drawing, model and networkMath.js are unchanged. The optional neural method source link is removed; upstream pretrained-weight provenance/licenses stay intact. Latest proof: docs/ai/neural-returns-20261002.md/json.
 
 T-Tris completed rows enter a320ms highlight phase before score/board/next spawn commit. Completion binds the exact result object, so stale callbacks cannot finish another clear. Magic T enters this phase only after its sand settlement. Evidence: docs/ai/neural-dynamics-20261001.md/json.
 

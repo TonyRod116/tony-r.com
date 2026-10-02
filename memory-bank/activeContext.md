@@ -1,5 +1,7 @@
 # Reference continuity summary
 
+2026-10-02 current neural behavior: the original distributed return connections replace the central sum operator. Two strongest-weight links from each of128 actual hidden nodes carry individual chain-rule contributions;784 cells still contain the full128-source gradients. No neural Code and references link; original model provenance/licenses stay. Predictor/math/camera/independent controls are unchanged. Published on IONOS and verified in all three languages and both viewports; scoped tests/visual comparisons pass. Latest proof: docs/ai/neural-returns-20261002.md/json. Earlier grouped-bundle entries below describe superseded behavior. No public GitHub push.
+
 Last updated: 2026-09-30
 
 Current operating truth is in .memory/, PROJECT_STATE.md, docs/ai/ and source code. Use ai:context to retrieve task-specific current sources. The paragraphs below are historical context; they do not certify present deployment/API availability.

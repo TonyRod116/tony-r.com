@@ -1,12 +1,12 @@
 # Startup handoff
 
-Last updated: 2026-10-01
+Last updated: 2026-10-02
 
 Current source outranks memory; recover selective context with ai:brief/ai:context. Preserve preexisting dist and personal settings changes. Portfolio tasks live in Beads, not this handoff.
 
 Home, eight portfolio pages and six AI experiments have the approved showroom identity. Header keeps Projects, AI Lab, About, Contact; Solutions/CV are secondary. Warm paper/charcoal and the lab’s lime instrument must remain. Existing BuildApp captures are public demos, original PDF/gallery assets are unchanged, Casex has the clean casex.es link. Overview/proof: docs/ai/site-showroom-20260930.md and polish-20261001.md/json.
 
-Latest neural requirements: OUTPUT0–9 in one fourth-layer3D column,25% smaller. The ten example buttons also set the supervised digit; no Número correcto dropdown or training CTA. Clear retains the label for manual drawing. Forward shows original input; backward defaults to its true gradient cells, with grouped return bundles whose values/colours match the full sum of128 contributions per pixel. Animation highlights arrivals; the original drawing stays unchanged. Inspector can show original pixels as a reference. Preserve real loss/gradients, frozen predictor, camera and independent controls. Latest return proof: docs/ai/neural-arrival-20261001.md/json; prior refinement/geometry: neural-refinement-20261001 and column-captures-20261001.
+Latest neural requirements: OUTPUT0–9 in one fourth-layer3D column,25% smaller. The ten example buttons also set the supervised digit; no Número correcto dropdown or training CTA. Clear retains the label for manual drawing. Forward shows original input; backward defaults to true gradient cells. Tony requests the original distributed return connections: two strongest-weight links from every first-hidden-layer node, with actual individual contributions and no central sum operator. Cells still sum all128 contributors, independently of the visible subset. No Code and references link on this experiment; preserve pretrained-weight provenance/licenses. Animation highlights arrivals; the original drawing stays unchanged. Inspector can show original pixels as a reference. Preserve real loss/gradients, frozen predictor, camera and independent controls. Latest proof: docs/ai/neural-returns-20261002.md/json; prior geometry: column-captures-20261001.
 
 Home/Projects use BuildAppScreenshot to frame away the mobile captures’ top Demo/blank strip, including thumbnails/dialog. Original PNGs and provenance hashes remain; captions present BuildApp Pro with sample data. Keep this framing consistent across the two pages.
 

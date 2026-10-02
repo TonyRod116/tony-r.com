@@ -434,42 +434,60 @@ test.describe('independent neural inspection controls',()=>{
   })
 })
 
-test.describe('complete input gradient transport',()=>{
+test.describe('distributed input gradient transport',()=>{
   test.use({reducedMotion:'no-preference'})
-  test('each returning bundle equals the full128-source derivative and lands on its cell',async({page})=>{
+  test('returns originate at all hidden nodes with actual contributions and complete pixel gradients',async({page})=>{
     await page.goto('/ai/neural-network');await expect(page.getByTestId('model-state')).toContainText('Modelo cargado')
     await page.getByRole('button',{name:'Backpropagation',exact:false}).click()
     await page.getByRole('button',{name:'01 / Entrada',exact:false}).click()
     const routes=page.locator('[data-input-route]'),cells=page.locator('[data-input-cell]')
-    await expect(routes).toHaveCount(784);await expect(cells).toHaveCount(784)
+    await expect(routes).toHaveCount(256);await expect(cells).toHaveCount(784)
     await expect(page.getByTestId('input-gradient-transport')).toHaveAttribute('data-source-count','128')
+    await expect(page.locator('.neural-input-sum-label')).toHaveCount(0)
+    await expect(page.locator('.ai-method a')).toHaveCount(0)
     const accuracy=await page.evaluate(async()=>{
       const data=await fetch('/models/mnist/014_dataset-1x.json').then(r=>r.json()),tensor=data.layers[0].weights
       const bytes=Uint8Array.from(atob(tensor.data),c=>c.charCodeAt(0)),view=new DataView(bytes.buffer)
       const deltas=[...document.querySelectorAll('circle[data-layer="1"]')].map(e=>Number(e.dataset.nodeValue))
       const pixels=[...document.querySelectorAll('circle[data-layer="0"]')],cells=[...document.querySelectorAll('[data-input-cell]')],routes=[...document.querySelectorAll('[data-input-route]')]
+      const hidden=[...document.querySelectorAll('circle[data-layer="1"]')],std=data.normalization?.std??0.3081
+      const weightAt=(j,i)=>{
+        const half=view.getUint16((j*784+i)*2,true),sign=half&0x8000?-1:1,exp=half>>10&31,frac=half&1023
+        return exp===0?sign*2**-14*frac/1024:sign*2**(exp-15)*(1+frac/1024)
+      }
       let maxError=0
-      const coherent=routes.every(route=>{
-        const i=Number(route.dataset.inputRoute);let sum=0
-        for(let j=0;j<128;j++){
-          const half=view.getUint16((j*784+i)*2,true),sign=half&0x8000?-1:1,exp=half>>10&31,frac=half&1023
-          const weight=exp===0?sign*2**-14*frac/1024:sign*2**(exp-15)*(1+frac/1024)
-          sum+=weight*deltas[j]
-        }
-        sum/=data.normalization?.std??0.3081
-        maxError=Math.max(maxError,Math.abs(sum-Number(route.dataset.signal)))
-        const pixel=pixels[i],cell=cells[i],endpoint=route.getPointAtLength(0)
-        return route.dataset.signal===cell.dataset.gradient&&route.dataset.signal===pixel.dataset.inputGradient&&endpoint.x===pixel.cx.baseVal.value&&endpoint.y===pixel.cy.baseVal.value&&getComputedStyle(route).stroke===getComputedStyle(cell).fill
+      const complete=cells.every(cell=>{
+        const i=Number(cell.dataset.inputCell);let sum=0
+        for(let j=0;j<128;j++)sum+=weightAt(j,i)*deltas[j]
+        sum/=std
+        maxError=Math.max(maxError,Math.abs(sum-Number(cell.dataset.gradient)))
+        return cell.dataset.gradient===pixels[i].dataset.inputGradient
       })
-      return {maxError,coherent}
+      const coherent=routes.every(route=>{
+        const i=Number(route.dataset.inputRoute),j=Number(route.dataset.returnSource)
+        const value=weightAt(j,i)*deltas[j]/std
+        maxError=Math.max(maxError,Math.abs(value-Number(route.dataset.signal)))
+        const start=route.getPointAtLength(route.getTotalLength()),end=route.getPointAtLength(0)
+        const pixel=pixels[i],node=hidden[j],near=(a,b)=>Math.abs(a-b)<1e-4
+        return near(start.x,node.cx.baseVal.value)&&near(start.y,node.cy.baseVal.value)&&near(end.x,pixel.cx.baseVal.value)&&near(end.y,pixel.cy.baseVal.value)
+      })
+      const sources=new Set(routes.map(route=>Number(route.dataset.returnSource))).size
+      const origins=new Set(routes.map(route=>route.getAttribute('d').split(' L')[1])).size
+      const moving=[...document.querySelectorAll('[data-return-pulse]')]
+      const gated=moving.every(route=>deltas[Number(route.dataset.returnSource)]!==0&&Math.abs(Number(route.dataset.signal))>1e-12)
+      return {maxError,complete,coherent,sources,origins,gated}
     })
-    expect(accuracy.maxError).toBeLessThan(1e-10);expect(accuracy.coherent).toBe(true)
+    expect(accuracy.maxError).toBeLessThan(1e-10);expect(accuracy.complete).toBe(true);expect(accuracy.coherent).toBe(true)
+    expect(accuracy.sources).toBe(128);expect(accuracy.origins).toBe(128);expect(accuracy.gated).toBe(true)
     await expect(page.getByTestId('input-gradient-pulses')).toHaveCSS('animation-name','neural-input-return')
     await expect(page.getByTestId('input-gradient-cells')).toHaveCSS('animation-name','neural-input-arrival')
     await page.getByRole('button',{name:'Pausar animación',exact:true}).click()
     const offset=await page.getByTestId('input-gradient-pulses').evaluate(e=>getComputedStyle(e).strokeDashoffset)
     await page.waitForTimeout(220)
     expect(await page.getByTestId('input-gradient-pulses').evaluate(e=>getComputedStyle(e).strokeDashoffset)).toBe(offset)
+    await page.emulateMedia({reducedMotion:'reduce'})
+    await expect(page.getByTestId('input-gradient-pulses')).toHaveCSS('display','none')
+    await expect(page.getByTestId('input-gradient-cells')).toHaveCSS('animation-name','none')
     await page.getByRole('switch',{name:'Apagar animación',exact:true}).click()
     await expect(page.getByTestId('input-gradient-pulses')).toHaveCount(0)
     await expect(cells).toHaveCount(784)

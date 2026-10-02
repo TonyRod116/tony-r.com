@@ -1,0 +1,204 @@
+{
+  "date": "2026-10-02",
+  "status": "published_and_verified",
+  "request": "Restore original distributed hidden-to-input return connections and remove the neural method source link.",
+  "visible_connections": 256,
+  "actual_hidden_origins": 128,
+  "links_per_hidden_node": 2,
+  "input_cells": 784,
+  "contributors_per_pixel_derivative": 128,
+  "edge_quantity": "W[j,i] * delta[j] / normalization.std",
+  "central_sum_operator": false,
+  "model_and_equations_unchanged": true,
+  "pretrained_weight_provenance_and_license_preserved": true,
+  "verification": {
+    "check": "pass",
+    "tooling_tests": 63,
+    "real_model_finite_difference_checks": 62,
+    "max_finite_difference_error": 4.123795749322312e-11,
+    "browser_tests": 24,
+    "visual_cases": 4,
+    "changed_visual_references": [
+      "desktop/ai-neural.png",
+      "mobile/ai-neural.png"
+    ],
+    "protected_originals_unchanged": 74,
+    "baseline_test": "fails with784 aggregate routes; passes with256 individual connections and128 actual origins"
+  },
+  "preview": {
+    "mode": "preview",
+    "html_sha256": "e5af3c0f773aedebaede93c4167de29d82b81b3f38fb94f33db1c835bf8747d8",
+    "model_sha256": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b",
+    "cases": [
+      {
+        "viewport": "desktop",
+        "language": "es",
+        "return_connections": 256,
+        "hidden_origins": 128,
+        "pixel_cells": 784,
+        "source_link_removed": true,
+        "tictactoe_source_preserved": true,
+        "pause_off_and_stage_controls": true,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "en",
+        "return_connections": 256,
+        "hidden_origins": 128,
+        "pixel_cells": 784,
+        "source_link_removed": true,
+        "tictactoe_source_preserved": true,
+        "pause_off_and_stage_controls": true,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "ca",
+        "return_connections": 256,
+        "hidden_origins": 128,
+        "pixel_cells": 784,
+        "source_link_removed": true,
+        "tictactoe_source_preserved": true,
+        "pause_off_and_stage_controls": true,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "es",
+        "return_connections": 256,
+        "hidden_origins": 128,
+        "pixel_cells": 784,
+        "source_link_removed": true,
+        "tictactoe_source_preserved": true,
+        "pause_off_and_stage_controls": true,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "en",
+        "return_connections": 256,
+        "hidden_origins": 128,
+        "pixel_cells": 784,
+        "source_link_removed": true,
+        "tictactoe_source_preserved": true,
+        "pause_off_and_stage_controls": true,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "ca",
+        "return_connections": 256,
+        "hidden_origins": 128,
+        "pixel_cells": 784,
+        "source_link_removed": true,
+        "tictactoe_source_preserved": true,
+        "pause_off_and_stage_controls": true,
+        "page_errors": []
+      }
+    ],
+    "status": "pass"
+  },
+  "online": {
+    "mode": "online",
+    "html_sha256": "e5af3c0f773aedebaede93c4167de29d82b81b3f38fb94f33db1c835bf8747d8",
+    "model_sha256": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b",
+    "cases": [
+      {
+        "viewport": "desktop",
+        "language": "es",
+        "return_connections": 256,
+        "hidden_origins": 128,
+        "pixel_cells": 784,
+        "source_link_removed": true,
+        "tictactoe_source_preserved": true,
+        "pause_off_and_stage_controls": true,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "en",
+        "return_connections": 256,
+        "hidden_origins": 128,
+        "pixel_cells": 784,
+        "source_link_removed": true,
+        "tictactoe_source_preserved": true,
+        "pause_off_and_stage_controls": true,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "ca",
+        "return_connections": 256,
+        "hidden_origins": 128,
+        "pixel_cells": 784,
+        "source_link_removed": true,
+        "tictactoe_source_preserved": true,
+        "pause_off_and_stage_controls": true,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "es",
+        "return_connections": 256,
+        "hidden_origins": 128,
+        "pixel_cells": 784,
+        "source_link_removed": true,
+        "tictactoe_source_preserved": true,
+        "pause_off_and_stage_controls": true,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "en",
+        "return_connections": 256,
+        "hidden_origins": 128,
+        "pixel_cells": 784,
+        "source_link_removed": true,
+        "tictactoe_source_preserved": true,
+        "pause_off_and_stage_controls": true,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "ca",
+        "return_connections": 256,
+        "hidden_origins": 128,
+        "pixel_cells": 784,
+        "source_link_removed": true,
+        "tictactoe_source_preserved": true,
+        "pause_off_and_stage_controls": true,
+        "page_errors": []
+      }
+    ],
+    "status": "pass"
+  },
+  "initial_live_timeout": {
+    "after_case": "desktop/es",
+    "waiting_for": "desktop/en model ready",
+    "initial_model_state": "not captured",
+    "cause": "unknown, not reproduced",
+    "public_model_http_status": 200,
+    "public_model_bytes": 292137,
+    "public_model_get_seconds": 0.311254,
+    "isolated_english_cases_passed": 2,
+    "final_complete_live_cases_passed": 6,
+    "loader_changed": false
+  },
+  "publication": {
+    "host": "IONOS",
+    "entry_html_sha256": "e5af3c0f773aedebaede93c4167de29d82b81b3f38fb94f33db1c835bf8747d8",
+    "private_backup_verified": true,
+    "github_push": false
+  },
+  "sha256": {
+    "src/components/ai/InputGradientFlow.jsx": "764e1d23734c875ce8e6807fc0994fcb5d07297412aab425af2bd01c3017c50f",
+    "src/components/ai/NetworkDiagram.jsx": "fcc6c4b1841937b1445b62df78c1c184da2438138b0d89bdc00e835bb542d8b0",
+    "src/components/games/NeuralNetwork/NeuralStudio.css": "17648eda02fafa86170135ed87ae06b9d9988fea811f3ce16aa3745ec377863f",
+    "src/data/aiExperiments.js": "a351df1d163822a2c87b86b262cbfab75bc7712b3af9892a2761df7bd5fd47fc",
+    "src/data/neuralDynamics.js": "2be18865fa3ad30bc61f275c5358a4cd892ee1eda7ca98220b63da2abbac200c",
+    "src/components/games/NeuralNetwork/networkMath.js": "af8d41920bb8faf2891922299ce6844d8b668c42857745c487bcde7c85c1c46c",
+    "src/components/games/NeuralNetwork/mlp.js": "2916fddb37635375dc4226d6a22cdc10c786d36b61e0015ac908fbf20932c659",
+    "public/models/mnist/014_dataset-1x.json": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b"
+  }
+}

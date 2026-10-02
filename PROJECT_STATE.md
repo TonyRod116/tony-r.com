@@ -1,6 +1,6 @@
 # Project State — 2026-09-30
 
-Last updated: 2026-10-01
+Last updated: 2026-10-02
 
 ## Current state
 
@@ -110,3 +110,9 @@ Seis grados source recovery finds the historical10,000-person cache plus full or
 Published and verified on IONOS: all1,044,499 names/344,276 films from original public Parquet sources, including all10,000 historical names;1,188,614 valid unique credits.899 unknown-person rows,70 duplicates and11 future credits excluded. Typed arrays/UTF-8/Gzip keep data out of the initial home bundle; worker handles exact/partial/diacritic/typo search, explicit identity ambiguity and shortest real-credit BFS. Year/IMDb links accompany each shared film. Corrupt/unavailable data has visible retry with no silent small fallback.63 node/tooling,10 scoped UI and26 visual comparisons pass; three preview viewports/languages and six final live cases pass. Local synthetic typo UI latency improves~880ms to~375ms; first network load remains sizeable. Original Parquet/model/payout assets are unchanged. Proof: docs/ai/sixdegrees-20261001.md/json.
 
 The first remote full QA had a later loading failure after two successful cases; asset hash/permissions and three isolated loads were verified, then all six complete final live cases passed. Cause not reproduced; keep the explicit retry. Source publication to GitHub remains independently gated; website publication is complete. My Page-mhu closes on observed live proof.
+
+## Distributed neural returns restored — 2026-10-02
+
+Published and verified on IONOS: Tony requests the original connections from the first hidden layer to input, replacing the central sum operator.256 strongest-weight links originate at all128 actual hidden nodes; individual chain-rule contributions animate only when nonzero.784 cells retain complete derivatives over all128 nodes. Camera, output75%, independent controls, original drawing, equations and pretrained weights remain. Only the neural Code and references link is removed; other source links and model provenance/licenses remain.63 tooling/calculation tests,24 scoped UI checks,four inspected visual comparisons,six preview and six final live cases pass.74 protected original files remain intact. Proof: docs/ai/neural-returns-20261002.md/json.
+
+The first live run timed out waiting for the English model after Spanish passed. Public model HTTP/hash and two isolated English viewport cases were verified, then all six final cases passed. Cause not reproduced; no loader/math change is claimed. Private rollback is verified; website publication is complete and the separate public GitHub export gate remains.
