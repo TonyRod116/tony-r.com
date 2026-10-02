@@ -101,20 +101,29 @@ const evaluate = result => {
   const f = features(result.board)
   return result.cleared * 8 - f.height * 4.5 - f.holes * 9.5 - f.bumpiness * 1.8
 }
-export function suggestMove(board, piece, nextName, magic) {
+export function analyzeMove(board, piece, nextName, magic) {
   let best = null, bestScore = -Infinity
   // Look-ahead is bounded to the six best current placements.
   const candidates = reachableLandings(board, piece).map(target => ({ target, result: lockPiece(board, target, magic) }))
     .filter(candidate => !candidate.result.over).sort((a,b) => evaluate(b.result) - evaluate(a.result)).slice(0,6)
   for (const candidate of candidates) {
     const replies = nextName ? reachableLandings(candidate.result.board, spawn(nextName)).map(target => evaluate(lockPiece(candidate.result.board, target, magic))) : []
-    const score = evaluate(candidate.result) + (nextName ? 0.6 * (replies.length ? Math.max(...replies) : -10000) : 0)
-    if (score > bestScore) { bestScore = score; best = candidate.target }
+    const immediate = evaluate(candidate.result)
+    const future = nextName ? (replies.length ? Math.max(...replies) : -10000) : 0
+    const score = immediate + (nextName ? 0.6 * future : 0)
+    if (score > bestScore) {
+      bestScore = score
+      best = { target: candidate.target, immediate, future, score, cleared: candidate.result.cleared,
+        ...features(candidate.result.board), candidates: candidates.length, nextName }
+    }
   }
   return best
 }
+export function suggestMove(board, piece, nextName, magic) {
+  return analyzeMove(board, piece, nextName, magic)?.target ?? null
+}
 export function newGame(first, next, previous = {}) {
-  return { board: emptyBoard(), piece: spawn(first), next, score: 0, lines: 0, level: 1, paused: false, over: false, magic: previous.magic ?? true, ai: previous.ai ?? false, aiMoves: 0, settling: null, clearing: null }
+  return { board: emptyBoard(), piece: spawn(first), next, score: 0, lines: 0, level: 1, paused: false, over: false, magic: previous.magic ?? true, ai: previous.ai ?? false, aiMoves: 0, settling: null, clearing: null, lastAiDecision: null }
 }
 function finishCommit(state, result, nextName, isAi) {
   const piece = spawn(state.next), lines = state.lines + result.cleared
@@ -160,8 +169,8 @@ export function gameReducer(state, action) {
   }
   if (action.type === 'settle-tick') return state
   if (action.type === 'ai-move') {
-    const target = suggestMove(state.board, state.piece, state.next, state.magic)
-    return target ? commit(state, target, action.next, true) : { ...state, over: true }
+    const decision = analyzeMove(state.board, state.piece, state.next, state.magic)
+    return decision ? commit({ ...state, lastAiDecision: decision }, decision.target, action.next, true) : { ...state, over: true }
   }
   if (action.type === 'drop') return commit(state, landing(state.board, state.piece), action.next)
   if (action.type === 'rotate') return { ...state, piece: rotate(state.board, state.piece) }

@@ -1,0 +1,27 @@
+.ai-method-educational { row-gap: 28px; }
+.ai-learning { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1.6fr; gap: 24px 64px; border-top: 1px solid var(--ai-line); padding-top: 28px; min-width: 0; }
+.ai-learning > div { min-width: 0; }
+.ai-learning h3 { font-size: 1.25rem; font-weight: 500; letter-spacing: -0.025em; margin-bottom: 12px; }
+.ai-learning p { color: var(--ai-muted); font-size: 0.8125rem; }
+.ai-learning-formula { margin-block: 24px; }
+.ai-learning .ai-kicker { font-size: 0.6875rem; margin-bottom: 12px; }
+.ai-learning-formula pre { font: 1.125rem/1.7 ui-monospace,monospace; color: var(--ai-accent); margin-bottom: 12px; }
+.ai-learning pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+.ai-learning-code { background: var(--ai-panel); border: 1px solid var(--ai-line); }
+.ai-learning-code header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--ai-line); font: 0.6875rem ui-monospace,monospace; color: var(--ai-muted); }
+.ai-learning-code header .ai-kicker { margin: 0; color: var(--ai-accent); }
+.ai-learning-code pre, .ai-learning-details pre { padding: 16px; font: 0.75rem/1.8 ui-monospace,monospace; color: var(--ai-paper); }
+.ai-learning-details { border-bottom: 1px solid var(--ai-line); }
+.ai-learning-details summary { min-height: 44px; padding-block: 12px; color: var(--ai-accent); font-size: 0.8125rem; cursor: pointer; }
+.ai-learning-details summary:focus-visible { outline: 2px solid var(--ai-accent); outline-offset: 4px; }
+.ai-learning-details p { padding-bottom: 16px; }
+.ai-learning-live { grid-column: 1 / -1; padding-top: 24px; border-top: 1px solid var(--ai-line); }
+.ai-learning-metrics { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px 24px; margin-block: 16px; }
+.ai-learning :is(dt,dd) { margin: 0; }
+.ai-learning dt { color: var(--ai-muted); font-size: 0.6875rem; }
+.ai-learning-metrics dd { color: var(--ai-paper); font: 1.375rem ui-monospace,monospace; margin-top: 4px; }
+.ai-learning .ai-learning-equation { color: var(--ai-accent); font: 0.875rem/1.8 ui-monospace,monospace; overflow-wrap: anywhere; margin-block: 16px; }
+.ai-learning-values { margin-bottom: 16px; }
+.ai-learning-values > div { display: flex; justify-content: space-between; gap: 16px; }
+.ai-learning-values dd { font: 0.75rem ui-monospace,monospace; }
+@media (max-width: 680px) { .ai-learning { grid-template-columns: 1fr; gap: 20px; } .ai-learning-metrics { grid-template-columns: repeat(2,minmax(0,1fr)); } .ai-learning-code header, .ai-learning-code pre, .ai-learning-details pre { padding-inline: 12px; } }

@@ -57,6 +57,7 @@ class MinesweeperAI {
     this.mines = new Set();     // "r,c"
     this.safes = new Set();     // "r,c"
     this.knowledge = [];        // Sentence[]
+    this.safeReasons = new Map(); // Reduced constraints from revealed clues only.
   }
 
   markMine(cellKey) {
@@ -65,9 +66,10 @@ class MinesweeperAI {
     for (const s of this.knowledge) s.markMine(cellKey);
   }
 
-  markSafe(cellKey) {
+  markSafe(cellKey, reason) {
     if (this.safes.has(cellKey)) return;
     this.safes.add(cellKey);
+    if (reason) this.safeReasons.set(cellKey, reason);
     for (const s of this.knowledge) s.markSafe(cellKey);
   }
 
@@ -116,9 +118,11 @@ class MinesweeperAI {
             changed = true;
           }
         }
-        for (const sf of s.knownSafes()) {
+        const inferredSafes = s.knownSafes();
+        const safeReason = inferredSafes.size ? { cells: [...s.cells], count: s.count } : null;
+        for (const sf of inferredSafes) {
           if (!this.safes.has(sf)) {
-            this.markSafe(sf);
+            this.markSafe(sf, safeReason);
             changed = true;
           }
         }
@@ -202,6 +206,7 @@ const Minesweeper = () => {
     const [gameOver, setGameOver] = useState(false);
     const [gameWon, setGameWon] = useState(false);
     const [ai, setAi] = useState(new MinesweeperAI());
+    const [lastDeduction, setLastDeduction] = useState(null);
     const canSolve = !gameOver && !gameWon && ai.hasSafeMove();
     const [stats, setStats] = useState({
         gamesPlayed: parseInt(localStorage.getItem('ms_games') || '0'),
@@ -228,6 +233,7 @@ const Minesweeper = () => {
         setGameWon(false);
         setAi(new MinesweeperAI());
         setFlagMode(false);
+        setLastDeduction(null);
     };
 
     useEffect(() => {
@@ -330,6 +336,7 @@ const Minesweeper = () => {
         const safe = ai.makeSafeMove();
         if (!safe) return; // no hay nada que deducir
         const [row, col] = safe;
+        setLastDeduction({ cell: key(row, col), ...ai.safeReasons.get(key(row, col)) });
         revealCell(row, col);
         ai.addKnowledge([row, col], getNeighborMines(row, col));
         setStats(prev => {
@@ -388,7 +395,7 @@ const Minesweeper = () => {
     };
 
     return (
-        <AiExperimentLayout id="minesweeper">
+        <AiExperimentLayout id="minesweeper" learningState={{ decision: lastDeduction }}>
             <div className="ai-legacy-content">
 
 

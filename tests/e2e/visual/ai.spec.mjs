@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures.mjs'
 
-for (const [name,path] of [['ai-lab','/ai'],['ai-neural','/ai/neural-network'],['ai-tetris','/ai/tetris'],['ai-sixdegrees','/ai/sixdegrees']]) test(`visual ${name}`, async ({page},testInfo) => {
+for (const [name,path] of [['ai-lab','/ai'],['ai-neural','/ai/neural-network'],['ai-tetris','/ai/tetris'],['ai-sixdegrees','/ai/sixdegrees'],['ai-tictactoe','/ai/tictactoe'],['ai-minesweeper','/ai/minesweeper'],['ai-nim','/ai/nim']]) test(`visual ${name}`, async ({page},testInfo) => {
   if(name==='ai-tetris') await page.addInitScript(()=>{Math.random=()=>0.95})
   await page.goto(path)
   await expect(page.locator('main h1')).toBeVisible()

@@ -1,0 +1,425 @@
+{
+  "date": "2026-10-02",
+  "status": "published_and_verified",
+  "games": [
+    "tetris",
+    "tictactoe",
+    "minesweeper",
+    "nim",
+    "sixdegrees"
+  ],
+  "languages": [
+    "es",
+    "en",
+    "ca"
+  ],
+  "visible_actual_code": true,
+  "additional_native_disclosure": true,
+  "excerpts_displayed_not_executed": true,
+  "decision_values_distinct_from_game_points": true,
+  "minesweeper_explanations_use_revealed_clues_only": true,
+  "verification": {
+    "check": "pass",
+    "tooling_tests": 67,
+    "browser_tests_passed": 37,
+    "intentional_mobile_skip_of_desktop_keyboard_case": 1,
+    "visual_cases": 14,
+    "game_references_changed_or_added": 10,
+    "neural_and_lab_references_preserved": 4,
+    "original_tetris_policy_comparisons": 48,
+    "protected_originals_preserved": 74
+  },
+  "live_navigation": {
+    "mode": "online",
+    "html_sha256": "3999083e0178122bb43fa191c2f04f928db9aec3398597958be151d79e01e0fb",
+    "cases": [
+      {
+        "viewport": "desktop",
+        "language": "es",
+        "game": "tetris",
+        "code_visible": true,
+        "more_code": true,
+        "live": "actual-proposal",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "es",
+        "game": "tictactoe",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "es",
+        "game": "minesweeper",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "es",
+        "game": "nim",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "es",
+        "game": "sixdegrees",
+        "code_visible": true,
+        "more_code": true,
+        "live": "actual-shortest-path",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "en",
+        "game": "tetris",
+        "code_visible": true,
+        "more_code": true,
+        "live": "actual-proposal",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "en",
+        "game": "tictactoe",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "en",
+        "game": "minesweeper",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "en",
+        "game": "nim",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "en",
+        "game": "sixdegrees",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "ca",
+        "game": "tetris",
+        "code_visible": true,
+        "more_code": true,
+        "live": "actual-proposal",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "ca",
+        "game": "tictactoe",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "ca",
+        "game": "minesweeper",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "ca",
+        "game": "nim",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "desktop",
+        "language": "ca",
+        "game": "sixdegrees",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "es",
+        "game": "tetris",
+        "code_visible": true,
+        "more_code": true,
+        "live": "actual-proposal",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "es",
+        "game": "tictactoe",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "es",
+        "game": "minesweeper",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "es",
+        "game": "nim",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "es",
+        "game": "sixdegrees",
+        "code_visible": true,
+        "more_code": true,
+        "live": "actual-shortest-path",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "en",
+        "game": "tetris",
+        "code_visible": true,
+        "more_code": true,
+        "live": "actual-proposal",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "en",
+        "game": "tictactoe",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "en",
+        "game": "minesweeper",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "en",
+        "game": "nim",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "en",
+        "game": "sixdegrees",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "ca",
+        "game": "tetris",
+        "code_visible": true,
+        "more_code": true,
+        "live": "actual-proposal",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "ca",
+        "game": "tictactoe",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "ca",
+        "game": "minesweeper",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "ca",
+        "game": "nim",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "ca",
+        "game": "sixdegrees",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      }
+    ],
+    "status": "pass"
+  },
+  "live_minesweeper": {
+    "mode": "online",
+    "html_sha256": "3999083e0178122bb43fa191c2f04f928db9aec3398597958be151d79e01e0fb",
+    "cases": [
+      {
+        "viewport": "desktop",
+        "language": "es",
+        "game": "minesweeper",
+        "code_visible": true,
+        "more_code": true,
+        "live": "actual-safe-constraint",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "es",
+        "game": "minesweeper",
+        "code_visible": true,
+        "more_code": true,
+        "live": "actual-safe-constraint",
+        "overflow": 0,
+        "page_errors": []
+      }
+    ],
+    "status": "pass"
+  },
+  "live_catalan_nim": {
+    "mode": "online",
+    "html_sha256": "3999083e0178122bb43fa191c2f04f928db9aec3398597958be151d79e01e0fb",
+    "cases": [
+      {
+        "viewport": "desktop",
+        "language": "ca",
+        "game": "nim",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      },
+      {
+        "viewport": "mobile",
+        "language": "ca",
+        "game": "nim",
+        "code_visible": true,
+        "more_code": true,
+        "live": "static",
+        "overflow": 0,
+        "page_errors": []
+      }
+    ],
+    "status": "pass"
+  },
+  "unchanged_sha256": {
+    "src/components/games/TicTacToe.jsx": "47184ea32acdf29958183464e609690855761fab6dd9a6d48095d5bb66bc7ef3",
+    "src/components/games/Nim.jsx": "6619d817eab87636f34cdf6b060522a31af4d91e3a8561001f834e4e48ecbcb6",
+    "src/components/games/SixDegrees/catalog.js": "ea02269b629cf2bac6582cab0b645f1ea3c4f066800517b270fa156f06e446db",
+    "src/components/games/NeuralNetwork/networkMath.js": "af8d41920bb8faf2891922299ce6844d8b668c42857745c487bcde7c85c1c46c",
+    "public/models/mnist/014_dataset-1x.json": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b"
+  },
+  "sources_sha256": {
+    "src/components/ai/GameLearning.jsx": "34fbdce92687a6c73290c309283fe8aac4ead092d15ea7f883bfdc5b834049cb",
+    "src/components/ai/GameLearning.css": "ea54a9ec625745a1a4a44e2981e5f25f70cc10b0642629fe4ab62a114d4e7f03",
+    "src/data/gameLearning.js": "3f321da8ed1f6909bae81f6a059e3eab695e7d746fe5deb03dcb4bc9fee4def5",
+    "src/components/ai/AiExperimentLayout.jsx": "4f1c401bf6304e807e184f4aa1f0f0b127ba6f5706cb33f182ecc3baa4dd90ab",
+    "src/components/games/tetrisEngine.js": "9230853769371d800ab9930c83099c79733ef747cf723838fbdadf84d46e4c47",
+    "src/components/games/Minesweeper.jsx": "600ca19754856d458d5a979413a4342af66c7d7df465c158828f633f5b3c972c",
+    "src/components/games/SixDegrees.jsx": "6f1a676366302e8771cecf65ab3a8bf1050c4fa4040437a08b0bb1b3efda7cf1",
+    "src/components/games/Tetris.jsx": "d3b1f38fbc4e33726695226dae8c4e0cc54104cdbbbc8779103a83d31d95cb13",
+    "tests/tooling/game-learning.test.mjs": "a1e589df9b0bb5e3fec655083270b286d631690c927bebfc50891a2b72b8847c",
+    "tests/e2e/game-learning.spec.mjs": "a201412dcf15063225d4286c55ae15f405be38889e2efee203a8c6945032c4cc"
+  },
+  "publication": {
+    "hosting": "IONOS",
+    "entry_html_sha256": "3999083e0178122bb43fa191c2f04f928db9aec3398597958be151d79e01e0fb",
+    "private_backup_verified": true,
+    "github_push": false
+  },
+  "qa_limits": {
+    "initial_full_reload_timeout": "Catalan Nim after13 successful cases; original state not captured and cause not reproduced; isolated checks pass.",
+    "navigation_seed_hang": "Artificial cycling RNG gave7 unique positions for8 required mines when shifted; navigation now uses normal randomness.",
+    "persistent_seed": "Both row/column alignments now produce8 distinct positions; UI verifies actual selected membership and revealed safe cell.",
+    "no_production_randomness_or_loader_change": true,
+    "mock_pass_is_not_remote_service_availability": true
+  }
+}

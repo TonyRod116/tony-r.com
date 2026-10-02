@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, ArrowDown, ChevronsDown, RotateCw } from 'lucide
 import { useLanguage } from '../../hooks/useLanguage.jsx'
 import { labCopy } from '../../data/aiExperiments'
 import AiExperimentLayout from '../ai/AiExperimentLayout'
-import { PIECES, LINE_CLEAR_MS, cellsFor, landing, previewCells, randomPiece, newGame, gameReducer, suggestMove } from './tetrisEngine'
+import { PIECES, LINE_CLEAR_MS, cellsFor, landing, previewCells, randomPiece, newGame, gameReducer, analyzeMove } from './tetrisEngine'
 
 const readNumber = key => { try { const value = Number(localStorage.getItem(key)); return Number.isFinite(value) ? Math.max(0, value) : 0 } catch { return 0 } }
 export default function Tetris() {
@@ -19,14 +19,15 @@ export default function Tetris() {
   const lastAiMoves = useRef(0)
   const isSettling = Boolean(game.settling)
   const isResolving = isSettling || Boolean(game.clearing)
-  const suggestion = useMemo(() => game.ai && !game.over && !isResolving ? suggestMove(game.board, game.piece, game.next, game.magic) : null, [game.ai, game.over, isResolving, game.board, game.piece, game.next, game.magic])
+  const proposal = useMemo(() => game.ai && !game.over && !isResolving ? analyzeMove(game.board, game.piece, game.next, game.magic) : null, [game.ai, game.over, isResolving, game.board, game.piece, game.next, game.magic])
+  const suggestion = proposal?.target
   const act = type => {
     dispatch({ type, first: type === 'restart' ? randomPiece() : undefined, next: randomPiece() })
     if (['left','right','tick','rotate','drop','ai-move','restart'].includes(type)) boardRef.current?.focus({ preventScroll: true })
   }
   useEffect(() => {
     const keyboard = event => {
-      if (event.altKey || event.ctrlKey || event.metaKey || event.target.closest?.('a, button, input, textarea, select, [contenteditable="true"]')) return
+      if (event.altKey || event.ctrlKey || event.metaKey || event.target.closest?.('a, button, input, textarea, select, [contenteditable="true"], .ai-learning')) return
       const action = { ArrowLeft: 'left', ArrowRight: 'right', ArrowDown: 'tick', ArrowUp: 'rotate', ' ': 'drop', p: 'pause', P: 'pause', a: 'ai-move', A: 'ai-move' }[event.key]
       if (!action) return
       event.preventDefault()
@@ -84,7 +85,7 @@ export default function Tetris() {
   const flowing = new Set(game.settling?.moved.map(([r,c]) => `${r}-${c}`) || [])
   const suggested = new Set(suggestion ? cellsFor(suggestion).map(([r,c]) => `${r}-${c}`) : [])
   const preview = new Set(previewCells(game.next).map(([r,c]) => `${r}-${c}`))
-  return <AiExperimentLayout id="tetris">
+  return <AiExperimentLayout id="tetris" learningState={{ proposal, decision: game.lastAiDecision }}>
     <audio ref={audio} loop preload="none" src="/assets/ttris/TetrisStrings.mp3" />
     <div className="ai-toolbar">
       <button className="ai-button" onClick={() => act('restart')}>{copy.restart}</button>

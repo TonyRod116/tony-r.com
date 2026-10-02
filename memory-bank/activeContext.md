@@ -1,5 +1,7 @@
 # Reference continuity summary
 
+2026-10-02 game education: all five games now have shared ES/EN/CA formulas, definitions and visible real JavaScript fragments with expandable code. T-Tris reports its same-policy proposal/last decision; Minesweeper reports immutable zero-count clue constraints; Seis grados reports current path/discovery count. Native code keys and reset/edit guards are verified. Published in IONOS with30 final live language/viewport/game checks,67 tooling tests,37 scoped UI checks and14 inspected visual comparisons. Latest proof: docs/ai/game-learning-20261002.md/json. Preserve neural behavior and original models/algorithms; public GitHub push remains separately gated.
+
 2026-10-02 current neural behavior: the original distributed return connections replace the central sum operator. Two strongest-weight links from each of128 actual hidden nodes carry individual chain-rule contributions;784 cells still contain the full128-source gradients. No neural Code and references link; original model provenance/licenses stay. Predictor/math/camera/independent controls are unchanged. Published on IONOS and verified in all three languages and both viewports; scoped tests/visual comparisons pass. Latest proof: docs/ai/neural-returns-20261002.md/json. Earlier grouped-bundle entries below describe superseded behavior. No public GitHub push.
 
 Last updated: 2026-09-30

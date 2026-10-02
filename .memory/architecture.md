@@ -13,6 +13,10 @@ Shared architecture and operating map for this portfolio repo.
 - `public/` holds static assets and demo data.
 - `dist/` and `dist*` folders are generated output and must not be treated as editable source.
 
+## Game education — 2026-10-02
+
+AiExperimentLayout extends only the five games with GameLearning and scoped CSS. src/data/gameLearning.js owns ES/EN/CA lessons, formulas/glossaries and real source excerpts; short code stays visible and native details shows more. Excerpts are displayed, never executed. T-Tris analyzeMove returns the same policy target plus actual post-clear features/current/future scores; the proposal is read-only and the reducer records its actual last decision. Native educational keys are excluded from game shortcuts. Minesweeper snapshots zero-count constraints during existing clue inference and displays the last safe decision without consulting hidden mines. Seis grados attaches its current path and discovery count, including queued artists; edits clear stale results. T-Tris/Minesweeper reset their educational snapshots. Neural model/math/layout and other game algorithms are preserved. Proof/publication: docs/ai/game-learning-20261002.md/json.
+
 ## Continuity Layers
 
 - `/.memory/*` stores durable repo-operating context inside the repo:

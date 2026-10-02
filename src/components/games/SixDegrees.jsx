@@ -47,7 +47,7 @@ export default function SixDegrees() {
     } catch { if (version === run.current) setError(copy.searchFailed) }
   }
   const number = value => new Intl.NumberFormat({ es: 'es-ES', en: 'en-GB', ca: 'ca-ES' }[language]).format(value)
-  return <AiExperimentLayout id="sixdegrees"><div className="degrees-stage">
+  return <AiExperimentLayout id="sixdegrees" learningState={{ result, source: selected.source, target: selected.target }}><div className="degrees-stage">
     <header className="degrees-heading"><p className="ai-kicker">{copy.catalogue}</p><h2>{copy.title}</h2><p>{copy.intro}</p>
       {stats && <p className="degrees-counts"><strong>{number(stats.people)}</strong> {copy.people}<span>·</span><strong>{number(stats.movies)}</strong> {copy.movies}</p>}
     </header>
