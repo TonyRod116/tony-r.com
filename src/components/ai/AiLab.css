@@ -235,7 +235,6 @@
 
 /* Special-piece effects are driven by reducer frames, not decorative timers. */
 .ai-tetris-cell { position: relative; }
-.ai-tetris-cell.is-ghost { outline: 1px dashed var(--ghost-color); outline-offset: -3px; }
 .ai-tetris-cell.is-crystal { background: color-mix(in srgb,var(--piece-color) 45%,var(--ai-dark)); border: 1px solid var(--piece-color); }
 .ai-tetris-cell.is-crystal::before { content: ''; position: absolute; inset: 2px; border: 1px solid color-mix(in srgb,var(--piece-color) 45%,transparent); clip-path: polygon(0 0,100% 0,100% 100%,0 100%,0 0,100% 100%); }
 .ai-crystal-life { position: relative; display: grid; height: 100%; place-items: center; font: 0.6875rem ui-monospace,monospace; color: var(--ai-paper); }

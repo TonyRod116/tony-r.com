@@ -113,7 +113,7 @@ export default function Tetris() {
       <button className="ai-button" onClick={() => act('restart')}>{copy.restart}</button>
       <button className="ai-button ai-button-secondary" disabled={game.over} onClick={() => act('pause')}>{game.paused ? copy.resume : copy.pause}</button>
       <button className="ai-button ai-button-secondary" aria-pressed={game.ai} onClick={() => act('ai')}>{game.ai ? copy.aiOn : copy.aiOff}</button>
-      <button className="ai-button ai-button-secondary" aria-pressed={game.magic} disabled={isResolving} onClick={() => act('magic')}>{copy.magic}</button>
+      <button className="ai-button ai-button-secondary" aria-pressed={game.magic} title={copy.magicTitle} disabled={isResolving} onClick={() => act('magic')}>{copy.magic}</button>
       <button className="ai-button ai-button-secondary" aria-pressed={!muted} onClick={() => setMuted(value => !value)}>{copy.music}</button>
     </div>
     <details className="ai-tetris-specials"><summary>{copy.C} / {copy.D} · {copy.specials}</summary><div className="ai-tetris-special-rules"><div><p className="ai-kicker">{copy.crystal}</p><p>{copy.crystalHint}</p><button className="ai-button ai-button-secondary" onClick={()=>act('restart','C')}>{copy.startCrystal}</button></div><div><p className="ai-kicker">{copy.drill}</p><p>{copy.drillHint}</p><button className="ai-button ai-button-secondary" onClick={()=>act('restart','D')}>{copy.startDrill}</button></div></div><p className="ai-help">{copy.restartNote}</p></details>
