@@ -12,7 +12,13 @@ for (const route of routes) test(`built route ${route}`, async ({ page }) => {
     await expect(page.getByTestId('tetris-board')).toBeVisible()
     await expect(page.getByRole('button', { name: 'IA desactivada', exact: true })).toBeVisible()
   } else await expect(page.locator('main h1, main h2, main canvas').first()).toBeVisible()
-  await expect(page.locator('main [role="status"]')).toHaveCount(0)
+  if (route === '/ai/sixdegrees') {
+    const catalogue = page.getByTestId('catalog-state')
+    await expect(catalogue).toHaveAttribute('data-state', 'ready', { timeout: 45000 })
+    await expect(catalogue).toHaveText('')
+  }
+  // The catalogue keeps an empty live region after loading for future updates.
+  await expect(page.locator('main [role="status"]:not([data-testid="catalog-state"])')).toHaveCount(0)
   await expect(page.locator('main [role="alert"]')).toHaveCount(0)
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true)
   expect(errors).toEqual([])
