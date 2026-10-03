@@ -174,3 +174,11 @@ Published and verified: home removes the visible Lucid payout heading and aggreg
 18 preview and18 online cases match the final build;24 home and8 comparison interactions pass, plus82 tooling checks. Five visual references pass unchanged; the intentional mobile range removal is inspected and its one reference passes on rerun.74 protected files and three numerical/formula sources match. Operational evidence/recovery remains private in .artifacts/payout-heading-20261003/.
 
 Tony explicitly pauses GitHub push until he asks again, superseding the prior push authorization. No new commit or GitHub publication is attempted; these changes remain local source pending that instruction. IONOS website publication remains separate. The pause is recorded in the synchronized AI instructions and startup handoff.
+
+## Five-block special-piece shapes — 2026-10-03
+
+Published and verified: Crystal is a five-block + with one/three/one rows, and Drill is a five-block vertical bar. Both pivot centrally; the existing two-cell kicks fit horizontal Drill at either wall. Shared definitions update manual play, ghosts,5×5 queue/guide icons, previews, animation and reachable AI. Short ES/EN/CA descriptions reflect the new shapes. Crystal’s three subsequent placements, Drill’s two-block budget, scoring, weights and all effect/phase behavior remain.
+
+84 tooling checks,41 browser passes plus one intentional desktop-keyboard/mobile skip,10 visual comparisons and18 preview+18 live cases pass. Two new tests first fail on the old geometry. Four references are inspected/refreshed.74 protected files, three numerical/formula sources and eight previous cleanup files match. No API/server/dependency/hosting changes. Proof: docs/ai/tetris-five-blocks-20261003.md/json; private recovery: .artifacts/tetris-five-blocks-20261003/.
+
+GitHub remains paused; no push occurs. The preceding completed home/Projects cleanup and synchronized push restriction are saved in local commitc5d179b. Current instruction sync and shape work are kept in a separate local commit; neither is uploaded to GitHub. Earlier uncommitted-status notes describe their original snapshot.

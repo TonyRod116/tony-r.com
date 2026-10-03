@@ -93,7 +93,7 @@ test('Tetris keyboard drop, AI placement and restart use valid settled pieces', 
   await expect(board.locator('[data-settled]:not([data-settled=""])')).toHaveCount(0)
   const upcoming = page.locator('.ai-tetris-preview').first()
   const name = (await upcoming.getAttribute('aria-label')).split(': ').at(-1)
-  await expect(upcoming.locator('[data-preview-filled="true"]')).toHaveCount(name==='T'?5:name==='D'?3:4)
+  await expect(upcoming.locator('[data-preview-filled="true"]')).toHaveCount(['T','C','D'].includes(name)?5:4)
   await expect(page.locator('.ai-tetris-preview')).toHaveCount(2)
 })
 
@@ -195,7 +195,7 @@ test('Tetris keeps AI preview outside the live board and every active piece insi
     await page.getByRole('button',{name:'Que la IA decida',exact:true}).click()
     const positions=await board.locator('[data-active]:not([data-active=""])').evaluateAll(es=>es.map(e=>e.dataset.active.split(',').map(Number)))
     expect(positions.every(([r,c])=>r>=0&&r<20&&c>=0&&c<10)).toBe(true)
-    if(positions.length)expect(Math.max(...positions.map(([,c])=>c))-Math.min(...positions.map(([,c])=>c))).toBeLessThanOrEqual(3)
+    if(positions.length)expect(Math.max(...positions.map(([,c])=>c))-Math.min(...positions.map(([,c])=>c))).toBeLessThanOrEqual((await board.getAttribute('data-piece-name'))==='D'?4:3)
   }
 })
 test('all ten neural examples draw distinct non-empty inputs and produce real probabilities',async({page})=>{

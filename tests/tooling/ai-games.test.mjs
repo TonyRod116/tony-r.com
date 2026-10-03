@@ -103,19 +103,20 @@ test('one requested AI move works independently of the suggestion display toggle
 })
 test('edge rotations and AI placements cannot split a single shape across both walls', () => {
   for(const name of NAMES) {
+    const maxSpan=Math.max(...[0,1].map(axis=>Math.max(...PIECES[name].cells.map(cell=>cell[axis]))-Math.min(...PIECES[name].cells.map(cell=>cell[axis]))))
     for(const c of [0,1,8,9])for(let rotation=0;rotation<4;rotation++) {
       const piece={name,r:12,c,rotation},board=emptyBoard()
       if(!fits(board,piece))continue
       const turned=rotate(board,piece),cells=cellsFor(turned)
       assert.ok(fits(board,turned));assert.ok(cells.every(([r,col])=>Number.isInteger(r)&&Number.isInteger(col)&&col>=0&&col<10))
-      assert.ok(Math.max(...cells.map(([,col])=>col))-Math.min(...cells.map(([,col])=>col))<=3)
+      assert.ok(Math.max(...cells.map(([,col])=>col))-Math.min(...cells.map(([,col])=>col))<=maxSpan)
     }
     for(const gap of [0,8]) {
       const board=emptyBoard();board[19].fill('O');board[19][gap]=null;board[19][gap+1]=null
       const target=suggestMove(board,spawn(name),null,false)
       assert.ok(target);assert.ok(fits(board,target))
       const cells=cellsFor(target)
-      assert.ok(Math.max(...cells.map(([,col])=>col))-Math.min(...cells.map(([,col])=>col))<=3)
+      assert.ok(Math.max(...cells.map(([,col])=>col))-Math.min(...cells.map(([,col])=>col))<=maxSpan)
       assert.equal(lockPiece(board,target,false).over,false)
     }
   }

@@ -13,10 +13,10 @@ export const PIECES = {
   S: { color: '#a3c880', cells: [[-1,0],[0,0],[0,1],[1,1]], pivot: [0,0] },
   Si: { color: '#ebd37d', cells: [[-1,1],[0,1],[0,0],[1,0]], pivot: [0,0] },
   M: { color: '#b59ae9', cells: [[-1,0],[0,0],[0,1],[1,0]], pivot: [0,0] },
-  C: { color: '#b4e9ff', cells: [[-1,0],[-1,1],[0,0],[0,1]], pivot: [-0.5,0.5], weight: 0.5 },
+  C: { color: '#b4e9ff', cells: [[-1,0],[0,-1],[0,0],[0,1],[1,0]], pivot: [0,0], weight: 0.5 },
   O: { color: '#efa46c', cells: [[-1,0],[-1,1],[0,0],[0,1]], pivot: [-0.5,0.5] },
   I: { color: '#a7d9d5', cells: [[-1,0],[0,0],[1,0],[2,0]], pivot: [0.5,0.5] },
-  D: { color: '#ffba68', cells: [[-1,0],[0,0],[1,0]], pivot: [0,0], weight: 0.5 },
+  D: { color: '#ffba68', cells: [[-2,0],[-1,0],[0,0],[1,0],[2,0]], pivot: [0,0], weight: 0.5 },
   T: { color: '#d3f56b', cells: [[-1,-1],[-1,0],[-1,1],[0,0],[1,0]], pivot: [0,0] },
 }
 export const NAMES = Object.keys(PIECES)
@@ -40,7 +40,7 @@ export function cellsFor(piece) {
   let offsets = PIECES[piece.name].cells
   const [pivotR,pivotC] = PIECES[piece.name].pivot
   // O retains its shape and origin in every rotation.
-  for (let i = 0; i < (['O','C'].includes(piece.name) ? 0 : piece.rotation % 4); i++) offsets = offsets.map(([r,c]) => [pivotR+c-pivotC,pivotC-r+pivotR])
+  for (let i = 0; i < (piece.name === 'O' ? 0 : piece.rotation % 4); i++) offsets = offsets.map(([r,c]) => [pivotR+c-pivotC,pivotC-r+pivotR])
   return offsets.map(([r,c]) => [r + piece.r,c + piece.c])
 }
 export const spawn = name => ({ name, rotation: 0, r: -Math.min(...PIECES[name].cells.map(([r]) => r)), c: 4 })

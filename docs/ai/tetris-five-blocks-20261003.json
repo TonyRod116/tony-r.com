@@ -1,0 +1,87 @@
+{
+  "date": "2026-10-03",
+  "status": "published_and_verified",
+  "website": "https://tony-r.com/ai/tetris",
+  "html_sha256": "a1ab067dbf3b2e29e4520bc957c743db3d5b30e04653b65d627d2a88cceb7524",
+  "model_sha256": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b",
+  "geometry": {
+    "Crystal": {
+      "cells": [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "pivot": [
+        0,
+        0
+      ],
+      "subsequent_placements": 3
+    },
+    "Drill": {
+      "cells": [
+        [
+          -2,
+          0
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ],
+      "pivot": [
+        0,
+        0
+      ],
+      "perforation_budget": 2
+    }
+  },
+  "evidence": {
+    "old_geometry_new_tests_failed": 2,
+    "tooling_passed": 84,
+    "scoped_browser_passed": 41,
+    "intentional_mobile_desktop_keyboard_skip": 1,
+    "visual_comparisons_passed": 10,
+    "references_inspected_and_updated": 4,
+    "preview_cases": 18,
+    "online_cases": 18,
+    "protected_files_unchanged": 74,
+    "neural_numerical_sources_unchanged": 3,
+    "prior_cleanup_files_unchanged": 8
+  },
+  "boundaries": [
+    "No AI-policy, scoring, lifetime, appearance weighting or effect-budget changes",
+    "Manual play, ghosts, previews, animation and reachable AI use the same shape definitions",
+    "Publication on IONOS is separate from GitHub; push remains paused",
+    "No API/server, dependencies, secrets or hosting configuration changes"
+  ],
+  "recovery": "Private verified backup; no remote asset deletion"
+}

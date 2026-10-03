@@ -41,7 +41,7 @@ test('disabling a queued piece during pause keeps the reaction and the AI uses t
   await expect(board).toHaveAttribute('data-next','I');await expect(board).toHaveAttribute('data-following','I')
   await expect(page.locator('.ai-tetris-forecast summary')).not.toContainText('Taladro')
   await board.getByRole('button',{name:'Continuar',exact:true}).click();await expect(board).toHaveAttribute('data-turn','1')
-  await expect(board).toHaveAttribute('data-piece-name','I');await expect(board.locator('[data-settled="D"]')).toHaveCount(3)
+  await expect(board).toHaveAttribute('data-piece-name','I');await expect(board.locator('[data-settled="D"]')).toHaveCount(5)
 })
 
 test('the guide and piece states are translated in all languages',async({page})=>{
