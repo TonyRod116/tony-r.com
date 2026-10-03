@@ -4,7 +4,7 @@ import { useLanguage } from '../../hooks/useLanguage.jsx'
 import { labCopy } from '../../data/aiExperiments'
 import { tetrisSpecials } from '../../data/tetrisSpecials'
 import AiExperimentLayout from '../ai/AiExperimentLayout'
-import { PIECES, LINE_CLEAR_MS, CRYSTAL_BREAK_MS, CRYSTAL_LIFETIME, REACTION_STEP_MS, cellsFor, cellKind, crystalRemaining, landing, lockPiece, previewCells, randomPiece, newGame, gameReducer, analyzeMove } from './tetrisEngine'
+import { PIECES, SPECIAL_NAMES, normalizeSpecials, LINE_CLEAR_MS, CRYSTAL_BREAK_MS, CRYSTAL_LIFETIME, REACTION_STEP_MS, cellsFor, cellKind, crystalRemaining, landing, lockPiece, previewCells, randomPiece, newGame, gameReducer, analyzeMove } from './tetrisEngine'
 
 function MiniBoard({ result, title, testId }) {
   const fresh = new Set(result?.newCells?.map(([r,c]) => `${r}-${c}`))
@@ -16,11 +16,13 @@ function MiniBoard({ result, title, testId }) {
 }
 
 const readNumber = key => { try { const value = Number(localStorage.getItem(key)); return Number.isFinite(value) ? Math.max(0, value) : 0 } catch { return 0 } }
+const readSpecials = () => { try { return normalizeSpecials(JSON.parse(localStorage.getItem('tetris_special_pieces'))) } catch { return normalizeSpecials() } }
 export default function Tetris() {
   const { language } = useLanguage()
   const copy = { ...labCopy[language], ...tetrisSpecials[language] }
   const pieceName = name => copy[name] ?? name
-  const [game, dispatch] = useReducer(gameReducer, null, () => newGame(randomPiece(), randomPiece(), {}, randomPiece()))
+  const [game, dispatch] = useReducer(gameReducer, null, () => { const enabledSpecials=readSpecials();return newGame(randomPiece(enabledSpecials), randomPiece(enabledSpecials), {enabledSpecials}, randomPiece(enabledSpecials)) })
+  const [specialsOpen, setSpecialsOpen] = useState(false)
   const [record, setRecord] = useState(() => readNumber('tetris_maxScore'))
   const [muted, setMuted] = useState(true)
   const [aiMoves, setAiMoves] = useState(() => readNumber('tetris_ai_moves'))
@@ -35,10 +37,16 @@ export default function Tetris() {
   const proposal = useMemo(() => game.ai && !game.over ? analyzeMove(proposalSource.board, proposalSource.piece, proposalSource.next, proposalSource.magic, proposalSource.turn, proposalSource.following) : null, [game.ai, game.over, proposalSource.board, proposalSource.piece, proposalSource.next, proposalSource.magic, proposalSource.turn, proposalSource.following])
   const dropPlan = useMemo(() => !game.over && !isResolving ? lockPiece(game.board, landing(game.board, game.piece), game.magic, game.turn) : null, [game.over, isResolving, game.board, game.piece, game.magic, game.turn])
   const dropPreview = game.resolution?.result ?? (dropPlan && !dropPlan.over ? dropPlan : { board: game.board, turn: game.turn })
+  const selection = game.enabledSpecials
   const act = (type, first) => {
-    dispatch({ type, first: type === 'restart' ? first ?? randomPiece() : undefined, next: randomPiece(), following: type === 'restart' ? randomPiece() : undefined })
+    dispatch({ type, first: type === 'restart' ? first ?? randomPiece(selection) : undefined, next: randomPiece(selection), following: type === 'restart' ? randomPiece(selection) : undefined })
     if (['left','right','tick','rotate','drop','ai-move','restart'].includes(type)) boardRef.current?.focus({ preventScroll: true })
   }
+  const toggleSpecial = name => {
+    const updated = { ...selection, [name]: !selection[name] }
+    dispatch({ type:'toggle-special', name, next:randomPiece(updated), following:randomPiece(updated), drawn:randomPiece(updated) })
+  }
+  useEffect(() => { try { localStorage.setItem('tetris_special_pieces',JSON.stringify(selection)) } catch { /* Optional preferences. */ } },[selection])
   useEffect(() => {
     const keyboard = event => {
       if (event.altKey || event.ctrlKey || event.metaKey || event.target.closest?.('a, button, input, textarea, select, [contenteditable="true"], .ai-learning, .ai-tetris-specials, .ai-tetris-forecast')) return
@@ -47,16 +55,16 @@ export default function Tetris() {
       event.preventDefault()
       if (event.repeat && ['drop','pause','ai-move'].includes(action)) return
       boardRef.current?.focus({ preventScroll: true })
-      dispatch({ type: action, next: randomPiece() })
+      dispatch({ type: action, next: randomPiece(selection) })
     }
     window.addEventListener('keydown', keyboard)
     return () => window.removeEventListener('keydown', keyboard)
-  }, [])
+  }, [selection])
   useEffect(() => {
     if (game.over || game.paused || isResolving) return
-    const timer = setInterval(() => dispatch({ type: 'tick', next: randomPiece() }), Math.max(90, 1000 / game.level))
+    const timer = setInterval(() => dispatch({ type: 'tick', next: randomPiece(selection) }), Math.max(90, 1000 / game.level))
     return () => clearInterval(timer)
-  }, [game.over, game.paused, game.level, isResolving])
+  }, [game.over, game.paused, game.level, isResolving, selection])
   const reaction = game.settling ?? game.drilling
   useEffect(() => {
     if (!reaction?.token || game.paused || game.over) return
@@ -116,10 +124,22 @@ export default function Tetris() {
       <button className="ai-button" onClick={() => act('restart')}>{copy.restart}</button>
       <button className="ai-button ai-button-secondary" disabled={game.over} onClick={() => act('pause')}>{game.paused ? copy.resume : copy.pause}</button>
       <button className="ai-button ai-button-secondary" aria-pressed={game.ai} onClick={() => act('ai')}>{game.ai ? copy.aiOn : copy.aiOff}</button>
-      <button className="ai-button ai-button-secondary" aria-pressed={game.magic} title={copy.magicTitle} disabled={isResolving} onClick={() => act('magic')}>{copy.magic}</button>
+      <button className="ai-button ai-button-secondary" aria-expanded={specialsOpen} aria-controls="tetris-specials-guide" title={copy.magicTitle} onClick={() => setSpecialsOpen(value=>!value)}>{copy.magic}</button>
       <button className="ai-button ai-button-secondary" aria-pressed={!muted} onClick={() => setMuted(value => !value)}>{copy.music}</button>
     </div>
-    <details className="ai-tetris-specials"><summary>{copy.C} / {copy.D} · {copy.specials}</summary><div className="ai-tetris-special-rules"><div><p className="ai-kicker">{copy.crystal}</p><p>{copy.crystalHint}</p><button className="ai-button ai-button-secondary" onClick={()=>act('restart','C')}>{copy.startCrystal}</button></div><div><p className="ai-kicker">{copy.drill}</p><p>{copy.drillHint}</p><button className="ai-button ai-button-secondary" onClick={()=>act('restart','D')}>{copy.startDrill}</button></div></div><p className="ai-help">{copy.restartNote}</p></details>
+    <details id="tetris-specials-guide" className="ai-tetris-specials" open={specialsOpen} onToggle={event=>setSpecialsOpen(event.currentTarget.open)}>
+      <summary>{copy.guide}</summary><p className="ai-help">{copy.guideHint}</p>
+      <div className="ai-tetris-special-rules">{SPECIAL_NAMES.map(name=>{
+        const preview=new Set(previewCells(name).map(([r,c])=>`${r}-${c}`))
+        const [title,hint]=name==='T'?[copy.magicPiece,copy.magicPieceHint]:name==='C'?[copy.crystal,copy.crystalHint]:[copy.drill,copy.drillHint]
+        return <button key={name} type="button" className="ai-tetris-special-toggle" aria-label={pieceName(name)} aria-describedby={`tetris-special-description-${name}`} aria-pressed={selection[name]} onClick={()=>toggleSpecial(name)} style={{'--piece-color':PIECES[name].color}}>
+          <span className="ai-tetris-special-icon" aria-hidden="true">{Array.from({length:25},(_,i)=><span key={i} data-filled={preview.has(`${Math.floor(i/5)}-${i%5}`)}/>)}</span>
+          <span className="ai-tetris-special-text"><span className="ai-kicker">{title}</span><span id={`tetris-special-description-${name}`} className="ai-tetris-special-description">{hint}</span><span className="ai-tetris-special-state">{selection[name]?copy.enabled:copy.disabled}</span></span>
+        </button>
+      })}</div>
+      <div className="ai-tetris-special-practice">{SPECIAL_NAMES.map(name=><button key={name} className="ai-button ai-button-secondary" disabled={!selection[name]} onClick={()=>act('restart',name)}>{name==='T'?copy.startMagic:name==='C'?copy.startCrystal:copy.startDrill}</button>)}</div>
+      <p className="ai-help">{copy.restartNote}</p>
+    </details>
     <div className="ai-tetris-workspace">
       <div>
         <div className="ai-tetris-board" ref={boardRef} tabIndex={0} role="group" aria-label="T-Tris" aria-describedby="tetris-keys" data-testid="tetris-board" data-position={`${game.piece.r},${game.piece.c},${game.piece.rotation}`} data-score={game.score} data-game-over={game.over} data-turn={game.turn} data-next={game.next} data-following={game.following} data-paused={game.paused} data-settling={isSettling} data-drilling={Boolean(game.drilling)} data-cracking={Boolean(game.cracking)} data-clearing={Boolean(game.clearing)} data-clear-rows={[...clearingRows].join(',')} data-settle-frame={game.settling?.step ?? 0} data-drill-frame={game.drilling?.step ?? 0} data-piece-name={game.piece.name} style={{ '--line-clear-ms': `${LINE_CLEAR_MS}ms`, '--crystal-break-ms': `${CRYSTAL_BREAK_MS}ms` }}>
@@ -132,7 +152,7 @@ export default function Tetris() {
               {name==='D' && <span className={`ai-drill-voxel${game.drilling&&!settled&&active.has(key)?' is-spinning':''}`} aria-hidden="true">↓</span>}
             </span>
           }))}
-          {(game.paused || game.over) && <div className="ai-tetris-overlay"><h2>{game.over ? copy.over : copy.paused}</h2><button className="ai-button" onClick={() => act(game.over ? 'restart' : 'pause')}>{game.over ? copy.restart : copy.resume}</button></div>}
+          {(game.paused || game.over) && <div className="ai-tetris-overlay"><h2>{game.over ? copy.over : copy.paused}</h2>{game.over&&<dl className="ai-tetris-final-scores"><div><dt>{copy.score}</dt><dd data-testid="tetris-final-score">{game.score}</dd></div><div><dt>{copy.record}</dt><dd data-testid="tetris-best-score">{Math.max(record,game.score)}</dd></div></dl>}<button className="ai-button" onClick={() => act(game.over ? 'restart' : 'pause')}>{game.over ? copy.restart : copy.resume}</button></div>}
         </div>
         <div className="ai-touch-controls">
           {[[copy.left,'left',ArrowLeft],[copy.rotate,'rotate',RotateCw],[copy.right,'right',ArrowRight],[copy.down,'tick',ArrowDown],[copy.drop,'drop',ChevronsDown]].map(([label,type,Icon]) => <button key={type} className="ai-button ai-button-secondary" aria-label={label} disabled={game.paused || game.over || isResolving} onClick={() => act(type)}><Icon size={20} /></button>)}

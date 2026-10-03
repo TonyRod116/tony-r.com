@@ -218,6 +218,7 @@ test('all ten neural examples draw distinct non-empty inputs and produce real pr
 })
 test('neural layer tracing and inspection expose the actual signal and camera reset',async({page})=>{
   await page.goto('/ai/neural-network');await expect(page.getByTestId('model-state')).toContainText('Modelo cargado')
+  const enableMotion=page.getByRole('switch',{name:'Encender animación',exact:true});if(await enableMotion.count())await enableMotion.click()
   await page.locator('.ai-samples').getByRole('button',{name:'4',exact:true}).click()
   await page.getByRole('button',{name:'Recorrer las capas',exact:false}).click()
   await expect(page.locator('.ai-network-instrument')).toHaveAttribute('data-active-layer','0')
@@ -309,13 +310,14 @@ test.describe('completed-line flash',()=>{
   })
 })
 test('Tetris game-over restart stays above every Magic T voxel and receives the full button click',async({page})=>{
-  await page.addInitScript(()=>{Math.random=()=>0.95})
+  await page.addInitScript(()=>{Math.random=()=>0.95;localStorage.setItem('tetris_maxScore','150')})
   await page.goto('/ai/tetris')
   const board=page.getByTestId('tetris-board')
   for(let turn=1;turn<=6;turn++){
     await board.focus();await page.keyboard.press(' ');await expect(board).toHaveAttribute('data-turn',String(turn),{timeout:6000})
   }
   await expect(board).toHaveAttribute('data-game-over','true')
+  await expect(page.getByTestId('tetris-final-score')).toHaveText('60');await expect(page.getByTestId('tetris-best-score')).toHaveText('150')
   const restart=board.getByRole('button',{name:'Nueva partida',exact:true});await expect(restart).toBeVisible()
   await restart.scrollIntoViewIfNeeded()
   const covered=await restart.evaluate(button=>{const r=button.getBoundingClientRect();return[0.1,0.3,0.5,0.7,0.9].flatMap(x=>[0.25,0.5,0.75].map(y=>document.elementFromPoint(r.left+r.width*x,r.top+r.height*y)?.closest('button')!==button))})
@@ -324,6 +326,7 @@ test('Tetris game-over restart stays above every Magic T voxel and receives the 
 })
 test('ten neural OUTPUT neurons form one 3D column and inference edges show actual contributions',async({page})=>{
   await page.goto('/ai/neural-network');await expect(page.getByTestId('model-state')).toContainText('Modelo cargado')
+    const enableMotion=page.getByRole('switch',{name:'Encender animación',exact:true});if(await enableMotion.count())await enableMotion.click()
   const buttons=page.locator('.ai-samples button');await expect(buttons).toHaveCount(10)
   const sampleRows=await buttons.evaluateAll(es=>es.map(e=>Math.round(e.getBoundingClientRect().top)));expect(new Set(sampleRows).size).toBe(2)
   const outputs=page.locator('circle[data-layer="3"]');await expect(outputs).toHaveCount(10)
@@ -407,6 +410,7 @@ test.describe('independent neural inspection controls',()=>{
   test.use({reducedMotion:'no-preference'})
   test('all stages and each direction preserve pause/on-off, real gradients and the base model',async({page})=>{
     await page.goto('/ai/neural-network');await expect(page.getByTestId('model-state')).toContainText('Modelo cargado')
+    const enableMotion=page.getByRole('switch',{name:'Encender animación',exact:true});if(await enableMotion.count())await enableMotion.click()
     const instrument=page.locator('.ai-network-instrument'),panel=page.getByTestId('neural-trace-panel')
     const original=await page.locator('[data-probability]').evaluateAll(es=>es.map(e=>Number(e.dataset.probability)))
     const flowLayers=()=>page.locator('.neural-flow-edge').evaluateAll(es=>[...new Set(es.map(e=>Number(e.dataset.flowLayer)))].sort())
@@ -459,6 +463,7 @@ test.describe('independent neural inspection controls',()=>{
   })
   test('direct stage selection cancels an inference walkthrough without restarting motion',async({page})=>{
     await page.goto('/ai/neural-network');await expect(page.getByTestId('model-state')).toContainText('Modelo cargado')
+    const enableMotion=page.getByRole('switch',{name:'Encender animación',exact:true});if(await enableMotion.count())await enableMotion.click()
     await page.getByRole('button',{name:'Recorrer las capas',exact:false}).click()
     await page.getByRole('button',{name:'Pausar animación',exact:true}).click()
     for(let i=0;i<2;i++)await page.getByRole('button',{name:'Paso siguiente',exact:true}).click()
@@ -483,6 +488,7 @@ test.describe('distributed input gradient transport',()=>{
   test.use({reducedMotion:'no-preference'})
   test('returns originate at all hidden nodes with actual contributions and complete pixel gradients',async({page})=>{
     await page.goto('/ai/neural-network');await expect(page.getByTestId('model-state')).toContainText('Modelo cargado')
+    const enableMotion=page.getByRole('switch',{name:'Encender animación',exact:true});if(await enableMotion.count())await enableMotion.click()
     await page.getByRole('button',{name:'Backpropagation',exact:false}).click()
     await page.getByRole('button',{name:'01 / Entrada',exact:false}).click()
     const routes=page.locator('[data-input-route]'),cells=page.locator('[data-input-cell]')

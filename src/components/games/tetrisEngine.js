@@ -20,11 +20,16 @@ export const PIECES = {
   T: { color: '#d3f56b', cells: [[-1,-1],[-1,0],[-1,1],[0,0],[1,0]], pivot: [0,0] },
 }
 export const NAMES = Object.keys(PIECES)
+export const SPECIAL_NAMES = ['T','C','D']
+export const normalizeSpecials = selection => Object.fromEntries(SPECIAL_NAMES.map(name => [name, typeof selection?.[name] === 'boolean' ? selection[name] : true]))
+export const isPieceEnabled = (name, selection) => Boolean(PIECES[name]) && (!SPECIAL_NAMES.includes(name) || selection?.[name] !== false)
+const safePiece = (name, selection) => isPieceEnabled(name, selection) ? name : 'O'
 export const emptyBoard = () => Array.from({ length: HEIGHT }, () => Array(WIDTH).fill(null))
-export const randomPiece = () => {
-  let draw = Math.random() * NAMES.reduce((sum, name) => sum + (PIECES[name].weight ?? 1), 0)
-  for (const name of NAMES) { draw -= PIECES[name].weight ?? 1; if (draw < 0) return name }
-  return NAMES.at(-1)
+export const randomPiece = (selection = {}) => {
+  const pool = NAMES.filter(name => isPieceEnabled(name, selection))
+  let draw = Math.random() * pool.reduce((sum, name) => sum + (PIECES[name].weight ?? 1), 0)
+  for (const name of pool) { draw -= PIECES[name].weight ?? 1; if (draw < 0) return name }
+  return pool.at(-1)
 }
 export const cellKind = cell => typeof cell === 'string' ? cell : cell?.kind ?? null
 export const crystalRemaining = (cell, turn) => cellKind(cell) === 'C' && typeof cell === 'object' ? Math.max(0, cell.expiresAt - turn) : null
@@ -213,13 +218,14 @@ export function suggestMove(board, piece, nextName, magic, turn = 0, followingNa
   return analyzeMove(board, piece, nextName, magic, turn, followingName)?.target ?? null
 }
 export function newGame(first, next, previous = {}, following = null) {
-  return { board: emptyBoard(), piece: spawn(first), next, following, turn: 0, score: 0, lines: 0, level: 1,
+  const enabledSpecials = normalizeSpecials(previous.enabledSpecials)
+  return { board: emptyBoard(), piece: spawn(safePiece(first, enabledSpecials)), next: safePiece(next, enabledSpecials), following: following ? safePiece(following, enabledSpecials) : null, enabledSpecials, turn: 0, score: 0, lines: 0, level: 1,
     paused: false, over: false, magic: previous.magic ?? true, ai: previous.ai ?? false, aiMoves: 0,
     resolution: null, settling: null, drilling: null, cracking: null, clearing: null, lastAiDecision: null }
 }
 function finishCommit(state, result, nextName, isAi) {
-  const piece = spawn(state.next), lines = state.lines + result.cleared
-  return { ...state, board: result.board, piece, next: state.following ?? nextName, following: state.following ? nextName : null,
+  const piece = spawn(safePiece(state.next, state.enabledSpecials)), lines = state.lines + result.cleared
+  return { ...state, board: result.board, piece, next: safePiece(state.following ?? nextName, state.enabledSpecials), following: state.following ? safePiece(nextName, state.enabledSpecials) : null,
     turn: result.turn, resolution: null, settling: null, drilling: null, cracking: null, clearing: null, score: state.score + 10 + result.cleared * 100, lines,
     level: Math.floor(lines / 10) + 1, over: !fits(result.board, piece), aiMoves: state.aiMoves + Number(isAi) }
 }
@@ -241,6 +247,16 @@ function commit(state, target, nextName, isAi = false) {
 }
 export function gameReducer(state, action) {
   if (action.type === 'restart') return newGame(action.first, action.next, state, action.following ?? null)
+  if (action.type === 'toggle-special') {
+    if (!SPECIAL_NAMES.includes(action.name)) return state
+    const previous = normalizeSpecials(state.enabledSpecials), enabledSpecials = { ...previous, [action.name]: !previous[action.name] }
+    const next = isPieceEnabled(state.next, enabledSpecials) ? state.next : safePiece(action.next, enabledSpecials)
+    const following = state.following ? isPieceEnabled(state.following, enabledSpecials) ? state.following : safePiece(action.following, enabledSpecials) : null
+    const resolution = state.resolution ? { ...state.resolution,
+      nextName: isPieceEnabled(state.resolution.nextName, enabledSpecials) ? state.resolution.nextName : safePiece(action.drawn, enabledSpecials),
+      source: { ...state.resolution.source, next, following } } : null
+    return { ...state, enabledSpecials, next, following, resolution, lastAiDecision: null }
+  }
   if (action.type === 'pause') return state.over ? state : { ...state, paused: !state.paused }
   if (action.type === 'visibility-pause') return { ...state, paused: true }
   if (action.type === 'ai') return { ...state, ai: !state.ai }

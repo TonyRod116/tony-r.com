@@ -91,7 +91,10 @@
 .neural-trace-caption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; color: var(--ai-accent); font: 0.6875rem ui-monospace,monospace; }
 .neural-trace-caption .ai-kicker { font-size: 0.6875rem; }
 .neural-trace-panel h3 { font-size: 1.25rem; font-weight: 500; margin-top: 16px; letter-spacing: -0.025em; }
-.neural-trace-panel code { display: block; font-size: 0.75rem; color: var(--ai-accent); padding-block: 12px; overflow-wrap: anywhere; }
+.neural-equation { max-width: 100%; overflow-x: auto; color: var(--ai-accent); padding-block: 16px; }
+.neural-equation math { font-family: math; font-size: 1.25rem; margin: 0; text-align: left; }
+.neural-equation mtable { margin: 0; border-spacing: 0 12px; }
+.neural-equation mtd { text-align: left; }
 .neural-trace-panel > p { color: var(--ai-muted); font-size: 0.8125rem; }
 .neural-trace-controls { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 12px; }
 .neural-trace-panel .neural-trace-note { border-top: 1px solid var(--ai-line); padding-top: 12px; margin-top: 12px; font-size: 0.6875rem; }

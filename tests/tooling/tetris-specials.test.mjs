@@ -146,3 +146,39 @@ test('new special pieces are half as frequent as each normal piece and preserve 
     Math.random = () => 0.95; assert.equal(randomPiece(), 'T')
   } finally { Math.random = original }
 })
+test('every special-piece selection draws only its eligible pool, including all-off with a fixed RNG', () => {
+  const original=Math.random,names=Object.keys(PIECES),specials=['T','C','D']
+  try {
+    for(let mask=0;mask<8;mask++){
+      const enabled=Object.fromEntries(specials.map((name,index)=>[name,Boolean(mask&(1<<index))])),seen=new Set()
+      for(let i=0;i<900;i++){Math.random=()=>(i+0.5)/900;const name=randomPiece(enabled);assert.ok(!specials.includes(name)||enabled[name],`${mask}/${name}`);seen.add(name)}
+      assert.deepEqual(seen,new Set(names.filter(name=>!specials.includes(name)||enabled[name])))
+    }
+    Math.random=()=>0.95
+    assert.ok(!specials.includes(randomPiece({T:false,C:false,D:false})))
+  } finally {Math.random=original}
+})
+test('disabling specials cleans the known queue without replacing the active piece and survives restart', () => {
+  let state=newGame('T','C',{},'D'),piece=state.piece,board=state.board
+  for(const name of ['T','C','D'])state=gameReducer(state,{type:'toggle-special',name,next:'I',following:'O',drawn:'L'})
+  assert.deepEqual(state.enabledSpecials,{T:false,C:false,D:false})
+  assert.strictEqual(state.piece,piece);assert.strictEqual(state.board,board);assert.equal(state.magic,true);assert.equal(state.turn,0);assert.equal(state.score,0)
+  assert.equal(state.next,'I');assert.equal(state.following,'O')
+  state=gameReducer(state,{type:'restart',first:'T',next:'C',following:'D'})
+  assert.deepEqual(state.enabledSpecials,{T:false,C:false,D:false})
+  for(const name of [state.piece.name,state.next,state.following])assert.ok(!['T','C','D'].includes(name))
+  state=finish(gameReducer(state,{type:'drop',next:'D'}))
+  for(const name of [state.piece.name,state.next,state.following])assert.ok(!['T','C','D'].includes(name))
+})
+test('selection changes during a paused reaction keep its physics and resample both known and deferred pieces', () => {
+  let state=gameReducer(newGame('D','C',{},'T'),{type:'drop',next:'D'})
+  state=gameReducer(state,{type:'pause'})
+  const result=state.resolution.result,board=state.board,piece=state.piece
+  for(const name of ['C','T','D'])state=gameReducer(state,{type:'toggle-special',name,next:'I',following:'O',drawn:'L'})
+  assert.strictEqual(state.resolution.result,result);assert.strictEqual(state.board,board);assert.strictEqual(state.piece,piece)
+  assert.equal(state.paused,true);assert.equal(state.score,0);assert.equal(state.turn,0)
+  assert.equal(state.resolution.source.next,'I');assert.equal(state.resolution.source.following,'O');assert.equal(state.resolution.nextName,'L')
+  state=finish(gameReducer(state,{type:'pause'}))
+  assert.equal(state.piece.name,'I');assert.equal(state.next,'O');assert.equal(state.following,'L')
+  assert.equal(count(state.board,'D'),3);assert.equal(state.score,10)
+})

@@ -2,6 +2,8 @@
 
 Last updated: 2026-10-03
 
+Latest additions: Special pieces opens a T/C/D cheat sheet with per-piece exclusion, saved preferences and repaired queue/AI; existing pieces retain their effects. Game over shows score/best. Neural phase formulas use native MathML; animation initially off on compact/touch and on on desktop, with explicit opt-in preserved. Proof: docs/ai/lab-guide-20261003.md/json.
+
 Current source outranks memory; recover selective context with ai:brief/ai:context. Preserve preexisting dist and personal settings changes. Portfolio tasks live in Beads, not this handoff.
 
 Home, eight portfolio pages and six AI experiments have the approved showroom identity. Header keeps Projects, AI Lab, About, Contact; Solutions/CV are secondary. Warm paper/charcoal and the lab’s lime instrument must remain. Existing BuildApp captures are public demos, original PDF/gallery assets are unchanged, Casex has the clean casex.es link. Overview/proof: docs/ai/site-showroom-20260930.md and polish-20261001.md/json.

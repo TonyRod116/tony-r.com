@@ -1,0 +1,670 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-03",
+  "status": "implemented_and_verified_online",
+  "features": {
+    "special_guide_button_opens_panel": true,
+    "independent_specials": [
+      "T",
+      "C",
+      "D"
+    ],
+    "persisted_preferences": true,
+    "filtered_weighted_pool_single_pass": true,
+    "always_available_regular_shapes": 7,
+    "known_and_deferred_queue_repaired": true,
+    "existing_piece_effects_preserved": true,
+    "game_over_score_and_best": true,
+    "native_mathml_preserves_source_formulas": true,
+    "compact_or_coarse_pointer_default_animation": false,
+    "fine_pointer_desktop_default_animation": true
+  },
+  "checks": {
+    "tooling_pass": 82,
+    "routing_pass": 24,
+    "skills_mirrored": 27,
+    "initial_104_case_scope": {
+      "pass": 102,
+      "intentional_skip": 1,
+      "old_mobile_auto_play_assumption_failure": 1
+    },
+    "explicit_motion_corrected_target_pass": 2,
+    "verified_unique_scope_pass": 103,
+    "intentional_skip": 1,
+    "visual_comparisons_pass": 10,
+    "inspected_changed_references": 6,
+    "build": "isolated_production_build"
+  },
+  "motion_before": {
+    "measurement": "Running native CSS/SVG animations in controlled Chromium, not device CPU or battery",
+    "cases": [
+      {
+        "view": "desktop",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "has_touch": false,
+        "previous_default_enabled": "true",
+        "before_running_animations": 324,
+        "after_manual_off_running_animations": 0
+      },
+      {
+        "view": "mobile",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "has_touch": true,
+        "previous_default_enabled": "true",
+        "before_running_animations": 324,
+        "after_manual_off_running_animations": 0
+      },
+      {
+        "view": "tablet-portrait",
+        "viewport": {
+          "width": 768,
+          "height": 1024
+        },
+        "has_touch": true,
+        "previous_default_enabled": "true",
+        "before_running_animations": 324,
+        "after_manual_off_running_animations": 0
+      },
+      {
+        "view": "tablet-landscape",
+        "viewport": {
+          "width": 1366,
+          "height": 1024
+        },
+        "has_touch": true,
+        "previous_default_enabled": "true",
+        "before_running_animations": 324,
+        "after_manual_off_running_animations": 0
+      }
+    ]
+  },
+  "preview": {
+    "status": "pass",
+    "html_sha256": "1acfa00e53a7fda7b2a55ddfcd03ac9db9931372a52e099a4d5f88722a6cc027",
+    "cases": [
+      {
+        "route": "tetris",
+        "view": "desktop",
+        "language": "es",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": {
+          "score": 60,
+          "best": 150,
+          "restart_above_pieces": true
+        },
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "desktop",
+        "language": "es",
+        "default_animation_enabled": true,
+        "default_running_animations": 324,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "tetris",
+        "view": "desktop",
+        "language": "en",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": null,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "desktop",
+        "language": "en",
+        "default_animation_enabled": true,
+        "default_running_animations": 324,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "tetris",
+        "view": "desktop",
+        "language": "ca",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": null,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "desktop",
+        "language": "ca",
+        "default_animation_enabled": true,
+        "default_running_animations": 324,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "tetris",
+        "view": "mobile",
+        "language": "es",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": {
+          "score": 60,
+          "best": 150,
+          "restart_above_pieces": true
+        },
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "mobile",
+        "language": "es",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "tetris",
+        "view": "mobile",
+        "language": "en",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": null,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "mobile",
+        "language": "en",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "tetris",
+        "view": "mobile",
+        "language": "ca",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": null,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "mobile",
+        "language": "ca",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "tetris",
+        "view": "tablet-portrait",
+        "language": "es",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": null,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "tablet-portrait",
+        "language": "es",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "tetris",
+        "view": "tablet-portrait",
+        "language": "en",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": null,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "tablet-portrait",
+        "language": "en",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "tetris",
+        "view": "tablet-portrait",
+        "language": "ca",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": null,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "tablet-portrait",
+        "language": "ca",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "tablet-landscape",
+        "language": "es",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "tablet-landscape",
+        "language": "en",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "tablet-landscape",
+        "language": "ca",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      }
+    ]
+  },
+  "online": {
+    "status": "pass",
+    "html_sha256": "1acfa00e53a7fda7b2a55ddfcd03ac9db9931372a52e099a4d5f88722a6cc027",
+    "cases": [
+      {
+        "route": "tetris",
+        "view": "desktop",
+        "language": "es",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": {
+          "score": 60,
+          "best": 150,
+          "restart_above_pieces": true
+        },
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "desktop",
+        "language": "es",
+        "default_animation_enabled": true,
+        "default_running_animations": 324,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "tetris",
+        "view": "desktop",
+        "language": "en",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": null,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "desktop",
+        "language": "en",
+        "default_animation_enabled": true,
+        "default_running_animations": 324,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "tetris",
+        "view": "desktop",
+        "language": "ca",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": null,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "desktop",
+        "language": "ca",
+        "default_animation_enabled": true,
+        "default_running_animations": 324,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "tetris",
+        "view": "mobile",
+        "language": "es",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": {
+          "score": 60,
+          "best": 150,
+          "restart_above_pieces": true
+        },
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "mobile",
+        "language": "es",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "tetris",
+        "view": "mobile",
+        "language": "en",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": null,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "mobile",
+        "language": "en",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "tetris",
+        "view": "mobile",
+        "language": "ca",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": null,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "mobile",
+        "language": "ca",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "tetris",
+        "view": "tablet-portrait",
+        "language": "es",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": null,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "tablet-portrait",
+        "language": "es",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "tetris",
+        "view": "tablet-portrait",
+        "language": "en",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": null,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "tablet-portrait",
+        "language": "en",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "tetris",
+        "view": "tablet-portrait",
+        "language": "ca",
+        "three_rules": true,
+        "queue_excludes_disabled": true,
+        "active_piece_preserved": true,
+        "preferences_survive_restart_reload": true,
+        "game_over": null,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "tablet-portrait",
+        "language": "ca",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "tablet-landscape",
+        "language": "es",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "tablet-landscape",
+        "language": "en",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      },
+      {
+        "route": "neural",
+        "view": "tablet-landscape",
+        "language": "ca",
+        "default_animation_enabled": false,
+        "default_running_animations": 0,
+        "after_off_running_animations": 0,
+        "opt_in_works": true,
+        "native_math_fraction": true,
+        "native_math_scripts": true,
+        "probabilities_preserved": true,
+        "page_errors": []
+      }
+    ]
+  },
+  "source_sha256": {
+    "src/components/games/tetrisEngine.js": "127db37aa6c885c793d42cd1635fe7e25c89e550ec0bd6717f48e22662468294",
+    "src/components/games/Tetris.jsx": "3e276853e9768a55ddbeaa1342c6d7e4fcf0d9285d42a4cd05094c09dd8fb808",
+    "src/data/tetrisSpecials.js": "b2a3abf117ece8d0aa34258168fd60db8e6cc1af97b1b68ebcfe1eccc67e62cb",
+    "src/components/ai/AiLab.css": "221f6a1ef1c18f4249bf299980354737c932f5e9d917fa31ad1a5b86ca7a7253",
+    "src/components/games/NeuralNetworkVisualization.jsx": "d92f865b1ff5ed5236b3a8c5a38e09729c3ee648b18dbf7e89e4bf965533f68e",
+    "src/components/games/NeuralNetwork/NeuralEquation.jsx": "b82b9e5cf77114e91dcdfcdef2418b996deccd3afd5764165cd122eeeb8d8a4e",
+    "src/components/games/NeuralNetwork/NeuralTracePanel.jsx": "20abfee808e7e5dfab7ad0b46e07396e42b393734c3aff7484940f7123966c8b",
+    "src/components/games/NeuralNetwork/NeuralStudio.css": "78f52066ceecff90e004eb92087cc9be485d9d641adfccbfed01bd96c93bcc85",
+    "tests/e2e/tetris-guide.spec.mjs": "edb23c750b15a55fde420bbf28c2a678e0b20857a0199152e9bbe0fb2fe7fb12",
+    "tests/e2e/neural-presentation.spec.mjs": "c9d15b48176ad9b87f3a24909b0c35ce1f66ae4153020ffa8012967ddcd940f2",
+    "tests/tooling/tetris-specials.test.mjs": "df5604ec0668f9cf5c5baa3a3dca4701eae04e1531f3e9775b380c9fa978c78f",
+    "tests/e2e/ai-lab.spec.mjs": "2f0eec373f5cd2adddbf5fefa09b4e45b7181d38c9bfcb4fb70c3d28f26560bf"
+  },
+  "accepted_visual_sha256": {
+    "desktop/ai-neural.png": "0f3d8ea116c442dffe8902f8f9332f309da12dd258325fe0bc3c155c48cbc5c0",
+    "desktop/tetris-crystal.png": "54167f746fd2cdc3ebbf4bcafc5d0cf2fe22d6ceb6f744bac0cc6565a5aaafa2",
+    "desktop/tetris-drill.png": "e0ea81099cdba6d8773657b6148a2c2b23fc791c1d63c12a17f84a247a2b441b",
+    "mobile/ai-neural.png": "e98db5b6dd0c036607ff85ce778720e8739d97ad588734352fbe395f078edd4d",
+    "mobile/tetris-crystal.png": "c7f87e6fd810256b9186de7a53191ef248b90470a30c606985a1ffc70fbf84d1",
+    "mobile/tetris-drill.png": "63801f5ab7e3845816869b1be04bb3832efdedfec4d6d7c1330526283ba12f9a"
+  },
+  "unchanged_math_and_formula_sha256": {
+    "src/components/games/NeuralNetwork/networkMath.js": "af8d41920bb8faf2891922299ce6844d8b668c42857745c487bcde7c85c1c46c",
+    "public/models/mnist/014_dataset-1x.json": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b",
+    "src/data/neuralDynamics.js": "2be18865fa3ad30bc61f275c5358a4cd892ee1eda7ca98220b63da2abbac200c"
+  },
+  "preservation": {
+    "protected_originals_unchanged": 74,
+    "dependencies_added": false,
+    "api_server_changes": false,
+    "hosting_configuration_changes": false
+  },
+  "publication": {
+    "host": "IONOS",
+    "html_sha256": "1acfa00e53a7fda7b2a55ddfcd03ac9db9931372a52e099a4d5f88722a6cc027",
+    "previous_backup_verified": true,
+    "private_operational_paths_in_public_source": false,
+    "paid_generations_or_contact_sent": false
+  },
+  "primary_reference": "https://www.w3.org/TR/mathml-core/",
+  "limits": [
+    "Animation counts use controlled Chromium, not physical-device CPU or battery measurements.",
+    "Native math is presentation only; model accuracy is not newly evaluated."
+  ]
+}

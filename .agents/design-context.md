@@ -53,3 +53,7 @@ El instrumento conserva la orientación de28 grados confirmada por Tony. Tres zo
 T-Tris usa pivotes centrales y muestra las piezas completas al entrar. La recomendación se representa en una miniatura separada, mientras la decisión puntual de IA siempre está disponible jugando. La T tiene un núcleo luminoso y una marca propia; al contactar, sus bloques se desplazan por pasos físicos reales. Pausa, reinicio y movimiento reducido respetan la fase.
 
 Capturas actuales de BuildApp: dos pantallas móviles de demo pública en home y antes/después/presupuesto en Projects; las leyendas identifican los datos de ejemplo. Proveniencia y hashes: docs/ai/buildapp-captures-20260930.json. Pruebas/inspección/publicación: docs/ai/polish-20261001.md/json.
+
+## Mathematical notation — 2026-10-03
+
+Neural phase expressions use native MathML fractions, superscripts and accents. A scoped math font gives italic handwritten-style variables and upright function names, with the existing lime palette and original aria-label text. This is a mathematical notation decision, independent of home/body typography; no font downloads or math-renderer dependencies. On narrow/touch screens the neural view starts static, and explicit motion choices are preserved.
