@@ -59,11 +59,7 @@
 .home-trading-copy > p + p { margin-top: 24px; }
 .home-note { margin-top: 24px !important; color: var(--home-muted); font-size: 0.875rem; }
 .home-payouts { margin-top: 32px; }
-.home-payouts-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 16px; }
-.home-payouts-heading h3 { font-size: 0.9375rem; font-weight: 500; letter-spacing: 0; }
-.home-payouts-heading > p { text-align: right; flex-shrink: 0; }
-.home-payouts-heading strong { display: block; font-size: 1.25rem; font-weight: 500; font-variant-numeric: tabular-nums; }
-.home-payouts-heading > p > span, .home-payouts-note { color: var(--home-muted); font-size: 0.75rem; letter-spacing: 0; }
+.home-payouts-note { color: var(--home-muted); font-size: 0.75rem; letter-spacing: 0; }
 .home-payouts-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--home-line); }
 .home-payout { width: 100%; display: grid; grid-template-columns: 88px minmax(0,1fr) auto; gap: 20px; align-items: center; padding: 16px 0; min-height: 92px; border: 0; border-bottom: 1px solid var(--home-line); background: transparent; color: var(--home-ink); text-align: left; cursor: pointer; }
 .home-payout img { width: 88px; height: auto; }
@@ -78,8 +74,6 @@
 .home-payouts .site-modal-body > img { height: auto; max-height: 65dvh; object-fit: contain; }
 .home-payouts .site-modal-footer .home-payouts-note { color: var(--home-muted); }
 @media (max-width: 420px) {
-  .home-payouts-heading { gap: 12px; }
-  .home-payouts-heading h3 { max-width: 15ch; }
   .home-payout { grid-template-columns: 64px minmax(0,1fr); gap: 12px; }
   .home-payout img { width: 64px; grid-row: 1 / 3; }
   .home-payout-open { grid-column: 2; }

@@ -26,7 +26,7 @@ export default function Projects() {
     <article className="site-featured-project" id="buildapp-pro">
       <figure className="site-project-images">
         {capture===0 ? <div className="site-project-comparison">
-          <BeforeAfterSlider originalImageUrl={buildappComparisonImages.before} renderedImageUrl={buildappComparisonImages.after} />
+          <BeforeAfterSlider originalImageUrl={buildappComparisonImages.before} renderedImageUrl={buildappComparisonImages.after} showRange={false} />
           <button ref={captureTrigger} className="site-button site-button-secondary" onClick={() => setLightbox(true)}>{text.captures}</button>
         </div> : <button ref={captureTrigger} onClick={() => setLightbox(true)} aria-label={text.captures}><BuildAppScreenshot trimHeader src={captures[capture]} alt={buildappCaptureCaptions[language][capture]} width="390" height="844" fetchPriority="high" /></button>}
         <div className="site-project-thumbnails">{captures.map((image,index) => <button key={image} onClick={() => setCapture(index)} aria-label={`${text.captures} ${index+1}`} aria-pressed={capture===index}><BuildAppScreenshot trimHeader={index>0} src={image} alt="" width="90" height="70" loading="lazy" /></button>)}</div>
@@ -40,7 +40,7 @@ export default function Projects() {
     })}</section>
     <Modal open={lightbox} title={`${text.captures} · ${capture+1}/${captures.length}`} closeLabel={copy.close} onClose={() => {setLightbox(false);captureTrigger.current?.focus({preventScroll:true})}} large
       footer={<><button className="site-button site-button-secondary" onClick={() => setCapture(index => (index+captures.length-1)%captures.length)}>{copy.previous}</button><button className="site-button site-button-secondary" onClick={() => setCapture(index => (index+1)%captures.length)}>{copy.next}</button></>}>
-      {capture===0 ? <div className="site-project-comparison"><BeforeAfterSlider originalImageUrl={buildappComparisonImages.before} renderedImageUrl={buildappComparisonImages.after} /></div> : <BuildAppScreenshot trimHeader src={captures[capture]} alt={buildappCaptureCaptions[language][capture]} />}
+      {capture===0 ? <div className="site-project-comparison"><BeforeAfterSlider originalImageUrl={buildappComparisonImages.before} renderedImageUrl={buildappComparisonImages.after} showRange={false} /></div> : <BuildAppScreenshot trimHeader src={captures[capture]} alt={buildappCaptureCaptions[language][capture]} />}
       <p className="site-note site-project-capture-note">{buildappCaptureCaptions[language][capture]}</p>
     </Modal>
   </SitePage>

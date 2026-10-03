@@ -179,3 +179,7 @@ Brand/search terms:
 - Use Corey Haines skills first for homepage copy, landing pages, CRO, pricing, launch, Meta Ads, ASO, and emails.
 - Use Eric Siu skills when the task needs experimentation loops, content production systems, distribution, or growth scorecards.
 - Use Kostja skills when the task needs SEO page structure, title/meta/schema work, route planning, or discoverability improvements.
+
+## Payout Presentation Preference — 2026-10-03
+
+Tony requests removing the visible Lucid payout heading and combined amount, keeping the two existing receipt rows. He reports another Lucid payment that has not been supplied; do not infer its amount/date or add evidence that is not provided. The currently visible receipts are selected proofs, not a complete earnings record. The company/method copy and individual receipts remain.

@@ -2,6 +2,10 @@
 
 Last updated: 2026-10-03
 
+GitHub publication is paused by Tony on2026-10-03. Do not push until he explicitly asks again. This supersedes the earlier session-wide push authorization; IONOS publication stays separate.
+
+Latest small adjustments: home omits the visible Lucid payout heading and aggregate; individual receipts remain. Projects uses only the image divider, with native keyboard access and no visible extra bar. GitHub push stays paused until Tony explicitly asks again.
+
 Latest additions: T-Tris has a compact three-card special-piece selector with short rules and no practice-start buttons (51% less height on desktop,63% on mobile). Saved exclusions/queue/AI and existing-piece effects remain. Projects uses the actual two-image BuildApp comparison slider and an interactive lightbox; home links to the public BuildApp homepage and explains the owner-confirmed recent/first-attempt trading results and verified research controls in ES/EN/CA. Neural brush initially2.8/max3; original math/weights/formulas and device-specific animation defaults remain. Published/verified on IONOS in36 preview+36 online cases. Proof: docs/ai/compact-projects-20261003.md/json.
 
 Current source outranks memory; recover selective context with ai:brief/ai:context. Preserve preexisting dist and personal settings changes. Portfolio tasks live in Beads, not this handoff.

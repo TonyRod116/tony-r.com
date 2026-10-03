@@ -1,18 +1,12 @@
-import { useId, useState } from 'react'
+import { useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import Modal from './Modal'
 import { tradingPayouts, payoutCopy, payoutAmount, payoutDate } from '../../data/tradingPayouts'
 
 export default function TradingPayouts({ language }) {
   const [selected, setSelected] = useState(null)
-  const titleId = useId()
   const copy = payoutCopy[language]
-  const total = tradingPayouts.reduce((sum, payout) => sum + payout.amount, 0)
-  return <section className="home-payouts" aria-labelledby={titleId}>
-    <div className="home-payouts-heading">
-      <h3 id={titleId}>{copy.title}</h3>
-      <p><strong>{payoutAmount(total, language)}</strong><span>{copy.total}</span></p>
-    </div>
+  return <section className="home-payouts" aria-label={copy.title}>
     <ul className="home-payouts-list">
       {tradingPayouts.map(payout => <li key={payout.date}>
         <button type="button" className="home-payout" onClick={() => setSelected(payout)} aria-haspopup="dialog" aria-label={`${copy.view}: ${payoutAmount(payout.amount, language)}, ${payoutDate(payout.date, language)}`}>
