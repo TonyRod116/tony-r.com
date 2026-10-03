@@ -140,7 +140,7 @@
 .ai-tetris-cell.is-ghost { border-color: #859573; }
 .ai-tetris-cell.is-suggestion { border: 1px dashed var(--ai-accent); }
 .ai-tetris-cell.is-filled { border: 2px solid #080d09; background: var(--piece-color); }
-.ai-tetris-overlay { position: absolute; inset: 0; background: #080d09e8; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px; }
+.ai-tetris-overlay { position: absolute; inset: 0; z-index: 2; background: #080d09e8; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px; }
 .ai-tetris-overlay h2 { font-size: 1.75rem; }
 .ai-touch-controls { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .ai-touch-controls button { padding-inline: 14px; }
@@ -251,6 +251,7 @@
 @keyframes drill-spark { from { opacity: 1; transform: scale(0.4); } to { opacity: 0; transform: scale(1.35); } }
 .ai-tetris-board[data-paused="true"] :is(.is-breaking,.ai-drill-voxel), .ai-tetris-board[data-paused="true"] .is-drilled::after { animation-play-state: paused; }
 .ai-special-status { color: var(--ai-orange); text-align: center; }
+.ai-tetris-reaction-status { min-height: 1lh; }
 .ai-effect-hint { max-width: 50ch; }
 .ai-tetris-specials { border-block: 1px solid var(--ai-line); margin-bottom: 24px; padding-block: 12px; }
 .ai-tetris-specials summary, .ai-tetris-forecast summary { min-height: 44px; cursor: pointer; color: var(--ai-accent); font-size: 0.8125rem; }

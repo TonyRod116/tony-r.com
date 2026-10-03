@@ -4,7 +4,7 @@ import { useLanguage } from '../../hooks/useLanguage.jsx'
 import { labCopy } from '../../data/aiExperiments'
 import { tetrisSpecials } from '../../data/tetrisSpecials'
 import AiExperimentLayout from '../ai/AiExperimentLayout'
-import { PIECES, LINE_CLEAR_MS, CRYSTAL_BREAK_MS, REACTION_STEP_MS, cellsFor, cellKind, crystalRemaining, landing, lockPiece, previewCells, randomPiece, newGame, gameReducer, analyzeMove } from './tetrisEngine'
+import { PIECES, LINE_CLEAR_MS, CRYSTAL_BREAK_MS, CRYSTAL_LIFETIME, REACTION_STEP_MS, cellsFor, cellKind, crystalRemaining, landing, lockPiece, previewCells, randomPiece, newGame, gameReducer, analyzeMove } from './tetrisEngine'
 
 function MiniBoard({ result, title, testId }) {
   const fresh = new Set(result?.newCells?.map(([r,c]) => `${r}-${c}`))
@@ -30,8 +30,11 @@ export default function Tetris() {
   const lastAiMoves = useRef(0)
   const isSettling = Boolean(game.settling)
   const isResolving = Boolean(game.resolution)
-  const proposal = useMemo(() => game.ai && !game.over && !isResolving ? analyzeMove(game.board, game.piece, game.next, game.magic, game.turn, game.following) : null, [game.ai, game.over, isResolving, game.board, game.piece, game.next, game.magic, game.turn, game.following])
+  const reactionStatus = isSettling ? copy.magicFlow : game.drilling ? copy.drilling : game.cracking ? copy.crystalBreaking : ''
+  const proposalSource = game.resolution?.source ?? game
+  const proposal = useMemo(() => game.ai && !game.over ? analyzeMove(proposalSource.board, proposalSource.piece, proposalSource.next, proposalSource.magic, proposalSource.turn, proposalSource.following) : null, [game.ai, game.over, proposalSource.board, proposalSource.piece, proposalSource.next, proposalSource.magic, proposalSource.turn, proposalSource.following])
   const dropPlan = useMemo(() => !game.over && !isResolving ? lockPiece(game.board, landing(game.board, game.piece), game.magic, game.turn) : null, [game.over, isResolving, game.board, game.piece, game.magic, game.turn])
+  const dropPreview = game.resolution?.result ?? (dropPlan && !dropPlan.over ? dropPlan : { board: game.board, turn: game.turn })
   const act = (type, first) => {
     dispatch({ type, first: type === 'restart' ? first ?? randomPiece() : undefined, next: randomPiece(), following: type === 'restart' ? randomPiece() : undefined })
     if (['left','right','tick','rotate','drop','ai-move','restart'].includes(type)) boardRef.current?.focus({ preventScroll: true })
@@ -122,7 +125,7 @@ export default function Tetris() {
         <div className="ai-tetris-board" ref={boardRef} tabIndex={0} role="group" aria-label="T-Tris" aria-describedby="tetris-keys" data-testid="tetris-board" data-position={`${game.piece.r},${game.piece.c},${game.piece.rotation}`} data-score={game.score} data-game-over={game.over} data-turn={game.turn} data-next={game.next} data-following={game.following} data-paused={game.paused} data-settling={isSettling} data-drilling={Boolean(game.drilling)} data-cracking={Boolean(game.cracking)} data-clearing={Boolean(game.clearing)} data-clear-rows={[...clearingRows].join(',')} data-settle-frame={game.settling?.step ?? 0} data-drill-frame={game.drilling?.step ?? 0} data-piece-name={game.piece.name} style={{ '--line-clear-ms': `${LINE_CLEAR_MS}ms`, '--crystal-break-ms': `${CRYSTAL_BREAK_MS}ms` }}>
           {game.board.flatMap((row,r) => row.map((settled,c) => {
             const key = `${r}-${c}`, name = cellKind(settled) || (!game.over ? active.get(key) : null)
-            const life = name === 'C' ? crystalRemaining(settled, displayTurn) ?? 2 : null
+            const life = name === 'C' ? crystalRemaining(settled, displayTurn) ?? CRYSTAL_LIFETIME : null
             return <span key={key} className={`ai-tetris-cell${name ? ` is-filled${name==='T'?' is-magic':name==='C'?' is-crystal':name==='D'?' is-drill':''}` : ''}${ghost.has(key)?' is-ghost':''}${willDrill.has(key)?' will-drill':''}${settled?.id&&expiredIds.has(settled.id)?' will-expire':''}${cracking.has(key)?' is-breaking':''}${sparks.has(key)?' is-drilled':''}${clearingRows.has(r)?' is-clearing':''}`} style={{ '--piece-color': PIECES[name ?? game.piece.name].color, '--ghost-color': PIECES[game.piece.name].color }} data-filled={name || ''} data-settled={cellKind(settled) || ''} data-ghost={ghost.has(key)} data-will-drill={willDrill.has(key)} data-crystal-life={life ?? undefined} data-active={!game.over && !settled && active.has(key) ? `${r},${c}` : ''}>
               {name==='T' && <span aria-hidden="true" key={flowing.has(key)?game.settling.step:'rest'} className={`ai-magic-voxel${flowing.has(key)?' is-flowing':isSettling&&game.settling.step<=2?' is-contact':''}`} />}
               {name==='C' && <span className="ai-crystal-life" aria-hidden="true">{life}</span>}
@@ -136,15 +139,13 @@ export default function Tetris() {
         </div>
         <p className="ai-help" id="tetris-keys">{copy.tetrisHint}</p>
         <button className="ai-button ai-decide-button" aria-keyshortcuts="A" disabled={game.paused || game.over || isResolving} onClick={() => act('ai-move')}>{copy.aiMove}<kbd aria-hidden="true">A</kbd></button>
-        {isSettling && <p className="ai-help ai-magic-status" role="status">{copy.magicFlow}</p>}
-        {game.drilling && <p className="ai-help ai-special-status" role="status">{copy.drilling}</p>}
-        {game.cracking && <p className="ai-help ai-special-status" role="status">{copy.crystalBreaking}</p>}
+        <p className={`ai-help ai-tetris-reaction-status ${isSettling ? 'ai-magic-status' : 'ai-special-status'}`} role={reactionStatus ? 'status' : undefined}>{reactionStatus}</p>
         <p className="ai-help ai-effect-hint">{copy.effectHint}</p>
       </div>
       <aside className="ai-tetris-sidebar">
-        <div className="ai-tetris-anticipation">{dropPlan && !dropPlan.over && <MiniBoard result={dropPlan} title={copy.afterDrop} testId="tetris-drop-plan"/>}{game.ai && <MiniBoard result={proposal?.result} title={copy.aiProposal} testId="tetris-ai-plan"/>}</div>
-        {proposal?.forecastSteps===2 && <details className="ai-tetris-forecast"><summary>{copy.forecast} · {pieceName(game.next)} + {pieceName(game.following)}</summary><MiniBoard result={proposal.forecast.at(-1).result} title={copy.forecast} testId="tetris-ai-forecast"/></details>}
-        {game.ai && <p className="ai-help">{copy.aiPlanHint}{proposal?.forecastSteps===2 && ` ${copy.forecastHint}`}</p>}
+        {game.ai && <div className="ai-tetris-anticipation"><MiniBoard result={dropPreview} title={copy.afterDrop} testId="tetris-drop-plan"/><MiniBoard result={proposal?.result} title={copy.aiProposal} testId="tetris-ai-plan"/></div>}
+        {proposal?.forecastSteps>0 && <details className="ai-tetris-forecast"><summary>{copy.forecast} · {proposal.forecast.map(step=>pieceName(step.name)).join(' + ')}</summary><MiniBoard result={proposal.forecast.at(-1).result} title={copy.forecast} testId="tetris-ai-forecast"/></details>}
+        {game.ai && <p className="ai-help">{copy.aiPlanHint}{proposal?.forecastSteps>0 && ` ${copy.forecastHint}`}</p>}
         <div className="ai-tetris-queue"><p className="ai-kicker">{copy.nextTwo}</p>{[game.next,game.following].filter(Boolean).map((name,index)=>{
           const preview = new Set(previewCells(name).map(([r,c]) => `${r}-${c}`))
           return <div key={index}><p>{index===0?copy.nextPiece:copy.following} · {pieceName(name)}</p><div className="ai-tetris-preview" aria-label={`${index===0?copy.nextPiece:copy.following}: ${name}`}>{Array.from({length:25},(_,i) => <span key={i} data-preview-filled={preview.has(`${Math.floor(i/5)}-${i%5}`)} style={preview.has(`${Math.floor(i/5)}-${i%5}`) ? { background: PIECES[name].color } : undefined} />)}</div></div>

@@ -255,6 +255,27 @@ test('Magic T visibly dissolves after contact and pause freezes its sand frames'
 })
 test.describe('completed-line flash',()=>{
   test.use({reducedMotion:'no-preference'})
+  test('Tetris AI suggestion retains its colored result during line clearing and pause',async({page})=>{
+    await page.addInitScript(()=>{Math.random=()=>0.66})
+    await page.goto('/ai/tetris');await page.getByRole('button',{name:'IA desactivada',exact:true}).click()
+    const board=page.getByTestId('tetris-board'),plan=page.getByTestId('tetris-ai-plan')
+    for(const[index,column]of[0,2,4,6,0].entries()){
+      await board.focus();for(let step=0;step<Math.abs(column-4);step++)await page.keyboard.press(column<4?'ArrowLeft':'ArrowRight')
+      await page.keyboard.press(' ');await expect(board).toHaveAttribute('data-turn',String(index+1))
+    }
+    await board.focus();for(let step=0;step<4;step++)await page.keyboard.press('ArrowRight')
+    const expected=await plan.locator('[data-cell-kind]').evaluateAll(cells=>cells.map(cell=>cell.dataset.cellKind))
+    expect(expected.filter(Boolean)).toHaveLength(4)
+    const queue=page.locator('.ai-tetris-queue'),queueTop=await queue.evaluate(e=>e.getBoundingClientRect().top+scrollY)
+    await page.keyboard.press(' ');await page.keyboard.press('p');await expect(board).toHaveAttribute('data-clearing','true')
+    expect(await plan.locator('[data-cell-kind]').evaluateAll(cells=>cells.map(cell=>cell.dataset.cellKind))).toEqual(expected)
+    expect(await queue.evaluate(e=>e.getBoundingClientRect().top+scrollY)).toBeCloseTo(queueTop,3)
+    await page.waitForTimeout(450)
+    expect(await plan.locator('[data-cell-kind]').evaluateAll(cells=>cells.map(cell=>cell.dataset.cellKind))).toEqual(expected)
+    await page.keyboard.press('p');await expect(board).toHaveAttribute('data-turn','6')
+    await expect(board).toHaveAttribute('data-score','260')
+    expect((await plan.locator('[data-cell-kind]').evaluateAll(cells=>cells.map(cell=>cell.dataset.cellKind))).filter(Boolean).length).toBeGreaterThan(4)
+  })
   test('two completed rows flash before removal and pause freezes completion',async({page})=>{
     await page.addInitScript(()=>{Math.random=()=>0.66})
     await page.goto('/ai/tetris')
@@ -266,8 +287,13 @@ test.describe('completed-line flash',()=>{
       await page.keyboard.press(' ');await expect(board).toHaveAttribute('data-score',String((index+1)*10))
     }
     await board.focus();for(let step=0;step<4;step++)await page.keyboard.press('ArrowRight')
+    const queue=page.locator('.ai-tetris-queue')
+    const queueBefore=await queue.boundingBox()
+    await expect(page.locator('.ai-tetris-plan-board')).toHaveCount(0)
     await page.keyboard.press(' ');await page.keyboard.press('p')
     await expect(board).toHaveAttribute('data-clearing','true')
+    await expect(page.locator('.ai-tetris-plan-board')).toHaveCount(0)
+    expect((await queue.boundingBox()).y).toBeCloseTo(queueBefore.y,3)
     await expect(board).toHaveAttribute('data-clear-rows','18,19')
     await expect(board.locator('.is-clearing')).toHaveCount(20)
     await expect(board).toHaveAttribute('data-score','40')
@@ -275,10 +301,26 @@ test.describe('completed-line flash',()=>{
     expect(style.name).toBe('line-clear-blink');expect(style.play).toBe('paused')
     await page.waitForTimeout(450);await expect(board).toHaveAttribute('data-clearing','true')
     await page.keyboard.press('p');await expect(board).toHaveAttribute('data-clearing','false')
+    await expect(page.locator('.ai-tetris-plan-board')).toHaveCount(0)
+    expect((await queue.boundingBox()).y).toBeCloseTo(queueBefore.y,3)
     await expect(board).toHaveAttribute('data-score','250')
     await expect(board.locator('[data-settled]:not([data-settled=""])')).toHaveCount(0)
     await expect(page.locator('.ai-tetris-stats div').filter({has:page.getByText('Líneas',{exact:true})}).locator('dd')).toHaveText('2')
   })
+})
+test('Tetris game-over restart stays above every Magic T voxel and receives the full button click',async({page})=>{
+  await page.addInitScript(()=>{Math.random=()=>0.95})
+  await page.goto('/ai/tetris')
+  const board=page.getByTestId('tetris-board')
+  for(let turn=1;turn<=6;turn++){
+    await board.focus();await page.keyboard.press(' ');await expect(board).toHaveAttribute('data-turn',String(turn),{timeout:6000})
+  }
+  await expect(board).toHaveAttribute('data-game-over','true')
+  const restart=board.getByRole('button',{name:'Nueva partida',exact:true});await expect(restart).toBeVisible()
+  await restart.scrollIntoViewIfNeeded()
+  const covered=await restart.evaluate(button=>{const r=button.getBoundingClientRect();return[0.1,0.3,0.5,0.7,0.9].flatMap(x=>[0.25,0.5,0.75].map(y=>document.elementFromPoint(r.left+r.width*x,r.top+r.height*y)?.closest('button')!==button))})
+  expect(covered.some(Boolean)).toBe(false)
+  await restart.click();await expect(board).toHaveAttribute('data-game-over','false');await expect(board).toHaveAttribute('data-score','0')
 })
 test('ten neural OUTPUT neurons form one 3D column and inference edges show actual contributions',async({page})=>{
   await page.goto('/ai/neural-network');await expect(page.getByTestId('model-state')).toContainText('Modelo cargado')

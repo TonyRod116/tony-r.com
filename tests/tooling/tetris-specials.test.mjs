@@ -16,19 +16,23 @@ function finish(state) {
 const count = (board, name) => board.flat().filter(cell => cellKind(cell) === name).length
 const crystal = (expiresAt, id = 'old') => ({ kind: 'C', expiresAt, id })
 
-test('Crystal survives two subsequent placements, expires after their lines, and never ages during pause', () => {
+test('Crystal survives three subsequent placements, expires after their lines, and never ages during pause', () => {
   let state = newGame('C', 'I', {}, 'O')
   state = finish(gameReducer(state, { type: 'drop', next: 'L' }))
   assert.equal(state.turn, 1); assert.equal(count(state.board, 'C'), 4)
-  assert.ok(state.board.flat().filter(cell => cellKind(cell) === 'C').every(cell => crystalRemaining(cell, state.turn) === 2))
+  assert.ok(state.board.flat().filter(cell => cellKind(cell) === 'C').every(cell => crystalRemaining(cell, state.turn) === 3))
   const paused = gameReducer(state, { type: 'pause' })
   for (const type of ['tick','drop','crack-complete','drill-tick']) assert.strictEqual(gameReducer(paused, { type }), paused)
   state = finish(gameReducer({ ...state, piece: { ...state.piece, c: 8 } }, { type: 'drop', next: 'D' }))
   assert.equal(state.turn, 2); assert.equal(count(state.board, 'C'), 4)
   state = gameReducer({ ...state, piece: { ...state.piece, c: 0 } }, { type: 'drop', next: 'I' })
-  assert.ok(state.cracking); assert.equal(state.turn, 2); assert.equal(state.score, 20)
   state = finish(state)
-  assert.equal(state.turn, 3); assert.equal(count(state.board, 'C'), 0); assert.equal(state.score, 30)
+  assert.equal(state.turn, 3); assert.equal(count(state.board, 'C'), 4); assert.equal(state.score, 30)
+  assert.ok(state.board.flat().filter(cell => cellKind(cell) === 'C').every(cell => crystalRemaining(cell, state.turn) === 1))
+  state = gameReducer({ ...state, piece: { ...state.piece, c: 2 } }, { type: 'drop', next: 'L' })
+  assert.ok(state.cracking); assert.equal(state.turn, 3); assert.equal(state.score, 30)
+  state = finish(state)
+  assert.equal(state.turn, 4); assert.equal(count(state.board, 'C'), 0); assert.equal(state.score, 40)
 })
 test('a last-turn Crystal can complete a line before its remaining cells break', () => {
   const board = emptyBoard(); board[19].fill('L'); board[19][8] = null
@@ -92,11 +96,13 @@ test('pause/reset and stale phase callbacks cannot perforate, expire or score an
   const reset = gameReducer(cracking, { type: 'restart', first: 'C', next: 'D' })
   assert.strictEqual(gameReducer(reset, { type: 'crack-complete', token: cracking.cracking }), reset)
 })
-test('AI forecasts the exact known second placement and Crystal expiration without inventing a piece', () => {
+test('AI uses the three-placement Crystal lifetime without inventing a third future piece', () => {
   const decision = analyzeMove(emptyBoard(), spawn('C'), 'I', true, 0, 'O')
   assert.equal(decision.forecastSteps, 2)
   assert.equal(decision.forecast[0].name, 'I'); assert.equal(decision.forecast[1].name, 'O')
-  assert.equal(decision.forecast[1].result.expired.length, 4)
+  assert.equal(decision.forecast[1].result.expired.length, 0)
+  assert.equal(count(decision.forecast[1].result.board, 'C'), 4)
+  assert.ok(decision.forecast[1].result.board.flat().filter(cell => cellKind(cell) === 'C').every(cell => crystalRemaining(cell, decision.forecast[1].result.turn) === 1))
   assert.ok(Math.abs(decision.future - decision.forecast[0].value - 0.6 * decision.forecast[1].value) < 1e-10)
   const base = { ...newGame('C','I',{},'O') }
   const played = finish(gameReducer(base, { type: 'ai-move', next: 'D' }))
@@ -113,6 +119,23 @@ test('manual animated transactions and simulation match for every piece with liv
     assert.equal(played.score, 10 + expected.cleared * 100)
     assert.equal(played.turn, expected.turn)
   }
+})
+test('AI preview inputs retain the pre-move board and known queue across reactions and reset clears them', () => {
+  const board=emptyBoard();for(const r of [18,19])for(let c=0;c<8;c++)board[r][c]='O'
+  board[17][0]=crystal(1);board[16][0]='T'
+  const initial={...newGame('O','I',{ai:true},'C'),board,piece:{...spawn('O'),c:8}},saved=JSON.stringify(board)
+  let state=gameReducer(initial,{type:'drop',next:'D'})
+  const source=state.resolution.source
+  assert.deepEqual(source,{board,piece:initial.piece,next:'I',following:'C',magic:true,turn:0})
+  for(let step=0;state.resolution&&step<100;step++){
+    assert.strictEqual(state.resolution.source,source)
+    const action=state.clearing?{type:'clear-complete',result:state.clearing.result}:state.cracking?{type:'crack-complete',token:state.cracking}:{type:'settle-tick',token:state.settling.token}
+    state=gameReducer(state,action)
+  }
+  assert.equal(state.resolution,null)
+  assert.equal(JSON.stringify(source.board),saved);assert.equal(state.next,'C');assert.equal(state.following,'D')
+  const reset=gameReducer(gameReducer(initial,{type:'drop',next:'D'}),{type:'restart',first:'I',next:'O',following:'L'})
+  assert.equal(reset.resolution,null)
 })
 test('new special pieces are half as frequent as each normal piece and preserve legacy demo draws', () => {
   const original = Math.random, counts = {}

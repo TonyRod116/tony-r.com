@@ -1,6 +1,6 @@
 # Project State — 2026-09-30
 
-Last updated: 2026-10-02
+Last updated: 2026-10-03
 
 ## Current state
 
@@ -144,3 +144,9 @@ Observed local proof:78 tooling tests,24 routing cases,31 scoped UI passes plus 
 GitHub code publication is observed:main at9bb839f, with no source commits pending against the fetched remote. Run37045685232 succeeds with78 tooling tests,215 browser passes plus one intentional skip,36 visual captures, build and performance report. The artifact-upload step reports no files; log evidence and local inspected screenshots are retained. This closure records observed results without changing production source or CI.
 
 T-Tris control polish later on2026-10-02 is published and verified: ghost cells retain the solid outer border and omit their inner dashed outline. The toolbar label is Piezas especiales / Special pieces / Peces especials; its native title accurately describes the original T-dissolution toggle. Crystal/Drill rules, AI and the engine remain unchanged.78 tooling checks,10 focused interactions,8 unchanged-reference visual comparisons and six preview/six live language-and-viewport checks pass.74 protected originals remain unchanged. Small-adjustment evidence/recovery stays in .artifacts/tetris-controls-20261002/; the preceding full-specials report remains the historical9bb839f snapshot.
+
+## T-Tris timing, preview visibility and game-over layering — 2026-10-03
+
+Published and verified: Crystal lasts three subsequent placements, including the third placement's lines before expiry. AI off hides all miniatures; AI on shows drop and suggestion together. The drop retains its final transaction result through reactions; proposal/continuation retains the pre-move board/piece/clock/known queue rather than an intermediate animation board. Reset discards that snapshot. A reserved status line prevents mobile reflow; continuation retains its actual one/two-piece result and the game-over overlay outranks all voxels.
+
+Observed final proof:79 tooling checks,37 scoped browser passes plus one intentional mobile keyboard skip,10 inspected visual comparisons,20 preview and20 live cases. Twelve line-clear cases measure0 px queue movement; Crystal reaction tests enforce less than0.1 px. Game-over restart passes15 hit points on each viewport and actually restarts.74 protected originals match. Four T-Tris references are inspected/accepted; lab/neural and desktop specials stay unchanged. Final preference supersedes the earlier AI-off miniature behavior within this task. Proof: docs/ai/tetris-stability-20261003.md/json; private recovery/screenshots: .artifacts/tetris-stability-final-20261003/. GitHub publication retains the existing owner authority and private/personal/generated exclusions.

@@ -1,6 +1,6 @@
 # Startup handoff
 
-Last updated: 2026-10-02
+Last updated: 2026-10-03
 
 Current source outranks memory; recover selective context with ai:brief/ai:context. Preserve preexisting dist and personal settings changes. Portfolio tasks live in Beads, not this handoff.
 
@@ -10,7 +10,7 @@ Latest neural requirements: OUTPUT0–9 in one fourth-layer3D column,25% smaller
 
 Home/Projects use BuildAppScreenshot to frame away the mobile captures’ top Demo/blank strip, including thumbnails/dialog. Original PNGs and provenance hashes remain; captions present BuildApp Pro with sample data. Keep this framing consistent across the two pages.
 
-T-Tris preserves centered rotations, keyboard/one-off AI, progressive Magic T and320ms completed-line flashes. Cristal lasts two subsequent placements, resolving the second one's lines before breaking; Taladro has three cells and pierces at most two occupied cells total. Both have distinct animations, weighted appearance and explicit new-game starters. Ghosts, final-board miniatures and AI share the pure transaction, including expiry/cascades. The actual queue contains two pieces; AI extends through both when a special/expiry matters, without inventing later draws. Phase tokens and pause/reset protect score/turn/queue. Latest proof: docs/ai/tetris-specials-20261002.md/json.
+T-Tris preserves centered rotations, keyboard/one-off AI, progressive Magic T and320ms completed-line flashes. Cristal lasts three subsequent placements, resolving the third one's lines before breaking; Taladro has three cells and pierces at most two occupied cells total. Both have distinct animations, weighted appearance and explicit new-game starters. Ghosts, final-board miniatures and AI share the pure transaction, including expiry/cascades. The actual queue contains two pieces; AI extends through both when a special/expiry matters, without inventing later draws. Phase tokens and pause/reset protect score/turn/queue. AI off hides all miniatures; AI on shows both, preserving their exact drop/proposal results through animations. Pre-move inputs freeze the proposal and reset discards them. The reserved reaction-status line keeps mobile queues stable; game-over restart stays above every voxel. Latest proof: docs/ai/tetris-stability-20261003.md/json.
 
 The five games now share formula/glossary and visible actual JavaScript excerpts, with native expandable code in ES/EN/CA. GameLearning owns presentation; gameLearning.js owns copy/excerpts. T-Tris explains the actual proposal/last decision and conditional known-two-piece forecast, Minesweeper shows revealed-clue constraint snapshots, and Seis grados reports current path/discovered artists. Preserve reset/edit guards, keyboard isolation and the independent neural page. Latest T-Tris proof: docs/ai/tetris-specials-20261002.md/json; original lessons: docs/ai/game-learning-20261002.md/json.
 
