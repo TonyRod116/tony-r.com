@@ -1,5 +1,7 @@
 # Progress
 
+2026-10-03 latest portfolio polish: Projects has the accessible full-image BuildApp slider/lightbox, while home links to the public BuildApp homepage and explains owner-confirmed first-attempt trading results and research controls in all three languages. T-Tris guide is compact (51% desktop/63% mobile) with only three eligibility cards; practice-start buttons are removed. Neural brush starts2.8/max3; math/model/formulas and desktop-versus-touch animation defaults remain.36 preview+36 live cases and16 visuals pass;84 scoped UI journeys are verified across the original run and two focus-fix reruns, with82 tooling checks and74 protected files unchanged. Current proof: docs/ai/compact-projects-20261003.md/json. Earlier practice-start instructions are historical.
+
 ## 🟢 Completed (What Works)
 - **Tic-Tac-Toe AI**: Minimax with Alpha-Beta Pruning.
 - **Minesweeper AI**: Logical deduction with knowledge base.

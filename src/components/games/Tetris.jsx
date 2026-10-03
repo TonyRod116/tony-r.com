@@ -38,8 +38,8 @@ export default function Tetris() {
   const dropPlan = useMemo(() => !game.over && !isResolving ? lockPiece(game.board, landing(game.board, game.piece), game.magic, game.turn) : null, [game.over, isResolving, game.board, game.piece, game.magic, game.turn])
   const dropPreview = game.resolution?.result ?? (dropPlan && !dropPlan.over ? dropPlan : { board: game.board, turn: game.turn })
   const selection = game.enabledSpecials
-  const act = (type, first) => {
-    dispatch({ type, first: type === 'restart' ? first ?? randomPiece(selection) : undefined, next: randomPiece(selection), following: type === 'restart' ? randomPiece(selection) : undefined })
+  const act = type => {
+    dispatch({ type, first: type === 'restart' ? randomPiece(selection) : undefined, next: randomPiece(selection), following: type === 'restart' ? randomPiece(selection) : undefined })
     if (['left','right','tick','rotate','drop','ai-move','restart'].includes(type)) boardRef.current?.focus({ preventScroll: true })
   }
   const toggleSpecial = name => {
@@ -131,14 +131,12 @@ export default function Tetris() {
       <summary>{copy.guide}</summary><p className="ai-help">{copy.guideHint}</p>
       <div className="ai-tetris-special-rules">{SPECIAL_NAMES.map(name=>{
         const preview=new Set(previewCells(name).map(([r,c])=>`${r}-${c}`))
-        const [title,hint]=name==='T'?[copy.magicPiece,copy.magicPieceHint]:name==='C'?[copy.crystal,copy.crystalHint]:[copy.drill,copy.drillHint]
+        const hint=name==='T'?copy.magicPieceHint:name==='C'?copy.crystalHint:copy.drillHint
         return <button key={name} type="button" className="ai-tetris-special-toggle" aria-label={pieceName(name)} aria-describedby={`tetris-special-description-${name}`} aria-pressed={selection[name]} onClick={()=>toggleSpecial(name)} style={{'--piece-color':PIECES[name].color}}>
           <span className="ai-tetris-special-icon" aria-hidden="true">{Array.from({length:25},(_,i)=><span key={i} data-filled={preview.has(`${Math.floor(i/5)}-${i%5}`)}/>)}</span>
-          <span className="ai-tetris-special-text"><span className="ai-kicker">{title}</span><span id={`tetris-special-description-${name}`} className="ai-tetris-special-description">{hint}</span><span className="ai-tetris-special-state">{selection[name]?copy.enabled:copy.disabled}</span></span>
+          <span className="ai-tetris-special-text"><span className="ai-tetris-special-heading"><span className="ai-kicker">{pieceName(name)}</span><span className="ai-tetris-special-state">{selection[name]?copy.enabled:copy.disabled}</span></span><span id={`tetris-special-description-${name}`} className="ai-tetris-special-description">{hint}</span></span>
         </button>
       })}</div>
-      <div className="ai-tetris-special-practice">{SPECIAL_NAMES.map(name=><button key={name} className="ai-button ai-button-secondary" disabled={!selection[name]} onClick={()=>act('restart',name)}>{name==='T'?copy.startMagic:name==='C'?copy.startCrystal:copy.startDrill}</button>)}</div>
-      <p className="ai-help">{copy.restartNote}</p>
     </details>
     <div className="ai-tetris-workspace">
       <div>

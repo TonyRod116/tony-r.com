@@ -1,0 +1,32 @@
+{
+  "retrieved_on": "2026-10-03",
+  "source_page": "https://buildapp.es/",
+  "source_bundle": "https://buildapp.es/home-assets/index-tH-3OKAH.js",
+  "network": "GET only; no authentication or AI generation",
+  "images": [
+    {
+      "asset": "src/assets/projects/buildapp-before-room.png",
+      "source_url": "https://buildapp.es/home-assets/before-room-1-DHeQbKGi.png",
+      "bytes": 603405,
+      "sha256": "fd7cb52e6afb0ca5d520211451f8d8a9ac6c74724195be2e58dde96e6ba4900c",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "mode": "original public website asset; downloaded without raster/metadata edits",
+      "meaning": "original room photograph"
+    },
+    {
+      "asset": "src/assets/projects/buildapp-after-room.png",
+      "source_url": "https://buildapp.es/home-assets/after-room-1-TPgpUZwU.png",
+      "bytes": 1097575,
+      "sha256": "161b5de8087b4ef4ed31d91a7ac5742b76766acc1f557111f875546bcfac2efa",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "mode": "original public website asset; downloaded without raster/metadata edits",
+      "meaning": "AI visualization/proposal, not evidence of a completed renovation"
+    }
+  ]
+}

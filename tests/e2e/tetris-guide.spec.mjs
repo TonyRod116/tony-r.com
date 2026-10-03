@@ -11,7 +11,8 @@ test('special pieces opens all three rules and exclusions survive new games and 
   for(const name of ['T mágica','Cristal','Taladro']){const card=page.getByRole('button',{name,exact:true});await expect(card).toHaveAttribute('aria-pressed','true');await card.click();await expect(card).toHaveAttribute('aria-pressed','false')}
   await expect(board).toHaveAttribute('data-piece-name','T');await expect(board).toHaveAttribute('data-score','0')
   await expect(board).toHaveAttribute('data-next','I');await expect(board).toHaveAttribute('data-following','I')
-  await expect(page.getByRole('button',{name:'Empezar con Cristal',exact:true})).toBeDisabled()
+  await expect(page.locator('.ai-tetris-specials button')).toHaveCount(3)
+  await expect(page.getByRole('button',{name:/Empezar con|Start with|Començar amb/i})).toHaveCount(0)
   await page.getByRole('button',{name:'Nueva partida',exact:true}).click()
   await expect(board).toHaveAttribute('data-piece-name','I');await expect(board).toHaveAttribute('data-next','I')
   await expect.poll(()=>page.evaluate(()=>JSON.parse(localStorage.getItem('tetris_special_pieces')))).toEqual({T:false,C:false,D:false})

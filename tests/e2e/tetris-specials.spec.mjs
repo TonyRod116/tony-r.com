@@ -1,6 +1,7 @@
 import { test, expect } from './fixtures.mjs'
 import { tetrisSpecials } from '../../src/data/tetrisSpecials.js'
 import { labCopy } from '../../src/data/aiExperiments.js'
+import { restartWithDraws } from './tetrisScenario.mjs'
 
 const moveTo = async (page, column) => {
   const board=page.getByTestId('tetris-board'), current=Number((await board.getAttribute('data-position')).split(',')[1])
@@ -10,7 +11,7 @@ const moveTo = async (page, column) => {
 const mini = locator => locator.locator('[data-cell-kind]').evaluateAll(cells=>cells.map(cell=>cell.dataset.cellKind))
 const settled = board => board.locator('[data-settled]').evaluateAll(cells=>cells.map(cell=>cell.dataset.settled))
 
-for(const language of ['es','en','ca'])test(`special rules and practice starts are translated in ${language}`,async({page})=>{
+for(const language of ['es','en','ca'])test(`compact special rules are translated in ${language}`,async({page})=>{
   await page.addInitScript(language=>localStorage.setItem('portfolio-language',language),language)
   await page.goto('/ai/tetris')
   const copy={...labCopy[language],...tetrisSpecials[language]}
@@ -18,14 +19,15 @@ for(const language of ['es','en','ca'])test(`special rules and practice starts a
   await page.locator('.ai-tetris-specials summary').click()
   await expect(page.locator('.ai-tetris-specials')).toContainText(copy.crystalHint)
   await expect(page.locator('.ai-tetris-specials')).toContainText(copy.drillHint)
-  await page.getByRole('button',{name:copy.startCrystal,exact:true}).click()
+  await expect(page.locator('.ai-tetris-specials button')).toHaveCount(3)
+  await restartWithDraws(page,0.58,0.8,copy.restart)
   const board=page.getByTestId('tetris-board')
   await expect(board).toHaveAttribute('data-piece-name','C');await expect(board.locator('[data-active]:not([data-active=""])')).toHaveCount(4)
   await expect(board.locator('[data-active]:not([data-active=""])[data-crystal-life="3"]')).toHaveCount(4)
   await page.getByRole('button',{name:copy.aiOff,exact:true}).click()
   await expect(page.getByTestId('tetris-drop-plan')).toBeVisible();await expect(page.getByTestId('tetris-ai-plan')).toBeVisible()
   await expect(page.locator('.ai-tetris-plan-board:visible')).toHaveCount(2)
-  await page.getByRole('button',{name:copy.startDrill,exact:true}).click()
+  await restartWithDraws(page,0.86,0.86,copy.restart)
   await expect(board).toHaveAttribute('data-piece-name','D');await expect(board.locator('[data-active]:not([data-active=""])')).toHaveCount(3)
   await expect(page.locator('.ai-tetris-preview')).toHaveCount(2)
   await page.getByRole('button',{name:copy.aiOn,exact:true}).click()
@@ -38,7 +40,7 @@ test.describe('new special reactions',()=>{
   test('Crystal ghost equals settlement, lives three placements and pause freezes its visible break',async({page})=>{
     await page.addInitScript(()=>{Math.random=()=>0.8})
     await page.goto('/ai/tetris');await page.locator('.ai-tetris-specials summary').click()
-    await page.getByRole('button',{name:'Empezar con Cristal',exact:true}).click()
+    await restartWithDraws(page,0.58,0.8)
     await page.getByRole('button',{name:'IA desactivada',exact:true}).click()
     const board=page.getByTestId('tetris-board')
     const expected=await mini(page.getByTestId('tetris-drop-plan'))
@@ -73,7 +75,7 @@ test.describe('new special reactions',()=>{
   test('Drill marks exactly what it will remove and advances down real frames with pause',async({page})=>{
     await page.addInitScript(()=>{Math.random=()=>0.86})
     await page.goto('/ai/tetris');await page.locator('.ai-tetris-specials summary').click()
-    await page.getByRole('button',{name:'Empezar con Taladro',exact:true}).click()
+    await restartWithDraws(page,0.86,0.86)
     await page.getByRole('button',{name:'IA desactivada',exact:true}).click()
     const board=page.getByTestId('tetris-board')
     await board.focus();await page.keyboard.press(' ');await expect(board).toHaveAttribute('data-turn','1')
@@ -112,7 +114,7 @@ test('horizontal Drill stops against three supports and its forecast matches the
 test('AI shows its real two-piece Crystal continuation and reset rejects old reaction timers',async({page})=>{
   await page.addInitScript(()=>{Math.random=()=>0.8})
   await page.goto('/ai/tetris');await page.locator('.ai-tetris-specials summary').click()
-  await page.getByRole('button',{name:'Empezar con Cristal',exact:true}).click()
+  await restartWithDraws(page,0.58,0.8)
   await page.getByRole('button',{name:'IA desactivada',exact:true}).click()
   await expect(page.locator('[data-forecast-steps]')).toHaveAttribute('data-forecast-steps','2')
   await page.locator('.ai-tetris-forecast summary').click()
@@ -124,7 +126,7 @@ test('AI shows its real two-piece Crystal continuation and reset rejects old rea
   await page.getByRole('button',{name:'Que la IA decida',exact:true}).click()
   const board=page.getByTestId('tetris-board');await expect(board).toHaveAttribute('data-turn','1')
   expect(await settled(board)).toEqual(plan)
-  await page.getByRole('button',{name:'Empezar con Taladro',exact:true}).click()
+  await restartWithDraws(page,0.86,0.86)
   await board.focus();await page.keyboard.press(' ')
   await page.getByRole('button',{name:'Nueva partida',exact:true}).click()
   await page.waitForTimeout(500)

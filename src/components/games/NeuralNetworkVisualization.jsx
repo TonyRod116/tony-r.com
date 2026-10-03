@@ -14,7 +14,7 @@ const defaultAnimation = () => typeof window !== 'undefined' && !window.matchMed
 export default function NeuralNetworkVisualization() {
   const { language } = useLanguage(),copy=labCopy[language],dynamics=neuralDynamics[language],controls=neuralControls[language]
   const [model,setModel]=useState(null),[state,setState]=useState('loading'),[attempt,setAttempt]=useState(0)
-  const [pixels,setPixels]=useState(()=>Array(784).fill(0)),[strokeWidth,setStrokeWidth]=useState(1.8),[erasing,setErasing]=useState(false)
+  const [pixels,setPixels]=useState(()=>Array(784).fill(0)),[strokeWidth,setStrokeWidth]=useState(2.8),[erasing,setErasing]=useState(false)
   const [target,setTarget]=useState(7),[playback,setPlayback]=useState(null),[traceError,setTraceError]=useState('')
   const [direction,setDirection]=useState('forward'),[selectedLayer,setSelectedLayer]=useState(null)
   const [animationEnabled,setAnimationEnabled]=useState(defaultAnimation),[paused,setPaused]=useState(false)

@@ -61,7 +61,7 @@ export default function Home() {
               </div>
               <div className="home-actions">
                 <Link to="/projects" className="home-action">{copy.work.detail}<ArrowUpRight aria-hidden="true" size={18} /></Link>
-                <OutboundLink href="https://buildapp.es/pro">{copy.work.open}</OutboundLink>
+                <OutboundLink href="https://buildapp.es/">{copy.work.open}</OutboundLink>
               </div>
             </div>
           </div>
@@ -76,6 +76,7 @@ export default function Home() {
         </div>
         <div className="home-trading-copy">
           <p>{copy.trading.description}</p>
+          <p>{copy.trading.method}</p>
           <p className="home-note">{copy.trading.note}</p>
           <TradingPayouts language={language} />
         </div>

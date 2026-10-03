@@ -1,6 +1,6 @@
 # Contexto de diseño de My Page
 
-Last updated: 2026-09-30
+Last updated: 2026-10-03
 
 ## Objetivo
 El portfolio debe mostrar con claridad qué construye Tony, qué responsabilidad tuvo y qué puede comprobar el visitante. Acciones: ver proyectos, probar demos, consultar CV y contactar. La audiencia prioritaria y las pruebas viven en product-marketing-context.md.
@@ -57,3 +57,9 @@ Capturas actuales de BuildApp: dos pantallas móviles de demo pública en home y
 ## Mathematical notation — 2026-10-03
 
 Neural phase expressions use native MathML fractions, superscripts and accents. A scoped math font gives italic handwritten-style variables and upright function names, with the existing lime palette and original aria-label text. This is a mathematical notation decision, independent of home/body typography; no font downloads or math-renderer dependencies. On narrow/touch screens the neural view starts static, and explicit motion choices are preserved.
+
+## Compact guide and BuildApp comparison — 2026-10-03
+
+T-Tris special-piece descriptions are short, with small icons and name/state on one row. Three compact cards retain touch targets at least44px tall; the practice-start buttons are removed. Projects reuses the existing BeforeAfterSlider for two untouched1024px source images from the public BuildApp website. It preserves square framing, labels the result as an AI visualization and keeps the mobile captures. Lightbox navigation restores focus to the current capture trigger. Home adds a separated method paragraph for Python trading and points its Open BuildApp link to the public company homepage.
+
+Neural drawing brush starts at2.8/max3 by Tony’s preference. The range stays adjustable and does not modify sample paths or model preprocessing. No measured general accuracy claim follows from this setting.

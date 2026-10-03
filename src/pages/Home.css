@@ -56,6 +56,7 @@
 .home-trading h2 { margin-top: 12px; }
 .home-tools { font-size: 0.8125rem; margin-top: 24px !important; color: var(--home-muted); letter-spacing: 0; }
 .home-trading-copy > p:first-child { font-size: 1.25rem; line-height: 1.65; }
+.home-trading-copy > p + p { margin-top: 24px; }
 .home-note { margin-top: 24px !important; color: var(--home-muted); font-size: 0.875rem; }
 .home-payouts { margin-top: 32px; }
 .home-payouts-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 16px; }
@@ -161,6 +162,7 @@
   .home-feature-copy .home-actions { margin-top: 24px; }
   .home-trading { grid-template-columns: 1fr; gap: 24px; padding-block: 48px; }
   .home-trading-copy > p:first-child { font-size: 1.0625rem; }
+  .home-trading-copy > p + p { margin-top: 16px; }
   .home-tools { margin-top: 16px !important; }
   .home-note { margin-top: 16px !important; font-size: 0.8125rem; }
   .home-selected { padding-block: 8px 48px; }

@@ -32,6 +32,9 @@ test('home puts current work first and the main action explores it', async ({ pa
   const order = await page.locator('main h2').allTextContents()
   expect(order.indexOf('BuildApp')).toBeLessThan(order.indexOf('Antes del software, la obra.'))
   await expect(page.locator('main')).not.toContainText('Repositorios GitHub')
+  const projectLinks=page.locator('.home-feature-copy .home-actions')
+  await expect(projectLinks.getByRole('link',{name:'Abrir BuildApp',exact:true})).toHaveAttribute('href','https://buildapp.es/')
+  await expect(projectLinks.getByRole('link',{name:'Ver el proyecto',exact:true})).toHaveAttribute('href','/projects')
 })
 
 test('portrait remains visible after reading the whole page and returning', async ({ page }) => {

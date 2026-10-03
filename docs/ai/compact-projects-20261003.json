@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-03",
+  "status": "published_and_verified",
+  "website": "https://tony-r.com",
+  "html_sha256": "a6c47b0dd6efc09dbde378bb91bb075a79f0fa8845dff5f6eb5e72f061b27e15",
+  "mnist_sha256": "c3b876487704fb4e6c9a4eafb8df95f8b7b71e5265f0f53aa9c061eaf109211b",
+  "changes": {
+    "projects": "Existing BeforeAfterSlider with two unchanged source images and an interactive lightbox; mobile captures kept",
+    "home": "Public BuildApp homepage link; ES/EN/CA first-attempt/research copy",
+    "tetris": "Three small eligibility cards; no practice-start buttons",
+    "neural": "Initial stroke width2.8, max3; numerical model unchanged"
+  },
+  "scoped_interactions": {
+    "initial_passed": 82,
+    "initial_failed": 2,
+    "failure": "Lightbox capture changes recreated the original trigger, so native dialog focus restore failed",
+    "fixed_rerun_passed": 2,
+    "unique_verified": 84
+  },
+  "checks": {
+    "tooling_passed": 82,
+    "routing_cases": 24,
+    "skill_mirrors": 27,
+    "visual_comparisons_passed": 16,
+    "visual_references_inspected_and_updated": 6,
+    "protected_files_unchanged": 74,
+    "original_neural_math_weights_and_formulas_unchanged": 3,
+    "neural_drawing_and_recovery_interactions_passed": 8
+  },
+  "preview": {
+    "cases": 36,
+    "status": "pass"
+  },
+  "online": {
+    "cases": 36,
+    "status": "pass"
+  },
+  "guide_measurements": [
+    {
+      "view": "desktop",
+      "guide_height": 191.15625,
+      "old_es_guide_height": 394,
+      "es_height_reduction": 0.5148318527918782,
+      "minimum_touch_height": 77.96875
+    },
+    {
+      "view": "mobile",
+      "guide_height": 382.28125,
+      "old_es_guide_height": 1041,
+      "es_height_reduction": 0.6327749759846302,
+      "minimum_touch_height": 77.96875
+    },
+    {
+      "view": "tablet",
+      "guide_height": 229.53125,
+      "old_es_guide_height": 599,
+      "es_height_reduction": 0.616809265442404,
+      "minimum_touch_height": 116.34375
+    }
+  ],
+  "source_images": "docs/ai/buildapp-comparison-20261003.json",
+  "limitations": [
+    "Local endpoint fixtures prove UI only; no claim about BuildApp generation availability",
+    "Trading results/first attempts are owner-reported; certificates prove only the two authorized payments",
+    "Research controls are supported by read-only source inspection, not independent certification of all strategies",
+    "Thicker brush is a user-requested initial setting, not a measured general accuracy improvement",
+    "Device checks use Chromium viewports, not physical-device battery measurements"
+  ],
+  "recovery": "Verified backup and operational paths remain private ignored artifacts; assets published before HTML with no remote deletions"
+}

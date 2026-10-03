@@ -1,6 +1,6 @@
 # Product Marketing Context
 
-Last updated: 2026-09-30
+Last updated: 2026-10-03
 
 ## Project Overview
 
@@ -65,6 +65,14 @@ Tony says his own Python trading bots are already generating income and explicit
 Tony explicitly authorized publishing two Lucid Trading payout certificates, with amounts/dates and exact local identifier redaction. Publish only payouts: 1,617 USD on 2026-08-14 (footer date explicitly confirmed by Tony) and 2,100 USD on 2026-09-15. Their combined 3,717 USD describes these two payments only, not net profit, returns or a complete performance record. The two supplied evaluation-to-funded certificates are excluded. Originals remain private ignored artifacts; public assets contain an opaque local mask and no original metadata. No generative editing.
 
 Read-only inspection of MTM primary source confirms Python bots, signal/risk/execution modules, alerts and a native customtkinter desktop dashboard for Windows. This supports architecture copy, not a claim about present broker connectivity, independently audited performance or attribution of each payment to a particular bot. Keep the project separate from TradeLab. Evidence: docs/ai/lucid-payouts-20261001.md/json.
+
+## Recent Trading Start and Research Controls — 2026-10-03
+
+Tony explicitly confirms a recent start with his own Python bots, first prop-firm evaluations passed on the first attempt and income from those initial accounts. This is owner-reported biographical evidence, not an independent performance audit. Do not generalize it to every future attempt or publish excluded evaluation certificates. Existing two redacted payout certificates remain the only quantified public payment evidence.
+
+Read-only primary-source inspection supports a research system with causal data contracts, automated lookahead audits, an anti-overfitting audit, label-aware temporal separation for out-of-sample validation, and configurable execution-cost/slippage modelling. Public copy describes controls that help detect these errors. It does not claim all leakage/overfitting has been eliminated, every candidate has passed these controls, or a live strategy has been independently certified. A fixed-strategy temporal-window wrapper explicitly disclaims being a model-training/walk-forward splitter; the label-aware boundary is the relevant implementation. No MTM source, datasets, account identifiers or operational state are exported.
+
+Profit targets and maximum-loss constraints are supported by the official [LucidPro evaluation rules](https://support.lucidtrading.com/en/articles/12890029-lucidpro-evaluation-account), read2026-10-03. Public copy uses the generic challenge without account sizes, percentages or pass-rate claims. Home retains a distinct TradeLab story and its older project links.
 
 ## Public Messaging Boundary
 

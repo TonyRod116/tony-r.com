@@ -6,6 +6,8 @@ import buildappProAppDashboardImg from './projects/buildapp-pro-mobile-2026-09-3
 import buildappProBudgetImg from './projects/buildapp-budget-mobile-2026-09-30.png'
 import buildappProQuoteImg from './projects/buildapp-before-after-2026-09-30.png'
 import buildappSiteHeroImg from './projects/buildapp-web-current-2026-09-30.png'
+import buildappBeforeRoomImg from './projects/buildapp-before-room.png'
+import buildappAfterRoomImg from './projects/buildapp-after-room.png'
 
 export const projectImages = {
   buildapp: buildappSiteHeroImg,
@@ -27,8 +29,9 @@ export const projectShowcaseImages = {
 }
 
 export const buildappMobileImages = [buildappProAppDashboardImg,buildappProBudgetImg]
+export const buildappComparisonImages = { before: buildappBeforeRoomImg, after: buildappAfterRoomImg }
 export const buildappCaptureCaptions = {
-  es: ['Antes y propuesta con IA · web actual de BuildApp','Presupuestos · BuildApp Pro · datos de ejemplo','Detalle de presupuesto · BuildApp Pro · datos de ejemplo'],
-  en: ['Before and AI proposal · current BuildApp website','Budgets · BuildApp Pro · sample data','Budget detail · BuildApp Pro · sample data'],
-  ca: ['Abans i proposta amb IA · web actual de BuildApp','Pressupostos · BuildApp Pro · dades d’exemple','Detall de pressupost · BuildApp Pro · dades d’exemple'],
+  es: ['Foto original y propuesta con IA · visualización de BuildApp','Presupuestos · BuildApp Pro · datos de ejemplo','Detalle de presupuesto · BuildApp Pro · datos de ejemplo'],
+  en: ['Original photo and AI proposal · BuildApp visualization','Budgets · BuildApp Pro · sample data','Budget detail · BuildApp Pro · sample data'],
+  ca: ['Foto original i proposta amb IA · visualització de BuildApp','Pressupostos · BuildApp Pro · dades d’exemple','Detall de pressupost · BuildApp Pro · dades d’exemple'],
 }

@@ -1,0 +1,23 @@
+# Projects, trading copy and compact lab controls — 2026-10-03
+
+Published and verified on IONOS. The final browser checks cover36 combinations: four routes × three languages × desktop/mobile/tablet. HTML hashes match the local build, both comparison images load locally, and there are no page errors or horizontal overflow.
+
+## Behavior
+
+Projects reuses the existing BeforeAfterSlider for the complete original room photograph and BuildApp AI proposal. The two1024×1024 public source PNGs are downloaded intact, not extracted from the old screenshot. They use square framing and explicit visualization captions. Pointer drag, native keyboard range and lightbox interaction work. Closing after capture navigation returns focus to the current trigger. The two mobile captures, demo-header framing, four other cases and product/source/store links remain.
+
+Home’s Open BuildApp link goes to https://buildapp.es/ beside the unchanged project-details link. Its ES/EN/CA Python section now explains the recent start, initial evaluations passed on the first attempt and income from those initial accounts, as explicitly confirmed by Tony. It retains the two authorized, redacted Lucid payouts and clearly distinguishes the older TradeLab project.
+
+The method paragraph describes out-of-sample validation, data audits and simulations with trading costs. Read-only primary sources inspected: lookahead and anti-overfitting audit implementations, causal-data methodology, label-aware temporal split, backtest slippage and positive-cost simulation. These support architecture/method copy; they do not certify every strategy or prove the complete absence of bias. A fixed-strategy temporal-window wrapper explicitly disclaims being a model-training splitter; it is not used as proof of leakage-free validation. No datasets, account state, live processes or MTM code are copied or changed. The generic challenge of profit targets and loss limits is supported by the official [LucidPro evaluation rules](https://support.lucidtrading.com/en/articles/12890029-lucidpro-evaluation-account), inspected2026-10-03. No failure rates, returns or promises are invented.
+
+T-Tris removes the three Start-with practice buttons. Three small cards keep the short descriptions, saved eligibility preferences and existing-piece effects. Spanish guide height drops from394 to191.2px on desktop (51.5%),1041 to382.3px on mobile (63.3%), and599 to229.5px on tablet (61.7%). Click targets remain at least44px high. Rules, timers, score, random weighting, AI, previews and engine are preserved. Browser scenarios now use the normal restart with controlled random draws instead of a removed UI.
+
+Neural stroke width initially starts at2.8 instead of1.8, on the unchanged0.8–3 range. Manual adjustments remain available and survive clearing. This is a requested default, not an accuracy benchmark. Model/math/formula sources and default device-specific animation behavior remain.
+
+## Verification
+
+Build and check pass:82 tooling tests,24 deterministic routing cases,27 skill mirrors, synced AI files and no new lint/design debt. A scoped84-case browser run passes82 and exposes the lightbox focus problem in two viewports. After the scoped ref fix, both failing journeys pass;84 unique journeys are verified across those runs. Eight additional existing neural journeys pass with the final thicker default: mouse/touch drawing and erasing, real inference, failed-model recovery and camera controls. Final runtime proof is the36 preview and36 online cases bound to the final HTML hash, including the later stroke/default and spacing changes. Fixtures remain isolated from external services.
+
+Six changed references (Projects and Crystal/Drill on each viewport) are inspected before acceptance.16 final visual comparisons pass, including unchanged home/contact, AI hub, closed T-Tris and neural references. Separate captures inspect trading content below the first fold.74 preexisting personal/generated/API/server files and three neural math/weights/formula sources match their prior hashes. Build-size reporting is artifact evidence, not runtime performance; the original PNGs add1.70MB of image assets for the comparison.
+
+Machine-readable results: [compact-projects-20261003.json](./compact-projects-20261003.json). Image provenance: [buildapp-comparison-20261003.json](./buildapp-comparison-20261003.json). Recovery and operational locations remain private ignored artifacts. Publication copies assets before guarded HTML replacement, retains old assets and changes no hosting configuration. GitHub publication follows Tony’s existing explicit request.

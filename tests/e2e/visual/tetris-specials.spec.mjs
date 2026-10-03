@@ -1,10 +1,11 @@
 import { test, expect } from '../fixtures.mjs'
+import { restartWithDraws } from '../tetrisScenario.mjs'
 
 for(const name of ['crystal','drill'])test(`visual tetris ${name} with exact forecasts`,async({page},testInfo)=>{
   await page.addInitScript(value=>{Math.random=()=>value},name==='crystal'?0.8:0.86)
   await page.goto('/ai/tetris')
   await page.locator('.ai-tetris-specials summary').click()
-  await page.getByRole('button',{name:name==='crystal'?'Empezar con Cristal':'Empezar con Taladro',exact:true}).click()
+  await restartWithDraws(page,name==='crystal'?0.58:0.86,name==='crystal'?0.8:0.86)
   const board=page.getByTestId('tetris-board')
   await board.focus();await page.keyboard.press(' ');await expect(board).toHaveAttribute('data-turn','1')
   await page.getByRole('button',{name:'Pausar',exact:true}).click()

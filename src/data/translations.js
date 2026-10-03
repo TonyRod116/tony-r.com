@@ -37,8 +37,9 @@ export const translations = {
       "trading": {
         "label": "Personal project",
         "title": "Trading in Python.",
-        "description": "I develop and run my own Python trading bots, which are already generating income. The system automates signals, risk checks and execution, with a Windows desktop application to monitor its operation.",
-        "note": "Research, bots, a desktop dashboard and alerts in one project. Separate from TradeLab, the earlier backtesting platform shown below.",
+        "description": "I recently started trading with my own Python bots. They have passed their first prop firm evaluations on the first attempt and are already generating income from those same accounts. The challenge: reaching profit targets while respecting strict loss limits.",
+        "method": "I built a research system with out-of-sample validation, data audits and simulations that include trading costs. These controls help detect overfitting and lookahead bias: fitting too closely to past data or using information that was not yet available when a decision was made.",
+        "note": "Automated signals, risk checks and execution, with a custom Windows dashboard and alerts. A separate project from TradeLab.",
         "tools": "Python · Automation · Windows desktop"
       },
       "selected": {
@@ -1165,8 +1166,9 @@ export const translations = {
       "trading": {
         "label": "Proyecto propio",
         "title": "Trading en Python.",
-        "description": "Desarrollo y opero bots de trading propios en Python que ya generan ingresos. El sistema automatiza señales, controles de riesgo y ejecución, con una aplicación de escritorio para Windows desde la que superviso la operativa.",
-        "note": "Investigación, bots, dashboard de escritorio y alertas en un mismo proyecto. Distinto de TradeLab, la plataforma de backtesting anterior que muestro más abajo.",
+        "description": "Acabo de empezar a operar con mis propios bots en Python. Han superado sus primeras evaluaciones de firmas de fondeo (prop firms) al primer intento y ya generan ingresos con esas mismas cuentas. El reto: alcanzar objetivos de beneficio respetando límites estrictos de pérdida.",
+        "method": "He construido un sistema de investigación con validación fuera de muestra, auditorías de datos y simulaciones que incluyen costes de operación. Estos controles ayudan a detectar el sobreajuste (overfitting) y el uso de información futura (lookahead): ajustar una estrategia demasiado al pasado o usar datos que aún no estaban disponibles al tomar una decisión.",
+        "note": "Señales, riesgo y ejecución automatizados, con un dashboard propio para Windows y alertas. Un proyecto distinto de TradeLab.",
         "tools": "Python · Automatización · Escritorio Windows"
       },
       "selected": {
@@ -2309,8 +2311,9 @@ export const translations = {
       "trading": {
         "label": "Projecte propi",
         "title": "Trading en Python.",
-        "description": "Desenvolupo i opero bots de trading propis en Python que ja generen ingressos. El sistema automatitza senyals, controls de risc i execució, amb una aplicació d’escriptori per a Windows des de la qual superviso l’operativa.",
-        "note": "Recerca, bots, dashboard d’escriptori i alertes en un mateix projecte. Diferent de TradeLab, la plataforma de backtesting anterior que mostro més avall.",
+        "description": "Acabo de començar a operar amb els meus propis bots en Python. Han superat les primeres avaluacions de firmes de finançament (prop firms) al primer intent i ja generen ingressos amb aquests mateixos comptes. El repte: assolir objectius de benefici respectant límits estrictes de pèrdua.",
+        "method": "He construït un sistema de recerca amb validació fora de mostra, auditories de dades i simulacions que inclouen costos d’operació. Aquests controls ajuden a detectar el sobreajust (overfitting) i l’ús d’informació futura (lookahead): ajustar una estratègia massa al passat o fer servir dades que encara no estaven disponibles en prendre una decisió.",
+        "note": "Senyals, risc i execució automatitzats, amb un dashboard propi per a Windows i alertes. Un projecte diferent de TradeLab.",
         "tools": "Python · Automatització · Escriptori Windows"
       },
       "selected": {
