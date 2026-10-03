@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-03",
+  "status": "published_and_verified",
+  "lifetime_before": 3,
+  "lifetime_after": 5,
+  "countdown_after_placement": [
+    5,
+    4,
+    3,
+    2,
+    1
+  ],
+  "expiry_turn_if_placed_on_turn_one": 6,
+  "html_sha256": "7f9ec532e8d494f449448783106b6374faa8d87f48d656334c1a0c18b18f174c",
+  "checks": {
+    "tooling": 84,
+    "browser_interactions": 24,
+    "visual_comparisons": 6,
+    "preview_cases": 9,
+    "online_cases": 9,
+    "protected_files_unchanged": 74,
+    "neural_numerical_sources_unchanged": 3,
+    "previous_cleanup_files_unchanged": 8
+  },
+  "ai": "Uses the same absolute expiry; forecast after two known pieces leaves3 turns. A late-board test verifies actual expiry at turn6. No unknown later pieces are invented.",
+  "scoring": "Fifth following placement resolves its lines before expiry; pause freezes reaction and deferred score.",
+  "github_push": "not_attempted; remains paused"
+}

@@ -182,3 +182,9 @@ Published and verified: Crystal is a five-block + with one/three/one rows, and D
 84 tooling checks,41 browser passes plus one intentional desktop-keyboard/mobile skip,10 visual comparisons and18 preview+18 live cases pass. Two new tests first fail on the old geometry. Four references are inspected/refreshed.74 protected files, three numerical/formula sources and eight previous cleanup files match. No API/server/dependency/hosting changes. Proof: docs/ai/tetris-five-blocks-20261003.md/json; private recovery: .artifacts/tetris-five-blocks-20261003/.
 
 GitHub remains paused; no push occurs. The preceding completed home/Projects cleanup and synchronized push restriction are saved in local commitc5d179b. Current instruction sync and shape work are kept in a separate local commit; neither is uploaded to GitHub. Earlier uncommitted-status notes describe their original snapshot.
+
+## Crystal lifetime: five subsequent placements — 2026-10-03
+
+Published and verified: Crystal lasts five following placements rather than three, with counter5→4→3→2→1 and lines resolved before the fifth-placement crack. Immutable expiry, manual play, miniatures and AI share the same constant; the forecast remains limited to two actual queued pieces and shows three remaining turns for a new Crystal afterward. ES/EN/CA guide and method copy match.
+
+84 tooling checks,24 browser interactions, six inspected visuals and nine preview+nine live full-countdown cases pass, including pause/score protection and exact final-board agreement.74 protected files, three numerical/formula sources and eight preceding cleanup files match. Proof: docs/ai/crystal-life-20261003.md/json; private recovery: .artifacts/crystal-life-20261003/. GitHub push remains paused; source/instructions are saved locally only. Earlier three-turn records are historical.

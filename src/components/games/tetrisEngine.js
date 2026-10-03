@@ -3,7 +3,7 @@ export const HEIGHT = 20
 export const LINE_CLEAR_MS = 320
 export const CRYSTAL_BREAK_MS = 360
 export const REACTION_STEP_MS = 115
-export const CRYSTAL_LIFETIME = 3
+export const CRYSTAL_LIFETIME = 5
 export const DRILL_BUDGET = 2
 // Keep Tony's original shapes and add Crystal/Drill. Offsets are
 // explicit [row,column] pairs everywhere: rendering, preview, play and search.
@@ -68,7 +68,7 @@ export function previewCells(name) {
   return cells.map(([r,c]) => [r - minR + Math.floor((5 - rows) / 2), c - minC + Math.floor((5 - columns) / 2)])
 }
 // One transaction is shared by ghosts, search and animated manual/AI play.
-// A Crystal can score on its third subsequent placement, before it expires.
+// A Crystal can score on its fifth subsequent placement, before it expires.
 export function lockPiece(board, piece, magic = true, turn = 0, capture = false) {
   if (!fits(board, piece)) return { board, cleared: 0, over: true }
   const nextTurn = turn + 1, phases = [], drilled = [], expired = []
