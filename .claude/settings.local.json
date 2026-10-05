@@ -26,7 +26,25 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(git checkout:*)",
-      "Bash(git merge:*)"
+      "Bash(git merge:*)",
+      "Bash(git log *)",
+      "Bash(find . -path ./node_modules -prune -o -iname \"*.jsx\" -name \"*etris*\" -print)",
+      "Bash(find . -maxdepth 2 -type d -iname \"dist*\")",
+      "Bash(node -e \"const s=require\\('fs'\\).readFileSync\\('src/components/games/Tetris.jsx','utf8'\\);const o=\\(s.match\\(/\\\\{/g\\)||[]\\).length,c=\\(s.match\\(/\\\\}/g\\)||[]\\).length,po=\\(s.match\\(/\\\\\\(/g\\)||[]\\).length,pc=\\(s.match\\(/\\\\\\)/g\\)||[]\\).length;console.log\\('braces',o,c,'parens',po,pc\\);\")",
+      "Bash(node -e \"console.log\\(require\\('./package.json'\\).devDependencies.vite || require\\('./package.json'\\).dependencies.vite\\)\")",
+      "Bash(node -e \"let d='';process.stdin.on\\('data',c=>d+=c\\).on\\('end',\\(\\)=>{try{const j=JSON.parse\\(d\\);console.log\\('version',j.version,'main',j.main,'exports?',!!j.exports\\)}catch\\(e\\){console.log\\('no vite pkg json'\\)}}\\)\")",
+      "Bash(timeout 180 npm install)",
+      "Bash(node /tmp/verify_tetris.mjs)",
+      "Bash(awk '/const movePiece = useCallback/,/^  }, \\\\[currentPiece, currentPosition/' src/components/games/Tetris.jsx)",
+      "Bash(git --no-pager diff src/components/games/Tetris.jsx)",
+      "Bash(npm -v)",
+      "Bash(echo \"node: $\\(node -v\\) | npm: $\\(npm -v\\)\")",
+      "WebSearch",
+      "Bash(claude --version)",
+      "Read(//home/tonirod/.local/share/claude/versions/**)",
+      "Read(//home/tonirod/.local/share/claude/**)",
+      "Read(//home/tonirod/.claude/**)",
+      "Bash(claude install *)"
     ]
   }
 }
