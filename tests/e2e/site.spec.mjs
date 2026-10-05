@@ -88,7 +88,7 @@ test('chat surfaces HTTP failure and allows recovery', async ({ page }) => {
 
 test('CV preview opens a real local asset and emits cv_open', async ({ page }) => {
   await page.goto('/resume')
-  const button = page.locator('main button').filter({ has: page.locator('img[src*="CVthumb"]') }).first()
+  const button = page.getByRole('button', { name: /^Ver documento · CV/ }).first()
   await button.click()
   const frame = page.locator('iframe[src*="Tony_Rodriguez_CV"]')
   await expect(frame).toBeVisible()
@@ -113,15 +113,15 @@ test('page telemetry does not retain query content', async ({ page }) => {
 test('shared navigation and language switching work with keyboard and touch', async ({ page }, testInfo) => {
   const mobile = testInfo.project.name === 'mobile'
   await page.goto('/')
-  if (mobile) await page.getByRole('button', { name: 'Toggle menu' }).click()
+  if (mobile) await page.getByRole('button', { name: 'Menú', exact: true }).click()
   const projects = page.locator('header a[href="/projects"]:visible').first()
   if (mobile) await projects.tap()
   else { await projects.focus(); await page.keyboard.press('Enter') }
   await expect(page).toHaveURL(/\/projects$/)
   await expect(page.locator('main h1')).toBeVisible()
-  if (mobile) await page.getByRole('button', { name: 'Toggle menu' }).click()
-  await page.getByRole('button', { name: 'ES', exact: true }).click()
-  await page.getByRole('button', { name: 'EN', exact: true }).click()
+  if (mobile) await page.getByRole('button', { name: 'Menú', exact: true }).click()
+  await page.getByRole('button', { name: 'Idioma: ES', exact: true }).click()
+  await page.getByRole('button', { name: 'English', exact: true }).click()
   await expect(page.locator('main h1')).toContainText('Projects')
 })
 
@@ -131,7 +131,7 @@ test('a failed route download preserves navigation and offers recovery', async (
   await expect(page.getByRole('alert')).toContainText('No hemos podido cargar esta página')
   await expect(page.getByRole('button', { name: 'Recargar', exact: true })).toBeVisible()
   await expect(page.locator('header')).toBeVisible()
-  const menu = page.getByRole('button', { name: 'Toggle menu' })
+  const menu = page.getByRole('button', { name: 'Menú', exact: true })
   if (await menu.isVisible()) await menu.click()
   await page.locator('header a[href="/contact"]:visible').first().click()
   await expect(page.locator('main h1')).toHaveText('Contacto')

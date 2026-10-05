@@ -18,7 +18,7 @@ export default function DemoPage({ id, children }) {
   return <SitePage title={demo.title[language]} intro={demo.intro[language]} kicker={`${demo.number} / ${copy.solutions.kicker}`} className="site-demo">
     <Link className="site-demo-back" to="/demos"><ArrowLeft size={16} />{copy.backSolutions}</Link>
     <nav ref={navigation} className="site-demo-nav" aria-label={copy.solutions.title}>{solutionPages.map(item => <Link key={item.id} to={`/demos/${item.id}`} aria-current={item.id===id?'page':undefined}>{item.number} / {item.title[language]}</Link>)}</nav>
-    {id!=='lead-qualifier' && !import.meta.env.VITE_BUILDAPP_DEMO_API_URL && <p className="site-note">{copy.generationUnavailable} <a href="https://buildapp.es/pro" target="_blank" rel="noopener noreferrer">{copy.openBuildApp} ↗</a></p>}
+    {id!=='lead-qualifier' && !import.meta.env.VITE_BUILDAPP_DEMO_API_URL && <p className="site-message site-demo-notice" role="note">{copy.generationUnavailable} <a href="https://buildapp.es/pro" target="_blank" rel="noopener noreferrer">{copy.openBuildApp} ↗</a></p>}
     <div className="site-demo-stage">{children}</div>
     <section className="site-demo-method"><div><p className="site-kicker">{copy.input}</p><p>{demo.input[language]}</p></div><div><p className="site-kicker">{copy.output}</p><p>{demo.output[language]}</p></div></section>
     <p className="site-note">{id==='render-presupuesto'?copy.renderNote:id==='presupuesto-orientativo'?copy.resultNote:copy.serviceNote}</p>

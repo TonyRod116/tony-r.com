@@ -37,6 +37,8 @@ export default function Header() {
   }, [])
 
   const toggleMenu = () => setIsOpen(!isOpen)
+  // "page" solo para la página exacta; "true" cuando estás dentro de esa sección (p. ej. un experimento del laboratorio).
+  const currentFor = href => location.pathname === href ? 'page' : location.pathname.startsWith(`${href}/`) ? 'true' : undefined
 
   const visibleNavigation = ['/projects', '/ai', '/about', '/contact'].map(href => navigation.find(item => item.href === href))
   const translatedNavigation = visibleNavigation.map(item => {
@@ -77,7 +79,8 @@ export default function Header() {
                 <Link
                   key={item.href}
                   to={item.href}
-                  className="text-sm font-medium px-4 py-2 rounded-lg bg-primary-600 text-white hover:bg-primary-700 shadow-md hover:shadow-primary-500/25 transition-all duration-200"
+                  aria-current={currentFor(item.href)}
+                  className="nav-contact text-sm font-medium px-4 py-2 rounded-lg bg-primary-600 text-white hover:bg-primary-700 shadow-md hover:shadow-primary-500/25 transition-all duration-200"
                 >
                   {item.name}
                 </Link>
@@ -85,6 +88,7 @@ export default function Header() {
                 <Link
                   key={item.href}
                   to={item.href}
+                  aria-current={currentFor(item.href)}
                   className={cn(
                     'text-sm font-medium transition-colors hover:text-primary-600 drop-shadow-sm',
                     location.pathname === item.href
@@ -108,7 +112,8 @@ export default function Header() {
             <button
               onClick={toggleMenu}
               className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              aria-label="Toggle menu"
+              aria-label={t('nav.menu')}
+              aria-expanded={isOpen}
             >
               {isOpen ? <X className="h-5 w-5 text-gray-700 dark:text-gray-200" /> : <Menu className="h-5 w-5 text-gray-700 dark:text-gray-200" />}
             </button>
@@ -145,7 +150,8 @@ export default function Header() {
                       key={item.href}
                       to={item.href}
                       onClick={() => setIsOpen(false)}
-                      className="block px-4 py-2 text-sm font-medium rounded-md mx-2 bg-primary-600 text-white hover:bg-primary-700 transition-colors text-center"
+                      aria-current={currentFor(item.href)}
+                      className="nav-contact block px-4 py-2 text-sm font-medium rounded-md mx-2 bg-primary-600 text-white hover:bg-primary-700 transition-colors text-center"
                     >
                       {item.name}
                     </Link>
@@ -154,6 +160,7 @@ export default function Header() {
                       key={item.href}
                       to={item.href}
                       onClick={() => setIsOpen(false)}
+                      aria-current={currentFor(item.href)}
                       className={cn(
                         'block px-4 py-2 text-sm font-medium rounded-md transition-colors mx-2',
                         location.pathname === item.href

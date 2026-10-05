@@ -5,6 +5,8 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
 import GoogleAnalytics from './components/GoogleAnalytics'
+import PageMeta from './components/PageMeta'
+import ConsentBanner from './components/ConsentBanner'
 import RouteBoundary from './components/RouteBoundary'
 import { spriteFusionRouteBase } from './utils/siteRouting'
 const Home = lazy(() => import('./pages/Home'))
@@ -13,6 +15,7 @@ const Projects = lazy(() => import('./pages/Projects'))
 const Contact = lazy(() => import('./pages/Contact'))
 const Resume = lazy(() => import('./pages/Resume'))
 const AiLab = lazy(() => import('./pages/AiLab'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 const Demos = lazy(() => import('./pages/Demos'))
 const PresupuestoOrientativo = lazy(() => import('./pages/demos/PresupuestoOrientativo'))
 const RenderPresupuesto = lazy(() => import('./pages/demos/RenderPresupuesto'))
@@ -48,6 +51,7 @@ function AppContent() {
       <div className="min-h-screen bg-gray-900 overflow-x-hidden">
         <ScrollToTop />
         <GoogleAnalytics />
+        <PageMeta />
         <Header />
         <main
           className={`min-h-[70vh] flex-1 transition-opacity duration-200 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
@@ -74,11 +78,13 @@ function AppContent() {
               path="/ai/neural-network"
               element={<NeuralNetworkVisualization />}
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
           </Suspense>
           </RouteBoundary>
         </main>
         <Footer />
+        <ConsentBanner />
       </div>
     </Router>
   )

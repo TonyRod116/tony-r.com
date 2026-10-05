@@ -2,7 +2,7 @@ import { test, expect } from './fixtures.mjs'
 
 test('home keeps AI in the main navigation and solutions in the footer', async ({ page }, testInfo) => {
   await page.goto('/')
-  if (testInfo.project.name === 'mobile') await page.getByRole('button', { name: 'Toggle menu' }).click()
+  if (testInfo.project.name === 'mobile') await page.getByRole('button', { name: 'Menú', exact: true }).click()
   const header = page.locator('header')
   const lab = header.getByRole('link', { name: 'Lab de IA', exact: true })
   await expect(lab).toBeVisible()
@@ -14,7 +14,7 @@ test('home keeps AI in the main navigation and solutions in the footer', async (
   await lab.click()
   await expect(page).toHaveURL(/\/ai$/)
   await expect(page.locator('main h1')).toBeVisible()
-  if (testInfo.project.name === 'mobile') await expect(header.getByRole('button', { name: 'ES', exact: true })).not.toBeVisible()
+  if (testInfo.project.name === 'mobile') await expect(header.getByRole('button', { name: 'Idioma: ES', exact: true })).not.toBeVisible()
   await page.goto('/')
   await page.locator('footer').getByRole('link', { name: 'Soluciones', exact: true }).click()
   await expect(page).toHaveURL(/\/demos$/)
@@ -71,11 +71,11 @@ test('reduced motion keeps showroom imagery static and work links readable', asy
 
 test('language selector on the home can be opened and used with the keyboard', async ({ page }, testInfo) => {
   await page.goto('/')
-  if (testInfo.project.name === 'mobile') await page.getByRole('button', { name: 'Toggle menu' }).click()
-  const language = page.getByRole('button', { name: 'ES', exact: true })
+  if (testInfo.project.name === 'mobile') await page.getByRole('button', { name: 'Menú', exact: true }).click()
+  const language = page.getByRole('button', { name: 'Idioma: ES', exact: true })
   await language.focus()
   await page.keyboard.press('Enter')
-  const english = page.getByRole('button', { name: 'EN', exact: true })
+  const english = page.getByRole('button', { name: 'English', exact: true })
   await expect(english).toBeVisible()
   await english.focus()
   await page.keyboard.press('Enter')

@@ -112,7 +112,7 @@ test('tic-tac-toe locks the opponent turn and reset cancels its old reply', asyn
   const cells=page.locator('.ai-cell')
   await cells.first().click()
   await expect(cells.nth(1)).toBeDisabled()
-  await page.getByRole('button',{name:'Nuevo Juego',exact:true}).click()
+  await page.getByRole('button',{name:'Nuevo juego',exact:true}).click()
   await page.waitForTimeout(700)
   expect((await cells.allTextContents()).join('').trim()).toBe('')
 })
@@ -128,7 +128,7 @@ test('Minesweeper flag mode works by touch and removes the flag', async ({ page 
 test('Nim reset cancels a pending opponent move', async ({ page }) => {
   await page.goto('/ai/nim')
   await page.getByRole('button',{name:'Retirar 1 · Montón 1',exact:true}).click()
-  await page.getByRole('button',{name:'Nuevo Juego',exact:true}).click()
+  await page.getByRole('button',{name:'Nuevo juego',exact:true}).click()
   await page.waitForTimeout(1200)
   await expect(page.locator('.ai-nim-piles > div > div')).toHaveText(['1','3','5','7'])
 })

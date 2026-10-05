@@ -9,7 +9,7 @@ test('an unavailable optional easter egg cannot blank the lab or break navigatio
   await page.goto('/ai')
   await expect(page.locator('main h1')).toBeVisible()
   await expect(page.locator('.lab-easter')).toHaveCount(0)
-  if (testInfo.project.name === 'mobile') await page.getByRole('button', { name: 'Toggle menu' }).click()
+  if (testInfo.project.name === 'mobile') await page.getByRole('button', { name: 'Menú', exact: true }).click()
   await page.locator('header').getByRole('link', { name: 'Proyectos', exact: true }).click()
   await expect(page).toHaveURL(/\/projects$/)
   await expect(page.locator('main h1')).toBeVisible()

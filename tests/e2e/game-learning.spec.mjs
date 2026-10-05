@@ -64,7 +64,7 @@ test('Minesweeper displays the actual safe constraint and clears it on reset', a
   const [row, col] = safe.split(',').map(Number)
   await expect(cells.nth(row * 8 + col)).toHaveClass(/bg-gray-600/)
   await expect(cells.nth(row * 8 + col)).not.toContainText('💣')
-  await page.getByRole('button', { name: 'Nuevo Juego', exact: true }).click()
+  await page.getByRole('button', { name: 'Nuevo juego', exact: true }).click()
   await expect(live).toHaveAttribute('data-mode', 'waiting')
 })
 

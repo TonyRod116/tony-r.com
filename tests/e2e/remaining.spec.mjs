@@ -6,7 +6,7 @@ test('before-after comparison exposes a keyboard control and follows pointer dra
   await page.goto('/demos/render-presupuesto')
   await page.locator('input[type="file"]').setInputFiles('src/assets/projects/buildapp-pro-quote-visual.png')
   await page.locator('textarea').fill('Ejemplo sintético de una reforma')
-  await page.getByRole('button',{name:'Generar Render y Presupuesto',exact:true}).click()
+  await page.getByRole('button',{name:'Generar render y presupuesto',exact:true}).click()
   const range=page.getByLabel('Posición del separador')
   await expect(range).toBeVisible()
   await range.focus();await page.keyboard.press('ArrowRight');await expect(range).toHaveValue('51')
