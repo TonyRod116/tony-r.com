@@ -4,6 +4,8 @@ export const test = base.extend({
   page: async ({ page }, use) => {
     await page.addInitScript(() => {
       if (!localStorage.getItem('portfolio-language')) localStorage.setItem('portfolio-language', 'es')
+      // Los recorridos parten de un visitante que ya respondió al aviso de analítica; consent.spec.mjs prueba el aviso en sí.
+      if (!localStorage.getItem('portfolio-analytics-consent')) localStorage.setItem('portfolio-analytics-consent', 'denied')
       window.__QA_TELEMETRY__ = []
       window.addEventListener('my-page:telemetry', event => window.__QA_TELEMETRY__.push(event.detail))
     })
