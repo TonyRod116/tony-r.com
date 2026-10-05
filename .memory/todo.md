@@ -1,8 +1,10 @@
 # Startup handoff
 
-Last updated: 2026-10-03
+Last updated: 2026-10-05
 
-GitHub publication is paused by Tony on2026-10-03. Do not push until he explicitly asks again. This supersedes the earlier session-wide push authorization; IONOS publication stays separate.
+Latest (2026-10-05): site-wide design/copy review is local and uncommitted. New: per-route metadata (`src/data/pageMeta.js`, guarded by a test that reads `App.jsx` routes), NotFound page, thumbnails rendered from the real PDFs. Home hero intro was rewritten and awaits Tony's opinion; BuildApp start date (page 2026 vs CV Jul 2025) awaits his answer. Proof/limits: docs/ai/site-review-20261005.md.
+
+Exception 2026-10-05: Tony asked to commit and push the site review at the end of that session (published on IONOS the same day; verified 26/26). GitHub publication is otherwise paused by Tony on2026-10-03. Do not push until he explicitly asks again. This supersedes the earlier session-wide push authorization; IONOS publication stays separate.
 
 Latest Crystal life: five subsequent placements (two extra), with actual5→4→3→2→1 countdown, last-turn line scoring and updated two-known-piece AI forecasts. Published/verified in nine preview+nine live cases. Proof: docs/ai/crystal-life-20261003.md/json. No GitHub push.
 

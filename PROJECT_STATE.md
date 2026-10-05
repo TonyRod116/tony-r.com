@@ -1,6 +1,6 @@
 # Project State — 2026-09-30
 
-Last updated: 2026-10-03
+Last updated: 2026-10-05
 
 ## Current state
 
@@ -188,3 +188,11 @@ GitHub remains paused; no push occurs. The preceding completed home/Projects cle
 Published and verified: Crystal lasts five following placements rather than three, with counter5→4→3→2→1 and lines resolved before the fifth-placement crack. Immutable expiry, manual play, miniatures and AI share the same constant; the forecast remains limited to two actual queued pieces and shows three remaining turns for a new Crystal afterward. ES/EN/CA guide and method copy match.
 
 84 tooling checks,24 browser interactions, six inspected visuals and nine preview+nine live full-countdown cases pass, including pause/score protection and exact final-board agreement.74 protected files, three numerical/formula sources and eight preceding cleanup files match. Proof: docs/ai/crystal-life-20261003.md/json; private recovery: .artifacts/crystal-life-20261003/. GitHub push remains paused; source/instructions are saved locally only. Earlier three-turn records are historical.
+
+## Site-wide design and copy review — 2026-10-05
+
+Local only, uncommitted. Per-route titles/descriptions/canonical come from `src/data/pageMeta.js` via `src/components/PageMeta.jsx`; a route added to `src/App.jsx` without an entry there is now caught by `tests/tooling/page-meta.test.mjs` (otherwise it would be titled "not found" and marked noindex). Unknown addresses render `src/pages/NotFound.jsx`. Resume thumbnails are rendered from the real PDFs (`CV_ES/EN_thumb.png`, three `Stanford_*_thumb.png`). Header nav has an outlined Contact button, `aria-current`, a fixed localized "Menú" button with `aria-expanded`, and a language list with names. ES/CA sentence-case, grammar and placeholder fixes; home hero intro rewritten to say what BuildApp is (to be reviewed by Tony).
+
+Checks: 93 tooling tests, 251 browser journeys (1 existing skip), 36 visual comparisons; 11 baselines refreshed after opening each diff. Independent review found and I fixed a blank-app regression for addresses such as `/ai/constructor`. Evidence and limits: docs/ai/site-review-20261005.md. Open: BuildApp start date mismatch (My Page-5cp), analytics consent (My Page-jci), unused translation text (My Page-h38), share previews (My Page-kh1), minor polish (My Page-4fg). GitHub push remains paused; IONOS publication was not requested.
+
+Follow-up 2026-10-05: BuildApp keeps "2026 - Ahora" on the page (Tony). Analytics now needs consent: no Google Analytics request before "Aceptar" (`src/utils/analyticsConsent.js`, `ConsentBanner.jsx`, footer "Cookies"). `/ai/neural-network` is much lighter (pacing of drawing updates, 20 fps flow animation paused off screen, faster load; same model/maths/DOM). 103 tooling tests, 265 browser journeys, 36 visual comparisons pass. Published on IONOS by Tony on 2026-10-05 with `.artifacts/site-review-20261005/` (stage -> activate -> verify-live.mjs 26/26 checks, rollback available). The GitHub pause of 2026-10-03 was lifted for this work: Tony asked to commit and push at the end of the session; the work is in six local commits, check `git status -sb` for whether origin/main has them. Details: docs/ai/site-review-20261005.md.
