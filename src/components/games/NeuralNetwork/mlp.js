@@ -6,20 +6,31 @@ import { publicAssetUrl } from '../../../utils/siteRouting.js'
 export const WEIGHTS_URL = '/models/mnist/014_dataset-1x.json'
 const NORMALIZATION = { mean: 0.1307, std: 0.3081 }
 
+// Tabla float16 -> número (65 536 entradas, misma fórmula que antes): descodificar ~110 000 pesos
+// deja de ejecutar una función con cálculos de potencias por cada valor.
+const HALF_TO_NUMBER = (() => {
+  const table = new Float64Array(65536)
+  for (let h = 0; h < 65536; h++) {
+    const sign = h & 0x8000 ? -1 : 1, exponent = (h >> 10) & 31, fraction = h & 1023
+    table[h] = exponent === 0 ? sign * 2 ** -14 * fraction / 1024 : exponent === 31 ? NaN : sign * 2 ** (exponent - 15) * (1 + fraction / 1024)
+  }
+  return table
+})()
+
 function decodeTensor(tensor, dimensions) {
   if (!tensor || !Array.isArray(tensor.shape) || tensor.shape.length !== dimensions || tensor.shape.some(n => !Number.isInteger(n) || n < 1 || n > 784) || typeof tensor.data !== 'string') throw new Error('Invalid tensor')
   const binary = atob(tensor.data)
   const count = tensor.shape.reduce((a, b) => a * b, 1)
   if (binary.length !== count * 2) throw new Error('Invalid tensor length')
-  const bytes = Uint8Array.from(binary, c => c.charCodeAt(0))
+  const bytes = new Uint8Array(binary.length)
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
   const view = new DataView(bytes.buffer)
-  const values = Array.from({ length: count }, (_, i) => {
-    const h = view.getUint16(i * 2, true)
-    const sign = h & 0x8000 ? -1 : 1, exponent = (h >> 10) & 31, fraction = h & 1023
-    const value = exponent === 0 ? sign * 2 ** -14 * fraction / 1024 : exponent === 31 ? NaN : sign * 2 ** (exponent - 15) * (1 + fraction / 1024)
+  const values = []
+  for (let i = 0; i < count; i++) {
+    const value = HALF_TO_NUMBER[view.getUint16(i * 2, true)]
     if (!Number.isFinite(value)) throw new Error('Non-finite model weight')
-    return value
-  })
+    values.push(value)
+  }
   return values
 }
 

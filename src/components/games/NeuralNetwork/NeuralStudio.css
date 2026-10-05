@@ -103,11 +103,13 @@
 .neural-loss-values dd { font: 1.125rem ui-monospace,monospace; margin-top: 8px; }
 .neural-signal-legend { color: var(--ai-muted); font-size: 0.625rem; line-height: 1.6; margin-bottom: 12px !important; }
 .neural-copy-label { color: var(--ai-orange); font-size: 0.6875rem; margin-top: 12px !important; }
-.neural-flow-edge { stroke-dasharray: 4 14; stroke-linecap: round; animation: neural-signal-forward 900ms linear infinite; }
+/* 18 pasos por vuelta (≈20 fps): cada paso desplaza el trazo 1 unidad, igual de fluido a la vista, pero con una tercera parte del repintado de las 324 líneas. */
+.neural-flow-edge { stroke-dasharray: 4 14; stroke-linecap: round; animation: neural-signal-forward 900ms steps(18, end) infinite; }
 .neural-flow-node { stroke: var(--ai-accent); stroke-width: 2; animation: neural-node-signal 1200ms ease-in-out infinite; }
 .ai-network-instrument[data-flow-direction="backward"] .neural-flow-edge { animation-name: neural-signal-backward; }
 .ai-network-instrument[data-flow-direction="update"] .neural-flow-edge { stroke-dasharray: 2 8; animation-duration: 1200ms; }
 .ai-network-instrument[data-flow-playing="false"] :is(.neural-flow-edge,.neural-flow-node) { animation-play-state: paused; }
+.ai-network-instrument[data-flow-visible="false"] :is(.neural-flow-edge,.neural-flow-node,.neural-input-return-pulses,.neural-input-gradient-cells) { animation-play-state: paused; }
 @keyframes neural-signal-forward { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -18; } }
 @keyframes neural-signal-backward { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 18; } }
 @keyframes neural-node-signal { 0%,100% { stroke-opacity: 0; } 50% { stroke-opacity: 0.7; } }
@@ -117,8 +119,9 @@
 .neural-input-gradient-cells polygon { cursor: crosshair; }
 .neural-input-gradient-cells.is-return-active { animation: neural-input-arrival 1600ms linear infinite; }
 .ai-network-instrument[data-flow-playing="false"] :is(.neural-input-return-pulses,.neural-input-gradient-cells) { animation-play-state: paused; }
-@keyframes neural-input-return { 0% { stroke-dashoffset: -92; opacity: 0; } 8% { opacity: 1; } 78% { stroke-dashoffset: 0; opacity: 1; } 95%,100% { stroke-dashoffset: 0; opacity: 0; } }
-@keyframes neural-input-arrival { 0%,60% { opacity: 0.45; stroke-opacity: 0; } 78%,90% { opacity: 1; stroke-opacity: 0.9; } 100% { opacity: 0.45; stroke-opacity: 0; } }
+/* Cada tramo avanza en pasos de ≈50 ms (≈20 fps): las 256 rutas y las 784 celdas heredan estos valores y recalcular todas a 60 fps saturaba el procesador. */
+@keyframes neural-input-return { 0% { stroke-dashoffset: -92; opacity: 0; animation-timing-function: steps(3, end); } 8% { opacity: 1; animation-timing-function: steps(22, end); } 78% { stroke-dashoffset: 0; opacity: 1; animation-timing-function: steps(5, end); } 95%,100% { stroke-dashoffset: 0; opacity: 0; } }
+@keyframes neural-input-arrival { 0%,60% { opacity: 0.45; stroke-opacity: 0; animation-timing-function: steps(6, end); } 78%,90% { opacity: 1; stroke-opacity: 0.9; animation-timing-function: steps(3, end); } 100% { opacity: 0.45; stroke-opacity: 0; } }
 @media (max-width:640px) {
   .neural-trace-panel { padding: 16px; }
   .neural-trace-controls { gap: 8px 16px; }

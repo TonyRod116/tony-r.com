@@ -19,7 +19,32 @@ export default function NeuralNetworkVisualization() {
   const [direction,setDirection]=useState('forward'),[selectedLayer,setSelectedLayer]=useState(null)
   const [animationEnabled,setAnimationEnabled]=useState(defaultAnimation),[paused,setPaused]=useState(false)
   const canvas=useRef(null),sequence=useRef(0)
-  const changePixels=value=>{setPixels(value);setPlayback(null);setTraceError('')}
+  // Mientras se dibuja, la red completa (≈4 500 elementos SVG) no puede redibujarse en cada movimiento del dedo.
+  // Las actualizaciones intermedias esperan a que termine la anterior y dejan tanto tiempo libre como esta tardó
+  // (entre 60 ms y 1,5 s según el dispositivo), la primera se aplica al instante y la definitiva (al soltar,
+  // borrar o elegir un ejemplo) siempre refleja el trazo exacto.
+  const pacing=useRef({timer:0,value:null,readyAt:0,started:0,inFlight:false,committed:null})
+  const commitPixels=value=>{const t=pacing.current;t.inFlight=true;t.started=performance.now();t.committed=value;setPixels(value);setPlayback(null);setTraceError('')}
+  const flushPixels=()=>{
+    const t=pacing.current;t.timer=0
+    if(!t.value)return
+    const wait=t.readyAt-performance.now()
+    if(t.inFlight||wait>0){t.timer=setTimeout(flushPixels,Math.max(16,wait));return}
+    const next=t.value;t.value=null;commitPixels(next)
+  }
+  const changePixels=(value,{final=true}={})=>{
+    const t=pacing.current
+    if(final){
+      clearTimeout(t.timer);t.timer=0;t.value=null
+      if(t.committed&&t.committed.length===value.length&&t.committed.every((pixel,i)=>pixel===value[i]))return
+      return commitPixels(value)
+    }
+    t.value=value
+    if(!t.timer)t.timer=setTimeout(flushPixels,0)
+  }
+  // Al terminar de mostrarse una actualización (render + estilo + pintado) se mide cuánto costó.
+  useEffect(()=>{const t=pacing.current;if(!t.started)return;const now=performance.now();t.readyAt=now+Math.min(1500,Math.max(60,(now-t.started)*1.5));t.inFlight=false;t.started=0},[pixels])
+  useEffect(()=>()=>clearTimeout(pacing.current.timer),[])
   useEffect(()=>{canvas.current.example(7)},[])
   useEffect(()=>{
     const controller=new AbortController(),instance=new MLP(),timeout=setTimeout(()=>controller.abort(),15000)

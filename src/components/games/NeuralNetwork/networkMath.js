@@ -60,3 +60,23 @@ export function edgeSignal(weights,trace,training,phase,layer,target,source,norm
   if(phase?.kind==='update')value=-training.learningRate*gradient
   return {weight,contribution,gradient,value,updatedWeight:training?.updatedWeights[layer][target][source]}
 }
+// Las dos conexiones de mayor |peso| de cada neurona (las que dibuja el diagrama).
+// Una sola pasada sin crear un objeto por peso ni ordenar. Equivale a ordenar de forma estable por |peso|
+// descendente y quedarse con las primeras: en los empates gana el índice menor.
+export function strongestConnections(weights, perTarget = 2) {
+  const edges = []
+  weights.forEach((layerWeights, layer) => layerWeights.forEach((row, target) => {
+    const picked = []
+    for (let source = 0; source < row.length; source++) {
+      const weight = row[source], magnitude = Math.abs(weight)
+      let position = picked.length
+      while (position > 0 && magnitude > picked[position - 1].magnitude) position--
+      if (position < perTarget) {
+        picked.splice(position, 0, { source, weight, magnitude })
+        if (picked.length > perTarget) picked.pop()
+      }
+    }
+    for (const { source, weight } of picked) edges.push({ source, weight, target, layer })
+  }))
+  return edges
+}

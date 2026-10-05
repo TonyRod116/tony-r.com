@@ -1,8 +1,10 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
-import { edgeSignal } from '../games/NeuralNetwork/networkMath'
+import { edgeSignal, strongestConnections } from '../games/NeuralNetwork/networkMath'
 import { InputGradientLinks, InputGradientCells } from './InputGradientFlow'
 
 const OUTPUT_SCALE = 0.75
+// Opacidades a escalones de 0,005 (menos de 1/255 de diferencia): así un trazo solo reescribe los elementos que cambian de verdad.
+const alpha = value => Math.round(value*200)/200
 
 // The camera retains the approved orientation; columns grow left to right.
 // All nodes and highlighted values come from the actual model/input.
@@ -13,6 +15,15 @@ export default function NetworkDiagram({ activations, probabilities, weights, in
   const [inspected, setInspected] = useState(null)
   const [showInputGradients, setShowInputGradients] = useState(true)
   const drag = useRef(null)
+  const root = useRef(null)
+  // Las animaciones de flujo solo corren mientras el diagrama está a la vista (la pausa visible la gobiernan data-flow-playing y el botón).
+  useEffect(()=>{
+    const element=root.current
+    if(!interactive||!element||typeof IntersectionObserver==='undefined')return
+    const observer=new IntersectionObserver(([entry])=>{element.dataset.flowVisible=String(entry.isIntersecting)})
+    observer.observe(element)
+    return ()=>observer.disconnect()
+  },[interactive])
   const glow = useId().replaceAll(':','')
   const sizes = weights?.length ? [weights[0][0].length, ...weights.map(layer => layer.length)] : [784,128,64,10]
   const isGradient = phase?.kind==='backward'||phase?.kind==='update'
@@ -36,11 +47,10 @@ export default function NetworkDiagram({ activations, probabilities, weights, in
   })
   const connections=useMemo(()=>{
     if(interactive && !weights)return []
-    const architecture=weights?.length?[weights[0][0].length,...weights.map(layer=>layer.length)]:[784,128,64,10]
-    return architecture.slice(1).flatMap((size,layer)=>Array.from({length:size},(_,target)=>{
-      if(weights)return Array.from(weights[layer][target],(weight,source)=>({source,weight})).sort((a,b)=>Math.abs(b.weight)-Math.abs(a.weight)).slice(0,2).map(edge=>({...edge,target,layer}))
-      return [0,1].map(i=>({source:(target*17+i*31)%architecture[layer],target,layer,weight:1}))
-    }).flat())
+    if(weights?.length)return strongestConnections(weights)
+    const architecture=[784,128,64,10]
+    return architecture.slice(1).flatMap((size,layer)=>Array.from({length:size},(_,target)=>
+      [0,1].map(i=>({source:(target*17+i*31)%architecture[layer],target,layer,weight:1}))).flat())
   },[weights,interactive])
   useEffect(()=>{if(session!==undefined)setInspected(null)},[session])
   useEffect(()=>{if(!activations)setInspected(null)},[activations])
@@ -53,7 +63,7 @@ export default function NetworkDiagram({ activations, probabilities, weights, in
   const inputReturnActive=phase?.edgeLayer===0||phase?.edgeLayers?.includes(0)
   const inputFocused=activeLayer===null||activeLayer===0||inputReturnActive
   const futureLayer=index=>guided&&phase&&phase.layer!==null&&(['input','forward'].includes(phase.kind)?index>phase.layer:phase.kind==='backward'?index<phase.layer:false)
-  return <div className={`ai-network-diagram${interactive?' ai-network-instrument':''}`} data-active-layer={activeLayer??'all'} data-flow-direction={phase?.kind==='update'?'update':direction??'forward'} data-flow-playing={Boolean(running)} data-animation-enabled={Boolean(animationEnabled)} data-animation-paused={Boolean(paused)}>
+  return <div ref={root} className={`ai-network-diagram${interactive?' ai-network-instrument':''}`} data-active-layer={activeLayer??'all'} data-flow-direction={phase?.kind==='update'?'update':direction??'forward'} data-flow-playing={Boolean(running)} data-animation-enabled={Boolean(animationEnabled)} data-animation-paused={Boolean(paused)}>
     {interactive && <div className="ai-network-topline"><span className="ai-kicker">{isGradient?dynamics.gradient:activations?labels.liveSignal:labels.idleSignal}</span><button className="ai-text-button" disabled={!activations} onClick={()=>{setInspected(null);onTrace?.()}}>{labels.traverse}<span aria-hidden="true">↗</span></button></div>}
     {interactive&&<>
       <div className="neural-direction-controls" role="group" aria-label={controls.direction}>{['forward','backward'].map(value=><button key={value} aria-pressed={direction===value} onClick={()=>{setInspected(null);onDirection(value)}}><span aria-hidden="true">{value==='forward'?'→':'←'}</span>{controls[value]}</button>)}</div>
@@ -81,7 +91,7 @@ export default function NetworkDiagram({ activations, probabilities, weights, in
         const flowing=animationEnabled&&phase&&(phase.edgeLayer===layer||phase.edgeLayers?.includes(layer)||phase.kind==='update')&&signal&&Math.abs(signal.value)>1e-12&&matches
         const coordinates={x1:from.x,y1:from.y,x2:to.x,y2:to.y}
         return <g key={`${layer}-${target}-${source}`}>
-          <line {...coordinates} stroke={color} opacity={(interactive?0.04+strength*0.55:0.05+strength*0.6)*(focused&&matches?1:0.13)} strokeWidth={focused&&matches?1:0.5}
+          <line {...coordinates} stroke={color} opacity={alpha((interactive?0.04+strength*0.55:0.05+strength*0.6)*(focused&&matches?1:0.13))} strokeWidth={focused&&matches?1:0.5}
             data-edge-layer={layer} data-source={source} data-target={target} data-weight={weight} data-contribution={signal?.contribution} data-gradient={signal?.gradient} data-signal={signal?.value}>
             {signal&&<title>{`${dynamics.weight}: ${weight.toFixed(5)} · ${dynamics.contribution}: ${signal.contribution.toExponential(3)}${training?` · ${dynamics.gradient}: ${signal.gradient.toExponential(3)}`:''}`}</title>}
           </line>
@@ -90,8 +100,8 @@ export default function NetworkDiagram({ activations, probabilities, weights, in
       })}</g>
       {gradientInput&&<InputGradientLinks nodes={nodes[0]} sources={nodes[1]} connections={connections} signals={signals} active={inputReturnActive} enabled={animationEnabled} focused={inputFocused} inspected={inspected} copy={controls}/>}
       {nodes.map((layer,index)=><g key={index}>{layer.map(node=><g key={node.index}>
-        <circle cx={node.x} cy={node.y} r={(index===0?1.6:index===3?(interactive?(winner===node.index?7:4)*OUTPUT_SCALE:5):3)*zoom} fill={node.raw<0?'var(--ai-orange)':index===0&&activations&&!node.gradient?'var(--ai-paper)':'var(--ai-accent)'}
-          opacity={gradientInput&&index===0?0:futureLayer(index)?0.035:(activations?0.1+node.value*0.9:index===0?0.25:0.7)*(activeLayer===null||activeLayer===index?1:0.4)}
+        <circle cx={node.x} cy={node.y} r={(index===0?1.6:index===3?(interactive?(winner===node.index?7:4)*OUTPUT_SCALE:5):3)*zoom} fill={gradientInput&&index===0?'var(--ai-accent)':node.raw<0?'var(--ai-orange)':index===0&&activations&&!node.gradient?'var(--ai-paper)':'var(--ai-accent)'}
+          opacity={gradientInput&&index===0?0:futureLayer(index)?0.035:alpha((activations?0.1+node.value*0.9:index===0?0.25:0.7)*(activeLayer===null||activeLayer===index?1:0.4))}
           stroke={inspected?.layer===index&&inspected.index===node.index?'var(--ai-paper)':undefined} strokeWidth="2"
           filter={interactive&&activations&&!(gradientInput&&index===0)&&node.value>0.65?`url(#${glow})`:undefined}
           data-layer={index} data-node-index={node.index} data-activation={activations?.[index]?.[node.index]} data-node-value={node.raw} data-value-kind={node.gradient?'gradient':index===0?'pixel':'activation'} data-input-gradient={isGradient&&index===0?training.nodeGradients[0][node.index]:undefined}
