@@ -253,3 +253,6 @@
     transform: rotateZ(405deg);
   }
 }
+
+/* Evita el retardo de doble toque en móvil. */
+a, button, summary, [role="button"], input, select, textarea { touch-action: manipulation; }

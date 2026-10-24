@@ -1,6 +1,6 @@
 # Contexto de diseño de My Page
 
-Last updated: 2026-10-03
+Last updated: 2026-10-24
 
 ## Objetivo
 El portfolio debe mostrar con claridad qué construye Tony, qué responsabilidad tuvo y qué puede comprobar el visitante. Acciones: ver proyectos, probar demos, consultar CV y contactar. La audiencia prioritaria y las pruebas viven en product-marketing-context.md.
@@ -65,3 +65,18 @@ T-Tris special-piece descriptions are short, with small icons and name/state on 
 Neural drawing brush starts at2.8/max3 by Tony’s preference. The range stays adjustable and does not modify sample paths or model preprocessing. No measured general accuracy claim follows from this setting.
 
 T-Tris special shapes now use five cells: Crystal is a central + and Drill starts as a straight vertical bar. The compact guide and5×5 preview grids render those same definitions; colors and existing visual identity remain. Both pivot at their middle cell, and edge rotations are tested without wrapping.
+
+## Pulido de home y estilo general — 2026-10-19
+
+Pedido por Tony ("mejora la home y el estilo general"); el Laboratorio de IA ya le gusta y solo recibe retoques mínimos. Se conserva la identidad aprobada (papel cálido, tinta carbón, Inter, reglas finas, acento terracota); no se cambian fuente ni paleta.
+
+- Home: nombre más grande (hasta 4.75rem) y retrato de 380px. El bloque de Python trading pasa de párrafos a cuatro filas escaneables (Validar, Simular con costes, Evitar dos errores, Ejecutar con control) que solo reorganizan hechos ya publicados; no hay importes, ingresos ni resultados (Tony no quiere publicar lo que gana). "Antes del software, la obra" usa una foto real de Total Homes (`totalhomes-05`, sin retocar, leyenda de `galleryDescriptions`; nunca una visualización como la 23). Los dos experimentos llevan una marca oscura con lima, igual que las miniaturas de /ai, solo decorativa.
+- Global: `text-wrap: balance` en títulos y `pretty` en texto (home, resto del sitio y laboratorio), respuesta al pulsar (`:active`), flechas que reaccionan al cursor, `touch-action: manipulation`, color de selección cálido y `theme-color` oscuro. Enlaces de cabecera y pie con 44px de área de pulsación sin cambiar la altura de las barras. Todo respeta `prefers-reduced-motion`.
+- Colores de las marcas del laboratorio en la home están duplicados de `AiLab.css` (#141815, #d3f56b, #efa46c, #363e35); si el laboratorio cambia de paleta, actualizarlos a la vez.
+
+
+## BuildApp para Cliente y Pro — 2026-10-24
+
+Se conserva la composición aprobada de home y Proyectos. Las dos imágenes de home enseñan Cliente (simulación y coste orientativo) y Pro (presupuesto), tomadas de la ficha oficial de App Store. Se muestran completas, sin el recorte de cabecera que necesitaban las capturas antiguas; los originales anteriores se conservan. Las cuatro nuevas imágenes son WebP oficiales de 598×1300, con 157884 bytes en total, sin retoque local.
+
+Proyectos mantiene el comparador original/IA y añade las cuatro capturas oficiales en la misma galería. Cinco miniaturas comparten una fila adaptable, con controles de al menos44px; el visor conserva comparación, anterior/siguiente, escape y foco. Las leyendas distinguen simulación, coste orientativo y presupuesto profesional. La web pública usa una captura nueva de1440×900 sin aviso de cookies. Procedencia: docs/ai/buildapp-unified-20261024.json. No se cambia la identidad visual, la red neuronal ni los juegos.

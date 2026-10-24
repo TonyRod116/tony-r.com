@@ -291,3 +291,9 @@
 .ai-tetris-queue .ai-tetris-preview span { height: 14px; }
 @media (max-width:640px) { .ai-tetris-special-rules { grid-template-columns: 1fr; } .ai-tetris-anticipation,.ai-tetris-forecast { grid-column: 1 / -1; } }
 @media (prefers-reduced-motion:reduce) { .ai-tetris-cell.is-breaking,.ai-drill-voxel.is-spinning,.ai-tetris-cell.is-drilled::after { animation: none !important; transform: none; } }
+/* Pulido sutil: sin palabras sueltas en títulos y flecha que responde al pasar el cursor. */
+.ai-lab :is(h1, h2, h3) { text-wrap: balance; }
+.ai-lab :is(p, li) { text-wrap: pretty; }
+.ai-lab svg.lucide-arrow-up-right { transition: transform 160ms ease; }
+.ai-lab :is(.ai-featured, .ai-catalog-item, .ai-next):hover svg.lucide-arrow-up-right { transform: translate(3px, -3px); }
+.ai-button:active:not(:disabled) { transform: translateY(1px); }

@@ -1,0 +1,214 @@
+{
+  "date": "2026-10-24",
+  "status": "published_ionos_verified",
+  "authority": "Portfolio source/assets and existing IONOS website publication authorized by user follow-up on 2026-10-24. User subsequently explicitly authorized pushing all completed portfolio changes to the existing GitHub repository. BuildApp inspected read-only.",
+  "sources": [
+    {
+      "url": "https://buildapp.es/",
+      "supports": [
+        "Single mobile app with Client or Professional role per account",
+        "Client simulations, indicative costs and saved ideas",
+        "Professional quotes and sharing; Pro web remains separate",
+        "No automatic matching of clients and professionals promised"
+      ]
+    },
+    {
+      "url": "https://apps.apple.com/es/app/buildapp/id6761193227",
+      "supports": [
+        "Official app screenshots",
+        "Release notes introducing BuildApp Cliente"
+      ]
+    },
+    {
+      "url": "https://play.google.com/store/apps/details?id=es.buildapp.app&hl=es",
+      "supports": [
+        "Current public screenshots for both audiences; first six reviewed, older images excluded"
+      ]
+    }
+  ],
+  "local_sources": [
+    "apps/mobile/README.md",
+    "apps/pro/src/mobile.tsx",
+    "apps/pro/src/app/mobileProviders.tsx",
+    "apps/pro/src/app/mobileRouter.tsx",
+    "apps/client/src/pages/Client/ClientHome.tsx",
+    "apps/client/src/pages/Client/ClientRenderFlow.tsx"
+  ],
+  "assets": [
+    {
+      "local_path": "src/assets/projects/buildapp-client-simulation-store-2026-10-24.webp",
+      "listing": "https://apps.apple.com/es/app/buildapp/id6761193227",
+      "url": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/47/f5/c1/47f5c1a4-cde2-c3d2-2021-199647a69f77/02.png/600x1300bb.webp",
+      "width": 598,
+      "height": 1300,
+      "bytes": 39710,
+      "sha256": "e8c99558a0ce53d0204c4383ef541ff5a985068187e32e369aec95b89a313bf3",
+      "transformation": "none; exact CDN WebP bytes"
+    },
+    {
+      "local_path": "src/assets/projects/buildapp-pro-quote-store-2026-10-24.webp",
+      "listing": "https://apps.apple.com/es/app/buildapp/id6761193227",
+      "url": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/f6/e5/42/f6e54214-26d6-3275-3aba-5d2117bc337c/04.png/600x1300bb.webp",
+      "width": 598,
+      "height": 1300,
+      "bytes": 36498,
+      "sha256": "c8800c3fe545e4d009c7f4fc2ba40292673fc50b737fc5fe11c7627094f115be",
+      "transformation": "none; exact CDN WebP bytes"
+    },
+    {
+      "local_path": "src/assets/projects/buildapp-pro-visual-store-2026-10-24.webp",
+      "listing": "https://apps.apple.com/es/app/buildapp/id6761193227",
+      "url": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/be/41/0a/be410acf-fcef-f337-c355-9f352c3f2cab/05.png/600x1300bb.webp",
+      "width": 598,
+      "height": 1300,
+      "bytes": 43996,
+      "sha256": "4894c21910589262bd1ab4a0275af6b4a49ab5e72161b5b815853815eb0fcb23",
+      "transformation": "none; exact CDN WebP bytes"
+    },
+    {
+      "local_path": "src/assets/projects/buildapp-pro-items-store-2026-10-24.webp",
+      "listing": "https://apps.apple.com/es/app/buildapp/id6761193227",
+      "url": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/a3/0d/f4/a30df471-a204-c7f4-6235-9741f3c12013/06.png/600x1300bb.webp",
+      "width": 598,
+      "height": 1300,
+      "bytes": 37680,
+      "sha256": "1441d06a55c893e0605cb21ba5cf48194187cb7871e3c6a5847aa990368332f6",
+      "transformation": "none; exact CDN WebP bytes"
+    },
+    {
+      "local_path": "src/assets/projects/buildapp-website-2026-10-24.png",
+      "url": "https://buildapp.es/",
+      "width": 1440,
+      "height": 900,
+      "bytes": 243237,
+      "sha256": "b718d092ce0072e7d1df61434ae5b21227b36634150e122a0825d80a57d2cb61",
+      "transformation": "Chromium screenshot at 1440x900, reduced motion, anonymous session; analytics declined, non-GET requests blocked; PNG copied without edits"
+    }
+  ],
+  "scope": [
+    "Home BuildApp introduction and flagship presentation ES/EN/CA",
+    "Projects title, narrative, gallery, links and metadata ES/EN/CA",
+    "Preserve original comparison slider, PDFs, historical project cases, unrelated local changes"
+  ],
+  "limitations": [
+    "Official store images contain illustrative product content, not evidence of a real customer renovation or accepted quote",
+    "Browser QA proves portfolio behavior only; no authenticated BuildApp generation or native device session",
+    "No change to account roles, APIs, billing, apps or deployment configuration"
+  ],
+  "local_source_repository": "BuildApp_monorepo, read-only inspection",
+  "verification": {
+    "isolated_build": "pass",
+    "quality_check": {
+      "status": "pass",
+      "tooling_tests": 103,
+      "routing_cases": 24,
+      "skill_mirrors": 27,
+      "new_lint_design_debt": false
+    },
+    "scoped_e2e": {
+      "passed": 72,
+      "scope": [
+        "home",
+        "remaining pages and demos",
+        "page metadata"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile"
+      ]
+    },
+    "focused_browser_matrix": {
+      "passed": 12,
+      "languages": [
+        "es",
+        "en",
+        "ca"
+      ],
+      "widths_px": [
+        1440,
+        768,
+        390,
+        320
+      ],
+      "page_errors": 0,
+      "horizontal_overflow": false,
+      "checks": [
+        "Home copy and two complete store images",
+        "five thumbnails and four loaded official images",
+        "minimum 44px targets",
+        "lightbox navigation",
+        "comparison keyboard control",
+        "Escape and focus restoration"
+      ]
+    },
+    "visual_comparisons": {
+      "passed": 6,
+      "pages": [
+        "home",
+        "projects",
+        "contact"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile"
+      ],
+      "home_projects_references_inspected": 4,
+      "contact_references_preserved": true,
+      "element_capture_note": "Only tall QA fragments omit the fixed global header; functional checks and viewport references retain it."
+    },
+    "preservation": {
+      "protected_initial_paths_unchanged": 990,
+      "all_new_asset_hashes_match": true,
+      "existing_payout_removals_preserved": true,
+      "tracked_dist_untouched": true
+    },
+    "diff_check": "pass"
+  },
+  "publication": {
+    "domain": "https://tony-r.com",
+    "verified_at": "2026-10-24T18:13:04.841875+00:00",
+    "html_sha256": "f88b3ed698a4ef486b7cc6f05292280669bdd4c1803664eabb578638054f778d",
+    "files_verified": 134,
+    "http_checks_passed": 26,
+    "live_browser_cases_passed": 6,
+    "live_routes": [
+      "/",
+      "/projects"
+    ],
+    "languages": [
+      "es",
+      "en",
+      "ca"
+    ],
+    "viewports": {
+      "desktop": [
+        1440,
+        900
+      ],
+      "mobile": [
+        390,
+        844
+      ]
+    },
+    "screenshots_inspected": true,
+    "backup_verified": true,
+    "activation_and_rollback_simulation_passed": true,
+    "protected_routing_separate_project_model_unchanged": true,
+    "old_assets_retained_for_open_tabs": true,
+    "github_push": false,
+    "native_or_paid_api_calls": false
+  },
+  "github_publication": {
+    "authorization": "Explicit user request on 2026-10-24",
+    "repository": "TonyRod116/tony-r.com",
+    "branch": "main",
+    "scope": "All completed pending portfolio changes, including earlier published polish and payout removal",
+    "exclusions": [
+      "credentials and personal settings",
+      "generated output",
+      "private release evidence",
+      "temporary writer lock"
+    ],
+    "verification": "Check the resulting remote commit and GitHub Actions run; no success is inferred from local checks."
+  }
+}

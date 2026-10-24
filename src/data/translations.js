@@ -26,7 +26,7 @@ export const translations = {
       "hero": {
         "title": "Tony Rodríguez.",
         "role": "BuildApp founder · Product and development",
-        "intro": "I founded BuildApp, an app for renovation professionals, and I still build it: web, mobile and AI. I also develop and run my own Python trading systems.",
+        "intro": "I founded BuildApp, an app for homeowners and renovation professionals, and I still build it: web, mobile and AI. I also develop and run my own Python trading systems.",
         "work": "Explore my work",
         "story": "My story",
         "portraitAlt": "Tony Rodríguez"
@@ -34,21 +34,26 @@ export const translations = {
       "work": {
         "label": "Current work",
         "title": "BuildApp",
-        "subtitle": "From a site visit to a clear proposal.",
-        "description": "An app for renovation professionals: site photos and notes, quotes, AI visual proposals and client follow-up. Available on web, iPhone and Android.",
+        "subtitle": "Client and Pro, in one app.",
+        "description": "One app to plan your renovation or manage your work as a professional. Clients can explore AI simulations, indicative costs and saved ideas. Professionals can capture site visits, prepare quotes and share proposals. On iPhone and Android, with Pro also available on the web.",
         "roleLabel": "My part",
         "role": "I founded BuildApp and defined the product. I build the web and mobile experience, AI workflows and part of the integrations, alongside the CTO.",
         "detail": "View the project",
         "open": "Open BuildApp",
         "imageAlt": "BuildApp renovation proposal with before-and-after visualization and quote",
-        "caption": "BuildApp Pro on mobile. Budgets and budget details with sample data."
+        "caption": "Client and Pro in the same app. Official App Store screenshots with illustrative content."
       },
       "trading": {
         "label": "Personal project",
         "title": "Trading in Python.",
-        "description": "I recently started trading with my own Python bots. They have passed their first prop firm evaluations on the first attempt and are already generating income from those same accounts. The challenge: reaching profit targets while respecting strict loss limits.",
-        "method": "I built a research system with out-of-sample validation, data audits and simulations that include trading costs. It helps detect two common errors: overfitting (fitting a strategy too closely to the past) and lookahead bias (using data that did not yet exist when the decision was made).",
-        "note": "Automated signals, risk checks and execution, with a custom Windows dashboard and alerts. A separate project from TradeLab.",
+        "description": "I recently started trading with my own Python bots. They have passed their first prop firm evaluations on the first attempt. The challenge: reaching profit targets while respecting strict loss limits.",
+        "points": [
+          ["Validate", "Out-of-sample validation and data audits before trusting a result."],
+          ["Simulate with costs", "Simulations that include trading costs, not just the theoretical result."],
+          ["Avoid two errors", "Overfitting (fitting a strategy too closely to the past) and lookahead bias (using data that did not yet exist at decision time)."],
+          ["Execute with control", "Automated signals, risk checks and execution, with a custom Windows dashboard and alerts."]
+        ],
+        "note": "A separate project from TradeLab.",
         "tools": "Python · Automation · Windows desktop"
       },
       "selected": {
@@ -71,7 +76,8 @@ export const translations = {
       "about": {
         "title": "Before software, construction.",
         "description": "For years I managed projects and a renovation company. I worked with clients, teams, budgets and deadlines. That experience still shapes how I build software: understand the work before choosing the tool.",
-        "more": "My story and experience"
+        "more": "My story and experience",
+        "photoLink": "More work at totalhomes.es"
       },
       "experiments": {
         "title": "I experiment, too.",
@@ -1164,7 +1170,7 @@ export const translations = {
       "hero": {
         "title": "Tony Rodríguez.",
         "role": "Fundador de BuildApp · Producto y desarrollo",
-        "intro": "Fundé BuildApp, una app para profesionales de reformas, y sigo construyéndola: web, móvil e IA. También desarrollo y opero mis propios sistemas de trading en Python.",
+        "intro": "Fundé BuildApp, una app para clientes y profesionales de reformas, y sigo construyéndola: web, móvil e IA. También desarrollo y opero mis propios sistemas de trading en Python.",
         "work": "Explorar mi trabajo",
         "story": "Mi recorrido",
         "portraitAlt": "Tony Rodríguez"
@@ -1172,21 +1178,26 @@ export const translations = {
       "work": {
         "label": "Trabajo en marcha",
         "title": "BuildApp",
-        "subtitle": "De una visita de obra a una propuesta clara.",
-        "description": "Una aplicación para profesionales de reformas: fotos y notas de la visita, presupuestos, propuestas visuales con IA y seguimiento de clientes. Disponible en web, iPhone y Android.",
+        "subtitle": "Cliente y Pro, en una sola app.",
+        "description": "Una misma app para preparar tu reforma o llevar tu trabajo como profesional. El cliente explora simulaciones con IA, costes orientativos e ideas guardadas. El profesional recoge visitas, prepara presupuestos y comparte propuestas. En iPhone y Android, con Pro también en la web.",
         "roleLabel": "Mi parte",
         "role": "Fundé BuildApp y definí el producto. Construyo la experiencia web y móvil, los flujos con IA y parte de las integraciones, junto al CTO.",
         "detail": "Ver el proyecto",
         "open": "Abrir BuildApp",
         "imageAlt": "Propuesta de reforma en BuildApp con visualización antes y después y presupuesto",
-        "caption": "BuildApp Pro en móvil. Presupuestos y detalle con datos de ejemplo."
+        "caption": "Cliente y Pro en una misma app. Capturas oficiales de App Store con contenido ilustrativo."
       },
       "trading": {
         "label": "Proyecto propio",
         "title": "Trading en Python.",
-        "description": "Acabo de empezar a operar con mis propios bots en Python. Han superado sus primeras evaluaciones de firmas de fondeo (prop firms) al primer intento y ya generan ingresos con esas mismas cuentas. El reto: alcanzar objetivos de beneficio respetando límites estrictos de pérdida.",
-        "method": "He construido un sistema de investigación con validación fuera de muestra, auditorías de datos y simulaciones que incluyen costes de operación. Ayuda a detectar dos errores habituales: el sobreajuste u overfitting (ajustar una estrategia demasiado al pasado) y el lookahead (usar datos que aún no existían al tomar la decisión).",
-        "note": "Señales, riesgo y ejecución automatizados, con un dashboard propio para Windows y alertas. Un proyecto distinto de TradeLab.",
+        "description": "Acabo de empezar a operar con mis propios bots en Python. Han superado sus primeras evaluaciones de firmas de fondeo (prop firms) al primer intento. El reto: alcanzar objetivos de beneficio respetando límites estrictos de pérdida.",
+        "points": [
+          ["Validar", "Validación fuera de muestra y auditorías de datos antes de fiarme de un resultado."],
+          ["Simular con costes", "Simulaciones que incluyen los costes de operar, no solo el resultado teórico."],
+          ["Evitar dos errores", "Sobreajuste u overfitting (ajustar una estrategia demasiado al pasado) y lookahead (usar datos que aún no existían al decidir)."],
+          ["Ejecutar con control", "Señales, riesgo y ejecución automatizados, con un dashboard propio para Windows y alertas."]
+        ],
+        "note": "Un proyecto distinto de TradeLab.",
         "tools": "Python · Automatización · Escritorio Windows"
       },
       "selected": {
@@ -1209,7 +1220,8 @@ export const translations = {
       "about": {
         "title": "Antes del software, la obra.",
         "description": "Durante años dirigí proyectos y una empresa de reformas. Trabajé con clientes, equipos, presupuestos y plazos. Esa experiencia sigue presente cuando construyo software: entender el trabajo antes de decidir la herramienta.",
-        "more": "Mi historia y experiencia"
+        "more": "Mi historia y experiencia",
+        "photoLink": "Ver más obras en totalhomes.es"
       },
       "experiments": {
         "title": "También experimento.",
@@ -2318,7 +2330,7 @@ export const translations = {
       "hero": {
         "title": "Tony Rodríguez.",
         "role": "Fundador de BuildApp · Producte i desenvolupament",
-        "intro": "Vaig fundar BuildApp, una aplicació per a professionals de reformes, i continuo construint-la: web, mòbil i IA. També desenvolupo i opero els meus propis sistemes de trading en Python.",
+        "intro": "Vaig fundar BuildApp, una aplicació per a clients i professionals de reformes, i continuo construint-la: web, mòbil i IA. També desenvolupo i opero els meus propis sistemes de trading en Python.",
         "work": "Explora la meva feina",
         "story": "El meu recorregut",
         "portraitAlt": "Tony Rodríguez"
@@ -2326,21 +2338,26 @@ export const translations = {
       "work": {
         "label": "Feina en marxa",
         "title": "BuildApp",
-        "subtitle": "D'una visita d'obra a una proposta clara.",
-        "description": "Una aplicació per a professionals de reformes: fotos i notes de la visita, pressupostos, propostes visuals amb IA i seguiment de clients. Disponible en web, iPhone i Android.",
+        "subtitle": "Client i Pro, en una sola app.",
+        "description": "Una mateixa app per preparar la teva reforma o portar la teva feina com a professional. El client explora simulacions amb IA, costos orientatius i idees desades. El professional recull visites, prepara pressupostos i comparteix propostes. A iPhone i Android, amb Pro també al web.",
         "roleLabel": "La meva part",
         "role": "Vaig fundar BuildApp i definir el producte. Construeixo l'experiència web i mòbil, els fluxos amb IA i part de les integracions, juntament amb el CTO.",
         "detail": "Veure el projecte",
         "open": "Obrir BuildApp",
         "imageAlt": "Proposta de reforma a BuildApp amb visualització abans i després i pressupost",
-        "caption": "BuildApp Pro al mòbil. Pressupostos i detall amb dades d’exemple."
+        "caption": "Client i Pro en una mateixa app. Captures oficials d’App Store amb contingut il·lustratiu."
       },
       "trading": {
         "label": "Projecte propi",
         "title": "Trading en Python.",
-        "description": "Acabo de començar a operar amb els meus propis bots en Python. Han superat les primeres avaluacions de firmes de finançament (prop firms) al primer intent i ja generen ingressos amb aquests mateixos comptes. El repte: assolir objectius de benefici respectant límits estrictes de pèrdua.",
-        "method": "He construït un sistema de recerca amb validació fora de mostra, auditories de dades i simulacions que inclouen costos d’operació. Ajuda a detectar dos errors habituals: el sobreajust o overfitting (ajustar una estratègia massa al passat) i el lookahead (fer servir dades que encara no existien en prendre la decisió).",
-        "note": "Senyals, risc i execució automatitzats, amb un dashboard propi per a Windows i alertes. Un projecte diferent de TradeLab.",
+        "description": "Acabo de començar a operar amb els meus propis bots en Python. Han superat les primeres avaluacions de firmes de finançament (prop firms) al primer intent. El repte: assolir objectius de benefici respectant límits estrictes de pèrdua.",
+        "points": [
+          ["Validar", "Validació fora de mostra i auditories de dades abans de refiar-me d’un resultat."],
+          ["Simular amb costos", "Simulacions que inclouen els costos d’operar, no només el resultat teòric."],
+          ["Evitar dos errors", "Sobreajust o overfitting (ajustar una estratègia massa al passat) i lookahead (fer servir dades que encara no existien en decidir)."],
+          ["Executar amb control", "Senyals, risc i execució automatitzats, amb un dashboard propi per a Windows i alertes."]
+        ],
+        "note": "Un projecte diferent de TradeLab.",
         "tools": "Python · Automatització · Escriptori Windows"
       },
       "selected": {
@@ -2363,7 +2380,8 @@ export const translations = {
       "about": {
         "title": "Abans del programari, l'obra.",
         "description": "Durant anys vaig dirigir projectes i una empresa de reformes. Vaig treballar amb clients, equips, pressupostos i terminis. Aquesta experiència continua present quan construeixo programari: entendre la feina abans de decidir l’eina.",
-        "more": "La meva història i experiència"
+        "more": "La meva història i experiència",
+        "photoLink": "Més obres a totalhomes.es"
       },
       "experiments": {
         "title": "També experimento.",

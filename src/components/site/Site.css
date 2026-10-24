@@ -64,8 +64,8 @@
 .site-project-role > p:last-child { font-size: 0.9375rem; color: var(--site-muted); margin-top: 12px; }
 .site-project-images > button { display: block; width: 100%; border: 0; padding: 0; background: transparent; cursor: zoom-in; aspect-ratio: 1; }
 .site-project-images > button img { width: 100%; height: 100%; object-fit: contain; border: 1px solid var(--site-line); }
-.site-project-thumbnails { display: flex; gap: 12px; margin-top: 16px; }
-.site-project-thumbnails button { width: 90px; height: 70px; border: 1px solid var(--site-line); padding: 0; background: transparent; cursor: pointer; }
+.site-project-thumbnails { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 12px; margin-top: 16px; }
+.site-project-thumbnails button { width: 100%; min-height: 44px; aspect-ratio: 9 / 7; border: 1px solid var(--site-line); padding: 0; background: transparent; cursor: pointer; }
 .site-project-thumbnails img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
 .site-project-thumbnails button[aria-pressed="true"] { outline: 2px solid var(--site-accent); outline-offset: 3px; }
 .site-project-images figcaption { margin-top: 16px; color: var(--site-muted); font-size: 0.75rem; }
@@ -302,3 +302,14 @@ body:has(.ai-footer) .site-page.site-not-found { min-height: calc(100dvh - 48px)
 .footer-consent:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 @media (max-width: 640px) { .consent-banner { left: 0; right: 0; bottom: 0; width: auto; padding-bottom: calc(16px + env(safe-area-inset-bottom)); border-inline: 0; border-bottom: 0; } }
 @media print { .consent-banner { display: none; } }
+/* Área de pulsación de 44px en enlaces de cabecera y pie; el margen negativo compensa el relleno y no cambia la altura de ninguna barra. */
+header a:not(.nav-contact):not(.site-mobile-panel a) { padding-block: 12px; }
+footer nav a, footer .footer-consent { display: inline-flex; align-items: center; padding: 12px 8px; margin: -12px -8px; }
+/* Pulido general: títulos sin palabras sueltas, respuesta al pulsar y flechas que reaccionan. */
+.site-page :is(h1, h2, h3) { text-wrap: balance; }
+.site-page :is(p, li, figcaption) { text-wrap: pretty; }
+.site-page ::selection { background: #e9d3c5; color: var(--site-ink); }
+.site-button { transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease; }
+.site-button:active:not(:disabled) { transform: translateY(1px); }
+.site-page svg.lucide-arrow-up-right { transition: transform 160ms ease; }
+.site-page :is(.site-link, .site-button):hover svg.lucide-arrow-up-right { transform: translate(2px, -2px); }

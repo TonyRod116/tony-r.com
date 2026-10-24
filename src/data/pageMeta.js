@@ -22,9 +22,9 @@ const pages = {
     ca: ['El meu recorregut', 'De la construcció al programari: com vaig passar de dirigir reformes a fundar BuildApp i a treballar en producte i desenvolupament.'],
   },
   '/projects': {
-    es: ['Proyectos', 'BuildApp Pro y otros proyectos: qué problema resolvía cada uno, qué parte construí yo y qué puedes explorar.'],
-    en: ['Projects', 'BuildApp Pro and other projects: the problem each one solved, which part I built and what you can explore.'],
-    ca: ['Projectes', 'BuildApp Pro i altres projectes: quin problema resolia cadascun, quina part vaig construir jo i què pots explorar.'],
+    es: ['Proyectos', 'BuildApp, una app para clientes y profesionales de reformas, y otros proyectos: qué construí y qué puedes explorar.'],
+    en: ['Projects', 'BuildApp, one app for homeowners and renovation professionals, and other projects: what I built and what you can explore.'],
+    ca: ['Projectes', 'BuildApp, una app per a clients i professionals de reformes, i altres projectes: què vaig construir i què pots explorar.'],
   },
   '/resume': {
     es: ['Currículum', 'Experiencia, formación y certificados, con el CV en español y en inglés para descargar.'],

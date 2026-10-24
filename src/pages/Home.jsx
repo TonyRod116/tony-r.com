@@ -5,7 +5,8 @@ import { profile } from '../data/profile'
 import { projectImages, buildappMobileImages, buildappCaptureCaptions } from '../assets/images'
 import portrait from '../assets/pic3 (2).jpg'
 import BuildAppScreenshot from '../components/site/BuildAppScreenshot'
-import TradingPayouts from '../components/site/TradingPayouts'
+import { totalhomesGallery } from '../data/totalhomesGallery'
+import { galleryDescriptions } from '../data/siteContent'
 import './Home.css'
 
 function OutboundLink({ href, children, className = '' }) {
@@ -16,9 +17,27 @@ function OutboundLink({ href, children, className = '' }) {
   )
 }
 
+const totalHomesUrl = 'https://www.totalhomes.es/'
+
+// Marcas pequeñas del laboratorio: mismo lenguaje (oscuro y lima) que las miniaturas de /ai, solo decorativas.
+function NeuralMark() {
+  const layers = [[12, 28, 44], [8, 20, 32, 44], [20, 36]]
+  return <svg viewBox="0 0 56 56" aria-hidden="true" focusable="false">
+    {layers.slice(0, -1).flatMap((ys, layer) => ys.flatMap(y1 => layers[layer + 1].map(y2 => <line key={`${layer}-${y1}-${y2}`} x1={10 + layer * 18} y1={y1} x2={28 + layer * 18} y2={y2} />)))}
+    {layers.flatMap((ys, layer) => ys.map(y => <circle key={`${layer}-${y}`} cx={10 + layer * 18} cy={y} r="2.6" />))}
+  </svg>
+}
+
+function TetrisMark() {
+  return <span className="home-mark-tetris" aria-hidden="true">
+    {Array.from({ length: 30 }, (_, i) => <i key={i} className={[2, 3, 4, 8, 14].includes(i) ? 'magic' : i > 23 && i !== 27 ? 'solid' : undefined} />)}
+  </span>
+}
+
 export default function Home() {
   const { t, language } = useLanguage()
   const copy = t('home')
+  const storyPhotoIndex = 4, storyPhoto = totalhomesGallery[storyPhotoIndex]
   const selected = [
     { id: 're-lux', copy: copy.selected.relux, href: 'https://re-lux-frontend.netlify.app/' },
     { id: 'tradelab', copy: copy.selected.tradelab, href: 'https://trade-lab.netlify.app/' },
@@ -49,7 +68,7 @@ export default function Home() {
           </div>
           <div className="home-feature">
             <figure className="home-product">
-              <div className="home-product-screens">{buildappMobileImages.map((image,index)=><BuildAppScreenshot key={image} trimHeader src={image} alt={buildappCaptureCaptions[language][index+1]} width="390" height="844" loading="lazy" />)}</div>
+              <div className="home-product-screens">{buildappMobileImages.map((image,index)=><BuildAppScreenshot key={image} src={image} alt={buildappCaptureCaptions[language][index+1]} width="598" height="1300" loading="lazy" />)}</div>
               <figcaption>{copy.work.caption}</figcaption>
             </figure>
             <div className="home-feature-copy">
@@ -76,9 +95,10 @@ export default function Home() {
         </div>
         <div className="home-trading-copy">
           <p>{copy.trading.description}</p>
-          <p>{copy.trading.method}</p>
+          <dl className="home-method">
+            {copy.trading.points.map(([term, detail]) => <div key={term}><dt>{term}</dt><dd>{detail}</dd></div>)}
+          </dl>
           <p className="home-note">{copy.trading.note}</p>
-          <TradingPayouts language={language} />
         </div>
       </section>
 
@@ -105,7 +125,15 @@ export default function Home() {
 
       <section id="story" className="home-story" aria-labelledby="home-story">
         <div className="home-width home-story-layout">
-          <h2 id="home-story">{copy.about.title}</h2>
+          <div className="home-story-lead">
+            <h2 id="home-story">{copy.about.title}</h2>
+            <figure className="home-story-photo">
+              <a href={totalHomesUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} className="home-story-photo-link">
+                <img src={storyPhoto.image} alt={galleryDescriptions[language][storyPhotoIndex]} width="2560" height="2341" loading="lazy" decoding="async" />
+              </a>
+              <figcaption><OutboundLink href={totalHomesUrl}>{copy.about.photoLink}</OutboundLink></figcaption>
+            </figure>
+          </div>
           <div>
             <p>{copy.about.description}</p>
             <Link to="/about" className="home-link">{copy.about.more}<ArrowUpRight aria-hidden="true" size={17} /></Link>
@@ -121,10 +149,10 @@ export default function Home() {
         </div>
         <div className="home-experiment-links">
           <Link to="/ai/neural-network" className="home-experiment">
-            <span>{copy.experiments.neural}</span><ArrowUpRight aria-hidden="true" size={18} />
+            <span className="home-experiment-mark"><NeuralMark /></span><span className="home-experiment-label">{copy.experiments.neural}</span><ArrowUpRight aria-hidden="true" size={18} />
           </Link>
           <Link to="/ai/tetris" className="home-experiment">
-            <span>{copy.experiments.tetris}</span><ArrowUpRight aria-hidden="true" size={18} />
+            <span className="home-experiment-mark"><TetrisMark /></span><span className="home-experiment-label">{copy.experiments.tetris}</span><ArrowUpRight aria-hidden="true" size={18} />
           </Link>
         </div>
       </section>

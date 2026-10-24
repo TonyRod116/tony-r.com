@@ -1,6 +1,6 @@
 # Product Marketing Context
 
-Last updated: 2026-10-03
+Last updated: 2026-10-24
 
 ## Project Overview
 
@@ -55,6 +55,10 @@ Build useful products that solve real business problems, reduce operational fric
 
 - Can explore demos, implementation details and the broader trajectory.
 - Recruitment and commercial conversations remain possible without dominating the page.
+
+## Current Disclosure Preference — 2026-10-19
+
+Tony no longer wants earnings on the website. The home omits all payout certificates, their assets and the income clause, while retaining the owner-reported first-attempt evaluations and source-grounded research controls. Earlier payout permissions below are historical evidence, not the current presentation preference.
 
 ## Confirmed Public Fact — 2026-09-30
 
@@ -183,3 +187,12 @@ Brand/search terms:
 ## Payout Presentation Preference — 2026-10-03
 
 Tony requests removing the visible Lucid payout heading and combined amount, keeping the two existing receipt rows. He reports another Lucid payment that has not been supplied; do not infer its amount/date or add evidence that is not provided. The currently visible receipts are selected proofs, not a complete earnings record. The company/method copy and individual receipts remain.
+
+
+## BuildApp Cliente + Pro — 2026-10-24
+
+BuildApp now presents one iPhone/Android app with Client and Professional experiences. Each account chooses one role at registration; this is not an in-account role switch. Pro also runs in the browser. Public buildapp.es and the App Store release notes support the launch; read-only mobileRouter and Client source inspection support the product boundaries.
+
+Current public claims: Client offers AI renovation simulations, indicative costs and saved ideas/photos. Professional offers site capture, editable quotes, visual proposals and WhatsApp/link/PDF sharing. Do not describe indicative costs as professional quotes, AI images as completed renovation work, automatic client/professional matching, protected payments or guaranteed work.
+
+Home and Projects now use four unchanged current App Store screenshot derivatives, clearly identified as official images with illustrative content. Home shows Client simulation and a Pro quote; Projects keeps the existing original/AI slider and adds all four store images. The public-site case has a new anonymous screenshot of buildapp.es. Provenance: docs/ai/buildapp-unified-20261024.json. These are portfolio edits only: no BuildApp code, account, API, release or runtime changes.

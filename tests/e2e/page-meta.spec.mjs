@@ -24,8 +24,8 @@ test('every route sets its own title, description and canonical address', async 
 })
 
 for (const [language, title, description] of [
-  ['en', 'Projects | Tony Rodríguez', 'BuildApp Pro and other projects: the problem each one solved'],
-  ['ca', 'Projectes | Tony Rodríguez', 'BuildApp Pro i altres projectes: quin problema resolia cadascun'],
+  ['en', 'Projects | Tony Rodríguez', 'BuildApp, one app for homeowners and renovation professionals'],
+  ['ca', 'Projectes | Tony Rodríguez', 'BuildApp, una app per a clients i professionals de reformes'],
 ]) test(`the title and description follow the selected language (${language})`, async ({ page }) => {
   await page.addInitScript(value => localStorage.setItem('portfolio-language', value), language)
   await page.goto('/projects')
